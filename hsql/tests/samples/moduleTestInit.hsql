@@ -1,0 +1,4 @@
+import moduleTestDep;
+import foomod;
+someTable = select * from '~abc::abc.csv' layout moduleTestDep.lay;
+//someTable = select * from foomod.t1;

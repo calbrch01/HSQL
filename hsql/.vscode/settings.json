@@ -1,0 +1,11 @@
+{
+    "debug.node.autoAttach": "off",
+    "files.watcherExclude": {
+        "**/.git/objects/**": true,
+        "**/.git/subtree-cache/**": true,
+        "**/node_modules/**": true,
+        "**/.hg/store/**": true,
+        "**/.eclcc/**":true
+    },
+    "markdown.extension.toc.levels": "1..3"
+}

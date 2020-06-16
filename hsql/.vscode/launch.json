@@ -1,0 +1,73 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Program",
+            "program": "${workspaceFolder}/index.js",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "args": [
+                "-i","moduleTestInit.hsql"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Mocha Tests",
+            "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+            "args": [
+                "-u",
+                "bdd",
+                "--timeout",
+                "999999",
+                "--colors",
+                "${workspaceFolder}/tests"
+            ],
+            "internalConsoleOptions": "openOnSessionStart",
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "attach",
+            "address": "localhost",
+            "name": "Attach by Port",
+            "port": 9229,
+            "preLaunchTask": "npm: regen"
+        },
+        {
+            "type": "antlr-debug",
+            "request": "launch",
+            "name": "Debug Grammar with Test Input",
+            "grammar": "HSQL.g4",
+            "input": "input.hsql",
+            "startRule": "program",
+            "visualParseTree": true,
+            //"printParseTree": true
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Program - Std. Input",
+            "program": "${workspaceFolder}/index.js",
+            "args": ["-i","input.hsql"],
+            "preLaunchTask": "npm: regen"
+        },
+        
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Program - Input 1",
+            "program": "${workspaceFolder}/index.js",
+            "args": ["-i","tests/samples/input.hsql"],
+            "preLaunchTask": "npm: regen"
+        }
+    ]
+}

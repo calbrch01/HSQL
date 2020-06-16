@@ -1,0 +1,5 @@
+import dummy;
+
+c = create layout (col1 integer, col2 integer);
+d = select count(*) from dummy.someTable;
+output c file 'Hello' csv;

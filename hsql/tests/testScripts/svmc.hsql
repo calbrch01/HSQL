@@ -1,0 +1,15 @@
+import commonsimple;
+
+ind = select PersonID,age from commonsimple.simpleTable where PersonID<5;
+dep = select PersonID,hasHouse from commonsimple.simpleTable where PersonID<5;
+
+output ind;
+output dep;
+
+test = select PersonID,age from commonsimple.simpleTable where PersonID>4;
+
+model = train from ind,dep method SVMClassification;
+
+result = predict model from test;
+
+output result;
