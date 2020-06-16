@@ -1,0 +1,49 @@
+{
+  "LinearRegression":
+  {
+    "train":""
+  },
+  "LearningTrees":
+  {
+    "alias":"LT",
+    "prerequisites": "",
+    "methods": [
+      "RegressionForest",
+      "ClassificationForest",
+      "BoostedRegForest",
+      "LT_Types",
+      "LUCI_Export"
+    ]
+  },
+  "LogisticRegression":
+  {
+    "alias":"LoR",
+    "prerequisites": "",
+    "methods": [
+      "BinomialConfusion",
+      "BinomialLogisticRegression",
+      "Confusion",
+      "Constants",
+      "DataStats",
+      "Deviance_Analysis",
+      "Deviance_Detail",
+      "dimm",
+      "enum_workitems",
+      "ExtractBeta",
+      "ExtractBeta_CI",
+      "ExtractBeta_full",
+      "ExtractBeta_pval",
+      "ExtractReport",
+      "LogitPredict",
+      "LogitScore",
+      "LUCI_Model",
+      "Model_Deviance",
+      "Named_Model",
+      "Null_Deviance",
+      "Types"
+    ]
+  }
+}
+
+
+

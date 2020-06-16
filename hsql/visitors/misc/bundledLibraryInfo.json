@@ -1,0 +1,363 @@
+{
+    "__comment1":"",
+        
+    "LibraryMemberTypeData": [
+        {
+            "name": "ML_Core",
+            "members": []
+        },
+        {
+            "name": "Visualizer",
+            "members": []
+        }
+    ],
+    "templates":{
+        "toNumericField":{
+            "__comment":"Cant have a shared field, so must create another variable to expose this",
+            "base":"{libraryName}.ToField({table},{field})"
+        },
+        "resetId":{
+            "base":"SHARED {newField} := PROJECT({field},TRANSFORM(RECORDOF(LEFT),SELF.id:=COUNTER,SELF:=LEFT))"
+        },
+        "numericToDiscrete":{
+            "base":"SHARED {compiled} := {libraryName}.Discretize.ByRounding({field})"
+        },
+        "fromNumericField":{
+            "base":"{libraryName}.fromField({ind},{layoutdep},{resTable})"
+        },
+        "fromClassifierField":{
+            "base":""
+        }
+
+    },
+    "PlotMethods":{
+        "bar":{
+            "translation":"{moduleName}.MultiD.Bar({name})"
+        },
+        "column":{
+            "translation":"{moduleName}.MultiD.column({name})"
+        },
+        "pie":{
+            "translation":"{moduleName}.TwoD.Pie({name})"
+        }
+    },
+    "__coment2":"requiresDepDiscrete,requiresIndDiscrete are checked for true(specifically)",
+    "MLMethods": {
+        "LinearRegression": {
+            "bundle": "LinearRegression",
+            "trainMethod": "OLS",
+            "getModelSuffix": "{bundleName}.OLS({ind_new},{dep_new}).GetModel",
+            "predictSuffix": "{bundleName}.OLS().Predict({indepFields},{modelName})",
+            "options": {
+                "number": 0,
+                "config": []
+            }
+        },
+        "BinomialLogisticRegression": {
+            "bundle": "LogisticRegression",
+            "trainMethod": "BinomialLogisticRegression",
+            "getModelSuffix": "{bundleName}.BinomialLogisticRegression({options}).GetModel({ind_new},{dep_new})",
+            "requiresDepDiscrete":true,
+            "predictSuffix": "{bundleName}.BinomialLogisticRegression().Classify({modelName},{indepFields})",
+            "options": {
+                "number": 3,
+                "config": [
+                    {
+                        "name": "max_iter",
+                        "desc": "Maximum iterations",
+                        "default":"200"
+                    },
+                    {
+                        "name": "epsilon",
+                        "desc": "Minimum change in beta estimate to continue",
+                        "default":"0.00000001"
+                    },
+                    {
+                        "name": "ridge",
+                        "desc": "Ridge Value",
+                        "default":"0.00001"
+                    }
+                ]
+            }
+        },
+        "GeneralLinearModel":{
+            "_comment":"optionsJoined = the options joined with X,Y",
+            "bundle":"GLM",
+            "trainMethod":"GeneralLinearModel",
+            "getModelSuffix":"{bundleName}.GLM(X:={ind_new},Y:={dep_new}{comma}{options}).GetModel",
+            "predictSuffix":"{bundleName}.GLM().Predict({indepFields},{modelName})",
+            "options":{
+                "number":4,
+                "config":[
+                    {
+                        "__comment":"no default value",
+                        "name":"fam",
+                        "desc":"Type of regression to perform"
+                    },
+                    {
+                        "name": "max_iter",
+                        "desc": "Maximum iterations",
+                        "default":"200"
+                    },
+                    {
+                        "name": "epsilon",
+                        "desc": "Minimum change in beta estimate to continue",
+                        "default":"0.00000001"
+                    },
+                    {
+                        "name": "ridge",
+                        "desc": "Ridge Value",
+                        "default":"0.00001"
+                    }
+                ]
+            }
+        },
+        "RegressionForest": {
+            "bundle": "LearningTrees",
+            "trainMethod": "RegressionForest",
+            "getModelSuffix": "{bundleName}.RegressionForest().getModel({ind_new},{dep_new})",
+            "predictSuffix": "{bundleName}.RegressionForest().Predict({modelName},{indepFields})",
+            "options": {
+                "number": 3,
+                "config": [
+                    {
+                        "name": "numTrees",
+                        "desc": "Number of Trees",
+                        "default": "100"
+                    },
+                    {
+                        "name": "featuresPerNode",
+                        "desc": "Features per Node",
+                        "default": "500"
+                    },
+                    {
+                        "name": "maxDepth",
+                        "desc": "Maximum depth",
+                        "default": "5"
+                    }
+                ]
+            }
+        },
+        "ClassificationForest": {
+            "bundle": "LearningTrees",
+            "trainMethod": "ClassificationForest",
+            "getModelSuffix": "{bundleName}.ClassificationForest({options}).getModel({ind_new},{dep_new})",
+            "predictSuffix": "{bundleName}.ClassificationForest().Classify({modelName},{indepFields})",
+            "requiresDepDiscrete":true,
+            "options": {
+                "number": 3,
+                "config": [
+                    {
+                        "name": "numTrees",
+                        "desc": "Number of Trees",
+                        "default": "100"
+                    },
+                    {
+                        "name": "featuresPerNode",
+                        "desc": "Features per Node",
+                        "default": "0"
+                    },
+                    {
+                        "name": "maxDepth",
+                        "desc": "Maximum depth",
+                        "default": "100"
+                    }
+                ]
+            }
+        },
+        "KMeans": {
+            "bundle": "KMeans",
+            "trainMethod": "KMeans",
+            "getModelSuffix": "{bundleName}.KMeans({options}).Fit({ind_new},{dep_new})",
+            "predictSuffix": "{bundleName}.KMeans().Predict({modelName},{indepFields})",
+            "options": {
+                "number": 2,
+                "config": [
+                    {
+                        "name": "max_iter",
+                        "desc": "Maximum iterations",
+                        "default":"10"
+                    },
+                    {
+                        "name": "t",
+                        "desc": "Convergence tolerance",
+                        "default": "0.0"
+                    }
+                ]
+            }
+        },
+        "SVMClassification": {
+            "bundle": "SupportVectorMachines",
+            "trainMethod": "SVMClassification",
+            "getModelSuffix": "{bundleName}.SVC({options}).getModel({ind_new},{dep_new})",
+            "predictSuffix": "{bundleName}.SVC().Classify({modelName},{indepFields})",
+            "requiresDepDiscrete":true,
+            "options": {
+                "number": 12,
+                "config": [
+                    {
+                        "name": "scale",
+                        "desc": "Whether to standardize data before fitting or not",
+                        "default":"true"
+                    },
+                    {
+                        "name": "coef0",
+                        "desc": "Parameter for kernels of type POLY and SIGMOID",
+                        "default": "0"
+                    },
+                    {
+                        "name": "degree",
+                        "desc": "Parameter for kernel of type POLY",
+                        "default":"3"
+                    },
+                    {
+                        "name": "prob_est",
+                        "desc": "Whether to train for probability estimates",
+                        "default":"true"
+                    },
+                    {
+                        "name": "gamma",
+                        "desc": "Regularizatioon parameter for all kernels except LINEAR",
+                        "default":"0.05"
+                    },
+                    {
+                        "name": "eps",
+                        "desc": "Toleration of terminance criterion",
+                        "default":"0.001"
+                    },
+                    {
+                        "name": "C",
+                        "desc": "Cost of constraint violation regularization",
+                        "default":"1"
+                    },
+                    {
+                        "name": "shrinking",
+                        "desc": "Use shrinking-heuristics",
+                        "default":"true"
+                    },
+                    {
+                        "name": "svmType",
+                        "desc": "SVR type - 3(EPSILON_SVR) or 4(NU_SVR)",
+                        "default":"3"
+                    },
+                    {
+                        "name": "kernelType",
+                        "desc": "Kernel used - 0-LINEAR, 1-POLY, 2-RBF, 3-SIGMOID, 4-PRECOMPUTED",
+                        "default":"2"
+                    },
+                    {
+                        "name": "p",
+                        "desc": "Epsilon in insesitive-loss function",
+                        "default":"0.1"
+                    },
+                    {
+                        "name": "nu",
+                        "desc": "Parameter needed for NU_SVC and ONE_CLASS",
+                        "default":"0.5"
+                    }
+                ]
+            }
+    
+        },
+        "SVMRegression": {
+            "bundle": "SupportVectorMachines",
+            "trainMethod": "SVMRegression",
+            "getModelSuffix": "{bundleName}.SVR(X:={ind_new},Y:={dep_new}{comma}{options}).getModel()",
+            "predictSuffix": "{bundleName}.SVR().Predict({indepFields},{modelName})",
+            "options": {
+                "number": 12,
+                "config": [
+                    {
+                        "name": "scale",
+                        "desc": "Whether to standardize data before fitting or not",
+                        "default":"true"
+                    },
+                    {
+                        "name": "coef0",
+                        "desc": "Parameter for kernels of type POLY and SIGMOID",
+                        "default": "0"
+                    },
+                    {
+                        "name": "degree",
+                        "desc": "Parameter for kernel of type POLY",
+                        "default":"3"
+                    },
+                    {
+                        "name": "prob_est",
+                        "desc": "Whether to train for probability estimates",
+                        "default":"true"
+                    },
+                    {
+                        "name": "gamma",
+                        "desc": "Regularizatioon parameter for all kernels except LINEAR",
+                        "default":"0.05"
+                    },
+                    {
+                        "name": "eps",
+                        "desc": "Toleration of terminance criterion",
+                        "default":"0.001"
+                    },
+                    {
+                        "name": "C",
+                        "desc": "Cost of constraint violation regularization",
+                        "default":"1"
+                    },
+                    {
+                        "name": "shrinking",
+                        "desc": "Use shrinking-heuristics",
+                        "default":"true"
+                    },
+                    {
+                        "name": "svmType",
+                        "desc": "SVR type - 3(EPSILON_SVR) or 4(NU_SVR)",
+                        "default":"3"
+                    },
+                    {
+                        "name": "kernelType",
+                        "desc": "Kernel used - 0-LINEAR, 1-POLY, 2-RBF, 3-SIGMOID, 4-PRECOMPUTED",
+                        "default":"2"
+                    },
+                    {
+                        "name": "p",
+                        "desc": "Epsilon in insesitive-loss function",
+                        "default":"0.1"
+                    },
+                    {
+                        "name": "nu",
+                        "desc": "Parameter needed for NU_SVC and ONE_CLASS",
+                        "default":"0.5"
+                    }
+                ]
+            }
+    
+        }
+    },
+    "ElementaryMLMethods":{
+        "DBScan":{
+            "bundle":"DBSCAN",
+            "trainMethod":"DBScan",
+            "predictSuffix":"{bundleName}.DBSCAN({options}).fit({ind_new})",
+            "options":{
+                "number":3,
+                "config":[
+                    {
+                        "name":"eps",
+                        "desc":"Maximum distance threshold",
+                        "default":"0.0"
+                    },
+                    {
+                        "name":"minPts",
+                        "desc":"Minimum number of points to become a core point",
+                        "default":"2"
+                    },
+                    {
+                        "name":"dist",
+                        "desc":"Distance metric",
+                        "default":"'euclidean'"
+                    }
+                ]
+            }
+        }
+    }
+
+}

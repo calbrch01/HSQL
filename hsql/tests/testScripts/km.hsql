@@ -1,0 +1,17 @@
+import commonsimple;
+
+ind = select age,wage from commonsimple.simpleTable where PersonID<5;
+cent = select age,wage from commonsimple.simpleTable where PersonID>4;
+
+output ind;
+output cent;
+
+
+model = train from ind,cent method RegressionForest;
+
+test = select age,wage from commonsimple.simpleTable;
+
+
+result = predict model from test;
+
+output result;

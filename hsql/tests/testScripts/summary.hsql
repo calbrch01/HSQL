@@ -1,0 +1,24 @@
+IMPORT weather_h;
+IMPORT games_h;                   
+IMPORT LearningTrees as LT;
+
+exp1 = select COUNT(*) from games_h.games_ds where price < 5;
+exp2 = select name,price from games_h.games_ds where price < 5 order by price;
+exp3 = select name, sum(price) from games_h.games_ds group by name;
+exp4 = select * from games_h.games_ds where price < 2;
+exp5 = select * from games_h.xyz left only join randomname on randomname.b = games_h.xyz.d;
+
+output exp3 TITLE 'sampleTitle' EXPIRE 5;
+output exp2 EXPIRE 8;
+output exp3;
+output exp4;
+
+plot from exp2 title 'exp2_plot1' type column;
+ind = select id,day,month from weather_h.attributes_ds where id < 600;
+dep = select id,intensity from weather_h.attributes_ds where id < 600;
+test_ind = select id,day,month from weather_h.attributes_ds where id >= 600;
+
+model1 = train from ind, dep method BinomialLogisticRegression OPTION max_iter=4567,ridge=0.001;
+model1_predict = predict model1 from test_ind;
+--Testing
+output model1_predict;
