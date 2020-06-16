@@ -8,3 +8,4 @@ This repository contains:
 
 - [HSQLC docs](hsql/README.md)
 - [HSQL Syntax](hsql/docs/syntax.md)
+- [HSQL Extension README](hsql-server/README.md)
