@@ -271,6 +271,7 @@ connection.onCompletion(
 					//return [{label:'founja'}];
 				} else {
 					// return [{label:'not found'}];
+					connection.console.log('Not found');
 					return [];
 				}
 				//return [{label:'--maybe--'}];
@@ -278,9 +279,11 @@ connection.onCompletion(
 			// return [{
 			// 	label: '--No translation yet--',
 			// }];
+			connection.console.log('No translation yet');
 			return [];
 		} else {
 			//return [{label:'No doc'}];
+			connection.console.log('No doc');
 			return [];
 		}
 		// return[
