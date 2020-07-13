@@ -17,7 +17,7 @@
             "base":"{libraryName}.ToField({table},{field})"
         },
         "resetId":{
-            "base":"SHARED {newField} := PROJECT({field},TRANSFORM(RECORDOF(LEFT),SELF.id:=COUNTER,SELF:=LEFT))"
+            "base":"SHARED {newField} := PROJECT({field},TRANSFORM(RECORDOF(LEFT),SELF.id:=(COUNTER-1)/MAX({field},{field}.number)+1,SELF:=LEFT))"
         },
         "numericToDiscrete":{
             "base":"SHARED {compiled} := {libraryName}.Discretize.ByRounding({field})"
