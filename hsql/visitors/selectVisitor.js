@@ -235,12 +235,25 @@ class AggregateVisitor extends HSQLVisitor {
 
         let args = ctx.children.reduce((totalArgs, child) => {
             if (child.children) {
-                totalArgs.push(child.getText())
+                console.log('abc');
+                totalArgs.push(child.accept(this));
             }
             return totalArgs
         }, [])
         this.superFunctions.push({ "prop": 'SORT', "arg": args })
 
+    }
+
+    visitSortItem(ctx){
+        return ctx.children[0].accept(this);
+        //return this.visit(ctx.children[0]);
+    }
+
+    visitAscSortItem(ctx){
+        return ctx.children[0].getText();
+    }
+    visitDescSortItem(ctx){
+        return '-'+ctx.children[0].getText();
     }
 
 }
