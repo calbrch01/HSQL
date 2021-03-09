@@ -30,7 +30,7 @@ class PlotVisitor extends HSQLVisitor {
         //WIP
         //claim an action first
         const claimedActionIdentifier = this.identifierInformation.addActionIdentifier(ctx);
-        let outputStatement = `SHARED ${claimedActionIdentifier.name}:= OUTPUT(${ctx.labelIdentifier.text},NAMED(${ctx.titleIdentifier.text}))`
+        let outputStatement = `SHARED ${claimedActionIdentifier.name}:= OUTPUT(${ctx.labelIdentifier.getText()},NAMED(${ctx.titleIdentifier.text}))`
         const vizSearchRes = this.identifierInformation.searchImport('Visualizer');
         if (!vizSearchRes.found) this.errorListener.syntaxErrorAbort(ctx, "Assertion failed: existence of Visualizer");
         ///If not present, dont 

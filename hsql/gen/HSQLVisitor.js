@@ -294,6 +294,18 @@ HSQLVisitor.prototype.visitSortItem = function(ctx) {
 };
 
 
+// Visit a parse tree produced by HSQLParser#ascSortItem.
+HSQLVisitor.prototype.visitAscSortItem = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by HSQLParser#descSortItem.
+HSQLVisitor.prototype.visitDescSortItem = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
 // Visit a parse tree produced by HSQLParser#groupByClause.
 HSQLVisitor.prototype.visitGroupByClause = function(ctx) {
   return this.visitChildren(ctx);

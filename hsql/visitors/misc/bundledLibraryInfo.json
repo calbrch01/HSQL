@@ -32,13 +32,13 @@
     },
     "PlotMethods":{
         "bar":{
-            "translation":"{moduleName}.MultiD.Bar({name})"
+            "translation":"{moduleName}.MultiD.Bar({name},,{name},,,)"
         },
         "column":{
-            "translation":"{moduleName}.MultiD.column({name})"
+            "translation":"{moduleName}.MultiD.column({name},,{name},,,)"
         },
         "pie":{
-            "translation":"{moduleName}.TwoD.Pie({name})"
+            "translation":"{moduleName}.TwoD.Pie({name},,{name},,,)"
         }
     },
     "__coment2":"requiresDepDiscrete,requiresIndDiscrete are checked for true(specifically)",
