@@ -134,7 +134,7 @@ class generalVisitor extends HSQLVisitor {
             //write the export
             const exportActions = this.identifierInformation.actionStatements.map(e => e.name).join(',');
             if (exportActions) {
-                statements.push(`EXPORT main := FUNCTION return SEQUENTIAL(${exportActions}); END`);
+                statements.push(`EXPORT main := FUNCTION return PARALLEL(${exportActions}); END`);
             }
 
 

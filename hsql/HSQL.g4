@@ -115,7 +115,7 @@ outputExpireOption
 
 // this.importRequired.push({mainLib:'Visualizer',alias:null})
 plotStmt
-  : {this.flags.plot=1;} PLOT FROM labelIdentifier=IDENTIFIER TITLE titleIdentifier=STRING (TYPE plottype=plotType)?
+  : {this.flags.plot=1;} PLOT FROM labelIdentifier=qualifiedIdentifier TITLE titleIdentifier=STRING (TYPE plottype=plotType)?
   ;
 
 plotType
@@ -230,9 +230,18 @@ orderByClause
   : sortItem (',' sortItem)*
   ;
 
-sortItem
-  : expression ordering=(ASC | DESC)?
-  ;
+sortItem: ascSortItem| descSortItem;
+
+ascSortItem: expression (ASC)?;
+descSortItem: expression DESC;
+// sortItem
+//   : expression sortOrder?
+//   ;
+
+// sortOrder
+//   : ASC
+//   | DESC
+// ;
 
 groupByClause
   : qualifiedIdentifier

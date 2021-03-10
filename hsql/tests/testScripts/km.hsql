@@ -7,7 +7,7 @@ output ind;
 output cent;
 
 
-model = train from ind,cent method RegressionForest;
+model = train from ind,cent method KMeans;
 
 test = select age,wage from commonsimple.simpleTable;
 
