@@ -53,7 +53,7 @@ expr:
 	| layoutStmt
 	| inlineStmt;
 
-simpleIdentifier: IDENTIFIER;
+simpleIdentifier: qualifiedIdentifier;
 
 //All the varieties of output in ECl need different rules
 outputStmt:

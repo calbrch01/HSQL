@@ -1,6 +1,6 @@
-import { IASTVisitor } from '../analysis/ast/IASTVisitor';
-import { ValuedExpression } from './base/ValuedExpression';
-import { Variable } from './symbol/Variables';
+import { IASTVisitor } from '../../analysis/ast/IASTVisitor';
+import { ValuedExpression } from '../stmt/base/ValuedExpression';
+import { Variable } from '../symbol/Variables';
 
 export class Select implements ValuedExpression {
     constructor(public sources: Variable[]) {}

@@ -1,6 +1,9 @@
-import { IASTVisitor } from "../../analysis/ast/IASTVisitor";
+import { IASTVisitor } from '../../../analysis/ast/IASTVisitor';
 
-export interface BaseNode {
+/**
+ * A generic node
+ */
+export interface BaseASTNode {
     /**
      * Must be visitable by AST Visitor
      * @param visitor Visitor
