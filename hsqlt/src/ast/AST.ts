@@ -10,7 +10,7 @@ export class AST {
 
     // TODO fix something here
     defs: BaseASTNode[];
-
+    actions: ValuedExpression[] = [];
     constructor() {
         this.variableManager = new VariableTable();
         this.defs = [];

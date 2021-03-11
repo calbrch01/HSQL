@@ -5,16 +5,22 @@ import { BaseASTNode, StmtExpression } from './Base';
 /**
  * Assignment node
  */
-export class ValuedExpression<T extends DataType = DataType, U extends StmtExpression = StmtExpression>
-    implements BaseASTNode {
+export class ValuedExpression<U extends StmtExpression = StmtExpression> implements BaseASTNode {
+    protected set rhs(value: U) {
+        this._rhs = value;
+    }
     //TODO FILL
-    lhs?: T;
 
-    rhs?: U;
-
-    constructor(protected _lhs?: T, protected _rhs?: U) {}
+    constructor(protected _lhs?: string, private _rhs?: U) {}
 
     accept<T>(visitor: IASTVisitor<T>): T {
         return visitor.visitValuedExpression(this);
+    }
+
+    get lhs() {
+        return this._lhs;
+    }
+    set lhs(x) {
+        this._lhs = x;
     }
 }
