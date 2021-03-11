@@ -1,3 +1,4 @@
+import { IASTVisitor } from '../../analysis/ast/IASTVisitor';
 import { StmtContext } from '../../misc/grammar/HSQLParser';
 import { Action } from '../data/Action';
 import { StmtExpression } from './Base';
@@ -10,7 +11,7 @@ export enum OutputType {
 }
 
 // FIXME
-export class Output extends StmtContext {
+export class Output implements StmtExpression {
     protected _source?: string;
     protected _type?: OutputType;
 
@@ -19,5 +20,9 @@ export class Output extends StmtContext {
     }
     getSource(): string | undefined {
         return this._source;
+    }
+
+    accept<T>(x: IASTVisitor<T>): T {
+        return x.visitOutput(this);
     }
 }

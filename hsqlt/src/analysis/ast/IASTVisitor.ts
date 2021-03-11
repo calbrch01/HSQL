@@ -1,5 +1,6 @@
 import { BaseASTNode } from '../../ast/stmt/Base';
 import { Literal } from '../../ast/stmt/Literal';
+import { Output } from '../../ast/stmt/Output';
 import { Select } from '../../ast/stmt/Select';
 import { ValuedExpression } from '../../ast/stmt/ValuedExpression';
 
@@ -15,6 +16,10 @@ export abstract class IASTVisitor<T> {
         return this.visit(x);
     }
     visitValuedExpression(x: ValuedExpression): T {
+        return this.visit(x);
+    }
+
+    visitOutput(x: Output): T {
         return this.visit(x);
     }
 }
