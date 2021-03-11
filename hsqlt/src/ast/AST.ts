@@ -1,5 +1,5 @@
-import { BaseASTNode } from './stmt/base/BaseNode';
-import { ValuedExpression } from './stmt/base/ValuedExpression';
+import { BaseASTNode } from './stmt/Base';
+import { ValuedExpression } from './stmt/ValuedExpression';
 import { VariableTable } from './symbol/VariableTable';
 
 export class AST {

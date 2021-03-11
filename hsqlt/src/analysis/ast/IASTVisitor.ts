@@ -1,7 +1,7 @@
-import { BaseASTNode } from '../../ast/stmt/base/BaseNode';
+import { BaseASTNode } from '../../ast/stmt/Base';
 import { Literal } from '../../ast/stmt/Literal';
 import { Select } from '../../ast/stmt/Select';
-import { EqualDefinition } from '../../ast/stmt/EqualDefinition';
+import { ValuedExpression } from '../../ast/stmt/ValuedExpression';
 
 /**
  * Interface for traversing an AST
@@ -14,7 +14,7 @@ export abstract class IASTVisitor<T> {
     visitSelect(x: Select): T {
         return this.visit(x);
     }
-    visitEqual(x: EqualDefinition): T {
+    visitValuedExpression(x: ValuedExpression): T {
         return this.visit(x);
     }
 }

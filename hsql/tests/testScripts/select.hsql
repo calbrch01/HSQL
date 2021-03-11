@@ -5,9 +5,9 @@ import common;
 weather = select * from '~hsql::testfiles::weatherdata.csv' layout common.WeatherDataLayout;
 
 
-weatherGrp = select Date,SnowDepth from weather group by SnowDepth;
+--weatherGrp = select Date,SnowDepth from weather group by SnowDepth;
 
-weatherSnowy = select Date,SnowDepth,NewSnow from weather where SnowDepth>0 and NewSnow>0;
+--weatherSnowy = select Date,SnowDepth,NewSnow from weather where SnowDepth>0 and NewSnow>0;
 
 weatherSnowyTotal = select Sum(SnowDepth) from weather where SnowDepth>0;
 weatherSnowyNum = Select COUNT(SnowDepth) from weather where SnowDepth>0;
