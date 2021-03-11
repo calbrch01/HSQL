@@ -5,7 +5,7 @@ import { BaseASTNode, StmtExpression } from './Base';
 /**
  * Assignment node
  */
-export class ValuedExpression<U extends StmtExpression = StmtExpression> implements BaseASTNode {
+export class AssignmentNode<U extends StmtExpression = StmtExpression> implements BaseASTNode {
     protected set rhs(value: U) {
         this._rhs = value;
     }

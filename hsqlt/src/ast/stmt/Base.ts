@@ -1,5 +1,5 @@
 import { IASTVisitor } from '../../analysis/ast/IASTVisitor';
-import { ValuedExpression } from './ValuedExpression';
+import { AssignmentNode } from './ValuedExpression';
 
 /**
  * A generic node

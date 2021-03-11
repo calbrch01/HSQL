@@ -1,5 +1,5 @@
 import { BaseASTNode } from './stmt/Base';
-import { ValuedExpression } from './stmt/ValuedExpression';
+import { AssignmentNode } from './stmt/ValuedExpression';
 import { VariableTable } from './symbol/VariableTable';
 
 export class AST {
@@ -10,7 +10,7 @@ export class AST {
 
     // TODO fix something here
     defs: BaseASTNode[];
-    actions: ValuedExpression[] = [];
+    actions: AssignmentNode[] = [];
     constructor() {
         this.variableManager = new VariableTable();
         this.defs = [];

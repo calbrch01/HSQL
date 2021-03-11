@@ -1,8 +1,5 @@
 import { IASTVisitor } from '../../analysis/ast/IASTVisitor';
-import { StmtContext } from '../../misc/grammar/HSQLParser';
-import { Action } from '../data/Action';
 import { StmtExpression } from './Base';
-import { ValuedExpression } from './ValuedExpression';
 
 export enum OutputType {
     NAMED,

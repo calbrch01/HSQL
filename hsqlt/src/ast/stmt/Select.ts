@@ -1,6 +1,5 @@
 import { IASTVisitor } from '../../analysis/ast/IASTVisitor';
-import { ValuedExpression } from './ValuedExpression';
-import { Variable } from '../symbol/Variables';
+import { AssignmentNode } from './ValuedExpression';
 import { Table } from '../data/Table';
 import { StmtExpression } from './Base';
 
