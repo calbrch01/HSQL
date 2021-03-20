@@ -1,10 +1,9 @@
 import { IASTVisitor } from '../../analysis/ast/IASTVisitor';
-import { AssignmentNode } from './ValuedExpression';
-import { Table } from '../data/Table';
-import { StmtExpression } from './Base';
+import { StmtExpression } from './base/StmtExpression';
+import { Variable } from '../symbol/Variables';
 
 export class Select implements StmtExpression {
-    constructor(public sources: Table[]) {}
+    constructor(public sources: string[]) {}
     // TODO add data
     public accept<T>(visitor: IASTVisitor<T>) {
         return visitor.visitSelect(this);

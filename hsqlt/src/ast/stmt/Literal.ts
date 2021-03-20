@@ -1,5 +1,6 @@
 import { IASTVisitor } from '../../analysis/ast/IASTVisitor';
-import { BaseASTNode, StmtExpression } from './Base';
+import { BaseASTNode } from './base/BaseASTNode';
+import { StmtExpression } from './base/StmtExpression';
 
 /**
  * A literal expression

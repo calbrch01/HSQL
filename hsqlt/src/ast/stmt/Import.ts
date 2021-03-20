@@ -1,13 +1,19 @@
 import { IASTVisitor } from '../../analysis/ast/IASTVisitor';
-import { StmtExpression } from './Base';
+import { NonValuedExpression } from './base/NonValuedExpression';
 
-export class Import implements StmtExpression {
-    symbolname: string;
-    constructor(public context: string, public alias?: string) {
-        this.symbolname = alias ?? context;
+export class Import implements NonValuedExpression {
+    constructor(protected moduleName: string, protected alias?: string) {}
+
+    /**
+     * The module name to be used
+     */
+    getModuleName() {
+        return this.moduleName;
     }
-
-    accept<T>(v: IASTVisitor<T>): T {
-        return v.visitImport(this);
+    getImportedName() {
+        return this.alias ?? this.moduleName;
+    }
+    accept<T>(t: IASTVisitor<T>) {
+        return t.visitImport(this);
     }
 }
