@@ -1,5 +1,5 @@
-import { QualifiedIdentifier } from '../misc/ast';
-import { IResolver } from '../misc/resolvers/IResolver';
+import { QualifiedIdentifier } from '../misc/ast/QualifiedIdentifier';
+import { ReadingManager } from '../misc/ReadingManager';
 import { DataType } from './data/base/DataType';
 import { BaseASTNode } from './stmt/base/BaseASTNode';
 import { StmtExpression } from './stmt/base/StmtExpression';
@@ -18,15 +18,15 @@ export class AST {
     // TODO fix something here
     stmts: BaseASTNode[];
 
-    constructor(protected typeResolver: IResolver) {
+    constructor(protected readingManager: ReadingManager) {
         this.variableManager = new VariableTable();
         this.stmts = [];
     }
 
-    addImport(name: string, alias?: string) {
+    async addImport(name: string, alias?: string) {
         // FIXME
         // assert that it doesnt exist
-        const res = this.typeResolver.getResult(new QualifiedIdentifier(name));
+        const res = this.readingManager.resolve(QualifiedIdentifier.fromString(name));
         this.variableManager.add(alias ?? name, {
             data: res,
             vis: VariableVisibility.DEFAULT,

@@ -1,14 +1,17 @@
 import { assert } from 'chai';
-import { StringReader } from '../../misc/readers';
+import { ErrorManager } from '../../misc/error/Error';
+import { ReadingManager } from '../../misc/ReadingManager';
 import { HSQLTreeFactory } from '../tree';
 import { ASTGenerator } from './ASTGenerator';
 
 describe('AST Generator Visitor', function () {
     // this.timeout('100s');
     it('Simple Import statement', async () => {
-        const treestuff = new HSQLTreeFactory(new StringReader('import abc;'));
-        const { tree } = await treestuff.getResults();
-        const v = new ASTGenerator();
+        const treestuff = new HSQLTreeFactory();
+        const { tree } = treestuff.makeTree('import abc;');
+
+        const readingManager = new ReadingManager(ErrorManager.normal);
+        const v = new ASTGenerator(readingManager);
         const ast = v.getAST(tree);
 
         //assertions
@@ -18,9 +21,11 @@ describe('AST Generator Visitor', function () {
     });
 
     it('Two different import statements', async () => {
-        const treestuff = new HSQLTreeFactory(new StringReader('import abc;import bcd as cde;'));
-        const { tree } = await treestuff.getResults();
-        const v = new ASTGenerator();
+        const treestuff = new HSQLTreeFactory();
+
+        const { tree } = treestuff.makeTree('import abc;import bcd as cde;');
+        const readingManager = new ReadingManager(ErrorManager.normal);
+        const v = new ASTGenerator(readingManager);
         const ast = v.getAST(tree);
 
         //assertions
@@ -32,5 +37,9 @@ describe('AST Generator Visitor', function () {
         assert.isFalse(ast.variableManager.exists('bcd'));
 
         // ast.variableManager.exists('cde');
+    });
+    it('what your test is', async () => {
+        // data fetching
+        //assertions
     });
 });

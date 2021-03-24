@@ -1,18 +1,15 @@
 import { CharStreams, CommonTokenStream } from 'antlr4ts';
 import { HSQLLexer } from '../misc/grammar/HSQLLexer';
 import { HSQLParser } from '../misc/grammar/HSQLParser';
-import { IReader } from '../misc/readers';
 
 /**
  * Obtain a Tree from a readable
  */
 export class HSQLTreeFactory {
-    constructor(private readable: IReader) {}
-    async getResults() {
-        //TODO ADD Error Listeners
-        const str = await this.readable.read();
-        const fn = this.readable.getSourceName();
-        const charStreams = CharStreams.fromString(str, fn);
+    // constructor(private readable: IReader) {}
+
+    makeTree(str: string, fn?: string) {
+        const charStreams = fn === undefined ? CharStreams.fromString(str) : CharStreams.fromString(str, fn);
         const lexer = new HSQLLexer(charStreams);
         lexer.removeErrorListeners();
         lexer.addErrorListener({
@@ -24,7 +21,7 @@ export class HSQLTreeFactory {
         const tokenStreams = new CommonTokenStream(lexer);
         const parser = new HSQLParser(tokenStreams);
         parser.removeErrorListeners();
-        
+
         parser.addErrorListener({
             syntaxError(a, b, c, d, e, g) {
                 console.log('woops parser');

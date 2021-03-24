@@ -2,16 +2,18 @@ import { AbstractParseTreeVisitor } from 'antlr4ts/tree/AbstractParseTreeVisitor
 import { AST } from '../../ast/AST';
 import { VariableTable } from '../../ast/symbol/VariableTable';
 import { ImportStmtContext, ProgramContext } from '../../misc/grammar/HSQLParser';
-import { AnyResolver } from '../../misc/resolvers/AnyResolver';
-import { IResolver } from '../../misc/resolvers/IResolver';
+import { HSQLVisitor } from '../../misc/grammar/HSQLVisitor';
+import { ReadingManager } from '../../misc/ReadingManager';
 
-export class ASTGenerator extends AbstractParseTreeVisitor<void> {
+export class ASTGenerator extends AbstractParseTreeVisitor<void> implements HSQLVisitor<void> {
     protected ast: AST;
-    constructor(typeResolver: IResolver = new AnyResolver()) {
+    constructor(protected readingManager: ReadingManager) {
         super();
-        this.ast = new AST(typeResolver);
+        this.ast = new AST(readingManager);
     }
-    defaultResult() {}
+    defaultResult() {
+        return;
+    }
 
     visitImportStmt(ctx: ImportStmtContext) {
         //get the text out of them
