@@ -1,3 +1,5 @@
+import { QualifiedIdentifierContext } from '../grammar/HSQLParser';
+
 /**
  * stores and works with qualified identifiers
  */
@@ -7,18 +9,26 @@ export class QualifiedIdentifier {
         this._qidentifier = _qidentifier;
     }
 
+    toString() {
+        return this._qidentifier.join('.');
+    }
+
     /**
      * Make a QualifiedIdentifier out of dottedNotation format
      * @param identifier identifier in dot notation
      */
-    static dottedNotation(identifier: string) {
+    static fromString(identifier: string) {
         return new QualifiedIdentifier(...identifier.split('.'));
     }
 
-    protected get qidentifier(): string[] {
+    static fromGrammar(ctx: QualifiedIdentifierContext) {
+        return new QualifiedIdentifier(...ctx.IDENTIFIER().map(e => e.text));
+    }
+
+    public get qidentifier(): string[] {
         return this._qidentifier;
     }
-    protected set qidentifier(value: string[]) {
+    public set qidentifier(value: string[]) {
         this._qidentifier = value;
     }
 
