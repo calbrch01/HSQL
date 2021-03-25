@@ -22,7 +22,10 @@ hsqlc check|make|run -weopd <file>
 |--output-std|-o|Output primary requested files to stdout|
 |--dont-write-deps|-d|Skip writing dependencies|
 |--target|-t|Target for `run` eg. `hthor`|
-|--cluster|-c|Cluster to submit to|
+|--cluster|-c|Cluster IP to submit to|
+|--port|-r|Cluster PORT to submit to|
+
+
 
 
 # ECL Cloud IDE
