@@ -9,7 +9,7 @@
         "dev": "nodemon",
         "doc": "typedoc ",
         "build": "tsc",
-        "regen": "antlr4ts -visitor -listener grammar/HSQL.g4 -o src/misc/"
+        "regen": "antlr4ts -visitor -no-listener grammar/HSQL.g4 -o src/misc/"
     },
     "author": "",
     "license": "ISC",
