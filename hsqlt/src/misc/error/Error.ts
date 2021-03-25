@@ -41,6 +41,7 @@ export class SemanticError implements TranslationError {
 
 export type LexerOrParserSymbol = number | Token;
 
+// TODO abort based on error type
 export class ErrorManager {
     protected _errors: TranslationError[];
     constructor(protected errorMode: ErrorMode) {
@@ -74,5 +75,7 @@ export class ErrorManager {
         return new ErrorManager(ErrorMode.PEDANTIC);
     }
 
-    push(e: TranslationError) {}
+    push(e: TranslationError) {
+        this._errors.push(e);
+    }
 }
