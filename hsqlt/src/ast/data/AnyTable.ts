@@ -1,29 +1,34 @@
+import { AnyModule } from './AnyModule';
 import { CollectionType } from './base/CollectionType';
 import { DataType, EDataType } from './base/DataType';
 import { Col } from './Col';
+import { Table } from './Table';
 
 /**
  * Table but no decidable columns
  */
-export class AnyTable extends CollectionType {
+export class AnyTable extends Table {
     constructor() {
-        super(EDataType.TABLE);
+        super();
     }
+    /**
+     * return a new anytable
+     */
     public cloneType() {
         return new AnyTable();
     }
+
+    /**
+     * Will return true all the time for an anytable, as it can have any data type
+     * @param c Column
+     */
     has(c: Col) {
         return true;
     }
 
-    isExactType(d: DataType | CollectionType) {
-        // its not a collection, drop it
-        // note that collectionTypes are instances of datatypes so this negation is important
-        if (!(d instanceof CollectionType)) {
-            return false;
-        }
+    isExactType(d: DataType) {
         // check self type first
-        if (d.type === this._type) {
+        if (AnyTable.isTable(d)) {
             // its an AnyTable, we do not care about contents.
             return true;
         }
@@ -31,6 +36,9 @@ export class AnyTable extends CollectionType {
         return false;
     }
 
+    /**
+     * Method returns an empty list as there is no understandable list of columns
+     */
     list() {
         return [];
     }

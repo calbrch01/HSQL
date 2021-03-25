@@ -40,6 +40,7 @@ export class SemanticError implements TranslationError {
 }
 
 export type LexerOrParserSymbol = number | Token;
+
 export class ErrorManager {
     protected _errors: TranslationError[];
     constructor(protected errorMode: ErrorMode) {
@@ -57,4 +58,21 @@ export class ErrorManager {
         };
         return listener;
     }
+
+    /**
+     *
+     * @returns that is standard Errormanager
+     */
+    static get normal() {
+        return new ErrorManager(ErrorMode.NORMAL);
+    }
+    /**
+     *
+     * @returns Pedantic errormanager instance
+     */
+    static get pedantic() {
+        return new ErrorManager(ErrorMode.PEDANTIC);
+    }
+
+    push(e: TranslationError) {}
 }

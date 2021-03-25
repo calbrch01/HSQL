@@ -58,7 +58,7 @@ export class VariableTable {
     claimActionIdentifier(): string {
         let usableStr = VariableTable.actionPrependString + this.actionCounter;
         while (this.exists(usableStr)) {
-            console.log(`Claimed ${this.actionCounter}`);
+            // console.log(`Claimed ${this.actionCounter}`);
             this.actionCounter++;
             usableStr = VariableTable.actionPrependString + this.actionCounter;
         }
