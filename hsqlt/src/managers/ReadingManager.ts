@@ -1,8 +1,8 @@
-import { QualifiedIdentifier } from './ast/QualifiedIdentifier';
+import { QualifiedIdentifier } from '../misc/ast/QualifiedIdentifier';
 import fs from 'fs';
 import path, { sep } from 'path';
 import { Module } from '../ast/data/Module';
-import { ErrorManager } from './error/Error';
+import { ErrorManager } from '../misc/error/Error';
 import { AnyModule } from '../ast/data/AnyModule';
 export enum FILETYPE {
     ECL,
