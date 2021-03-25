@@ -1,5 +1,5 @@
 import { QualifiedIdentifier } from '../misc/ast/QualifiedIdentifier';
-import { ReadingManager } from '../misc/ReadingManager';
+import { ReadingManager } from '../managers/ReadingManager';
 import { DataType } from './data/base/DataType';
 import { BaseASTNode } from './stmt/base/BaseASTNode';
 import { StmtExpression } from './stmt/base/StmtExpression';
