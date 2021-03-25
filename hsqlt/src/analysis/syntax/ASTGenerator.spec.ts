@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import { ErrorManager } from '../../misc/error/Error';
-import { ReadingManager } from '../../misc/ReadingManager';
+import { ReadingManager } from '../../managers/ReadingManager';
 import { HSQLTreeFactory } from '../tree';
 import { ASTGenerator } from './ASTGenerator';
 

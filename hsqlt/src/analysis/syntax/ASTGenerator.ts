@@ -1,9 +1,10 @@
 import { AbstractParseTreeVisitor } from 'antlr4ts/tree/AbstractParseTreeVisitor';
+import { ParseTreeListener } from 'antlr4ts/tree/ParseTreeListener';
 import { AST } from '../../ast/AST';
 import { VariableTable } from '../../ast/symbol/VariableTable';
 import { ImportStmtContext, ProgramContext } from '../../misc/grammar/HSQLParser';
 import { HSQLVisitor } from '../../misc/grammar/HSQLVisitor';
-import { ReadingManager } from '../../misc/ReadingManager';
+import { ReadingManager } from '../../managers/ReadingManager';
 
 export class ASTGenerator extends AbstractParseTreeVisitor<void> implements HSQLVisitor<void> {
     protected ast: AST;
