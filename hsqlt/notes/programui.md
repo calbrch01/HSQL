@@ -20,8 +20,9 @@ hsqlc check|make|run -weopd <file>
 |--depcheck-skip|-e|Skip dependency type checks(Assume everything returned is a module)|
 |--pedantic|-p|Pedantic (Abort on warnings)|
 |--output-std|-o|Output primary requested files to stdout|
-|--dont-dep|-d|Skip writing dependencies|
+|--dont-write-deps|-d|Skip writing dependencies|
 |--target|-t|Target for `run` eg. `hthor`|
+|--cluster|-c|Cluster to submit to|
 
 
 # ECL Cloud IDE
