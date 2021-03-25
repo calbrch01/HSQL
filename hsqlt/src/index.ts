@@ -36,6 +36,22 @@ const { argv: args } = yargs(process.argv.slice(2))
         alias: 'dont-write-deps',
         type: 'boolean',
     })
+    .option('t', {
+        desc: 'Target',
+        choices: ['hthor', 'thor', 'roxie', 'thor_roxie'],
+        alias: ['target'],
+        type: 'string',
+    })
+    .option('c', {
+        desc: 'Cluster location',
+        alias: ['cluster'],
+        type: 'string',
+    })
+    .option('r', {
+        desc: 'Cluster poRt',
+        alias: ['port'],
+        type: 'number',
+    })
     // all the commands that the program can run in
     .command('check <file>', 'Check syntax and correctness of file(s)')
     .command('make <file>', 'Compile to ECL')
