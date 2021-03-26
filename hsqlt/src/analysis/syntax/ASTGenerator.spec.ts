@@ -7,9 +7,9 @@ import { Intent, TaskManager } from '../../managers/TaskManager';
 
 describe('AST Generator Visitor', function () {
     // this.timeout('100s');
-    it('Simple Import statement', async () => {
+    it('Simple Import statement', done => {
         const tm = new TaskManager('mod', false, Intent.CHECK, new Map([['mod', 'import abc;']]));
-        const ast = tm.generateAST('mod');
+        const { ast } = tm.runTask();
         // const treestuff = new HSQLTreeFactory();
         // const { tree } = treestuff.makeTree('import abc;');
 
@@ -21,11 +21,13 @@ describe('AST Generator Visitor', function () {
         assert.lengthOf(ast.stmts, 1, 'Expect one statement');
         assert.strictEqual(ast.variableManager.vars.size, 1, 'expect one data only');
         assert.isTrue(ast.variableManager.exists('abc'));
+
+        done();
     });
 
     it('Two different import statements', async () => {
         const tm = new TaskManager('mod', false, Intent.CHECK, new Map([['mod', 'import abc;import bcd as cde;']]));
-        const ast = tm.generateAST('mod');
+        const { ast } = tm.generateAST('mod');
 
         // const treestuff = new HSQLTreeFactory();
 
@@ -43,9 +45,5 @@ describe('AST Generator Visitor', function () {
         assert.isFalse(ast.variableManager.exists('bcd'));
 
         // ast.variableManager.exists('cde');
-    });
-    it('what your test is', async () => {
-        // data fetching
-        //assertions
     });
 });
