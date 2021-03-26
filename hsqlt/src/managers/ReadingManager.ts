@@ -27,27 +27,6 @@ export class ReadingManager {
     ) {}
 
     /**
-     * resolve a
-     * @param q resolve this qualified identifier into face
-     * @returns the module that was resolved
-     */
-    resolve(q: QualifiedIdentifier): Module {
-        // const identifiers = q.qidentifier;
-        // let joinable = '.';
-
-        // for (const segment of identifiers) {
-        //     joinable = path.join(joinable, segment);
-        //     if (!fs.existsSync(joinable)) {
-        //         this.errorListener;
-        //     }
-        // }
-        // return joinable;
-
-        // FIXME actually resolve
-        return new AnyModule();
-    }
-
-    /**
      * remove file map
      * @param s source name
      * @returns
@@ -93,8 +72,8 @@ export class ReadingManager {
      * @param fileName
      */
     readSync(fileName: string) {
-        if (this.memFileMap.has(fileName)) return this.memFileMap.get(fileName);
-        return fs.readFileSync(fileName);
+        if (this.memFileMap.has(fileName)) return this.memFileMap.get(fileName) as string;
+        return fs.readFileSync(fileName).toString();
     }
 
     /**
