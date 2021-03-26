@@ -3,16 +3,19 @@ import { ErrorManager } from '../../misc/error/Error';
 import { ReadingManager } from '../../managers/ReadingManager';
 import { HSQLTreeFactory } from '../tree';
 import { ASTGenerator } from './ASTGenerator';
+import { Intent, TaskManager } from '../../managers/TaskManager';
 
 describe('AST Generator Visitor', function () {
     // this.timeout('100s');
     it('Simple Import statement', async () => {
-        const treestuff = new HSQLTreeFactory();
-        const { tree } = treestuff.makeTree('import abc;');
+        const tm = new TaskManager('mod', false, Intent.CHECK, new Map([['mod', 'import abc;']]));
+        const ast = tm.generateAST('mod');
+        // const treestuff = new HSQLTreeFactory();
+        // const { tree } = treestuff.makeTree('import abc;');
 
-        const readingManager = new ReadingManager(ErrorManager.normal);
-        const v = new ASTGenerator(readingManager);
-        const ast = v.getAST(tree);
+        // const readingManager = new ReadingManager(ErrorManager.normal);
+        // const v = new ASTGenerator(readingManager);
+        // const ast = v.getAST(tree);
 
         //assertions
         assert.lengthOf(ast.stmts, 1, 'Expect one statement');
@@ -21,12 +24,15 @@ describe('AST Generator Visitor', function () {
     });
 
     it('Two different import statements', async () => {
-        const treestuff = new HSQLTreeFactory();
+        const tm = new TaskManager('mod', false, Intent.CHECK, new Map([['mod', 'import abc;import bcd as cde;']]));
+        const ast = tm.generateAST('mod');
 
-        const { tree } = treestuff.makeTree('import abc;import bcd as cde;');
-        const readingManager = new ReadingManager(ErrorManager.normal);
-        const v = new ASTGenerator(readingManager);
-        const ast = v.getAST(tree);
+        // const treestuff = new HSQLTreeFactory();
+
+        // const { tree } = treestuff.makeTree('import abc;import bcd as cde;');
+        // const readingManager = new ReadingManager(ErrorManager.normal);
+        // const v = new ASTGenerator(readingManager);
+        // const ast = v.getAST(tree);
 
         //assertions
         assert.lengthOf(ast.stmts, 2, 'Expect one statement');
