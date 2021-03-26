@@ -4,7 +4,7 @@
  */
 
 import 'mocha';
-import '../index';
+// import '../index';
 describe('Sanity test', function () {
     it('must run');
 });
