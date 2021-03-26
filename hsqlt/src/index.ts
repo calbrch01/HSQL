@@ -46,11 +46,13 @@ const { argv: args } = yargs(process.argv.slice(2))
         desc: 'Cluster location',
         alias: ['cluster'],
         type: 'string',
+        default: process.env.ECL_WATCH_IP ?? 'localhost',
     })
     .option('r', {
         desc: 'Cluster poRt',
         alias: ['port'],
         type: 'number',
+        default: process.env.ECL_WATCH_PORT ?? 8010,
     })
     // all the commands that the program can run in
     .command('check <file>', 'Check syntax and correctness of file(s)')
