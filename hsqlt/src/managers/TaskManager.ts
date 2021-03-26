@@ -45,6 +45,8 @@ export class TaskManager {
         // const tokenStreams = x.tokenStreams
         const { tree, charStreams, tokenStreams } = treefac.makeTree(file);
         const x = new ASTGenerator(this, this.errorManager);
+        const y = x.getAST(tree);
+        return y;
     }
 
     /**
