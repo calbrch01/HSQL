@@ -23,13 +23,12 @@ type intentionReturn = {
  * Manage Tasks - Generate ASTs, Resolve vars
  *
  */
-export class TaskManager<T extends Intent, K extends intentionReturn[T]> {
+export class TaskManager {
     protected readingMgr: ReadingManager;
     protected errorManager: ErrorManager;
     constructor(
         public mainFile: string,
         public pedantic: boolean = false,
-        public intent: T,
         public fileMap?: Map<string, string>,
         public baseLoc?: string
     ) {
@@ -40,9 +39,9 @@ export class TaskManager<T extends Intent, K extends intentionReturn[T]> {
 
     /**
      * Start point
-     * @param fn file
+     * @param fn file (defaults to mainfile)
      */
-    generateAST(fn: string) {
+    generateAST(fn: string = this.mainFile) {
         const file = this.readingMgr.readSync(fn);
         const treefac = new HSQLTreeFactory();
         // equivalent to writing (x is not created in the actual code, but the rest are)
@@ -75,28 +74,5 @@ export class TaskManager<T extends Intent, K extends intentionReturn[T]> {
 
         // FIXME actually resolve
         return new AnyModule();
-    }
-
-    /**
-     * The main callable
-     */
-    runTask(): K {
-        // `as any` -> ingnore typescript's suggestion
-        // we know what we're doing
-        if (this.intent === Intent.CHECK) return this.generateAST(this.mainFile) as any;
-
-        throw 'unimpl';
-        // if (this.intent === Intent.MAKE) return this.generateAST();
-        // if (this.intent === Intent.RUN) return this.generateAST();
-        // return undefined;
-        // if(thi)
-        // switch (this.intent) {
-        //     case Intent.CHECK:
-        //         return this.generateAST(this.mainFile);
-        //     case Intent.MAKE:
-        //         return { bst: null };
-        //     case Intent.RUN:
-        //         return { cst: null };
-        // }
     }
 }
