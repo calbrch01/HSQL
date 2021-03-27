@@ -8,8 +8,8 @@ import { Intent, TaskManager } from '../../managers/TaskManager';
 describe('AST Generator Visitor', function () {
     // this.timeout('100s');
     it('Simple Import statement', done => {
-        const tm = new TaskManager('mod', false, Intent.CHECK, new Map([['mod', 'import abc;']]));
-        const { ast } = tm.runTask();
+        const tm = new TaskManager('mod', false, new Map([['mod', 'import abc;']]));
+        const { ast } = tm.generateAST();
         // const treestuff = new HSQLTreeFactory();
         // const { tree } = treestuff.makeTree('import abc;');
 
@@ -26,8 +26,8 @@ describe('AST Generator Visitor', function () {
     });
 
     it('Two different import statements', async () => {
-        const tm = new TaskManager('mod', false, Intent.CHECK, new Map([['mod', 'import abc;import bcd as cde;']]));
-        const { ast } = tm.generateAST('mod');
+        const tm = new TaskManager('mod', false, new Map([['mod', 'import abc;import bcd as cde;']]));
+        const { ast } = tm.generateAST();
 
         // const treestuff = new HSQLTreeFactory();
 
