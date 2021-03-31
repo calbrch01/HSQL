@@ -13,12 +13,6 @@ export enum Intent {
     RUN, // Send to execution
 }
 
-type intentionReturn = {
-    [Intent.CHECK]: { ast: AST };
-    [Intent.MAKE]: { bst: null };
-    [Intent.RUN]: { cst: null };
-};
-
 /**
  * Manage Tasks - Generate ASTs, Resolve vars
  *
@@ -51,8 +45,8 @@ export class TaskManager {
         // const tokenStreams = x.tokenStreams
         const { tree, charStreams, tokenStreams } = treefac.makeTree(file);
         const x = new ASTGenerator(this, this.errorManager);
-        const y = x.getAST(tree);
-        return { ast: y };
+        const ast = x.getAST(tree);
+        return { ast, tree, tokenStreams };
     }
 
     /**
