@@ -1,6 +1,9 @@
 import { DataType } from '../data/base/DataType';
 import { VariableVisibility } from './VariableTable';
 
+/**
+ * @deprecated
+ */
 export abstract class Variable {
     constructor(protected _name: string, public type: DataType, public visibility: VariableVisibility) {}
     get name() {
