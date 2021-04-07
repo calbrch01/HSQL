@@ -4,7 +4,9 @@ import { AST } from '../ast/AST';
 import { AnyModule } from '../ast/data/AnyModule';
 import { Module } from '../ast/data/Module';
 import { QualifiedIdentifier } from '../misc/ast/QualifiedIdentifier';
-import { ErrorManager, ErrorMode } from '../misc/error/Error';
+import { ErrorManager, ErrorMode, TranslationError } from '../misc/error/Error';
+import { ImportStmtContext } from '../misc/grammar/HSQLParser';
+import { OutputManager } from './OutputManagers';
 import { ReadingManager } from './ReadingManager';
 
 export enum Intent {
@@ -13,13 +15,26 @@ export enum Intent {
     RUN, // Send to execution
 }
 
+export enum OutputMethod {
+    FILES,
+    STDOUT,
+}
+
 /**
  * Manage Tasks - Generate ASTs, Resolve vars
+ *
+ * Generating ASTs populate the ASTmap
+ *
+ * ASTmap then can be translated to ECL
+ *
+ * ECL can then be flushed to disk (if allowed) or printed out
  *
  */
 export class TaskManager {
     protected readingMgr: ReadingManager;
     protected errorManager: ErrorManager;
+
+    protected ASTMap: Map<string, AST>;
     constructor(
         public mainFile: string,
         public pedantic: boolean = false,
@@ -29,24 +44,31 @@ export class TaskManager {
         // choose either pedantic or normal based on the bool present
         this.errorManager = new ErrorManager(pedantic ? ErrorMode.PEDANTIC : ErrorMode.NORMAL);
         this.readingMgr = new ReadingManager(this.errorManager, fileMap, baseLoc);
+        this.ASTMap = new Map<string, AST>();
     }
 
     /**
-     * Start point
+     * Generate AST for a given file
      * @param fn file (defaults to mainfile)
+     * @param includes optional include guard
+     * @param cause optional cause for import
+     * @returns
      */
-    generateAST(fn: string = this.mainFile) {
+    generateAST(fn: string = this.mainFile, includes: string[] = [], cause?: ImportStmtContext) {
+        if (includes.includes(fn)) {
+            this.errorManager.push(
+                TranslationError.semanticErrorToken('Import cycle detected. Please remove redundant import', cause)
+            );
+        }
+
         const file = this.readingMgr.readSync(fn);
-        const treefac = new HSQLTreeFactory();
-        // equivalent to writing (x is not created in the actual code, but the rest are)
-        // const x = treefac.makeTree(file)
-        // const tree = x.tree
-        // const charStreams = x.charStreams
-        // const tokenStreams = x.tokenStreams
-        const { tree, charStreams, tokenStreams } = treefac.makeTree(file);
+
+        const { tree, charStreams, tokenStreams } = HSQLTreeFactory.makeTree(file);
         const x = new ASTGenerator(this, this.errorManager);
+        // get AST will read imports and call the rest of the required generate ASTS
         const ast = x.getAST(tree);
-        return { ast, tree, tokenStreams };
+        this.ASTMap.set(fn, ast);
+        return { ast, tree, tokenStreams, asts: this.ASTMap };
     }
 
     /**
@@ -68,5 +90,15 @@ export class TaskManager {
 
         // FIXME actually resolve
         return new AnyModule();
+    }
+
+    /**
+     * use existing fileset to generate programs
+     */
+    make(outputmethod: OutputManager) {
+        /* TODO:
+         * generate code, and deal with them
+         * note the flag where we skip deps
+         */
     }
 }

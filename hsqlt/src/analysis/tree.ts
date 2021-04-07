@@ -6,9 +6,7 @@ import { HSQLParser } from '../misc/grammar/HSQLParser';
  * Obtain a Tree from a readable
  */
 export class HSQLTreeFactory {
-    // constructor(private readable: IReader) {}
-
-    makeTree(str: string, fn?: string) {
+    static makeTree(str: string, fn?: string) {
         const charStreams = fn === undefined ? CharStreams.fromString(str) : CharStreams.fromString(str, fn);
         const lexer = new HSQLLexer(charStreams);
         lexer.removeErrorListeners();
