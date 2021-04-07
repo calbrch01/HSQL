@@ -1,4 +1,11 @@
-import { ANTLRErrorListener, BailErrorStrategy, RecognitionException, Recognizer, Token } from 'antlr4ts';
+import {
+    ANTLRErrorListener,
+    BailErrorStrategy,
+    ParserRuleContext,
+    RecognitionException,
+    Recognizer,
+    Token,
+} from 'antlr4ts';
 
 export enum ErrorSeverity {
     INFO,
@@ -30,12 +37,24 @@ export enum ErrorMode {
 
 export class TranslationError {
     constructor(
-        public line: number,
-        public charPositionInLine: number,
         public msg: string,
+        public line?: number,
+        public charPositionInLine?: number,
         public severity: ErrorSeverity = ErrorSeverity.ERROR,
         public type: ErrorType = ErrorType.SYNTAX
     ) {}
+    static semanticError(msg: string, line?: number, charPositionInLine?: number) {
+        return new TranslationError(msg, line, charPositionInLine, ErrorSeverity.ERROR, ErrorType.SEMANTIC);
+    }
+    static semanticErrorToken(msg: string, cause?: ParserRuleContext) {
+        return new TranslationError(
+            msg,
+            cause?.start.line,
+            cause?.start.charPositionInLine,
+            ErrorSeverity.ERROR,
+            ErrorType.SEMANTIC
+        );
+    }
 }
 
 export type LexerOrParserSymbol = number | Token;
@@ -53,7 +72,7 @@ export class ErrorManager {
         const errors = this._errors;
         const listener: ANTLRErrorListener<LexerOrParserSymbol> = {
             syntaxError(rec, offendingSymbol, line, charPositionInLine, msg, e) {
-                errors.push(new TranslationError(line, charPositionInLine, msg));
+                errors.push(new TranslationError(msg, line, charPositionInLine));
             },
         };
         return listener;
