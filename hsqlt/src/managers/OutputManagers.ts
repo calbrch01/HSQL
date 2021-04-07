@@ -1,7 +1,16 @@
 import fs from 'fs';
 
 export interface OutputManager {
+    /**
+     * A function called for each file
+     * @param fn
+     * @param contents
+     */
     do(fn: string, contents: string): boolean;
+    /**
+     * An optional function called at the end
+     */
+    done?(): void;
 }
 
 export class StandardOutput implements OutputManager {
@@ -9,6 +18,9 @@ export class StandardOutput implements OutputManager {
         console.log('File:', fn);
         console.log(contents);
         return true;
+    }
+    done() {
+        console.log();
     }
 }
 

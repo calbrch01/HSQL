@@ -100,5 +100,7 @@ export class TaskManager {
          * generate code, and deal with them
          * note the flag where we skip deps
          */
+
+        outputmethod.done?.();
     }
 }
