@@ -10,16 +10,17 @@ program: (completestmt)* EOF;
 completestmt: stmt SEMICOLON;
 
 stmt:
-	actionStmt // actions like output and plot
-	| implicitActionStmt // a definition that is an action
+	| actionStmt // a definition is an action by default
 	| assignStmt // assignment
 	| importStmt // importing
 	| typeDefStmt // type definition
 	| inlineStmt; // inline ECL statement
+
+// actions are essentially stmts without an assignment
+actionStmt: expr;
+
 assignStmt:
 	EXPORT? label = IDENTIFIER '=' expr; //assign and optionally statement
-
-actionStmt: outputStmt | plotStmt;
 
 typeDefStmt: MAP typeDefExport? mapExportable;
 
@@ -43,15 +44,14 @@ identifierExport: IDENTIFIER dataType;
 
 importStmt: IMPORT IDENTIFIER (AS alias = IDENTIFIER)?;
 
-// TODO Add insert and updates
-implicitActionStmt: selectStmt;
-
 expr:
 	simpleIdentifier // another variable
 	| selectStmt
 	| mlStmt
 	| layoutStmt
-	| inlineStmt;
+	| inlineStmt
+	| outputStmt //outputs
+	| plotStmt;
 
 simpleIdentifier: qualifiedIdentifier;
 

@@ -23,8 +23,8 @@ import { LogicalBinaryContext } from "./HSQLParser";
 import { ProgramContext } from "./HSQLParser";
 import { CompletestmtContext } from "./HSQLParser";
 import { StmtContext } from "./HSQLParser";
-import { AssignStmtContext } from "./HSQLParser";
 import { ActionStmtContext } from "./HSQLParser";
+import { AssignStmtContext } from "./HSQLParser";
 import { TypeDefStmtContext } from "./HSQLParser";
 import { TypeDefExportContext } from "./HSQLParser";
 import { MapExportableContext } from "./HSQLParser";
@@ -32,7 +32,6 @@ import { TableExportContext } from "./HSQLParser";
 import { LayoutExportContext } from "./HSQLParser";
 import { IdentifierExportContext } from "./HSQLParser";
 import { ImportStmtContext } from "./HSQLParser";
-import { ImplicitActionStmtContext } from "./HSQLParser";
 import { ExprContext } from "./HSQLParser";
 import { SimpleIdentifierContext } from "./HSQLParser";
 import { OutputStmtContext } from "./HSQLParser";
@@ -248,18 +247,18 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	visitStmt?: (ctx: StmtContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by `HSQLParser.assignStmt`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitAssignStmt?: (ctx: AssignStmtContext) => Result;
-
-	/**
 	 * Visit a parse tree produced by `HSQLParser.actionStmt`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	visitActionStmt?: (ctx: ActionStmtContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.assignStmt`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitAssignStmt?: (ctx: AssignStmtContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `HSQLParser.typeDefStmt`.
@@ -309,13 +308,6 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitImportStmt?: (ctx: ImportStmtContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.implicitActionStmt`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitImplicitActionStmt?: (ctx: ImplicitActionStmtContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `HSQLParser.expr`.
