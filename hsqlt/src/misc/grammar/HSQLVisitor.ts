@@ -20,6 +20,11 @@ import { ParenthesizedExpressionContext } from "./HSQLParser";
 import { PredicatedContext } from "./HSQLParser";
 import { LogicalNotContext } from "./HSQLParser";
 import { LogicalBinaryContext } from "./HSQLParser";
+import { InnerJoinContext } from "./HSQLParser";
+import { OuterJoinContext } from "./HSQLParser";
+import { FullOuterJoinContext } from "./HSQLParser";
+import { WildColContext } from "./HSQLParser";
+import { StdcolContext } from "./HSQLParser";
 import { ProgramContext } from "./HSQLParser";
 import { CompletestmtContext } from "./HSQLParser";
 import { StmtContext } from "./HSQLParser";
@@ -52,6 +57,7 @@ import { SelectStmtContext } from "./HSQLParser";
 import { JoinClauseContext } from "./HSQLParser";
 import { JoinTypeContext } from "./HSQLParser";
 import { SelectColumnsContext } from "./HSQLParser";
+import { SelectColContext } from "./HSQLParser";
 import { AggregatedSelectColumnContext } from "./HSQLParser";
 import { SelectColumnContext } from "./HSQLParser";
 import { SelectFromClauseContext } from "./HSQLParser";
@@ -224,6 +230,46 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitLogicalBinary?: (ctx: LogicalBinaryContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `innerJoin`
+	 * labeled alternative in `HSQLParser.joinType`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitInnerJoin?: (ctx: InnerJoinContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `outerJoin`
+	 * labeled alternative in `HSQLParser.joinType`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitOuterJoin?: (ctx: OuterJoinContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `fullOuterJoin`
+	 * labeled alternative in `HSQLParser.joinType`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitFullOuterJoin?: (ctx: FullOuterJoinContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `wildCol`
+	 * labeled alternative in `HSQLParser.selectColumn`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitWildCol?: (ctx: WildColContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `stdcol`
+	 * labeled alternative in `HSQLParser.selectColumn`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitStdcol?: (ctx: StdcolContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `HSQLParser.program`.
@@ -448,6 +494,13 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitSelectColumns?: (ctx: SelectColumnsContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.selectCol`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitSelectCol?: (ctx: SelectColContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `HSQLParser.aggregatedSelectColumn`.

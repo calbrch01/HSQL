@@ -20,7 +20,7 @@ stmt:
 actionStmt: expr;
 
 assignStmt:
-	EXPORT? label = IDENTIFIER '=' expr; //assign and optionally statement
+	EXPORT? label = IDENTIFIER EQ expr; //assign and optionally statement
 
 typeDefStmt: MAP typeDefExport? mapExportable;
 
@@ -62,7 +62,9 @@ outputStmt:
 //Note for future: Can add record formats to the rules below
 outputVariant: namedOutputStatement | fileOutputStatement;
 
-namedOutputStatement: TITLE string;
+// do a check for identifier based string
+namedOutputStatement:
+	{ /'[a-zA-Z][a-zA-Z0-9\_\@\:]*'/.test($string.text ?? '')}? TITLE string;
 
 fileOutputStatement:
 	FILE fileName = string fileType = IDENTIFIER;
@@ -92,7 +94,7 @@ elementaryML:
 
 trainOptions: (trainOption) ( ',' trainOption)*;
 
-trainOption: IDENTIFIER '=' trainValue;
+trainOption: IDENTIFIER EQ trainValue;
 
 trainValue: number | string | qualifiedIdentifier;
 
@@ -108,29 +110,30 @@ selectStmt:
 		ORDER BY orderbyclause = orderByClause
 	)? (joinClause)?;
 
-joinClause: (joinType)? JOIN joinidentifier = qualifiedIdentifier ON (
+joinClause:
+	joinType JOIN joinidentifier = qualifiedIdentifier ON (
 		leftrecset = qualifiedIdentifier joincondition = comparisonOperator rightrecset =
 			qualifiedIdentifier
 	);
 
-joinType: (INNER) | ((LEFT | RIGHT | FULL) (OUTER | ONLY));
+joinType:
+	INNER?									# innerJoin
+	| (specifier = (LEFT | RIGHT) OUTER?)	# outerJoin
+	| specifier = FULL OUTER				# fullOuterJoin;
 
-selectColumns: (
-		(aggregatedSelectColumn | selectColumn) (
-			',' (aggregatedSelectColumn | selectColumn)
-		)*
-	);
+selectColumns: selectCol ( ',' selectCol)*;
 
+selectCol: aggregatedSelectColumn | selectColumn;
 // Allow for aggregates
 aggregatedSelectColumn:
 	aggregate = IDENTIFIER '(' selectColumn ')';
 
 //Allow for optional data types
 selectColumn:
-	wild = '*'
+	wild = '*' # wildCol
 	| column = IDENTIFIER (
 		AS (type = dataType)? alias = IDENTIFIER
-	)?;
+	)? # stdcol;
 
 selectFromClause:
 	nestedSelectStmt
@@ -181,7 +184,7 @@ booleanExpression:
 	| left = booleanExpression operator = AND right = booleanExpression	# logicalBinary
 	| left = booleanExpression operator = OR right = booleanExpression	# logicalBinary;
 
-predicate[ParserRuleContext value]:
+predicate[ParserRuleContext ctx]:
 	comparisonOperator right = valueExpression							# comparison
 	| NOT? BETWEEN lower = valueExpression AND upper = valueExpression	# between
 	| NOT? IN '(' valueExpression (',' valueExpression)* ')'			# inList;
@@ -263,7 +266,7 @@ INNER: I N N E R;
 LEFT: L E F T;
 RIGHT: R I G H T;
 FULL: F U L L;
-SUM: S U M;
+// SUM: S U M;
 TITLE: T I T L E;
 EXPIRE: E X P I R E;
 
@@ -322,7 +325,8 @@ fragment LETTER: [a-zA-Z];
 
 fragment EXPONENT: 'E' [+-]? DIGIT+;
 
-fragment A: [aA]; // match either an 'a' or 'A'
+fragment A: [aA];
+// match either an 'a' or 'A'
 fragment B: [bB];
 fragment C: [cC];
 fragment D: [dD];
