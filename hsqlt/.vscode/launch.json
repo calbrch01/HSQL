@@ -13,6 +13,16 @@
             "startRule": "program",
             "visualParseTree": true,
             // "printParseTree": true
+        },
+        {
+            "type": "antlr-debug",
+            "request": "launch",
+            "name": "Test Rules",
+            "grammar":"${file}",
+            "input": "input.fragment",
+            "startRule": "selectColumn",
+            "visualParseTree": true,
+            // "printParseTree": true
         }
     ]
 }
