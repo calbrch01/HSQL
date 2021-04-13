@@ -37,7 +37,8 @@ layoutExport: (
 
 identifierExport: IDENTIFIER dataType;
 
-importStmt: IMPORT IDENTIFIER (AS alias = IDENTIFIER)?;
+importStmt:
+	IMPORT overQualifiedIdentifier (AS alias = IDENTIFIER)?;
 
 expr:
 	simpleIdentifier // another variable
@@ -119,17 +120,16 @@ joinType:
 
 selectColumns: selectCol ( ',' selectCol)*;
 
-selectCol: aggregatedSelectColumn | selectColumn;
-// Allow for aggregates
-aggregatedSelectColumn:
-	aggregate = IDENTIFIER '(' selectColumn ')';
+selectCol: col aliasingCol?;
 
-//Allow for optional data types
-selectColumn:
-	wild = '*' # wildCol
-	| column = IDENTIFIER (
-		AS (type = dataType)? alias = IDENTIFIER
-	)? # stdcol;
+// columns `can` be qualifiedIdentifiers. This is very helpful in resolving cases of multi-table selects
+col:
+	IDENTIFIER '(' '*' ')'								# selectAggregatedEverythingCol
+	| IDENTIFIER '(' column = qualifiedIdentifier ')'	# selectAggregatedOneCol
+	| column = qualifiedIdentifier						# selectOneCol
+	| '*'												# selectWild;
+
+aliasingCol: AS (dataType)? alias = IDENTIFIER;
 
 selectFromClause:
 	nestedSelectStmt
@@ -141,6 +141,7 @@ selectDataset:
 	str = STRING LAYOUT qualifiedIdentifier (
 		TYPE selectDatasetFile
 	)?;
+
 selectDatasetFile: IDENTIFIER;
 
 selectTableName: qualifiedIdentifier;
@@ -162,6 +163,10 @@ layoutStmt: CREATE LAYOUT '(' layoutContent ')';
 layoutContent: identifierExport (',' identifierExport)*;
 
 inlineStmt: NCOMPILE STRING | ECL_SNIPPETS;
+
+overQualifiedIdentifier: overIdentifier ( '.' overIdentifier)*;
+
+overIdentifier: IDENTIFIER | CURDIR;
 
 qualifiedIdentifier: IDENTIFIER ('.' IDENTIFIER)*;
 
@@ -204,6 +209,7 @@ string:
 	| UNICODE_STRING (UESCAPE STRING)?	# unicodeStringLiteral;
 
 booleanValue: TRUE | FALSE;
+comparisonOperator: EQ | NEQ | LT | LTE | GT | GTE;
 
 //For joins
 OUTER: O U T E R;
@@ -221,15 +227,14 @@ UNSTABLE: U N STABLE;
 STABLE: S T A B L E;
 TABLE: T A B L E;
 
+// the mythical export 
 EXPORT: E X P O R T;
-
+// miscellaneous keywords
 AND: A N D;
 AS: A S;
 ASC: A S C;
-// AVG: A V G;
 BETWEEN: B E T W E E N;
 BY: B Y;
-// COUNT: C O U N T;
 DESC: D E S C;
 DEPENDENT: D E P E N D E N T;
 FROM: F R O M;
@@ -262,23 +267,24 @@ INNER: I N N E R;
 LEFT: L E F T;
 RIGHT: R I G H T;
 FULL: F U L L;
-// SUM: S U M;
 TITLE: T I T L E;
 EXPIRE: E X P I R E;
-
-//Writing tRue is not very pleasant to code, but we will allow it
-TRUE: T R U E;
-FALSE: F A L S E;
 
 UESCAPE: U E S C A P E;
 WHERE: W H E R E;
 TYPE: T Y P E;
 NCOMPILE: '__' E C L;
 
+//Writing tRue is not very pleasant to code, but we will allow it
+TRUE: T R U E;
+FALSE: F A L S E;
+
 //Greek question mark proof
 SEMICOLON: [;;];
 
-comparisonOperator: EQ | NEQ | LT | LTE | GT | GTE;
+// for IMPORT statemtn
+PARENT: '^';
+CURDIR: '$';
 
 EQ: '=';
 NEQ: '<>' | '!=';
@@ -321,8 +327,8 @@ fragment LETTER: [a-zA-Z];
 
 fragment EXPONENT: [Ee] [+-]? DIGIT+;
 
-fragment A: [aA];
 // match either an 'a' or 'A'
+fragment A: [aA];
 fragment B: [bB];
 fragment C: [cC];
 fragment D: [dD];

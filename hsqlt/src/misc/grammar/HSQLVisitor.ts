@@ -3,6 +3,10 @@
 
 import { ParseTreeVisitor } from "antlr4ts/tree/ParseTreeVisitor";
 
+import { SelectAggregatedEverythingColContext } from "./HSQLParser";
+import { SelectAggregatedOneColContext } from "./HSQLParser";
+import { SelectOneColContext } from "./HSQLParser";
+import { SelectWildContext } from "./HSQLParser";
 import { ComparisonContext } from "./HSQLParser";
 import { BetweenContext } from "./HSQLParser";
 import { InListContext } from "./HSQLParser";
@@ -23,8 +27,6 @@ import { LogicalBinaryContext } from "./HSQLParser";
 import { InnerJoinContext } from "./HSQLParser";
 import { OuterJoinContext } from "./HSQLParser";
 import { FullOuterJoinContext } from "./HSQLParser";
-import { WildColContext } from "./HSQLParser";
-import { StdcolContext } from "./HSQLParser";
 import { ProgramContext } from "./HSQLParser";
 import { CompletestmtContext } from "./HSQLParser";
 import { StmtContext } from "./HSQLParser";
@@ -59,8 +61,8 @@ import { JoinClauseContext } from "./HSQLParser";
 import { JoinTypeContext } from "./HSQLParser";
 import { SelectColumnsContext } from "./HSQLParser";
 import { SelectColContext } from "./HSQLParser";
-import { AggregatedSelectColumnContext } from "./HSQLParser";
-import { SelectColumnContext } from "./HSQLParser";
+import { ColContext } from "./HSQLParser";
+import { AliasingColContext } from "./HSQLParser";
 import { SelectFromClauseContext } from "./HSQLParser";
 import { NestedSelectStmtContext } from "./HSQLParser";
 import { SelectDatasetContext } from "./HSQLParser";
@@ -75,6 +77,8 @@ import { GroupByClauseContext } from "./HSQLParser";
 import { LayoutStmtContext } from "./HSQLParser";
 import { LayoutContentContext } from "./HSQLParser";
 import { InlineStmtContext } from "./HSQLParser";
+import { OverQualifiedIdentifierContext } from "./HSQLParser";
+import { OverIdentifierContext } from "./HSQLParser";
 import { QualifiedIdentifierContext } from "./HSQLParser";
 import { DataTypeContext } from "./HSQLParser";
 import { ExpressionContext } from "./HSQLParser";
@@ -96,6 +100,38 @@ import { ComparisonOperatorContext } from "./HSQLParser";
  * operations with no return type.
  */
 export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
+	/**
+	 * Visit a parse tree produced by the `selectAggregatedEverythingCol`
+	 * labeled alternative in `HSQLParser.col`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitSelectAggregatedEverythingCol?: (ctx: SelectAggregatedEverythingColContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `selectAggregatedOneCol`
+	 * labeled alternative in `HSQLParser.col`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitSelectAggregatedOneCol?: (ctx: SelectAggregatedOneColContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `selectOneCol`
+	 * labeled alternative in `HSQLParser.col`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitSelectOneCol?: (ctx: SelectOneColContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `selectWild`
+	 * labeled alternative in `HSQLParser.col`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitSelectWild?: (ctx: SelectWildContext) => Result;
+
 	/**
 	 * Visit a parse tree produced by the `comparison`
 	 * labeled alternative in `HSQLParser.predicate`.
@@ -255,22 +291,6 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitFullOuterJoin?: (ctx: FullOuterJoinContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by the `wildCol`
-	 * labeled alternative in `HSQLParser.selectColumn`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitWildCol?: (ctx: WildColContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by the `stdcol`
-	 * labeled alternative in `HSQLParser.selectColumn`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitStdcol?: (ctx: StdcolContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `HSQLParser.program`.
@@ -511,18 +531,18 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	visitSelectCol?: (ctx: SelectColContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by `HSQLParser.aggregatedSelectColumn`.
+	 * Visit a parse tree produced by `HSQLParser.col`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	visitAggregatedSelectColumn?: (ctx: AggregatedSelectColumnContext) => Result;
+	visitCol?: (ctx: ColContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by `HSQLParser.selectColumn`.
+	 * Visit a parse tree produced by `HSQLParser.aliasingCol`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	visitSelectColumn?: (ctx: SelectColumnContext) => Result;
+	visitAliasingCol?: (ctx: AliasingColContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `HSQLParser.selectFromClause`.
@@ -621,6 +641,20 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitInlineStmt?: (ctx: InlineStmtContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.overQualifiedIdentifier`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitOverQualifiedIdentifier?: (ctx: OverQualifiedIdentifierContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.overIdentifier`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitOverIdentifier?: (ctx: OverIdentifierContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `HSQLParser.qualifiedIdentifier`.

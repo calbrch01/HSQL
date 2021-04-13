@@ -11,12 +11,16 @@ export class HSQLTreeFactory {
     makeTree(str: string, fn?: string) {
         const charStreams = fn === undefined ? CharStreams.fromString(str) : CharStreams.fromString(str, fn);
         const lexer = new HSQLLexer(charStreams);
-        lexer.removeErrorListeners();
         const errorListener = this.errorManager.newErrorListener();
 
+        // remove the error listener. We want to put our own
+        lexer.removeErrorListeners();
         lexer.addErrorListener(errorListener);
+
         const tokenStreams = new CommonTokenStream(lexer);
         const parser = new HSQLParser(tokenStreams);
+
+        // remove the error listener. We want to put our own
         parser.removeErrorListeners();
         parser.addErrorListener(errorListener);
         const tree = parser.program();
