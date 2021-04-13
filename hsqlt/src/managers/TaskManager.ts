@@ -49,7 +49,8 @@ export class TaskManager {
         public pedantic: boolean = false,
         public fileMap?: Map<string, string>,
         protected outputManager: OutputManager = new NoOutput(),
-        public baseLoc?: string
+        public baseLoc?: string,
+        protected suppressIssues: boolean = false
     ) {
         // choose either pedantic or normal based on the bool present
         this.errorManager = new ErrorManager(pedantic ? ErrorMode.PEDANTIC : ErrorMode.NORMAL);
@@ -83,9 +84,13 @@ export class TaskManager {
     }
 
 
+    /**
+     * reportErrors if suppress
+     */
     reportErrors() {
         // run this function if it exists else warn the user
-        this.outputManager.reportIssues?.(this.errorManager.issues) ?? console.log(iP(resultStrings.noErrorOutput));
+        // but, only if its true
+        this.suppressIssues && (this.outputManager.reportIssues?.(this.errorManager.issues) ?? console.log(iP(resultStrings.noErrorOutput)));
     }
 
     /**
