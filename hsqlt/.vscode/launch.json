@@ -20,9 +20,8 @@
             "name": "Test Rules",
             "grammar":"${file}",
             "input": "input.fragment",
-            "startRule": "selectColumn",
+            "startRule": "namedOutputStatement",
             "visualParseTree": true,
-            // "printParseTree": true
         }
     ]
 }

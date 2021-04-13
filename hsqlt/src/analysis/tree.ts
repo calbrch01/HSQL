@@ -1,4 +1,5 @@
 import { CharStreams, CommonTokenStream } from 'antlr4ts';
+import { ErrorManager } from '../misc/error/Error';
 import { HSQLLexer } from '../misc/grammar/HSQLLexer';
 import { HSQLParser } from '../misc/grammar/HSQLParser';
 
@@ -6,29 +7,23 @@ import { HSQLParser } from '../misc/grammar/HSQLParser';
  * Obtain a Tree from a readable
  */
 export class HSQLTreeFactory {
-    static makeTree(str: string, fn?: string) {
+    constructor(protected errorManager: ErrorManager) { }
+    makeTree(str: string, fn?: string) {
         const charStreams = fn === undefined ? CharStreams.fromString(str) : CharStreams.fromString(str, fn);
         const lexer = new HSQLLexer(charStreams);
         lexer.removeErrorListeners();
-        lexer.addErrorListener({
-            syntaxError(a, b, c, d, e, g) {
-                console.log('woops lexer');
-                throw new Error();
-            },
-        });
+        const errorListener = this.errorManager.newErrorListener();
+
+        lexer.addErrorListener(errorListener);
         const tokenStreams = new CommonTokenStream(lexer);
         const parser = new HSQLParser(tokenStreams);
         parser.removeErrorListeners();
-
-        parser.addErrorListener({
-            syntaxError(a, b, c, d, e, g) {
-                console.log('woops parser');
-            },
-        });
+        parser.addErrorListener(errorListener);
         const tree = parser.program();
 
         return {
             tree,
+            errorListener,
             tokenStreams,
             charStreams,
         };

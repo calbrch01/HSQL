@@ -1,4 +1,8 @@
 import fs from 'fs';
+import { TranslationError } from '../misc/error/Error';
+
+
+
 
 export interface OutputManager {
     /**
@@ -7,6 +11,11 @@ export interface OutputManager {
      * @param contents
      */
     do(fn: string, contents: string): boolean;
+
+    /**
+     * Report issues
+     */
+    reportIssues?(issues: TranslationError[]): boolean;
     /**
      * An optional function called at the end
      */
@@ -22,6 +31,13 @@ export class StandardOutput implements OutputManager {
     done() {
         console.log();
     }
+}
+
+export class NoOutput implements OutputManager {
+    do(fn: string, contents: string): boolean {
+        return true;
+    }
+
 }
 
 export class FileOutput implements OutputManager {

@@ -4,11 +4,11 @@ import { AST } from '../ast/AST';
 import { AnyModule } from '../ast/data/AnyModule';
 import { Module } from '../ast/data/Module';
 import { QualifiedIdentifier } from '../misc/ast/QualifiedIdentifier';
-import { ErrorManager, ErrorMode, TranslationError } from '../misc/error/Error';
+import { ErrorManager, ErrorMode, ErrorSeverity, TranslationError } from '../misc/error/Error';
 import { ImportStmtContext } from '../misc/grammar/HSQLParser';
-import { OutputManager } from './OutputManagers';
+import { NoOutput, OutputManager } from './OutputManagers';
 import { ReadingManager } from './ReadingManager';
-
+import { resultStrings, iP } from '../misc/strings'
 export enum Intent {
     CHECK, // construct AST
     MAKE, // Generate code from AST
@@ -33,18 +33,29 @@ export enum OutputMethod {
 export class TaskManager {
     protected readingMgr: ReadingManager;
     protected errorManager: ErrorManager;
-
+    protected treeFactory: HSQLTreeFactory;
     protected ASTMap: Map<string, AST>;
+
+    /**
+     * 
+     * @param mainFile Root file to start translation from
+     * @param pedantic Whether to be pedantic or not
+     * @param fileMap A fileMap. Missing files will be taken from disk
+     * @param outputManager Output strategy
+     * @param baseLoc (does nothing for now) output relocation 
+     */
     constructor(
         public mainFile: string,
         public pedantic: boolean = false,
         public fileMap?: Map<string, string>,
+        protected outputManager: OutputManager = new NoOutput(),
         public baseLoc?: string
     ) {
         // choose either pedantic or normal based on the bool present
         this.errorManager = new ErrorManager(pedantic ? ErrorMode.PEDANTIC : ErrorMode.NORMAL);
         this.readingMgr = new ReadingManager(this.errorManager, fileMap, baseLoc);
         this.ASTMap = new Map<string, AST>();
+        this.treeFactory = new HSQLTreeFactory(this.errorManager);
     }
 
     /**
@@ -63,12 +74,18 @@ export class TaskManager {
 
         const file = this.readingMgr.readSync(fn);
 
-        const { tree, charStreams, tokenStreams } = HSQLTreeFactory.makeTree(file);
+        const { tree, charStreams, tokenStreams } = this.treeFactory.makeTree(file);
         const x = new ASTGenerator(this, this.errorManager);
         // get AST will read imports and call the rest of the required generate ASTS
         const ast = x.getAST(tree);
         this.ASTMap.set(fn, ast);
         return { ast, tree, tokenStreams, asts: this.ASTMap };
+    }
+
+
+    reportErrors() {
+        // run this function if it exists else warn the user
+        this.outputManager.reportIssues?.(this.errorManager.issues) ?? console.log(iP(resultStrings.noErrorOutput));
     }
 
     /**

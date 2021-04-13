@@ -1,3 +1,3 @@
 import a;
 p = select * from a.t1;
-output p;
+output p title 'abc bcd';

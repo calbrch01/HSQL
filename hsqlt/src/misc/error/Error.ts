@@ -42,7 +42,9 @@ export class TranslationError {
         public charPositionInLine?: number,
         public severity: ErrorSeverity = ErrorSeverity.ERROR,
         public type: ErrorType = ErrorType.SYNTAX
-    ) {}
+    ) { }
+
+
     static semanticError(msg: string, line?: number, charPositionInLine?: number) {
         return new TranslationError(msg, line, charPositionInLine, ErrorSeverity.ERROR, ErrorType.SEMANTIC);
     }
@@ -65,10 +67,14 @@ export class ErrorManager {
     constructor(protected errorMode: ErrorMode) {
         this._errors = [];
     }
+    public get issues() {
+        return this._errors;
+    }
     /**
-     * Get an error listener instance bound to this errormanager
+     * Get an error listener instance bound to this errormanager.
+     * Note: They are bound via closures so it can be relocated freely
      */
-    get ErrorListener() {
+    newErrorListener() {
         const errors = this._errors;
         const listener: ANTLRErrorListener<LexerOrParserSymbol> = {
             syntaxError(rec, offendingSymbol, line, charPositionInLine, msg, e) {
