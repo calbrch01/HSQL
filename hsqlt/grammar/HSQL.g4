@@ -1,10 +1,5 @@
 grammar HSQL;
 
-//Array of identifiers, and imports
-@parser::members {
-  //Nothing here anymore
-}
-
 program: (completestmt)* EOF;
 
 completestmt: stmt SEMICOLON;
@@ -63,8 +58,9 @@ outputStmt:
 outputVariant: namedOutputStatement | fileOutputStatement;
 
 // do a check for identifier based string
-namedOutputStatement:
-	{ /'[a-zA-Z][a-zA-Z0-9\_\@\:]*'/.test($string.text ?? '')}? TITLE string;
+namedOutputStatement: TITLE string;
+
+namedOutputString: string;
 
 fileOutputStatement:
 	FILE fileName = string fileType = IDENTIFIER;
@@ -270,9 +266,9 @@ FULL: F U L L;
 TITLE: T I T L E;
 EXPIRE: E X P I R E;
 
-//Writing tRue is not very pleasant to code
-TRUE: 'TRUE' | 'true' | 'True';
-FALSE: 'FALSE' | 'false' | 'False';
+//Writing tRue is not very pleasant to code, but we will allow it
+TRUE: T R U E;
+FALSE: F A L S E;
 
 UESCAPE: U E S C A P E;
 WHERE: W H E R E;
@@ -280,7 +276,7 @@ TYPE: T Y P E;
 NCOMPILE: '__' E C L;
 
 //Greek question mark proof
-SEMICOLON: ';' | ';';
+SEMICOLON: [;;];
 
 comparisonOperator: EQ | NEQ | LT | LTE | GT | GTE;
 
@@ -323,7 +319,7 @@ fragment DIGIT: [0-9];
 
 fragment LETTER: [a-zA-Z];
 
-fragment EXPONENT: 'E' [+-]? DIGIT+;
+fragment EXPONENT: [Ee] [+-]? DIGIT+;
 
 fragment A: [aA];
 // match either an 'a' or 'A'

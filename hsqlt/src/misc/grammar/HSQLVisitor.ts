@@ -42,6 +42,7 @@ import { SimpleIdentifierContext } from "./HSQLParser";
 import { OutputStmtContext } from "./HSQLParser";
 import { OutputVariantContext } from "./HSQLParser";
 import { NamedOutputStatementContext } from "./HSQLParser";
+import { NamedOutputStringContext } from "./HSQLParser";
 import { FileOutputStatementContext } from "./HSQLParser";
 import { OutputUpdateOptionContext } from "./HSQLParser";
 import { OutputExpireOptionContext } from "./HSQLParser";
@@ -389,6 +390,13 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitNamedOutputStatement?: (ctx: NamedOutputStatementContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.namedOutputString`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitNamedOutputString?: (ctx: NamedOutputStringContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `HSQLParser.fileOutputStatement`.
