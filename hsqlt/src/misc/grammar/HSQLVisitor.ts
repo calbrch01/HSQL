@@ -67,6 +67,7 @@ import { SelectFromClauseContext } from "./HSQLParser";
 import { NestedSelectStmtContext } from "./HSQLParser";
 import { SelectDatasetContext } from "./HSQLParser";
 import { SelectDatasetFileContext } from "./HSQLParser";
+import { MultiSelectContext } from "./HSQLParser";
 import { SelectTableNameContext } from "./HSQLParser";
 import { SelectWhereClauseContext } from "./HSQLParser";
 import { OrderByClauseContext } from "./HSQLParser";
@@ -571,6 +572,13 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitSelectDatasetFile?: (ctx: SelectDatasetFileContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.multiSelect`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitMultiSelect?: (ctx: MultiSelectContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `HSQLParser.selectTableName`.

@@ -89,7 +89,7 @@ elementaryML:
 		',' ind2 = qualifiedIdentifier
 	)? METHOD method = IDENTIFIER (OPTION trainOptions)?;
 
-trainOptions: (trainOption) ( ',' trainOption)*;
+trainOptions: trainOption ( ',' trainOption)*;
 
 trainOption: IDENTIFIER EQ trainValue;
 
@@ -120,7 +120,7 @@ joinType:
 
 selectColumns: selectCol ( ',' selectCol)*;
 
-selectCol: col aliasingCol?;
+selectCol: col aliasingCol[$col.ctx]?;
 
 // columns `can` be qualifiedIdentifiers. This is very helpful in resolving cases of multi-table selects
 col:
@@ -129,12 +129,18 @@ col:
 	| column = qualifiedIdentifier						# selectOneCol
 	| '*'												# selectWild;
 
-aliasingCol: AS (dataType)? alias = IDENTIFIER;
+/*
+ * Allow access to the column it was applied to. this should be helpful while generating the
+ * AST/code
+ */
+aliasingCol[ParserRuleContext ctx]:
+	AS (dataType)? alias = IDENTIFIER;
 
 selectFromClause:
-	nestedSelectStmt
-	| selectTableName
-	| selectDataset;
+	nestedSelectStmt // another select statement
+	| multiSelect // we might add support for this eventually
+	| selectTableName // a table name
+	| selectDataset; // a dataset
 
 nestedSelectStmt: '(' selectStmt ')';
 selectDataset:
@@ -144,6 +150,7 @@ selectDataset:
 
 selectDatasetFile: IDENTIFIER;
 
+multiSelect: qualifiedIdentifier (',' qualifiedIdentifier)+;
 selectTableName: qualifiedIdentifier;
 
 selectWhereClause: booleanExpression;
