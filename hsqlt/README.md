@@ -36,3 +36,31 @@ This will use `input.hsql` and should show:
 
 -   Parse/Lexing errors
 -   The parse tree
+
+
+## Running this project during development
+
+1. Install the requirements
+```bash
+npm install
+```
+2. Now, there's two ways around
+```bash
+ts-node src
+```
+*OR*
+```bash
+npx tsc
+node build
+```
+### Additional NPM scripts
+
+Usage: `npm run <script-name>`
+
+|Script Name|Explanation|
+|---|---|
+|test|Runs all tests|
+|dev|Runs nodemon to run the project in watch mode|
+|doc|Generate TypeDoc documentation|
+|build|Build the project into JS|
+|regen|Regenerate ANTLR grammar|
