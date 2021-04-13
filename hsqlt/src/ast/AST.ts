@@ -24,14 +24,15 @@ export class AST {
         this.stmts = [];
     }
 
-    async addImport(name: string, alias?: string) {
+    async addImport(name: QualifiedIdentifier, alias?: string) {
         // FIXME
         // assert that it doesnt exist
-        const res = this.TaskMgr.resolve(QualifiedIdentifier.fromString(name));
-        this.variableManager.add(alias ?? name, {
+        const nameStr = name.toString()
+        const res = this.TaskMgr.resolve(name);
+        this.variableManager.add(alias ?? nameStr, {
             data: res,
             vis: VariableVisibility.DEFAULT,
         });
-        this.stmts.push(new Import(name, alias));
+        this.stmts.push(new Import(nameStr, alias));
     }
 }

@@ -7,30 +7,28 @@ import { HSQLVisitor } from '../../misc/grammar/HSQLVisitor';
 import { ReadingManager } from '../../managers/ReadingManager';
 import { ErrorManager } from '../../misc/error/Error';
 import { TaskManager } from '../../managers/TaskManager';
+import { QualifiedIdentifier } from '../../misc/ast/QualifiedIdentifier';
+import { TerminalNode } from 'antlr4ts/tree/TerminalNode';
 
+
+class IdentifierCollector extends AbstractParseTreeVisitor<QualifiedIdentifier> implements HSQLVisitor<QualifiedIdentifier>{
+    defaultResult() { return new QualifiedIdentifier(); }
+    visitTerminal(ctx: TerminalNode) { return new QualifiedIdentifier(ctx.text); }
+    protected aggregateResult(aggregate: QualifiedIdentifier, nextResult: QualifiedIdentifier) {
+        return new QualifiedIdentifier(...aggregate.qidentifier, ...nextResult.qidentifier);
+    }
+}
 export class ASTGenerator extends AbstractParseTreeVisitor<void> implements HSQLVisitor<void> {
     protected ast: AST;
     constructor(protected taskManager: TaskManager, protected errorManager: ErrorManager) {
         super();
         this.ast = new AST(taskManager);
     }
-    defaultResult() {
-        return;
-    }
+    defaultResult() { return; }
 
     visitImportStmt(ctx: ImportStmtContext) {
-        /* ctx.IDENTIFIER() returns a list of nodes that are identifiers
-         * Grammar states two of them where one is optional
-         * import <x> (as <y>)?
-         * this means ctx.IDENTIFIER() will return an array with one or two elements
-         *
-         * Then, map is used to create a new array, corresponding to the texts inside the elements
-         * (which are conveniently in an array already)
-         *
-         * the `as` part is used to coerce the string[] which typescript things will come
-         * into a typescript tuple (which is basically an array of known size), which can have one or two elements
-         */
-        const identifiers = ctx.IDENTIFIER().map(e => e.text) as [string, string?];
+        const importFrom = ctx.overQualifiedIdentifier().accept(new IdentifierCollector());
+        const importAs = ctx.IDENTIFIER()?.text;
         /*
          * Now since the identifiers list is a ts tuple
          * the spread operator applies it as arguments, to this function
@@ -39,7 +37,7 @@ export class ASTGenerator extends AbstractParseTreeVisitor<void> implements HSQL
          * or if theres only one element
          * this.ast.addImport(identifiers[0]);
          */
-        this.ast.addImport(...identifiers);
+        this.ast.addImport(importFrom, importAs);
     }
 
     getAST(x: ProgramContext) {

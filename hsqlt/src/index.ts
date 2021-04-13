@@ -1,4 +1,6 @@
 import yargs from 'yargs';
+import { FileOutput, OutputManager, StandardOutput } from './managers/OutputManagers';
+import { TaskManager } from './managers/TaskManager';
 
 // 2 ignores the node call and the script name
 // TODO add -t and -c
@@ -60,5 +62,15 @@ const { argv: args } = yargs(process.argv.slice(2))
     .command('run <file>', 'Compile and submit to cluster')
     .demandCommand(2);
 
+
 //print out the arguments for showing
-console.log('yargs', args);
+function main() {
+    console.log('yargs', args);
+    const writer: OutputManager = (args.o) ? new StandardOutput() : new FileOutput();
+    const taskmanager = new TaskManager(args.file! as string, args.p ?? false, undefined, writer);
+    const { ast } = taskmanager.generateAST();
+    console.log(ast);
+    taskmanager.reportErrors()
+}
+
+main()//.catch(console.log);
