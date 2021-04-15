@@ -1,28 +1,34 @@
 import fs from 'fs';
 import { TranslationError } from '../misc/error/Error';
+import { iP } from '../misc/strings';
 
 
 
 
-export interface OutputManager {
+export abstract class OutputManager {
     /**
      * A function called for each file
      * @param fn
      * @param contents
      */
-    do(fn: string, contents: string): boolean;
+    abstract do(fn: string, contents: string): boolean;
 
     /**
      * Report issues
      */
-    reportIssues?(issues: TranslationError[]): boolean;
+    reportIssues(issues: TranslationError[]): boolean {
+        for (const issue of issues) {
+            console.log(iP(issue.msg, issue.severity, issue.line, issue.charPositionInLine));
+        }
+        return true;
+    };
     /**
      * An optional function called at the end
      */
     done?(): void;
 }
 
-export class StandardOutput implements OutputManager {
+export class StandardOutput extends OutputManager {
     do(fn: string, contents: string) {
         console.log('File:', fn);
         console.log(contents);
@@ -33,14 +39,14 @@ export class StandardOutput implements OutputManager {
     }
 }
 
-export class NoOutput implements OutputManager {
+export class NoOutput extends OutputManager {
     do(fn: string, contents: string): boolean {
         return true;
     }
 
 }
 
-export class FileOutput implements OutputManager {
+export class FileOutput extends OutputManager {
     do(fn: string, contents: string) {
         fs.writeFileSync(fn, contents);
         return true;
