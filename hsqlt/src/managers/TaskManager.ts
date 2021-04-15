@@ -90,7 +90,7 @@ export class TaskManager {
     reportErrors() {
         // run this function if it exists else warn the user
         // but, only if its true
-        this.suppressIssues && (this.outputManager.reportIssues?.(this.errorManager.issues) ?? console.log(iP(resultStrings.noErrorOutput)));
+        (!this.suppressIssues) && (this.outputManager.reportIssues(this.errorManager.issues) ?? console.log(iP(resultStrings.noErrorOutput)));
     }
 
     /**
