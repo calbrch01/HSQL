@@ -5,17 +5,16 @@ program: (completestmt)* EOF;
 completestmt: stmt SEMICOLON;
 
 stmt:
-	| actionStmt // a definition is an action by default
+	actionStmt // a definition is an action by default
 	| assignStmt // assignment
 	| importStmt // importing
 	| typeDefStmt // type definition
 	| inlineStmt; // inline ECL statement
-
 // actions are essentially stmts without an assignment
 actionStmt: expr;
 
-assignStmt:
-	EXPORT? label = IDENTIFIER EQ expr; //assign and optionally statement
+assignStmt: EXPORT? label = IDENTIFIER EQ expr;
+//assign and optionally statement
 
 typeDefStmt: MAP typeDefExport? mapExportable;
 
@@ -140,7 +139,8 @@ selectFromClause:
 	nestedSelectStmt // another select statement
 	| multiSelect // we might add support for this eventually
 	| selectTableName // a table name
-	| selectDataset; // a dataset
+	| selectDataset;
+// a dataset
 
 nestedSelectStmt: '(' selectStmt ')';
 selectDataset:
@@ -171,7 +171,7 @@ layoutContent: identifierExport (',' identifierExport)*;
 
 inlineStmt: NCOMPILE STRING | ECL_SNIPPETS;
 
-overQualifiedIdentifier: overIdentifier ( '.' overIdentifier)*;
+overQualifiedIdentifier: overIdentifier ('.' overIdentifier)*;
 
 overIdentifier: IDENTIFIER | CURDIR;
 
