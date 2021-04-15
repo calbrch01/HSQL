@@ -42,8 +42,7 @@ export class TranslationError {
         public charPositionInLine?: number,
         public severity: ErrorSeverity = ErrorSeverity.ERROR,
         public type: ErrorType = ErrorType.SYNTAX
-    ) { }
-
+    ) {}
 
     static semanticError(msg: string, line?: number, charPositionInLine?: number) {
         return new TranslationError(msg, line, charPositionInLine, ErrorSeverity.ERROR, ErrorType.SEMANTIC);

@@ -10,10 +10,15 @@ import { TaskManager } from '../../managers/TaskManager';
 import { QualifiedIdentifier } from '../../misc/ast/QualifiedIdentifier';
 import { TerminalNode } from 'antlr4ts/tree/TerminalNode';
 
-
-class IdentifierCollector extends AbstractParseTreeVisitor<QualifiedIdentifier> implements HSQLVisitor<QualifiedIdentifier>{
-    defaultResult() { return new QualifiedIdentifier(); }
-    visitTerminal(ctx: TerminalNode) { return new QualifiedIdentifier(ctx.text); }
+class IdentifierCollector
+    extends AbstractParseTreeVisitor<QualifiedIdentifier>
+    implements HSQLVisitor<QualifiedIdentifier> {
+    defaultResult() {
+        return new QualifiedIdentifier();
+    }
+    visitTerminal(ctx: TerminalNode) {
+        return new QualifiedIdentifier(ctx.text);
+    }
     protected aggregateResult(aggregate: QualifiedIdentifier, nextResult: QualifiedIdentifier) {
         return new QualifiedIdentifier(...aggregate.qidentifier, ...nextResult.qidentifier);
     }
@@ -24,7 +29,9 @@ export class ASTGenerator extends AbstractParseTreeVisitor<void> implements HSQL
         super();
         this.ast = new AST(taskManager);
     }
-    defaultResult() { return; }
+    defaultResult() {
+        return;
+    }
 
     visitImportStmt(ctx: ImportStmtContext) {
         const importFrom = ctx.overQualifiedIdentifier().accept(new IdentifierCollector());

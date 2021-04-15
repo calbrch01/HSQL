@@ -58,9 +58,9 @@ const { argv: args } = yargs(process.argv.slice(2))
     })
     .option('a', {
         desc: 'Show args',
-        alias: ["show-args"],
+        alias: ['show-args'],
         type: 'boolean',
-        default: false
+        default: false,
     })
     // all the commands that the program can run in
     .command('check <file>', 'Check syntax and correctness of file(s)')
@@ -68,15 +68,14 @@ const { argv: args } = yargs(process.argv.slice(2))
     .command('run <file>', 'Compile and submit to cluster')
     .demandCommand(2);
 
-
 //print out the arguments for showing
 function main() {
     args.a && console.log('yargs', args);
-    const writer: OutputManager = (args.o) ? new StandardOutput() : new FileOutput();
+    const writer: OutputManager = args.o ? new StandardOutput() : new FileOutput();
     const taskmanager = new TaskManager(args.file! as string, args.p ?? false, undefined, writer);
     const { ast, tree } = taskmanager.generateAST();
     // console.log(ast);
-    taskmanager.reportErrors()
+    taskmanager.reportErrors();
 }
 
-main()//.catch(console.log);
+main(); //.catch(console.log);

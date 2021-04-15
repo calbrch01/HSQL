@@ -15,7 +15,7 @@ describe('Tree generation', function () {
         assert.strictEqual(theBigIssue.severity, ErrorSeverity.ERROR, `Expected a 'Error'`);
         // its on line 1
         assert.strictEqual(theBigIssue.line, 1);
-    })
+    });
     it('tree generates', async () => {
         const errorManager = ErrorManager.normal;
         const x = new HSQLTreeFactory(errorManager);
@@ -23,5 +23,5 @@ describe('Tree generation', function () {
         // we are just making sure the tree generates
         const { tree } = x.makeTree('import a;');
         assert.lengthOf(errorManager.issues, 0);
-    })
+    });
 });

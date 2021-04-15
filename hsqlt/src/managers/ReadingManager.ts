@@ -24,7 +24,7 @@ export class ReadingManager {
         protected errorListener: ErrorManager,
         protected memFileMap: Map<string, string> = new Map<string, string>(),
         protected baseLoc?: string
-    ) { }
+    ) {}
 
     /**
      * remove file map
@@ -86,5 +86,5 @@ export class ReadingManager {
         const file = await fs.promises.readFile(fileName);
         return file.toString();
     }
-    discoverFileType(q: QualifiedIdentifier) { }
+    discoverFileType(q: QualifiedIdentifier) {}
 }

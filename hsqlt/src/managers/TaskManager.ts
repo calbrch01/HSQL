@@ -8,7 +8,7 @@ import { ErrorManager, ErrorMode, ErrorSeverity, TranslationError } from '../mis
 import { ImportStmtContext } from '../misc/grammar/HSQLParser';
 import { NoOutput, OutputManager } from './OutputManagers';
 import { ReadingManager } from './ReadingManager';
-import { resultStrings, iP } from '../misc/strings'
+import { resultStrings, iP } from '../misc/strings';
 export enum Intent {
     CHECK, // construct AST
     MAKE, // Generate code from AST
@@ -37,12 +37,12 @@ export class TaskManager {
     protected ASTMap: Map<string, AST>;
 
     /**
-     * 
+     *
      * @param mainFile Root file to start translation from
      * @param pedantic Whether to be pedantic or not
      * @param fileMap A fileMap. Missing files will be taken from disk
      * @param outputManager Output strategy
-     * @param baseLoc (does nothing for now) output relocation 
+     * @param baseLoc (does nothing for now) output relocation
      */
     constructor(
         public mainFile: string,
@@ -83,14 +83,14 @@ export class TaskManager {
         return { ast, tree, tokenStreams, asts: this.ASTMap };
     }
 
-
     /**
      * reportErrors if suppress
      */
     reportErrors() {
         // run this function if it exists else warn the user
         // but, only if its true
-        (!this.suppressIssues) && (this.outputManager.reportIssues(this.errorManager.issues) ?? console.log(iP(resultStrings.noErrorOutput)));
+        !this.suppressIssues &&
+            (this.outputManager.reportIssues(this.errorManager.issues) ?? console.log(iP(resultStrings.noErrorOutput)));
     }
 
     /**
