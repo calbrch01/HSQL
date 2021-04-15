@@ -56,6 +56,12 @@ const { argv: args } = yargs(process.argv.slice(2))
         type: 'number',
         default: process.env.ECL_WATCH_PORT ?? 8010,
     })
+    .option('a', {
+        desc: 'Show args',
+        alias: ["show-args"],
+        type: 'boolean',
+        default: false
+    })
     // all the commands that the program can run in
     .command('check <file>', 'Check syntax and correctness of file(s)')
     .command('make <file>', 'Compile to ECL')
@@ -65,11 +71,11 @@ const { argv: args } = yargs(process.argv.slice(2))
 
 //print out the arguments for showing
 function main() {
-    console.log('yargs', args);
+    args.a && console.log('yargs', args);
     const writer: OutputManager = (args.o) ? new StandardOutput() : new FileOutput();
     const taskmanager = new TaskManager(args.file! as string, args.p ?? false, undefined, writer);
-    const { ast } = taskmanager.generateAST();
-    console.log(ast);
+    const { ast, tree } = taskmanager.generateAST();
+    // console.log(ast);
     taskmanager.reportErrors()
 }
 
