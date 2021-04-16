@@ -8,12 +8,12 @@
 ### NPM based:
 
 Dependencies:
-- ts-node - TS Runtime wrapping
+- ts-node - TS Runtime wrapping for NodeJS
 - antlr4ts - ANTLR tool
 - @types/node - Types for Node.JS environment
+- yargs - provides optstring parsing for Node.JS application
 
 devDependencies(Dependencies that are used during development):
-- serve - To serve files statically over the web (Useful for viewing typedoc results)
 - typedoc - Generate project documentation from source comments
 - typescript - Runtime
 - nodemon - Reruns the project if source code is changed (Useful during development)
@@ -71,15 +71,29 @@ This will use `input.hsql` and should show:
 
 General tests are stored under `src/test`
 Module-specific file are present side-by-side as `*.spec.ts`
-### Additional NPM scripts
+### NPM scripts
 
 Usage: `npm run <script-name>`
 
 |Script Name|Explanation|Default Output location|
 |---|---|---|
-|test|Runs all tests|-|
+|check|Checks source code for errors|-|
 |dev|Runs nodemon to run the project in watch mode|-|
 |doc|Generate TypeDoc documentation|`docs/`|
 |build|Build the project into JS|`build/`
 |regen|Regenerate ANTLR grammar|`src/misc/grammar/`
 |pkg|Compile and package application|`dist/`|
+|test|Runs all tests|-|
+
+### Typedoc
+
+Typedoc is a document generator and most types requiring explanation have been documented. 
+To generate the documentation:
+```bash
+npm run doc
+```
+This will place the documentation under `docs/`.
+Note that the result will be a html project. The easiest way to view it, is to use a document server like `serve` that creates a local webserver for you to use:
+```bash
+npx serve docs/
+```

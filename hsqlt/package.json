@@ -18,7 +18,7 @@
     "scripts": {
         "test": "find ./src -name '*.spec.ts' | xargs ts-mocha src/test/*.ts",
         "start": "ts-node src",
-        "dev": "nodemon",
+        "check": "tsc --watch --noEmit",
         "doc": "typedoc ",
         "build": "tsc",
         "pkg": "pkg .",
