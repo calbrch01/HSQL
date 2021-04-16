@@ -1,6 +1,7 @@
-import yargs from 'yargs';
+import yargs, { Arguments } from 'yargs';
 import { FileOutput, OutputManager, StandardOutput } from './managers/OutputManagers';
 import { TaskManager } from './managers/TaskManager';
+import { addCommandFileBuild, ExecMode } from './misc/execModes';
 
 // 2 ignores the node call and the script name
 // TODO add -t and -c
@@ -63,19 +64,91 @@ const { argv: args } = yargs(process.argv.slice(2))
         default: false,
     })
     // all the commands that the program can run in
-    .command('check <file>', 'Check syntax and correctness of file(s)')
-    .command('make <file>', 'Compile to ECL')
-    .command('run <file>', 'Compile and submit to cluster')
+    .command(
+        'tree <file',
+        'Print out Lisp S-expr for syntax (Debug)',
+        yargs =>
+            yargs.option('file', {
+                desc: 'filename',
+                type: 'string',
+                demandOption: true,
+            }),
+        args => {
+            main(args, ExecMode.TREE);
+        }
+    )
+    .command(
+        'check <file>',
+        'Check syntax and correctness of file(s)',
+        yargs =>
+            yargs.option('file', {
+                desc: 'filename',
+                type: 'string',
+                demandOption: true,
+            }),
+        args => {
+            main(args, ExecMode.CHECK);
+        }
+    )
+    .command(
+        'make <file>',
+        'Compile to ECL',
+        yargs =>
+            yargs.option('file', {
+                desc: 'filename',
+                type: 'string',
+                demandOption: true,
+            }),
+        args => {
+            main(args, ExecMode.MAKE);
+        }
+    )
+    .command(
+        'run <file>',
+        'Compile and submit to cluster',
+        yargs =>
+            yargs.option('file', {
+                desc: 'filename',
+                type: 'string',
+                demandOption: true,
+            }),
+        args => {
+            main(args, ExecMode.RUN);
+        }
+    )
     .demandCommand(2);
 
-//print out the arguments for showing
-function main() {
-    args.a && console.log('yargs', args);
-    const writer: OutputManager = args.o ? new StandardOutput() : new FileOutput();
-    const taskmanager = new TaskManager(args.file! as string, args.p ?? false, undefined, writer);
-    const { ast, tree } = taskmanager.generateAST();
-    // console.log(ast);
+// type argType = yargs.Arguments<
+//     { w: boolean | undefined } & { e: boolean | undefined } & { p: boolean | undefined } & {
+//         o: boolean | undefined;
+//     } & { d: boolean | undefined } & { t: string | undefined } & { c: string }
+// >;
+type argType = typeof args;
+
+/**
+ * Entrypoint
+ * @param argv arguments
+ * @param execMode execution mode
+ */
+function main(argv: argType, execMode: ExecMode): void {
+    argv.a && console.log('<args>:', argv);
+    // initialize managers
+    const writer: OutputManager = argv.o ? new StandardOutput() : new FileOutput();
+    const taskmanager = new TaskManager(argv.file, argv.p ?? false, undefined, writer);
+
+    switch (execMode) {
+        case ExecMode.TREE:
+            const { strTree } = taskmanager.getStringTree();
+            console.log(strTree, '\n');
+            break;
+        case ExecMode.CHECK:
+            const { ast, tree } = taskmanager.generateAST();
+            break;
+        default:
+            console.error('I>Not yet supported');
+    }
+    // need to report errors anyways
     taskmanager.reportErrors();
 }
 
-main(); //.catch(console.log);
+// main(); //.catch(console.log);

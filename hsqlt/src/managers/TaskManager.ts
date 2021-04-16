@@ -84,6 +84,21 @@ export class TaskManager {
     }
 
     /**
+     * Get a lisp-style representation of the parse tree generated for a single file
+     * @param fn filename (Leave empty to use mainfile)
+     */
+    getStringTree(fn: string = this.mainFile) {
+        const file = this.readingMgr.readSync(fn);
+
+        const treebundle = this.treeFactory.makeTree(file);
+        // return whatever x was, and add `strTree` to it
+        return {
+            ...treebundle,
+            strTree: treebundle.tree.toStringTree(),
+        };
+    }
+
+    /**
      * reportErrors if suppress
      */
     reportErrors() {
