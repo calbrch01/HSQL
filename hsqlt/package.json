@@ -21,6 +21,7 @@
         "check": "tsc --watch --noEmit",
         "doc": "typedoc ",
         "build": "tsc",
+        "prepkg": "npm run build",
         "pkg": "pkg .",
         "regen": "antlr4ts -visitor -no-listener grammar/HSQL.g4 -o src/misc/"
     },

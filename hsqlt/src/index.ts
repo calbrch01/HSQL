@@ -118,11 +118,6 @@ const { argv: args } = yargs(process.argv.slice(2))
     )
     .demandCommand(2);
 
-// type argType = yargs.Arguments<
-//     { w: boolean | undefined } & { e: boolean | undefined } & { p: boolean | undefined } & {
-//         o: boolean | undefined;
-//     } & { d: boolean | undefined } & { t: string | undefined } & { c: string }
-// >;
 type argType = typeof args;
 
 /**
