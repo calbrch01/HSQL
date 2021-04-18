@@ -1,5 +1,10 @@
 import yargs from 'yargs';
 
+/**
+ * @deprecated
+ * @param yargs
+ * @returns
+ */
 export const addCommandFileBuild = <T extends {}>(yargs: yargs.Argv<T>) => {
     return yargs.option('file', {
         desc: 'filename',
