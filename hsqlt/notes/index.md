@@ -1,5 +1,19 @@
 ## Basic syntaxes
 
+
+### Todo list
+- [ ] Typedef
+- [ ] Having syntax
+
+### Idea
+
+HSQL
+- SQL 92 syntax support
+- Function and Modular support
+- Transparent Medley support
+- VS Code support
+- Full ML support
+
 ### Select
 > Use `+`,`JOIN(...,TRUE,ALL)`
 1. Select all from existing table (copy)
