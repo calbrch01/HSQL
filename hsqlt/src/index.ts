@@ -63,6 +63,12 @@ const { argv: args } = yargs(process.argv.slice(2))
         type: 'boolean',
         default: false,
     })
+    .option('k', {
+        desc: 'Suppress issues',
+        alias: ['suppress-issues'],
+        type: 'boolean',
+        default: false,
+    })
     // all the commands that the program can run in
     .command(
         'tree <file',
@@ -129,7 +135,8 @@ function main(argv: argType, execMode: ExecMode): void {
     argv.a && console.log('<args>:', argv);
     // initialize managers
     const writer: OutputManager = argv.o ? new StandardOutput() : new FileOutput();
-    const taskmanager = new TaskManager(argv.file, argv.p ?? false, undefined, writer);
+    //taskmap must have no map, and no baseloc for now
+    const taskmanager = new TaskManager(argv.file, argv.p ?? false, undefined, writer, undefined, argv.k);
 
     switch (execMode) {
         case ExecMode.TREE:

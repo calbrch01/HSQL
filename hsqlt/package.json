@@ -20,7 +20,6 @@
         "start": "ts-node src",
         "check": "tsc --watch --noEmit",
         "doc": "typedoc ",
-        "prebuild-dev": "npm run clean-ts",
         "build-dev": "tsc",
         "prebuild": "npm run clean-ts",
         "build": "tsc -p tsconfig.build.json",
