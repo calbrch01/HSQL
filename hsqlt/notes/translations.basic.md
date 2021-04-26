@@ -44,6 +44,8 @@ sc := table(ap,{someothercol:= firstname});
 //select *,firstname as somecol from ap;
 //c :=  table(ap,Layout_person);
 //c;
+sg := TABLE(ap,{ap,x:=ap.personid});
+sg;
 //sw := TABLE(ap, { personid,C:=COUNT(group)},personid);
 
 
@@ -52,7 +54,5 @@ sc := table(ap,{someothercol:= firstname});
 
 
 // group by and having(-> another table based filter) ??
-sg := TABLE(ap);
-sg;
 
 ```
