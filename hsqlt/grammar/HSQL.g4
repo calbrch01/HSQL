@@ -18,7 +18,7 @@ expr:
 
 actionStmt: selectStmt | outputStmt | plotStmt | literal;
 
-/* SELECT STATEMENT 
+/* SELECT STATEMENT
  */
 selectStmt:
 	SELECT DISTINCT? columns = selectColumns FROM fromclause = selectFromClause (
@@ -31,23 +31,21 @@ definitionSet: definition ( ',' definition)*;
 
 selectColumns: selectCol ( ',' selectCol)*;
 
-selectCol: col aliasingCol[$col.ctx]?;
+selectCol:
+	col aliasingCol[$col.ctx]?	# normalCol
+	| MULTIPLY					# wildAll;
 
 // columns `can` be definitions. This is very helpful in resolving cases of multi-table selects
 col:
 	IDENTIFIER '(' MULTIPLY ')'					# selectAggregatedEverythingCol
 	| IDENTIFIER '(' column = definition ')'	# selectAggregatedOneCol
-	| column = definition						# selectOneCol
-	| MULTIPLY									# selectWild;
-
+	| column = definition						# selectOneCol;
 /*
  * Allow access to the column it was applied to. this should be helpful while generating the
  * AST/code
  */
 aliasingCol[ParserRuleContext ctx]:
 	AS (dataType)? alias = IDENTIFIER;
-
-//******Wednesday meeting start here
 
 // code generation
 selectFromClause: nestedSelectStmt | definition;
@@ -71,10 +69,7 @@ joinType:
 
 limitClause: LIMIT number;
 
-// operators:
-// 	comparisonOperator
-// 	| arithmeticOPERATOR
-// 	| logicalOperator;
+// operators: comparisonOperator | arithmeticOPERATOR | logicalOperator;
 aggregationOperator: COUNT | AVG | MIN | MAX | SUM;
 comparisonOperator: EQ | NEQ | LT | LTE | GT | GTE;
 arithmeticOPERATOR:
@@ -94,7 +89,13 @@ dataType:
 	| STRING_TYPE
 	| BOOLEAN;
 alterOperator: ADD | DROP | MODIFY;
-definition: IDENTIFIER ('.' IDENTIFIER)+ | IDENTIFIER;
+
+// use % instead of $ -> that operator is used in ECL SNIPPETS for now
+overDefinition: overDefinitionRoot ( '.' overDefinitionTail)*;
+overDefinitionRoot: IDENTIFIER | MODULO | XOR;
+overDefinitionTail: IDENTIFIER | XOR;
+
+definition: IDENTIFIER ('.' IDENTIFIER)*;
 
 expression: booleanExpression;
 
@@ -129,14 +130,14 @@ string:
 
 booleanValue: TRUE | FALSE;
 
-/* IMPORT STATEMENT 
+/* IMPORT STATEMENT
  */
 
-importStmt: IMPORT definition (AS alias = IDENTIFIER)?;
+importStmt: IMPORT overDefinition (AS alias = IDENTIFIER)?;
 
 // $.^ AS upperDir
 
-/* OUTPUT STATEMENT 
+/* OUTPUT STATEMENT
  */
 
 outputStmt: OUTPUT attribute ( namedOutput)? ( toFile)?;
@@ -145,14 +146,14 @@ attribute: definition | selectStmt | literal;
 namedOutput: (TITLE EQ)? IDENTIFIER;
 toFile: (FILE EQ)? STRING (OVERWRITE)?;
 
-/* PLOT STATEMENT 
+/* PLOT STATEMENT
  */
 plotStmt:
 	PLOT FROM definition (TITLE EQ)? IDENTIFIER (
 		(TYPE EQ)? IDENTIFIER
 	)?;
 
-/* MODULE STATEMENT 
+/* MODULE STATEMENT
  */
 
 moduleStmt: MODULE '{' (definitionStmt SEMICOLON)* '}';
@@ -252,7 +253,8 @@ IDCOLUMN: I D C O L U M N;
 PROJECT: P R O J E C T;
 SELECT: S E L E C T;
 FROM: F R O M;
-TOP: T O P; // added
+TOP: T O P;
+// added
 WHERE: W H E R E;
 HAVING: H A V I N G;
 DISTINCT: D I S T I N C T;
@@ -267,7 +269,8 @@ OUTER: O U T E R;
 ONLY: O N L Y;
 
 // Condition
-CASE: C A S E; //*****************TBD
+CASE: C A S E;
+//*****************TBD
 TRUE: T R U E;
 FALSE: F A L S E;
 
@@ -287,9 +290,9 @@ LIMIT: L I M I T;
 MODULE: M O D U L E;
 
 UESCAPE: U E S C A P E;
-TYPE: T Y P E; //PLOT
+TYPE: T Y P E;
+//PLOT
 
-//Greek question mark proof
 SEMICOLON: ';';
 
 //operators
@@ -305,6 +308,8 @@ SUBSTRACT: '-';
 MULTIPLY: '*';
 DIVIDE: '/';
 MODULO: '%';
+
+XOR: '^';
 
 AND: A N D;
 OR: O R;
@@ -332,9 +337,9 @@ DOUBLE_VALUE:
 
 IDENTIFIER: LETTER (LETTER | DIGIT | '_')*;
 
-ECL_SNIPPETS: '$' ~[$]* '$';
-SIMPLE_COMMENT:
-	'--' ~[\r\n]* '\r'? '\n'? -> channel(HIDDEN); //?
+ECL_SNIPPETS: '_$' ~[$]* '$';
+SIMPLE_COMMENT: '--' ~[\r\n]* '\r'? '\n'? -> channel(HIDDEN);
+//?
 
 SIMPLE_C_COMMENT: '//' ~[\r\n]* '\r'? '\n'? -> channel(HIDDEN);
 
@@ -348,7 +353,8 @@ fragment LETTER: [a-zA-Z];
 
 fragment EXPONENT: E [+-]? DIGIT+;
 
-fragment A: [aA]; // match either an 'a' or 'A'
+// match either an 'a' or 'A'
+fragment A: [aA];
 fragment B: [bB];
 fragment C: [cC];
 fragment D: [dD];

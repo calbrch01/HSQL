@@ -1,4 +1,4 @@
-import { QualifiedIdentifierContext } from '../grammar/HSQLParser';
+import { DefinitionContext as QualifiedIdentifierContext, OverDefinitionContext } from '../grammar/HSQLParser';
 
 /**
  * stores and works with qualified identifiers
@@ -23,6 +23,13 @@ export class QualifiedIdentifier {
 
     static fromGrammar(ctx: QualifiedIdentifierContext) {
         return new QualifiedIdentifier(...ctx.IDENTIFIER().map(e => e.text));
+    }
+
+    static fromOverDefinition(ctx: OverDefinitionContext) {
+        const head = ctx.overDefinitionRoot().text;
+        // get all their texts as an array
+        const tail = ctx.overDefinitionTail().map(e => e.text);
+        return new QualifiedIdentifier(head, ...tail);
     }
 
     public get qidentifier(): string[] {
