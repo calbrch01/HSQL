@@ -1,4 +1,5 @@
 ```ecl
+
 /*
     Example code - use without restriction.  
 */
@@ -24,7 +25,7 @@ ss;
 // 
 
 // select personid, count(personid) group by personid;
-
+// group by and having(-> another table based filter) ??
 sw := TABLE(ap, { personid,C:=COUNT(group)},personid);
 sw;
 
@@ -35,8 +36,8 @@ sm;
 // TODO what is count(*) and count(somecolumn) ??
 
 // select count(*) from ap;
-
 // select count(personid) from ap;
+// no difference between above ones for ECL
 
 //select firstname as someothercol from ap;
 sc := table(ap,{someothercol:= firstname});
@@ -46,13 +47,21 @@ sc := table(ap,{someothercol:= firstname});
 //c;
 sg := TABLE(ap,{ap,x:=ap.personid});
 sg;
-//sw := TABLE(ap, { personid,C:=COUNT(group)},personid);
 
+// limit queries
+// select * from ap limit 3;
+sl := table(ap)[1..3];
+sl;
 
+// offset 
+// select * from ap limit 3 offset 2
+// need to do some calcs
+// lower bound = 1 + offset
+// upper bound = limit + offset
+// limit 3 offset 2 = lb 3 ub 5
+// limit 2 offset 2 = lb 3 ub 4
+slt := table(ap)[3..4];
+slt;
 
-// initial search - there seems to be no way to indicate
-
-
-// group by and having(-> another table based filter) ??
 
 ```
