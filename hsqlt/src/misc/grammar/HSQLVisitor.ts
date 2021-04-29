@@ -35,6 +35,7 @@ import { DefinitionStmtContext } from "./HSQLParser";
 import { ExprContext } from "./HSQLParser";
 import { ActionStmtContext } from "./HSQLParser";
 import { SelectStmtContext } from "./HSQLParser";
+import { SelectGroupByClauseContext } from "./HSQLParser";
 import { DefinitionSetContext } from "./HSQLParser";
 import { SelectColumnsContext } from "./HSQLParser";
 import { SelectColContext } from "./HSQLParser";
@@ -50,7 +51,8 @@ import { AscSortItemContext } from "./HSQLParser";
 import { DescSortItemContext } from "./HSQLParser";
 import { JoinClauseContext } from "./HSQLParser";
 import { JoinTypeContext } from "./HSQLParser";
-import { LimitOffsetClauseContext } from "./HSQLParser";
+import { LimitClauseContext } from "./HSQLParser";
+import { OffsetClauseContext } from "./HSQLParser";
 import { AggregationOperatorContext } from "./HSQLParser";
 import { ComparisonOperatorContext } from "./HSQLParser";
 import { ArithmeticOPERATORContext } from "./HSQLParser";
@@ -346,6 +348,13 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	visitSelectStmt?: (ctx: SelectStmtContext) => Result;
 
 	/**
+	 * Visit a parse tree produced by `HSQLParser.selectGroupByClause`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitSelectGroupByClause?: (ctx: SelectGroupByClauseContext) => Result;
+
+	/**
 	 * Visit a parse tree produced by `HSQLParser.definitionSet`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -451,11 +460,18 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	visitJoinType?: (ctx: JoinTypeContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by `HSQLParser.limitOffsetClause`.
+	 * Visit a parse tree produced by `HSQLParser.limitClause`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	visitLimitOffsetClause?: (ctx: LimitOffsetClauseContext) => Result;
+	visitLimitClause?: (ctx: LimitClauseContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.offsetClause`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitOffsetClause?: (ctx: OffsetClauseContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `HSQLParser.aggregationOperator`.

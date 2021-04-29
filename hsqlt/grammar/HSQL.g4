@@ -13,7 +13,6 @@ expr:
 	| actionStmt
 	| transformStmt
 	| mlStmt
-	// | inlineStmt
 	| moduleStmt;
 
 actionStmt: selectStmt | outputStmt | plotStmt | literal;
@@ -23,9 +22,12 @@ actionStmt: selectStmt | outputStmt | plotStmt | literal;
 selectStmt:
 	SELECT DISTINCT? columns = selectColumns FROM fromclause = selectFromClause (
 		WHERE whereclause = selectWhereClause
-	)? (GROUP BY groupbyclause = groupByClause)? (
+	)? selectGroupByClause? (
 		ORDER BY orderbyclause = orderByClause
 	)? joinClause? limitClause? offsetClause?;
+
+selectGroupByClause: GROUP BY groupByClause;
+
 
 definitionSet: definition ( ',' definition)*;
 
