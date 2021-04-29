@@ -25,7 +25,7 @@ selectStmt:
 		WHERE whereclause = selectWhereClause
 	)? (GROUP BY groupbyclause = groupByClause)? (
 		ORDER BY orderbyclause = orderByClause
-	)? (joinClause)? (limitOffsetClause)?;
+	)? joinClause? limitClause? offsetClause?;
 
 definitionSet: definition ( ',' definition)*;
 
@@ -67,7 +67,8 @@ joinType:
 	| (specifier = (LEFT | RIGHT) OUTER?)	# outerJoin
 	| specifier = FULL OUTER				# fullOuterJoin;
 
-limitOffsetClause: LIMIT number (OFFSET number)?;
+limitClause: LIMIT number;
+offsetClause: OFFSET number;
 
 // operators: comparisonOperator | arithmeticOPERATOR | logicalOperator;
 aggregationOperator: COUNT | AVG | MIN | MAX | SUM;
