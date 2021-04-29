@@ -50,7 +50,7 @@ import { AscSortItemContext } from "./HSQLParser";
 import { DescSortItemContext } from "./HSQLParser";
 import { JoinClauseContext } from "./HSQLParser";
 import { JoinTypeContext } from "./HSQLParser";
-import { LimitClauseContext } from "./HSQLParser";
+import { LimitOffsetClauseContext } from "./HSQLParser";
 import { AggregationOperatorContext } from "./HSQLParser";
 import { ComparisonOperatorContext } from "./HSQLParser";
 import { ArithmeticOPERATORContext } from "./HSQLParser";
@@ -451,11 +451,11 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	visitJoinType?: (ctx: JoinTypeContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by `HSQLParser.limitClause`.
+	 * Visit a parse tree produced by `HSQLParser.limitOffsetClause`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	visitLimitClause?: (ctx: LimitClauseContext) => Result;
+	visitLimitOffsetClause?: (ctx: LimitOffsetClauseContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `HSQLParser.aggregationOperator`.

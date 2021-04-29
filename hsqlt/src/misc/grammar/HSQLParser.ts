@@ -98,40 +98,41 @@ export class HSQLParser extends Parser {
 	public static readonly TITLE = 69;
 	public static readonly EXPIRE = 70;
 	public static readonly LIMIT = 71;
-	public static readonly MODULE = 72;
-	public static readonly UESCAPE = 73;
-	public static readonly TYPE = 74;
-	public static readonly SEMICOLON = 75;
-	public static readonly EQ = 76;
-	public static readonly NEQ = 77;
-	public static readonly LT = 78;
-	public static readonly LTE = 79;
-	public static readonly GT = 80;
-	public static readonly GTE = 81;
-	public static readonly PLUS = 82;
-	public static readonly SUBSTRACT = 83;
-	public static readonly MULTIPLY = 84;
-	public static readonly DIVIDE = 85;
-	public static readonly MODULO = 86;
-	public static readonly XOR = 87;
-	public static readonly AND = 88;
-	public static readonly OR = 89;
-	public static readonly NOT = 90;
-	public static readonly IN = 91;
-	public static readonly BETWEEN = 92;
-	public static readonly EXISTS = 93;
-	public static readonly STRING = 94;
-	public static readonly UNICODE_STRING = 95;
-	public static readonly BINARY_LITERAL = 96;
-	public static readonly INTEGER_VALUE = 97;
-	public static readonly DECIMAL_VALUE = 98;
-	public static readonly DOUBLE_VALUE = 99;
-	public static readonly IDENTIFIER = 100;
-	public static readonly ECL_SNIPPETS = 101;
-	public static readonly SIMPLE_COMMENT = 102;
-	public static readonly SIMPLE_C_COMMENT = 103;
-	public static readonly BRACKETED_COMMENT = 104;
-	public static readonly WS = 105;
+	public static readonly OFFSET = 72;
+	public static readonly MODULE = 73;
+	public static readonly UESCAPE = 74;
+	public static readonly TYPE = 75;
+	public static readonly SEMICOLON = 76;
+	public static readonly EQ = 77;
+	public static readonly NEQ = 78;
+	public static readonly LT = 79;
+	public static readonly LTE = 80;
+	public static readonly GT = 81;
+	public static readonly GTE = 82;
+	public static readonly PLUS = 83;
+	public static readonly SUBSTRACT = 84;
+	public static readonly MULTIPLY = 85;
+	public static readonly DIVIDE = 86;
+	public static readonly MODULO = 87;
+	public static readonly XOR = 88;
+	public static readonly AND = 89;
+	public static readonly OR = 90;
+	public static readonly NOT = 91;
+	public static readonly IN = 92;
+	public static readonly BETWEEN = 93;
+	public static readonly EXISTS = 94;
+	public static readonly STRING = 95;
+	public static readonly UNICODE_STRING = 96;
+	public static readonly BINARY_LITERAL = 97;
+	public static readonly INTEGER_VALUE = 98;
+	public static readonly DECIMAL_VALUE = 99;
+	public static readonly DOUBLE_VALUE = 100;
+	public static readonly IDENTIFIER = 101;
+	public static readonly ECL_SNIPPETS = 102;
+	public static readonly SIMPLE_COMMENT = 103;
+	public static readonly SIMPLE_C_COMMENT = 104;
+	public static readonly BRACKETED_COMMENT = 105;
+	public static readonly WS = 106;
 	public static readonly RULE_program = 0;
 	public static readonly RULE_completestmt = 1;
 	public static readonly RULE_stmt = 2;
@@ -154,7 +155,7 @@ export class HSQLParser extends Parser {
 	public static readonly RULE_descSortItem = 19;
 	public static readonly RULE_joinClause = 20;
 	public static readonly RULE_joinType = 21;
-	public static readonly RULE_limitClause = 22;
+	public static readonly RULE_limitOffsetClause = 22;
 	public static readonly RULE_aggregationOperator = 23;
 	public static readonly RULE_comparisonOperator = 24;
 	public static readonly RULE_arithmeticOPERATOR = 25;
@@ -196,7 +197,7 @@ export class HSQLParser extends Parser {
 		"selectStmt", "definitionSet", "selectColumns", "selectCol", "col", "aliasingCol", 
 		"selectFromClause", "nestedSelectStmt", "selectWhereClause", "groupByClause", 
 		"orderByClause", "sortItem", "ascSortItem", "descSortItem", "joinClause", 
-		"joinType", "limitClause", "aggregationOperator", "comparisonOperator", 
+		"joinType", "limitOffsetClause", "aggregationOperator", "comparisonOperator", 
 		"arithmeticOPERATOR", "logicalOperator", "literal", "dataType", "alterOperator", 
 		"overDefinition", "overDefinitionRoot", "overDefinitionTail", "definition", 
 		"expression", "booleanExpression", "predicate", "valueExpression", "primaryExpression", 
@@ -217,8 +218,8 @@ export class HSQLParser extends Parser {
 		undefined, undefined, undefined, undefined, undefined, undefined, undefined, 
 		undefined, undefined, undefined, undefined, undefined, undefined, undefined, 
 		undefined, undefined, undefined, undefined, undefined, undefined, undefined, 
-		undefined, undefined, undefined, "';'", "'='", undefined, "'<'", "'<='", 
-		"'>'", "'>='", "'+'", "'-'", "'*'", "'/'", "'%'", "'^'",
+		undefined, undefined, undefined, undefined, "';'", "'='", undefined, "'<'", 
+		"'<='", "'>'", "'>='", "'+'", "'-'", "'*'", "'/'", "'%'", "'^'",
 	];
 	private static readonly _SYMBOLIC_NAMES: Array<string | undefined> = [
 		undefined, undefined, undefined, undefined, undefined, undefined, undefined, 
@@ -230,12 +231,12 @@ export class HSQLParser extends Parser {
 		"SELECT", "FROM", "TOP", "WHERE", "HAVING", "DISTINCT", "JOIN", "INNER", 
 		"LEFT", "RIGHT", "FULL", "OUTER", "ONLY", "CASE", "TRUE", "FALSE", "IMPORT", 
 		"AS", "CREATE", "LAYOUT", "FILE", "MAP", "METHOD", "DEPENDENT", "TITLE", 
-		"EXPIRE", "LIMIT", "MODULE", "UESCAPE", "TYPE", "SEMICOLON", "EQ", "NEQ", 
-		"LT", "LTE", "GT", "GTE", "PLUS", "SUBSTRACT", "MULTIPLY", "DIVIDE", "MODULO", 
-		"XOR", "AND", "OR", "NOT", "IN", "BETWEEN", "EXISTS", "STRING", "UNICODE_STRING", 
-		"BINARY_LITERAL", "INTEGER_VALUE", "DECIMAL_VALUE", "DOUBLE_VALUE", "IDENTIFIER", 
-		"ECL_SNIPPETS", "SIMPLE_COMMENT", "SIMPLE_C_COMMENT", "BRACKETED_COMMENT", 
-		"WS",
+		"EXPIRE", "LIMIT", "OFFSET", "MODULE", "UESCAPE", "TYPE", "SEMICOLON", 
+		"EQ", "NEQ", "LT", "LTE", "GT", "GTE", "PLUS", "SUBSTRACT", "MULTIPLY", 
+		"DIVIDE", "MODULO", "XOR", "AND", "OR", "NOT", "IN", "BETWEEN", "EXISTS", 
+		"STRING", "UNICODE_STRING", "BINARY_LITERAL", "INTEGER_VALUE", "DECIMAL_VALUE", 
+		"DOUBLE_VALUE", "IDENTIFIER", "ECL_SNIPPETS", "SIMPLE_COMMENT", "SIMPLE_C_COMMENT", 
+		"BRACKETED_COMMENT", "WS",
 	];
 	public static readonly VOCABULARY: Vocabulary = new VocabularyImpl(HSQLParser._LITERAL_NAMES, HSQLParser._SYMBOLIC_NAMES, []);
 
@@ -274,7 +275,7 @@ export class HSQLParser extends Parser {
 			this.state = 119;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
-			while (_la === HSQLParser.EXPORT || _la === HSQLParser.SHARED || ((((_la - 35)) & ~0x1F) === 0 && ((1 << (_la - 35)) & ((1 << (HSQLParser.PLOT - 35)) | (1 << (HSQLParser.OUTPUT - 35)) | (1 << (HSQLParser.SELECT - 35)) | (1 << (HSQLParser.TRUE - 35)) | (1 << (HSQLParser.FALSE - 35)) | (1 << (HSQLParser.IMPORT - 35)))) !== 0) || ((((_la - 94)) & ~0x1F) === 0 && ((1 << (_la - 94)) & ((1 << (HSQLParser.STRING - 94)) | (1 << (HSQLParser.UNICODE_STRING - 94)) | (1 << (HSQLParser.INTEGER_VALUE - 94)) | (1 << (HSQLParser.DECIMAL_VALUE - 94)) | (1 << (HSQLParser.DOUBLE_VALUE - 94)) | (1 << (HSQLParser.IDENTIFIER - 94)))) !== 0)) {
+			while (_la === HSQLParser.EXPORT || _la === HSQLParser.SHARED || ((((_la - 35)) & ~0x1F) === 0 && ((1 << (_la - 35)) & ((1 << (HSQLParser.PLOT - 35)) | (1 << (HSQLParser.OUTPUT - 35)) | (1 << (HSQLParser.SELECT - 35)) | (1 << (HSQLParser.TRUE - 35)) | (1 << (HSQLParser.FALSE - 35)) | (1 << (HSQLParser.IMPORT - 35)))) !== 0) || ((((_la - 95)) & ~0x1F) === 0 && ((1 << (_la - 95)) & ((1 << (HSQLParser.STRING - 95)) | (1 << (HSQLParser.UNICODE_STRING - 95)) | (1 << (HSQLParser.INTEGER_VALUE - 95)) | (1 << (HSQLParser.DECIMAL_VALUE - 95)) | (1 << (HSQLParser.DOUBLE_VALUE - 95)) | (1 << (HSQLParser.IDENTIFIER - 95)))) !== 0)) {
 				{
 				{
 				this.state = 116;
@@ -641,7 +642,7 @@ export class HSQLParser extends Parser {
 			if (_la === HSQLParser.LIMIT) {
 				{
 				this.state = 176;
-				this.limitClause();
+				this.limitOffsetClause();
 				}
 			}
 
@@ -1289,9 +1290,10 @@ export class HSQLParser extends Parser {
 		return _localctx;
 	}
 	// @RuleVersion(0)
-	public limitClause(): LimitClauseContext {
-		let _localctx: LimitClauseContext = new LimitClauseContext(this._ctx, this.state);
-		this.enterRule(_localctx, 44, HSQLParser.RULE_limitClause);
+	public limitOffsetClause(): LimitOffsetClauseContext {
+		let _localctx: LimitOffsetClauseContext = new LimitOffsetClauseContext(this._ctx, this.state);
+		this.enterRule(_localctx, 44, HSQLParser.RULE_limitOffsetClause);
+		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
@@ -1299,6 +1301,18 @@ export class HSQLParser extends Parser {
 			this.match(HSQLParser.LIMIT);
 			this.state = 271;
 			this.number();
+			this.state = 274;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			if (_la === HSQLParser.OFFSET) {
+				{
+				this.state = 272;
+				this.match(HSQLParser.OFFSET);
+				this.state = 273;
+				this.number();
+				}
+			}
+
 			}
 		}
 		catch (re) {
@@ -1323,7 +1337,7 @@ export class HSQLParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 273;
+			this.state = 276;
 			_la = this._input.LA(1);
 			if (!(((((_la - 28)) & ~0x1F) === 0 && ((1 << (_la - 28)) & ((1 << (HSQLParser.COUNT - 28)) | (1 << (HSQLParser.AVG - 28)) | (1 << (HSQLParser.SUM - 28)) | (1 << (HSQLParser.MIN - 28)) | (1 << (HSQLParser.MAX - 28)))) !== 0))) {
 			this._errHandler.recoverInline(this);
@@ -1359,9 +1373,9 @@ export class HSQLParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 275;
+			this.state = 278;
 			_la = this._input.LA(1);
-			if (!(((((_la - 76)) & ~0x1F) === 0 && ((1 << (_la - 76)) & ((1 << (HSQLParser.EQ - 76)) | (1 << (HSQLParser.NEQ - 76)) | (1 << (HSQLParser.LT - 76)) | (1 << (HSQLParser.LTE - 76)) | (1 << (HSQLParser.GT - 76)) | (1 << (HSQLParser.GTE - 76)))) !== 0))) {
+			if (!(((((_la - 77)) & ~0x1F) === 0 && ((1 << (_la - 77)) & ((1 << (HSQLParser.EQ - 77)) | (1 << (HSQLParser.NEQ - 77)) | (1 << (HSQLParser.LT - 77)) | (1 << (HSQLParser.LTE - 77)) | (1 << (HSQLParser.GT - 77)) | (1 << (HSQLParser.GTE - 77)))) !== 0))) {
 			this._errHandler.recoverInline(this);
 			} else {
 				if (this._input.LA(1) === Token.EOF) {
@@ -1395,9 +1409,9 @@ export class HSQLParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 277;
+			this.state = 280;
 			_la = this._input.LA(1);
-			if (!(((((_la - 82)) & ~0x1F) === 0 && ((1 << (_la - 82)) & ((1 << (HSQLParser.PLUS - 82)) | (1 << (HSQLParser.SUBSTRACT - 82)) | (1 << (HSQLParser.MULTIPLY - 82)) | (1 << (HSQLParser.DIVIDE - 82)) | (1 << (HSQLParser.MODULO - 82)))) !== 0))) {
+			if (!(((((_la - 83)) & ~0x1F) === 0 && ((1 << (_la - 83)) & ((1 << (HSQLParser.PLUS - 83)) | (1 << (HSQLParser.SUBSTRACT - 83)) | (1 << (HSQLParser.MULTIPLY - 83)) | (1 << (HSQLParser.DIVIDE - 83)) | (1 << (HSQLParser.MODULO - 83)))) !== 0))) {
 			this._errHandler.recoverInline(this);
 			} else {
 				if (this._input.LA(1) === Token.EOF) {
@@ -1431,9 +1445,9 @@ export class HSQLParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 279;
+			this.state = 282;
 			_la = this._input.LA(1);
-			if (!(((((_la - 88)) & ~0x1F) === 0 && ((1 << (_la - 88)) & ((1 << (HSQLParser.AND - 88)) | (1 << (HSQLParser.OR - 88)) | (1 << (HSQLParser.NOT - 88)) | (1 << (HSQLParser.IN - 88)) | (1 << (HSQLParser.BETWEEN - 88)) | (1 << (HSQLParser.EXISTS - 88)))) !== 0))) {
+			if (!(((((_la - 89)) & ~0x1F) === 0 && ((1 << (_la - 89)) & ((1 << (HSQLParser.AND - 89)) | (1 << (HSQLParser.OR - 89)) | (1 << (HSQLParser.NOT - 89)) | (1 << (HSQLParser.IN - 89)) | (1 << (HSQLParser.BETWEEN - 89)) | (1 << (HSQLParser.EXISTS - 89)))) !== 0))) {
 			this._errHandler.recoverInline(this);
 			} else {
 				if (this._input.LA(1) === Token.EOF) {
@@ -1464,7 +1478,7 @@ export class HSQLParser extends Parser {
 		let _localctx: LiteralContext = new LiteralContext(this._ctx, this.state);
 		this.enterRule(_localctx, 54, HSQLParser.RULE_literal);
 		try {
-			this.state = 284;
+			this.state = 287;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
 			case HSQLParser.INTEGER_VALUE:
@@ -1472,7 +1486,7 @@ export class HSQLParser extends Parser {
 			case HSQLParser.DOUBLE_VALUE:
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 281;
+				this.state = 284;
 				this.number();
 				}
 				break;
@@ -1480,7 +1494,7 @@ export class HSQLParser extends Parser {
 			case HSQLParser.UNICODE_STRING:
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 282;
+				this.state = 285;
 				this.string();
 				}
 				break;
@@ -1488,7 +1502,7 @@ export class HSQLParser extends Parser {
 			case HSQLParser.FALSE:
 				this.enterOuterAlt(_localctx, 3);
 				{
-				this.state = 283;
+				this.state = 286;
 				this.booleanValue();
 				}
 				break;
@@ -1518,7 +1532,7 @@ export class HSQLParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 286;
+			this.state = 289;
 			_la = this._input.LA(1);
 			if (!((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << HSQLParser.REAL_TYPE) | (1 << HSQLParser.INTEGER_TYPE) | (1 << HSQLParser.DECIMAL_TYPE) | (1 << HSQLParser.VARSTRING_TYPE) | (1 << HSQLParser.STRING_TYPE) | (1 << HSQLParser.BOOLEAN))) !== 0))) {
 			this._errHandler.recoverInline(this);
@@ -1554,7 +1568,7 @@ export class HSQLParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 288;
+			this.state = 291;
 			_la = this._input.LA(1);
 			if (!((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << HSQLParser.ADD) | (1 << HSQLParser.DROP) | (1 << HSQLParser.MODIFY))) !== 0))) {
 			this._errHandler.recoverInline(this);
@@ -1590,21 +1604,21 @@ export class HSQLParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 290;
+			this.state = 293;
 			this.overDefinitionRoot();
-			this.state = 295;
+			this.state = 298;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			while (_la === HSQLParser.T__3) {
 				{
 				{
-				this.state = 291;
+				this.state = 294;
 				this.match(HSQLParser.T__3);
-				this.state = 292;
+				this.state = 295;
 				this.overDefinitionTail();
 				}
 				}
-				this.state = 297;
+				this.state = 300;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 			}
@@ -1632,9 +1646,9 @@ export class HSQLParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 298;
+			this.state = 301;
 			_la = this._input.LA(1);
-			if (!(((((_la - 86)) & ~0x1F) === 0 && ((1 << (_la - 86)) & ((1 << (HSQLParser.MODULO - 86)) | (1 << (HSQLParser.XOR - 86)) | (1 << (HSQLParser.IDENTIFIER - 86)))) !== 0))) {
+			if (!(((((_la - 87)) & ~0x1F) === 0 && ((1 << (_la - 87)) & ((1 << (HSQLParser.MODULO - 87)) | (1 << (HSQLParser.XOR - 87)) | (1 << (HSQLParser.IDENTIFIER - 87)))) !== 0))) {
 			this._errHandler.recoverInline(this);
 			} else {
 				if (this._input.LA(1) === Token.EOF) {
@@ -1668,7 +1682,7 @@ export class HSQLParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 300;
+			this.state = 303;
 			_la = this._input.LA(1);
 			if (!(_la === HSQLParser.XOR || _la === HSQLParser.IDENTIFIER)) {
 			this._errHandler.recoverInline(this);
@@ -1704,21 +1718,21 @@ export class HSQLParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 302;
+			this.state = 305;
 			this.match(HSQLParser.IDENTIFIER);
-			this.state = 307;
+			this.state = 310;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			while (_la === HSQLParser.T__3) {
 				{
 				{
-				this.state = 303;
+				this.state = 306;
 				this.match(HSQLParser.T__3);
-				this.state = 304;
+				this.state = 307;
 				this.match(HSQLParser.IDENTIFIER);
 				}
 				}
-				this.state = 309;
+				this.state = 312;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 			}
@@ -1745,7 +1759,7 @@ export class HSQLParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 310;
+			this.state = 313;
 			this.booleanExpression(0);
 			}
 		}
@@ -1782,7 +1796,7 @@ export class HSQLParser extends Parser {
 			let _alt: number;
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 319;
+			this.state = 322;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
 			case HSQLParser.T__1:
@@ -1799,14 +1813,14 @@ export class HSQLParser extends Parser {
 				this._ctx = _localctx;
 				_prevctx = _localctx;
 
-				this.state = 313;
+				this.state = 316;
 				(_localctx as PredicatedContext)._valueExpression = this.valueExpression();
-				this.state = 315;
+				this.state = 318;
 				this._errHandler.sync(this);
-				switch ( this.interpreter.adaptivePredict(this._input, 27, this._ctx) ) {
+				switch ( this.interpreter.adaptivePredict(this._input, 28, this._ctx) ) {
 				case 1:
 					{
-					this.state = 314;
+					this.state = 317;
 					this.predicate((_localctx as PredicatedContext)._valueExpression);
 					}
 					break;
@@ -1818,9 +1832,9 @@ export class HSQLParser extends Parser {
 				_localctx = new LogicalNotContext(_localctx);
 				this._ctx = _localctx;
 				_prevctx = _localctx;
-				this.state = 317;
+				this.state = 320;
 				this.match(HSQLParser.NOT);
-				this.state = 318;
+				this.state = 321;
 				this.booleanExpression(3);
 				}
 				break;
@@ -1828,9 +1842,9 @@ export class HSQLParser extends Parser {
 				throw new NoViableAltException(this);
 			}
 			this._ctx._stop = this._input.tryLT(-1);
-			this.state = 329;
+			this.state = 332;
 			this._errHandler.sync(this);
-			_alt = this.interpreter.adaptivePredict(this._input, 30, this._ctx);
+			_alt = this.interpreter.adaptivePredict(this._input, 31, this._ctx);
 			while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
 				if (_alt === 1) {
 					if (this._parseListeners != null) {
@@ -1838,21 +1852,21 @@ export class HSQLParser extends Parser {
 					}
 					_prevctx = _localctx;
 					{
-					this.state = 327;
+					this.state = 330;
 					this._errHandler.sync(this);
-					switch ( this.interpreter.adaptivePredict(this._input, 29, this._ctx) ) {
+					switch ( this.interpreter.adaptivePredict(this._input, 30, this._ctx) ) {
 					case 1:
 						{
 						_localctx = new LogicalBinaryContext(new BooleanExpressionContext(_parentctx, _parentState));
 						(_localctx as LogicalBinaryContext)._left = _prevctx;
 						this.pushNewRecursionContext(_localctx, _startState, HSQLParser.RULE_booleanExpression);
-						this.state = 321;
+						this.state = 324;
 						if (!(this.precpred(this._ctx, 2))) {
 							throw this.createFailedPredicateException("this.precpred(this._ctx, 2)");
 						}
-						this.state = 322;
+						this.state = 325;
 						(_localctx as LogicalBinaryContext)._operator = this.match(HSQLParser.AND);
-						this.state = 323;
+						this.state = 326;
 						(_localctx as LogicalBinaryContext)._right = this.booleanExpression(3);
 						}
 						break;
@@ -1862,22 +1876,22 @@ export class HSQLParser extends Parser {
 						_localctx = new LogicalBinaryContext(new BooleanExpressionContext(_parentctx, _parentState));
 						(_localctx as LogicalBinaryContext)._left = _prevctx;
 						this.pushNewRecursionContext(_localctx, _startState, HSQLParser.RULE_booleanExpression);
-						this.state = 324;
+						this.state = 327;
 						if (!(this.precpred(this._ctx, 1))) {
 							throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
 						}
-						this.state = 325;
+						this.state = 328;
 						(_localctx as LogicalBinaryContext)._operator = this.match(HSQLParser.OR);
-						this.state = 326;
+						this.state = 329;
 						(_localctx as LogicalBinaryContext)._right = this.booleanExpression(2);
 						}
 						break;
 					}
 					}
 				}
-				this.state = 331;
+				this.state = 334;
 				this._errHandler.sync(this);
-				_alt = this.interpreter.adaptivePredict(this._input, 30, this._ctx);
+				_alt = this.interpreter.adaptivePredict(this._input, 31, this._ctx);
 			}
 			}
 		}
@@ -1901,16 +1915,16 @@ export class HSQLParser extends Parser {
 		this.enterRule(_localctx, 72, HSQLParser.RULE_predicate);
 		let _la: number;
 		try {
-			this.state = 358;
+			this.state = 361;
 			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 34, this._ctx) ) {
+			switch ( this.interpreter.adaptivePredict(this._input, 35, this._ctx) ) {
 			case 1:
 				_localctx = new ComparisonContext(_localctx);
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 332;
+				this.state = 335;
 				this.comparisonOperator();
-				this.state = 333;
+				this.state = 336;
 				(_localctx as ComparisonContext)._right = this.valueExpression();
 				}
 				break;
@@ -1919,23 +1933,23 @@ export class HSQLParser extends Parser {
 				_localctx = new BetweenContext(_localctx);
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 336;
+				this.state = 339;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 				if (_la === HSQLParser.NOT) {
 					{
-					this.state = 335;
+					this.state = 338;
 					this.match(HSQLParser.NOT);
 					}
 				}
 
-				this.state = 338;
-				this.match(HSQLParser.BETWEEN);
-				this.state = 339;
-				(_localctx as BetweenContext)._lower = this.valueExpression();
-				this.state = 340;
-				this.match(HSQLParser.AND);
 				this.state = 341;
+				this.match(HSQLParser.BETWEEN);
+				this.state = 342;
+				(_localctx as BetweenContext)._lower = this.valueExpression();
+				this.state = 343;
+				this.match(HSQLParser.AND);
+				this.state = 344;
 				(_localctx as BetweenContext)._upper = this.valueExpression();
 				}
 				break;
@@ -1944,39 +1958,39 @@ export class HSQLParser extends Parser {
 				_localctx = new InListContext(_localctx);
 				this.enterOuterAlt(_localctx, 3);
 				{
-				this.state = 344;
+				this.state = 347;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 				if (_la === HSQLParser.NOT) {
 					{
-					this.state = 343;
+					this.state = 346;
 					this.match(HSQLParser.NOT);
 					}
 				}
 
-				this.state = 346;
+				this.state = 349;
 				this.match(HSQLParser.IN);
-				this.state = 347;
+				this.state = 350;
 				this.match(HSQLParser.T__1);
-				this.state = 348;
+				this.state = 351;
 				this.valueExpression();
-				this.state = 353;
+				this.state = 356;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 				while (_la === HSQLParser.T__0) {
 					{
 					{
-					this.state = 349;
+					this.state = 352;
 					this.match(HSQLParser.T__0);
-					this.state = 350;
+					this.state = 353;
 					this.valueExpression();
 					}
 					}
-					this.state = 355;
+					this.state = 358;
 					this._errHandler.sync(this);
 					_la = this._input.LA(1);
 				}
-				this.state = 356;
+				this.state = 359;
 				this.match(HSQLParser.T__2);
 				}
 				break;
@@ -2004,7 +2018,7 @@ export class HSQLParser extends Parser {
 			_localctx = new ValueExpressionDefaultContext(_localctx);
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 360;
+			this.state = 363;
 			this.primaryExpression();
 			}
 		}
@@ -2027,14 +2041,14 @@ export class HSQLParser extends Parser {
 		let _localctx: PrimaryExpressionContext = new PrimaryExpressionContext(this._ctx, this.state);
 		this.enterRule(_localctx, 76, HSQLParser.RULE_primaryExpression);
 		try {
-			this.state = 370;
+			this.state = 373;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
 			case HSQLParser.IDENTIFIER:
 				_localctx = new IdentifierContext(_localctx);
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 362;
+				this.state = 365;
 				this.match(HSQLParser.IDENTIFIER);
 				}
 				break;
@@ -2044,7 +2058,7 @@ export class HSQLParser extends Parser {
 				_localctx = new NumericLiteralContext(_localctx);
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 363;
+				this.state = 366;
 				this.number();
 				}
 				break;
@@ -2053,7 +2067,7 @@ export class HSQLParser extends Parser {
 				_localctx = new BooleanLiteralContext(_localctx);
 				this.enterOuterAlt(_localctx, 3);
 				{
-				this.state = 364;
+				this.state = 367;
 				this.booleanValue();
 				}
 				break;
@@ -2062,7 +2076,7 @@ export class HSQLParser extends Parser {
 				_localctx = new StringLiteralContext(_localctx);
 				this.enterOuterAlt(_localctx, 4);
 				{
-				this.state = 365;
+				this.state = 368;
 				this.string();
 				}
 				break;
@@ -2070,11 +2084,11 @@ export class HSQLParser extends Parser {
 				_localctx = new ParenthesizedExpressionContext(_localctx);
 				this.enterOuterAlt(_localctx, 5);
 				{
-				this.state = 366;
+				this.state = 369;
 				this.match(HSQLParser.T__1);
-				this.state = 367;
+				this.state = 370;
 				this.expression();
-				this.state = 368;
+				this.state = 371;
 				this.match(HSQLParser.T__2);
 				}
 				break;
@@ -2101,14 +2115,14 @@ export class HSQLParser extends Parser {
 		let _localctx: NumberContext = new NumberContext(this._ctx, this.state);
 		this.enterRule(_localctx, 78, HSQLParser.RULE_number);
 		try {
-			this.state = 375;
+			this.state = 378;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
 			case HSQLParser.DECIMAL_VALUE:
 				_localctx = new DecimalLiteralContext(_localctx);
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 372;
+				this.state = 375;
 				this.match(HSQLParser.DECIMAL_VALUE);
 				}
 				break;
@@ -2116,7 +2130,7 @@ export class HSQLParser extends Parser {
 				_localctx = new DoubleLiteralContext(_localctx);
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 373;
+				this.state = 376;
 				this.match(HSQLParser.DOUBLE_VALUE);
 				}
 				break;
@@ -2124,7 +2138,7 @@ export class HSQLParser extends Parser {
 				_localctx = new IntegerLiteralContext(_localctx);
 				this.enterOuterAlt(_localctx, 3);
 				{
-				this.state = 374;
+				this.state = 377;
 				this.match(HSQLParser.INTEGER_VALUE);
 				}
 				break;
@@ -2151,14 +2165,14 @@ export class HSQLParser extends Parser {
 		let _localctx: StringContext = new StringContext(this._ctx, this.state);
 		this.enterRule(_localctx, 80, HSQLParser.RULE_string);
 		try {
-			this.state = 383;
+			this.state = 386;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
 			case HSQLParser.STRING:
 				_localctx = new BasicStringLiteralContext(_localctx);
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 377;
+				this.state = 380;
 				this.match(HSQLParser.STRING);
 				}
 				break;
@@ -2166,16 +2180,16 @@ export class HSQLParser extends Parser {
 				_localctx = new UnicodeStringLiteralContext(_localctx);
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 378;
-				this.match(HSQLParser.UNICODE_STRING);
 				this.state = 381;
+				this.match(HSQLParser.UNICODE_STRING);
+				this.state = 384;
 				this._errHandler.sync(this);
-				switch ( this.interpreter.adaptivePredict(this._input, 37, this._ctx) ) {
+				switch ( this.interpreter.adaptivePredict(this._input, 38, this._ctx) ) {
 				case 1:
 					{
-					this.state = 379;
+					this.state = 382;
 					this.match(HSQLParser.UESCAPE);
-					this.state = 380;
+					this.state = 383;
 					this.match(HSQLParser.STRING);
 					}
 					break;
@@ -2208,7 +2222,7 @@ export class HSQLParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 385;
+			this.state = 388;
 			_la = this._input.LA(1);
 			if (!(_la === HSQLParser.TRUE || _la === HSQLParser.FALSE)) {
 			this._errHandler.recoverInline(this);
@@ -2244,18 +2258,18 @@ export class HSQLParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 387;
+			this.state = 390;
 			this.match(HSQLParser.IMPORT);
-			this.state = 388;
-			this.overDefinition();
 			this.state = 391;
+			this.overDefinition();
+			this.state = 394;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if (_la === HSQLParser.AS) {
 				{
-				this.state = 389;
+				this.state = 392;
 				this.match(HSQLParser.AS);
-				this.state = 390;
+				this.state = 393;
 				_localctx._alias = this.match(HSQLParser.IDENTIFIER);
 				}
 			}
@@ -2284,26 +2298,26 @@ export class HSQLParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 393;
-			this.match(HSQLParser.OUTPUT);
-			this.state = 394;
-			this.attribute();
 			this.state = 396;
+			this.match(HSQLParser.OUTPUT);
+			this.state = 397;
+			this.attribute();
+			this.state = 399;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if (_la === HSQLParser.TITLE || _la === HSQLParser.IDENTIFIER) {
 				{
-				this.state = 395;
+				this.state = 398;
 				this.namedOutput();
 				}
 			}
 
-			this.state = 399;
+			this.state = 402;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if (_la === HSQLParser.FILE || _la === HSQLParser.STRING) {
 				{
-				this.state = 398;
+				this.state = 401;
 				this.toFile();
 				}
 			}
@@ -2329,20 +2343,20 @@ export class HSQLParser extends Parser {
 		let _localctx: AttributeContext = new AttributeContext(this._ctx, this.state);
 		this.enterRule(_localctx, 88, HSQLParser.RULE_attribute);
 		try {
-			this.state = 404;
+			this.state = 407;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
 			case HSQLParser.IDENTIFIER:
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 401;
+				this.state = 404;
 				this.definition();
 				}
 				break;
 			case HSQLParser.SELECT:
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 402;
+				this.state = 405;
 				this.selectStmt();
 				}
 				break;
@@ -2355,7 +2369,7 @@ export class HSQLParser extends Parser {
 			case HSQLParser.DOUBLE_VALUE:
 				this.enterOuterAlt(_localctx, 3);
 				{
-				this.state = 403;
+				this.state = 406;
 				this.literal();
 				}
 				break;
@@ -2385,19 +2399,19 @@ export class HSQLParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 408;
+			this.state = 411;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if (_la === HSQLParser.TITLE) {
 				{
-				this.state = 406;
+				this.state = 409;
 				this.match(HSQLParser.TITLE);
-				this.state = 407;
+				this.state = 410;
 				this.match(HSQLParser.EQ);
 				}
 			}
 
-			this.state = 410;
+			this.state = 413;
 			this.match(HSQLParser.IDENTIFIER);
 			}
 		}
@@ -2423,26 +2437,26 @@ export class HSQLParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 414;
+			this.state = 417;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if (_la === HSQLParser.FILE) {
 				{
-				this.state = 412;
+				this.state = 415;
 				this.match(HSQLParser.FILE);
-				this.state = 413;
+				this.state = 416;
 				this.match(HSQLParser.EQ);
 				}
 			}
 
-			this.state = 416;
+			this.state = 419;
 			this.match(HSQLParser.STRING);
-			this.state = 418;
+			this.state = 421;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if (_la === HSQLParser.OVERWRITE) {
 				{
-				this.state = 417;
+				this.state = 420;
 				this.match(HSQLParser.OVERWRITE);
 				}
 			}
@@ -2471,44 +2485,44 @@ export class HSQLParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 420;
+			this.state = 423;
 			this.match(HSQLParser.PLOT);
-			this.state = 421;
+			this.state = 424;
 			this.match(HSQLParser.FROM);
-			this.state = 422;
-			this.definition();
 			this.state = 425;
+			this.definition();
+			this.state = 428;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if (_la === HSQLParser.TITLE) {
 				{
-				this.state = 423;
+				this.state = 426;
 				this.match(HSQLParser.TITLE);
-				this.state = 424;
+				this.state = 427;
 				this.match(HSQLParser.EQ);
 				}
 			}
 
-			this.state = 427;
+			this.state = 430;
 			this.match(HSQLParser.IDENTIFIER);
-			this.state = 433;
+			this.state = 436;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if (_la === HSQLParser.TYPE || _la === HSQLParser.IDENTIFIER) {
 				{
-				this.state = 430;
+				this.state = 433;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 				if (_la === HSQLParser.TYPE) {
 					{
-					this.state = 428;
+					this.state = 431;
 					this.match(HSQLParser.TYPE);
-					this.state = 429;
+					this.state = 432;
 					this.match(HSQLParser.EQ);
 					}
 				}
 
-				this.state = 432;
+				this.state = 435;
 				this.match(HSQLParser.IDENTIFIER);
 				}
 			}
@@ -2537,27 +2551,27 @@ export class HSQLParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 435;
+			this.state = 438;
 			this.match(HSQLParser.MODULE);
-			this.state = 436;
+			this.state = 439;
 			this.match(HSQLParser.T__4);
-			this.state = 442;
+			this.state = 445;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			while (_la === HSQLParser.EXPORT || _la === HSQLParser.SHARED || _la === HSQLParser.IDENTIFIER) {
 				{
 				{
-				this.state = 437;
+				this.state = 440;
 				this.definitionStmt();
-				this.state = 438;
+				this.state = 441;
 				this.match(HSQLParser.SEMICOLON);
 				}
 				}
-				this.state = 444;
+				this.state = 447;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 			}
-			this.state = 445;
+			this.state = 448;
 			this.match(HSQLParser.T__5);
 			}
 		}
@@ -2583,36 +2597,36 @@ export class HSQLParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 447;
+			this.state = 450;
 			this.match(HSQLParser.ALTER);
-			this.state = 448;
+			this.state = 451;
 			this.match(HSQLParser.TABLE);
-			this.state = 449;
-			this.definition();
 			this.state = 452;
+			this.definition();
+			this.state = 455;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if (_la === HSQLParser.TO) {
 				{
-				this.state = 450;
+				this.state = 453;
 				this.match(HSQLParser.TO);
-				this.state = 451;
+				this.state = 454;
 				this.match(HSQLParser.IDENTIFIER);
 				}
 			}
 
-			this.state = 454;
+			this.state = 457;
 			this.alterOperator();
-			this.state = 455;
-			_localctx._colName = this.match(HSQLParser.IDENTIFIER);
 			this.state = 458;
+			_localctx._colName = this.match(HSQLParser.IDENTIFIER);
+			this.state = 461;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if (_la === HSQLParser.T__0) {
 				{
-				this.state = 456;
+				this.state = 459;
 				this.match(HSQLParser.T__0);
-				this.state = 457;
+				this.state = 460;
 				this.dataType();
 				}
 			}
@@ -2638,13 +2652,13 @@ export class HSQLParser extends Parser {
 		let _localctx: MlStmtContext = new MlStmtContext(this._ctx, this.state);
 		this.enterRule(_localctx, 100, HSQLParser.RULE_mlStmt);
 		try {
-			this.state = 463;
+			this.state = 466;
 			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 52, this._ctx) ) {
+			switch ( this.interpreter.adaptivePredict(this._input, 53, this._ctx) ) {
 			case 1:
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 460;
+				this.state = 463;
 				this.train();
 				}
 				break;
@@ -2652,7 +2666,7 @@ export class HSQLParser extends Parser {
 			case 2:
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 461;
+				this.state = 464;
 				this.predict();
 				}
 				break;
@@ -2660,7 +2674,7 @@ export class HSQLParser extends Parser {
 			case 3:
 				this.enterOuterAlt(_localctx, 3);
 				{
-				this.state = 462;
+				this.state = 465;
 				this.elementaryML();
 				}
 				break;
@@ -2688,40 +2702,40 @@ export class HSQLParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 465;
-			this.match(HSQLParser.TRAIN);
-			this.state = 466;
-			this.match(HSQLParser.FROM);
-			this.state = 467;
-			_localctx._ind = this.definition();
 			this.state = 468;
-			this.match(HSQLParser.T__0);
+			this.match(HSQLParser.TRAIN);
 			this.state = 469;
-			_localctx._dep = this.definition();
+			this.match(HSQLParser.FROM);
+			this.state = 470;
+			_localctx._ind = this.definition();
+			this.state = 471;
+			this.match(HSQLParser.T__0);
 			this.state = 472;
+			_localctx._dep = this.definition();
+			this.state = 475;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if (_la === HSQLParser.T__0) {
 				{
-				this.state = 470;
+				this.state = 473;
 				this.match(HSQLParser.T__0);
-				this.state = 471;
+				this.state = 474;
 				_localctx._test = this.definition();
 				}
 			}
 
-			this.state = 474;
+			this.state = 477;
 			this.match(HSQLParser.METHOD);
-			this.state = 475;
-			_localctx._method = this.match(HSQLParser.IDENTIFIER);
 			this.state = 478;
+			_localctx._method = this.match(HSQLParser.IDENTIFIER);
+			this.state = 481;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if (_la === HSQLParser.OPTION) {
 				{
-				this.state = 476;
+				this.state = 479;
 				this.match(HSQLParser.OPTION);
-				this.state = 477;
+				this.state = 480;
 				this.trainOptions();
 				}
 			}
@@ -2750,36 +2764,36 @@ export class HSQLParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 480;
+			this.state = 483;
 			this.match(HSQLParser.PREDICT);
-			this.state = 481;
+			this.state = 484;
 			this.match(HSQLParser.FROM);
-			this.state = 482;
-			_localctx._ind = this.definition();
 			this.state = 485;
+			_localctx._ind = this.definition();
+			this.state = 488;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if (_la === HSQLParser.T__0) {
 				{
-				this.state = 483;
+				this.state = 486;
 				this.match(HSQLParser.T__0);
-				this.state = 484;
+				this.state = 487;
 				_localctx._ind2 = this.definition();
 				}
 			}
 
-			this.state = 487;
+			this.state = 490;
 			this.match(HSQLParser.METHOD);
-			this.state = 488;
-			_localctx._method = this.match(HSQLParser.IDENTIFIER);
 			this.state = 491;
+			_localctx._method = this.match(HSQLParser.IDENTIFIER);
+			this.state = 494;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if (_la === HSQLParser.OPTION) {
 				{
-				this.state = 489;
+				this.state = 492;
 				this.match(HSQLParser.OPTION);
-				this.state = 490;
+				this.state = 493;
 				this.trainOptions();
 				}
 			}
@@ -2809,22 +2823,22 @@ export class HSQLParser extends Parser {
 			this.enterOuterAlt(_localctx, 1);
 			{
 			{
-			this.state = 493;
+			this.state = 496;
 			this.trainOption();
 			}
-			this.state = 498;
+			this.state = 501;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			while (_la === HSQLParser.T__0) {
 				{
 				{
-				this.state = 494;
+				this.state = 497;
 				this.match(HSQLParser.T__0);
-				this.state = 495;
+				this.state = 498;
 				this.trainOption();
 				}
 				}
-				this.state = 500;
+				this.state = 503;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 			}
@@ -2851,11 +2865,11 @@ export class HSQLParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 501;
+			this.state = 504;
 			this.match(HSQLParser.IDENTIFIER);
-			this.state = 502;
+			this.state = 505;
 			this.match(HSQLParser.EQ);
-			this.state = 503;
+			this.state = 506;
 			this.trainValue();
 			}
 		}
@@ -2878,7 +2892,7 @@ export class HSQLParser extends Parser {
 		let _localctx: TrainValueContext = new TrainValueContext(this._ctx, this.state);
 		this.enterRule(_localctx, 110, HSQLParser.RULE_trainValue);
 		try {
-			this.state = 508;
+			this.state = 511;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
 			case HSQLParser.INTEGER_VALUE:
@@ -2886,7 +2900,7 @@ export class HSQLParser extends Parser {
 			case HSQLParser.DOUBLE_VALUE:
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 505;
+				this.state = 508;
 				this.number();
 				}
 				break;
@@ -2894,14 +2908,14 @@ export class HSQLParser extends Parser {
 			case HSQLParser.UNICODE_STRING:
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 506;
+				this.state = 509;
 				this.string();
 				}
 				break;
 			case HSQLParser.IDENTIFIER:
 				this.enterOuterAlt(_localctx, 3);
 				{
-				this.state = 507;
+				this.state = 510;
 				this.definition();
 				}
 				break;
@@ -2931,22 +2945,22 @@ export class HSQLParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 510;
-			this.match(HSQLParser.PREDICT);
-			this.state = 511;
-			_localctx._model = this.definition();
-			this.state = 512;
-			this.match(HSQLParser.FROM);
 			this.state = 513;
-			_localctx._ind = this.definition();
+			this.match(HSQLParser.PREDICT);
+			this.state = 514;
+			_localctx._model = this.definition();
+			this.state = 515;
+			this.match(HSQLParser.FROM);
 			this.state = 516;
+			_localctx._ind = this.definition();
+			this.state = 519;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if (_la === HSQLParser.METHOD) {
 				{
-				this.state = 514;
+				this.state = 517;
 				this.match(HSQLParser.METHOD);
-				this.state = 515;
+				this.state = 518;
 				_localctx._method = this.match(HSQLParser.IDENTIFIER);
 				}
 			}
@@ -2975,7 +2989,7 @@ export class HSQLParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 518;
+			this.state = 521;
 			_la = this._input.LA(1);
 			if (!(_la === HSQLParser.EXPORT || _la === HSQLParser.SHARED)) {
 			this._errHandler.recoverInline(this);
@@ -3023,7 +3037,7 @@ export class HSQLParser extends Parser {
 	}
 
 	public static readonly _serializedATN: string =
-		"\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03k\u020B\x04\x02" +
+		"\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03l\u020E\x04\x02" +
 		"\t\x02\x04\x03\t\x03\x04\x04\t\x04\x04\x05\t\x05\x04\x06\t\x06\x04\x07" +
 		"\t\x07\x04\b\t\b\x04\t\t\t\x04\n\t\n\x04\v\t\v\x04\f\t\f\x04\r\t\r\x04" +
 		"\x0E\t\x0E\x04\x0F\t\x0F\x04\x10\t\x10\x04\x11\t\x11\x04\x12\t\x12\x04" +
@@ -3049,225 +3063,227 @@ export class HSQLParser extends Parser {
 		"\x03\x14\x05\x14\xF9\n\x14\x03\x15\x03\x15\x03\x15\x03\x16\x03\x16\x03" +
 		"\x16\x03\x16\x03\x16\x03\x16\x03\x16\x03\x16\x03\x17\x05\x17\u0107\n\x17" +
 		"\x03\x17\x03\x17\x05\x17\u010B\n\x17\x03\x17\x03\x17\x05\x17\u010F\n\x17" +
-		"\x03\x18\x03\x18\x03\x18\x03\x19\x03\x19\x03\x1A\x03\x1A\x03\x1B\x03\x1B" +
-		"\x03\x1C\x03\x1C\x03\x1D\x03\x1D\x03\x1D\x05\x1D\u011F\n\x1D\x03\x1E\x03" +
-		"\x1E\x03\x1F\x03\x1F\x03 \x03 \x03 \x07 \u0128\n \f \x0E \u012B\v \x03" +
-		"!\x03!\x03\"\x03\"\x03#\x03#\x03#\x07#\u0134\n#\f#\x0E#\u0137\v#\x03$" +
-		"\x03$\x03%\x03%\x03%\x05%\u013E\n%\x03%\x03%\x05%\u0142\n%\x03%\x03%\x03" +
-		"%\x03%\x03%\x03%\x07%\u014A\n%\f%\x0E%\u014D\v%\x03&\x03&\x03&\x03&\x05" +
-		"&\u0153\n&\x03&\x03&\x03&\x03&\x03&\x03&\x05&\u015B\n&\x03&\x03&\x03&" +
-		"\x03&\x03&\x07&\u0162\n&\f&\x0E&\u0165\v&\x03&\x03&\x05&\u0169\n&\x03" +
-		"\'\x03\'\x03(\x03(\x03(\x03(\x03(\x03(\x03(\x03(\x05(\u0175\n(\x03)\x03" +
-		")\x03)\x05)\u017A\n)\x03*\x03*\x03*\x03*\x05*\u0180\n*\x05*\u0182\n*\x03" +
-		"+\x03+\x03,\x03,\x03,\x03,\x05,\u018A\n,\x03-\x03-\x03-\x05-\u018F\n-" +
-		"\x03-\x05-\u0192\n-\x03.\x03.\x03.\x05.\u0197\n.\x03/\x03/\x05/\u019B" +
-		"\n/\x03/\x03/\x030\x030\x050\u01A1\n0\x030\x030\x050\u01A5\n0\x031\x03" +
-		"1\x031\x031\x031\x051\u01AC\n1\x031\x031\x031\x051\u01B1\n1\x031\x051" +
-		"\u01B4\n1\x032\x032\x032\x032\x032\x072\u01BB\n2\f2\x0E2\u01BE\v2\x03" +
-		"2\x032\x033\x033\x033\x033\x033\x053\u01C7\n3\x033\x033\x033\x033\x05" +
-		"3\u01CD\n3\x034\x034\x034\x054\u01D2\n4\x035\x035\x035\x035\x035\x035" +
-		"\x035\x055\u01DB\n5\x035\x035\x035\x035\x055\u01E1\n5\x036\x036\x036\x03" +
-		"6\x036\x056\u01E8\n6\x036\x036\x036\x036\x056\u01EE\n6\x037\x037\x037" +
-		"\x077\u01F3\n7\f7\x0E7\u01F6\v7\x038\x038\x038\x038\x039\x039\x039\x05" +
-		"9\u01FF\n9\x03:\x03:\x03:\x03:\x03:\x03:\x05:\u0207\n:\x03;\x03;\x03;" +
-		"\x02\x02\x03H<\x02\x02\x04\x02\x06\x02\b\x02\n\x02\f\x02\x0E\x02\x10\x02" +
-		"\x12\x02\x14\x02\x16\x02\x18\x02\x1A\x02\x1C\x02\x1E\x02 \x02\"\x02$\x02" +
-		"&\x02(\x02*\x02,\x02.\x020\x022\x024\x026\x028\x02:\x02<\x02>\x02@\x02" +
-		"B\x02D\x02F\x02H\x02J\x02L\x02N\x02P\x02R\x02T\x02V\x02X\x02Z\x02\\\x02" +
-		"^\x02`\x02b\x02d\x02f\x02h\x02j\x02l\x02n\x02p\x02r\x02t\x02\x02\r\x03" +
-		"\x0278\x03\x02\x1E\"\x03\x02NS\x03\x02TX\x03\x02Z_\x03\x02\t\x0E\x03\x02" +
-		"\x14\x16\x04\x02XYff\x04\x02YYff\x03\x02=>\x03\x02\x17\x18\x02\u021D\x02" +
-		"y\x03\x02\x02\x02\x04~\x03\x02\x02\x02\x06\x84\x03\x02\x02\x02\b\x87\x03" +
-		"\x02\x02\x02\n\x92\x03\x02\x02\x02\f\x98\x03\x02\x02\x02\x0E\x9A\x03\x02" +
-		"\x02\x02\x10\xB5\x03\x02\x02\x02\x12\xBD\x03\x02\x02\x02\x14\xCA\x03\x02" +
-		"\x02\x02\x16\xD6\x03\x02\x02\x02\x18\xD8\x03\x02\x02\x02\x1A\xE0\x03\x02" +
-		"\x02\x02\x1C\xE2\x03\x02\x02\x02\x1E\xE6\x03\x02\x02\x02 \xE8\x03\x02" +
-		"\x02\x02\"\xEA\x03\x02\x02\x02$\xF4\x03\x02\x02\x02&\xF6\x03\x02\x02\x02" +
-		"(\xFA\x03\x02\x02\x02*\xFD\x03\x02\x02\x02,\u010E\x03\x02\x02\x02.\u0110" +
-		"\x03\x02\x02\x020\u0113\x03\x02\x02\x022\u0115\x03\x02\x02\x024\u0117" +
-		"\x03\x02\x02\x026\u0119\x03\x02\x02\x028\u011E\x03\x02\x02\x02:\u0120" +
-		"\x03\x02\x02\x02<\u0122\x03\x02\x02\x02>\u0124\x03\x02\x02\x02@\u012C" +
-		"\x03\x02\x02\x02B\u012E\x03\x02\x02\x02D\u0130\x03\x02\x02\x02F\u0138" +
-		"\x03\x02\x02\x02H\u0141\x03\x02\x02\x02J\u0168\x03\x02\x02\x02L\u016A" +
-		"\x03\x02\x02\x02N\u0174\x03\x02\x02\x02P\u0179\x03\x02\x02\x02R\u0181" +
-		"\x03\x02\x02\x02T\u0183\x03\x02\x02\x02V\u0185\x03\x02\x02\x02X\u018B" +
-		"\x03\x02\x02\x02Z\u0196\x03\x02\x02\x02\\\u019A\x03\x02\x02\x02^\u01A0" +
-		"\x03\x02\x02\x02`\u01A6\x03\x02\x02\x02b\u01B5\x03\x02\x02\x02d\u01C1" +
-		"\x03\x02\x02\x02f\u01D1\x03\x02\x02\x02h\u01D3\x03\x02\x02\x02j\u01E2" +
-		"\x03\x02\x02\x02l\u01EF\x03\x02\x02\x02n\u01F7\x03\x02\x02\x02p\u01FE" +
-		"\x03\x02\x02\x02r\u0200\x03\x02\x02\x02t\u0208\x03\x02\x02\x02vx\x05\x04" +
-		"\x03\x02wv\x03\x02\x02\x02x{\x03\x02\x02\x02yw\x03\x02\x02\x02yz\x03\x02" +
-		"\x02\x02z|\x03\x02\x02\x02{y\x03\x02\x02\x02|}\x07\x02\x02\x03}\x03\x03" +
-		"\x02\x02\x02~\x7F\x05\x06\x04\x02\x7F\x80\x07M\x02\x02\x80\x05\x03\x02" +
-		"\x02\x02\x81\x85\x05\b\x05\x02\x82\x85\x05\f\x07\x02\x83\x85\x05V,\x02" +
-		"\x84\x81\x03\x02\x02\x02\x84\x82\x03\x02\x02\x02\x84\x83\x03\x02\x02\x02" +
-		"\x85\x07\x03\x02\x02\x02\x86\x88\x05t;\x02\x87\x86\x03\x02\x02\x02\x87" +
-		"\x88\x03\x02\x02\x02\x88\x89\x03\x02\x02\x02\x89\x8A\x07f\x02\x02\x8A" +
-		"\x8B\x07N\x02\x02\x8B\x8C\x05\n\x06\x02\x8C\t\x03\x02\x02\x02\x8D\x93" +
-		"\x05D#\x02\x8E\x93\x05\f\x07\x02\x8F\x93\x05d3\x02\x90\x93\x05f4\x02\x91" +
-		"\x93\x05b2\x02\x92\x8D\x03\x02\x02\x02\x92\x8E\x03\x02\x02\x02\x92\x8F" +
-		"\x03\x02\x02\x02\x92\x90\x03\x02\x02\x02\x92\x91\x03\x02\x02\x02\x93\v" +
-		"\x03\x02\x02\x02\x94\x99\x05\x0E\b\x02\x95\x99\x05X-\x02\x96\x99\x05`" +
-		"1\x02\x97\x99\x058\x1D\x02\x98\x94\x03\x02\x02\x02\x98\x95\x03\x02\x02" +
-		"\x02\x98\x96\x03\x02\x02\x02\x98\x97\x03\x02\x02\x02\x99\r\x03\x02\x02" +
-		"\x02\x9A\x9C\x07/\x02\x02\x9B\x9D\x074\x02\x02\x9C\x9B\x03\x02\x02\x02" +
-		"\x9C\x9D\x03\x02\x02\x02\x9D\x9E\x03\x02\x02\x02\x9E\x9F\x05\x12\n\x02" +
-		"\x9F\xA0\x070\x02\x02\xA0\xA3\x05\x1A\x0E\x02\xA1\xA2\x072\x02\x02\xA2" +
-		"\xA4\x05\x1E\x10\x02\xA3\xA1\x03\x02\x02\x02\xA3\xA4\x03\x02\x02\x02\xA4" +
-		"\xA8\x03\x02\x02\x02\xA5\xA6\x07\x1C\x02\x02\xA6\xA7\x07\x1D\x02\x02\xA7" +
-		"\xA9\x05 \x11\x02\xA8\xA5\x03\x02\x02\x02\xA8\xA9\x03\x02\x02\x02\xA9" +
-		"\xAD\x03\x02\x02\x02\xAA\xAB\x07\x1B\x02\x02\xAB\xAC\x07\x1D\x02\x02\xAC" +
-		"\xAE\x05\"\x12\x02\xAD\xAA\x03\x02\x02\x02\xAD\xAE\x03\x02\x02\x02\xAE" +
-		"\xB0\x03\x02\x02\x02\xAF\xB1\x05*\x16\x02\xB0\xAF\x03\x02\x02\x02\xB0" +
-		"\xB1\x03\x02\x02\x02\xB1\xB3\x03\x02\x02\x02\xB2\xB4\x05.\x18\x02\xB3" +
-		"\xB2\x03\x02\x02\x02\xB3\xB4\x03\x02\x02\x02\xB4\x0F\x03\x02\x02\x02\xB5" +
-		"\xBA\x05D#\x02\xB6\xB7\x07\x03\x02\x02\xB7\xB9\x05D#\x02\xB8\xB6\x03\x02" +
-		"\x02\x02\xB9\xBC\x03\x02\x02\x02\xBA\xB8\x03\x02\x02\x02\xBA\xBB\x03\x02" +
-		"\x02\x02\xBB\x11\x03\x02\x02\x02\xBC\xBA\x03\x02\x02\x02\xBD\xC2\x05\x14" +
-		"\v\x02\xBE\xBF\x07\x03\x02\x02\xBF\xC1\x05\x14\v\x02\xC0\xBE\x03\x02\x02" +
-		"\x02\xC1\xC4\x03\x02\x02\x02\xC2\xC0\x03\x02\x02\x02\xC2\xC3\x03\x02\x02" +
-		"\x02\xC3\x13\x03\x02\x02\x02\xC4\xC2\x03\x02\x02\x02\xC5\xC7\x05\x16\f" +
-		"\x02\xC6\xC8\x05\x18\r\x02\xC7\xC6\x03\x02\x02\x02\xC7\xC8\x03\x02\x02" +
-		"\x02\xC8\xCB\x03\x02\x02\x02\xC9\xCB\x07V\x02\x02\xCA\xC5\x03\x02\x02" +
-		"\x02\xCA\xC9\x03\x02\x02\x02\xCB\x15\x03\x02\x02\x02\xCC\xCD\x07f\x02" +
-		"\x02\xCD\xCE\x07\x04\x02\x02\xCE\xCF\x07V\x02\x02\xCF\xD7\x07\x05\x02" +
-		"\x02\xD0\xD1\x07f\x02\x02\xD1\xD2\x07\x04\x02\x02\xD2\xD3\x05D#\x02\xD3" +
-		"\xD4\x07\x05\x02\x02\xD4\xD7\x03\x02\x02\x02\xD5\xD7\x05D#\x02\xD6\xCC" +
-		"\x03\x02\x02\x02\xD6\xD0\x03\x02\x02\x02\xD6\xD5\x03\x02\x02\x02\xD7\x17" +
-		"\x03\x02\x02\x02\xD8\xDA\x07@\x02\x02\xD9\xDB\x05:\x1E\x02\xDA\xD9\x03" +
-		"\x02\x02\x02\xDA\xDB\x03\x02\x02\x02\xDB\xDC\x03\x02\x02\x02\xDC\xDD\x07" +
-		"f\x02\x02\xDD\x19\x03\x02\x02\x02\xDE\xE1\x05\x1C\x0F\x02\xDF\xE1\x05" +
-		"D#\x02\xE0\xDE\x03\x02\x02\x02\xE0\xDF\x03\x02\x02\x02\xE1\x1B\x03\x02" +
-		"\x02\x02\xE2\xE3\x07\x04\x02\x02\xE3\xE4\x05\x0E\b\x02\xE4\xE5\x07\x05" +
-		"\x02\x02\xE5\x1D\x03\x02\x02\x02\xE6\xE7\x05H%\x02\xE7\x1F\x03\x02\x02" +
-		"\x02\xE8\xE9\x05\x10\t\x02\xE9!\x03\x02\x02\x02\xEA\xEF\x05$\x13\x02\xEB" +
-		"\xEC\x07\x03\x02\x02\xEC\xEE\x05$\x13\x02\xED\xEB\x03\x02\x02\x02\xEE" +
-		"\xF1\x03\x02\x02\x02\xEF\xED\x03\x02\x02\x02\xEF\xF0\x03\x02\x02\x02\xF0" +
-		"#\x03\x02\x02\x02\xF1\xEF\x03\x02\x02\x02\xF2\xF5\x05&\x14\x02\xF3\xF5" +
-		"\x05(\x15\x02\xF4\xF2\x03\x02\x02\x02\xF4\xF3\x03\x02\x02\x02\xF5%\x03" +
-		"\x02\x02\x02\xF6\xF8\x05\x10\t\x02\xF7\xF9\x07\x19\x02\x02\xF8\xF7\x03" +
-		"\x02\x02\x02\xF8\xF9\x03\x02\x02\x02\xF9\'\x03\x02\x02\x02\xFA\xFB\x05" +
-		"\x10\t\x02\xFB\xFC\x07\x1A\x02\x02\xFC)\x03\x02\x02\x02\xFD\xFE\x05,\x17" +
-		"\x02\xFE\xFF\x075\x02\x02\xFF\u0100\x05D#\x02\u0100\u0101\x07+\x02\x02" +
-		"\u0101\u0102\x05D#\x02\u0102\u0103\x056\x1C\x02\u0103\u0104\x05D#\x02" +
-		"\u0104+\x03\x02\x02\x02\u0105\u0107\x076\x02\x02\u0106\u0105\x03\x02\x02" +
-		"\x02\u0106\u0107\x03\x02\x02\x02\u0107\u010F\x03\x02\x02\x02\u0108\u010A" +
-		"\t\x02\x02\x02\u0109\u010B\x07:\x02\x02\u010A\u0109\x03\x02\x02\x02\u010A" +
-		"\u010B\x03\x02\x02\x02\u010B\u010F\x03\x02\x02\x02\u010C\u010D\x079\x02" +
-		"\x02\u010D\u010F\x07:\x02\x02\u010E\u0106\x03\x02\x02\x02\u010E\u0108" +
-		"\x03\x02\x02\x02\u010E\u010C\x03\x02\x02\x02\u010F-\x03\x02\x02\x02\u0110" +
-		"\u0111\x07I\x02\x02\u0111\u0112\x05P)\x02\u0112/\x03\x02\x02\x02\u0113" +
-		"\u0114\t\x03\x02\x02\u01141\x03\x02\x02\x02\u0115\u0116\t\x04\x02\x02" +
-		"\u01163\x03\x02\x02\x02\u0117\u0118\t\x05\x02\x02\u01185\x03\x02\x02\x02" +
-		"\u0119\u011A\t\x06\x02\x02\u011A7\x03\x02\x02\x02\u011B\u011F\x05P)\x02" +
-		"\u011C\u011F\x05R*\x02\u011D\u011F\x05T+\x02\u011E\u011B\x03\x02\x02\x02" +
-		"\u011E\u011C\x03\x02\x02\x02\u011E\u011D\x03\x02\x02\x02\u011F9\x03\x02" +
-		"\x02\x02\u0120\u0121\t\x07\x02\x02\u0121;\x03\x02\x02\x02\u0122\u0123" +
-		"\t\b\x02\x02\u0123=\x03\x02\x02\x02\u0124\u0129\x05@!\x02\u0125\u0126" +
-		"\x07\x06\x02\x02\u0126\u0128\x05B\"\x02\u0127\u0125\x03\x02\x02\x02\u0128" +
-		"\u012B\x03\x02\x02\x02\u0129\u0127\x03\x02\x02\x02\u0129\u012A\x03\x02" +
-		"\x02\x02\u012A?\x03\x02\x02\x02\u012B\u0129\x03\x02\x02\x02\u012C\u012D" +
-		"\t\t\x02\x02\u012DA\x03\x02\x02\x02\u012E\u012F\t\n\x02\x02\u012FC\x03" +
-		"\x02\x02\x02\u0130\u0135\x07f\x02\x02\u0131\u0132\x07\x06\x02\x02\u0132" +
-		"\u0134\x07f\x02\x02\u0133\u0131\x03\x02\x02\x02\u0134\u0137\x03\x02\x02" +
-		"\x02\u0135\u0133\x03\x02\x02\x02\u0135\u0136\x03\x02\x02\x02\u0136E\x03" +
-		"\x02\x02\x02\u0137\u0135\x03\x02\x02\x02\u0138\u0139\x05H%\x02\u0139G" +
-		"\x03\x02\x02\x02\u013A\u013B\b%\x01\x02\u013B\u013D\x05L\'\x02\u013C\u013E" +
-		"\x05J&\x02\u013D\u013C\x03\x02\x02\x02\u013D\u013E\x03\x02\x02\x02\u013E" +
-		"\u0142\x03\x02\x02\x02\u013F\u0140\x07\\\x02\x02\u0140\u0142\x05H%\x05" +
-		"\u0141\u013A\x03\x02\x02\x02\u0141\u013F\x03\x02\x02\x02\u0142\u014B\x03" +
-		"\x02\x02\x02\u0143\u0144\f\x04\x02\x02\u0144\u0145\x07Z\x02\x02\u0145" +
-		"\u014A\x05H%\x05\u0146\u0147\f\x03\x02\x02\u0147\u0148\x07[\x02\x02\u0148" +
-		"\u014A\x05H%\x04\u0149\u0143\x03\x02\x02\x02\u0149\u0146\x03\x02\x02\x02" +
-		"\u014A\u014D\x03\x02\x02\x02\u014B\u0149\x03\x02\x02\x02\u014B\u014C\x03" +
-		"\x02\x02\x02\u014CI\x03\x02\x02\x02\u014D\u014B\x03\x02\x02\x02\u014E" +
-		"\u014F\x052\x1A\x02\u014F\u0150\x05L\'\x02\u0150\u0169\x03\x02\x02\x02" +
-		"\u0151\u0153\x07\\\x02\x02\u0152\u0151\x03\x02\x02\x02\u0152\u0153\x03" +
-		"\x02\x02\x02\u0153\u0154\x03\x02\x02\x02\u0154\u0155\x07^\x02\x02\u0155" +
-		"\u0156\x05L\'\x02\u0156\u0157\x07Z\x02\x02\u0157\u0158\x05L\'\x02\u0158" +
-		"\u0169\x03\x02\x02\x02\u0159\u015B\x07\\\x02\x02\u015A\u0159\x03\x02\x02" +
-		"\x02\u015A\u015B\x03\x02\x02\x02\u015B\u015C\x03\x02\x02\x02\u015C\u015D" +
-		"\x07]\x02\x02\u015D\u015E\x07\x04\x02\x02\u015E\u0163\x05L\'\x02\u015F" +
-		"\u0160\x07\x03\x02\x02\u0160\u0162\x05L\'\x02\u0161\u015F\x03\x02\x02" +
-		"\x02\u0162\u0165\x03\x02\x02\x02\u0163\u0161\x03\x02\x02\x02\u0163\u0164" +
-		"\x03\x02\x02\x02\u0164\u0166\x03\x02\x02\x02\u0165\u0163\x03\x02\x02\x02" +
-		"\u0166\u0167\x07\x05\x02\x02\u0167\u0169\x03\x02\x02\x02\u0168\u014E\x03" +
-		"\x02\x02\x02\u0168\u0152\x03\x02\x02\x02\u0168\u015A\x03\x02\x02\x02\u0169" +
-		"K\x03\x02\x02\x02\u016A\u016B\x05N(\x02\u016BM\x03\x02\x02\x02\u016C\u0175" +
-		"\x07f\x02\x02\u016D\u0175\x05P)\x02\u016E\u0175\x05T+\x02\u016F\u0175" +
-		"\x05R*\x02\u0170\u0171\x07\x04\x02\x02\u0171\u0172\x05F$\x02\u0172\u0173" +
-		"\x07\x05\x02\x02\u0173\u0175\x03\x02\x02\x02\u0174\u016C\x03\x02\x02\x02" +
-		"\u0174\u016D\x03\x02\x02\x02\u0174\u016E\x03\x02\x02\x02\u0174\u016F\x03" +
-		"\x02\x02\x02\u0174\u0170\x03\x02\x02\x02\u0175O\x03\x02\x02\x02\u0176" +
-		"\u017A\x07d\x02\x02\u0177\u017A\x07e\x02\x02\u0178\u017A\x07c\x02\x02" +
-		"\u0179\u0176\x03\x02\x02\x02\u0179\u0177\x03\x02\x02\x02\u0179\u0178\x03" +
-		"\x02\x02\x02\u017AQ\x03\x02\x02\x02\u017B\u0182\x07`\x02\x02\u017C\u017F" +
-		"\x07a\x02\x02\u017D\u017E\x07K\x02\x02\u017E\u0180\x07`\x02\x02\u017F" +
-		"\u017D\x03\x02\x02\x02\u017F\u0180\x03\x02\x02\x02\u0180\u0182\x03\x02" +
-		"\x02\x02\u0181\u017B\x03\x02\x02\x02\u0181\u017C\x03\x02\x02\x02\u0182" +
-		"S\x03\x02\x02\x02\u0183\u0184\t\v\x02\x02\u0184U\x03\x02\x02\x02\u0185" +
-		"\u0186\x07?\x02\x02\u0186\u0189\x05> \x02\u0187\u0188\x07@\x02\x02\u0188" +
-		"\u018A\x07f\x02\x02\u0189\u0187\x03\x02\x02\x02\u0189\u018A\x03\x02\x02" +
-		"\x02\u018AW\x03\x02\x02\x02\u018B\u018C\x07&\x02\x02\u018C\u018E\x05Z" +
-		".\x02\u018D\u018F\x05\\/\x02\u018E\u018D\x03\x02\x02\x02\u018E\u018F\x03" +
-		"\x02\x02\x02\u018F\u0191\x03\x02\x02\x02\u0190\u0192\x05^0\x02\u0191\u0190" +
-		"\x03\x02\x02\x02\u0191\u0192\x03\x02\x02\x02\u0192Y\x03\x02\x02\x02\u0193" +
-		"\u0197\x05D#\x02\u0194\u0197\x05\x0E\b\x02\u0195\u0197\x058\x1D\x02\u0196" +
-		"\u0193\x03\x02\x02\x02\u0196\u0194\x03\x02\x02\x02\u0196\u0195\x03\x02" +
-		"\x02\x02\u0197[\x03\x02\x02\x02\u0198\u0199\x07G\x02\x02\u0199\u019B\x07" +
-		"N\x02\x02\u019A\u0198\x03\x02\x02\x02\u019A\u019B\x03\x02\x02\x02\u019B" +
-		"\u019C\x03\x02\x02\x02\u019C\u019D\x07f\x02\x02\u019D]\x03\x02\x02\x02" +
-		"\u019E\u019F\x07C\x02\x02\u019F\u01A1\x07N\x02\x02\u01A0\u019E\x03\x02" +
-		"\x02\x02\u01A0\u01A1\x03\x02\x02\x02\u01A1\u01A2\x03\x02\x02\x02\u01A2" +
-		"\u01A4\x07`\x02\x02\u01A3\u01A5\x07)\x02\x02\u01A4\u01A3\x03\x02\x02\x02" +
-		"\u01A4\u01A5\x03\x02\x02\x02\u01A5_\x03\x02\x02\x02\u01A6\u01A7\x07%\x02" +
-		"\x02\u01A7\u01A8\x070\x02\x02\u01A8\u01AB\x05D#\x02\u01A9\u01AA\x07G\x02" +
-		"\x02\u01AA\u01AC\x07N\x02\x02\u01AB\u01A9\x03\x02\x02\x02\u01AB\u01AC" +
-		"\x03\x02\x02\x02\u01AC\u01AD\x03\x02\x02\x02\u01AD\u01B3\x07f\x02\x02" +
-		"\u01AE\u01AF\x07L\x02\x02\u01AF\u01B1\x07N\x02\x02\u01B0\u01AE\x03\x02" +
-		"\x02\x02\u01B0\u01B1\x03\x02\x02\x02\u01B1\u01B2\x03\x02\x02\x02\u01B2" +
-		"\u01B4\x07f\x02\x02\u01B3\u01B0\x03\x02\x02\x02\u01B3\u01B4\x03\x02\x02" +
-		"\x02\u01B4a\x03\x02\x02\x02\u01B5\u01B6\x07J\x02\x02\u01B6\u01BC\x07\x07" +
-		"\x02\x02\u01B7\u01B8\x05\b\x05\x02\u01B8\u01B9\x07M\x02\x02\u01B9\u01BB" +
-		"\x03\x02\x02\x02\u01BA\u01B7\x03\x02\x02\x02\u01BB\u01BE\x03\x02\x02\x02" +
-		"\u01BC\u01BA\x03\x02\x02\x02\u01BC\u01BD\x03\x02\x02\x02\u01BD\u01BF\x03" +
-		"\x02\x02\x02\u01BE\u01BC\x03\x02\x02\x02\u01BF\u01C0\x07\b\x02\x02\u01C0" +
-		"c\x03\x02\x02\x02\u01C1\u01C2\x07\x12\x02\x02\u01C2\u01C3\x07\x11\x02" +
-		"\x02\u01C3\u01C6\x05D#\x02\u01C4\u01C5\x07\x13\x02\x02\u01C5\u01C7\x07" +
-		"f\x02\x02\u01C6\u01C4\x03\x02\x02\x02\u01C6\u01C7\x03\x02\x02\x02\u01C7" +
-		"\u01C8\x03\x02\x02\x02\u01C8\u01C9\x05<\x1F\x02\u01C9\u01CC\x07f\x02\x02" +
-		"\u01CA\u01CB\x07\x03\x02\x02\u01CB\u01CD\x05:\x1E\x02\u01CC\u01CA\x03" +
-		"\x02\x02\x02\u01CC\u01CD\x03\x02\x02\x02\u01CDe\x03\x02\x02\x02\u01CE" +
-		"\u01D2\x05h5\x02\u01CF\u01D2\x05r:\x02\u01D0\u01D2\x05j6\x02\u01D1\u01CE" +
-		"\x03\x02\x02\x02\u01D1\u01CF\x03\x02\x02\x02\u01D1\u01D0\x03\x02\x02\x02" +
-		"\u01D2g\x03\x02\x02\x02\u01D3\u01D4\x07#\x02\x02\u01D4\u01D5\x070\x02" +
-		"\x02\u01D5\u01D6\x05D#\x02\u01D6\u01D7\x07\x03\x02\x02\u01D7\u01DA\x05" +
-		"D#\x02\u01D8\u01D9\x07\x03\x02\x02\u01D9\u01DB\x05D#\x02\u01DA\u01D8\x03" +
-		"\x02\x02\x02\u01DA\u01DB\x03\x02\x02\x02\u01DB\u01DC\x03\x02\x02\x02\u01DC" +
-		"\u01DD\x07E\x02\x02\u01DD\u01E0\x07f\x02\x02\u01DE\u01DF\x07\'\x02\x02" +
-		"\u01DF\u01E1\x05l7\x02\u01E0\u01DE\x03\x02\x02\x02\u01E0\u01E1\x03\x02" +
-		"\x02\x02\u01E1i\x03\x02\x02\x02\u01E2\u01E3\x07$\x02\x02\u01E3\u01E4\x07" +
-		"0\x02\x02\u01E4\u01E7\x05D#\x02\u01E5\u01E6\x07\x03\x02\x02\u01E6\u01E8" +
-		"\x05D#\x02\u01E7\u01E5\x03\x02\x02\x02\u01E7\u01E8\x03\x02\x02\x02\u01E8" +
-		"\u01E9\x03\x02\x02\x02\u01E9\u01EA\x07E\x02\x02\u01EA\u01ED\x07f\x02\x02" +
-		"\u01EB\u01EC\x07\'\x02\x02\u01EC\u01EE\x05l7\x02\u01ED\u01EB\x03\x02\x02" +
-		"\x02\u01ED\u01EE\x03\x02\x02\x02\u01EEk\x03\x02\x02\x02\u01EF\u01F4\x05" +
-		"n8\x02\u01F0\u01F1\x07\x03\x02\x02\u01F1\u01F3\x05n8\x02\u01F2\u01F0\x03" +
-		"\x02\x02\x02\u01F3\u01F6\x03\x02\x02\x02\u01F4\u01F2\x03\x02\x02\x02\u01F4" +
-		"\u01F5\x03\x02\x02\x02\u01F5m\x03\x02\x02\x02\u01F6\u01F4\x03\x02\x02" +
-		"\x02\u01F7\u01F8\x07f\x02\x02\u01F8\u01F9\x07N\x02\x02\u01F9\u01FA\x05" +
-		"p9\x02\u01FAo\x03\x02\x02\x02\u01FB\u01FF\x05P)\x02\u01FC\u01FF\x05R*" +
-		"\x02\u01FD\u01FF\x05D#\x02\u01FE\u01FB\x03\x02\x02\x02\u01FE\u01FC\x03" +
-		"\x02\x02\x02\u01FE\u01FD\x03\x02\x02\x02\u01FFq\x03\x02\x02\x02\u0200" +
-		"\u0201\x07$\x02\x02\u0201\u0202\x05D#\x02\u0202\u0203\x070\x02\x02\u0203" +
-		"\u0206\x05D#\x02\u0204\u0205\x07E\x02\x02\u0205\u0207\x07f\x02\x02\u0206" +
-		"\u0204\x03\x02\x02\x02\u0206\u0207\x03\x02\x02\x02\u0207s\x03\x02\x02" +
-		"\x02\u0208\u0209\t\f\x02\x02\u0209u\x03\x02\x02\x02>y\x84\x87\x92\x98" +
+		"\x03\x18\x03\x18\x03\x18\x03\x18\x05\x18\u0115\n\x18\x03\x19\x03\x19\x03" +
+		"\x1A\x03\x1A\x03\x1B\x03\x1B\x03\x1C\x03\x1C\x03\x1D\x03\x1D\x03\x1D\x05" +
+		"\x1D\u0122\n\x1D\x03\x1E\x03\x1E\x03\x1F\x03\x1F\x03 \x03 \x03 \x07 \u012B" +
+		"\n \f \x0E \u012E\v \x03!\x03!\x03\"\x03\"\x03#\x03#\x03#\x07#\u0137\n" +
+		"#\f#\x0E#\u013A\v#\x03$\x03$\x03%\x03%\x03%\x05%\u0141\n%\x03%\x03%\x05" +
+		"%\u0145\n%\x03%\x03%\x03%\x03%\x03%\x03%\x07%\u014D\n%\f%\x0E%\u0150\v" +
+		"%\x03&\x03&\x03&\x03&\x05&\u0156\n&\x03&\x03&\x03&\x03&\x03&\x03&\x05" +
+		"&\u015E\n&\x03&\x03&\x03&\x03&\x03&\x07&\u0165\n&\f&\x0E&\u0168\v&\x03" +
+		"&\x03&\x05&\u016C\n&\x03\'\x03\'\x03(\x03(\x03(\x03(\x03(\x03(\x03(\x03" +
+		"(\x05(\u0178\n(\x03)\x03)\x03)\x05)\u017D\n)\x03*\x03*\x03*\x03*\x05*" +
+		"\u0183\n*\x05*\u0185\n*\x03+\x03+\x03,\x03,\x03,\x03,\x05,\u018D\n,\x03" +
+		"-\x03-\x03-\x05-\u0192\n-\x03-\x05-\u0195\n-\x03.\x03.\x03.\x05.\u019A" +
+		"\n.\x03/\x03/\x05/\u019E\n/\x03/\x03/\x030\x030\x050\u01A4\n0\x030\x03" +
+		"0\x050\u01A8\n0\x031\x031\x031\x031\x031\x051\u01AF\n1\x031\x031\x031" +
+		"\x051\u01B4\n1\x031\x051\u01B7\n1\x032\x032\x032\x032\x032\x072\u01BE" +
+		"\n2\f2\x0E2\u01C1\v2\x032\x032\x033\x033\x033\x033\x033\x053\u01CA\n3" +
+		"\x033\x033\x033\x033\x053\u01D0\n3\x034\x034\x034\x054\u01D5\n4\x035\x03" +
+		"5\x035\x035\x035\x035\x035\x055\u01DE\n5\x035\x035\x035\x035\x055\u01E4" +
+		"\n5\x036\x036\x036\x036\x036\x056\u01EB\n6\x036\x036\x036\x036\x056\u01F1" +
+		"\n6\x037\x037\x037\x077\u01F6\n7\f7\x0E7\u01F9\v7\x038\x038\x038\x038" +
+		"\x039\x039\x039\x059\u0202\n9\x03:\x03:\x03:\x03:\x03:\x03:\x05:\u020A" +
+		"\n:\x03;\x03;\x03;\x02\x02\x03H<\x02\x02\x04\x02\x06\x02\b\x02\n\x02\f" +
+		"\x02\x0E\x02\x10\x02\x12\x02\x14\x02\x16\x02\x18\x02\x1A\x02\x1C\x02\x1E" +
+		"\x02 \x02\"\x02$\x02&\x02(\x02*\x02,\x02.\x020\x022\x024\x026\x028\x02" +
+		":\x02<\x02>\x02@\x02B\x02D\x02F\x02H\x02J\x02L\x02N\x02P\x02R\x02T\x02" +
+		"V\x02X\x02Z\x02\\\x02^\x02`\x02b\x02d\x02f\x02h\x02j\x02l\x02n\x02p\x02" +
+		"r\x02t\x02\x02\r\x03\x0278\x03\x02\x1E\"\x03\x02OT\x03\x02UY\x03\x02[" +
+		"`\x03\x02\t\x0E\x03\x02\x14\x16\x04\x02YZgg\x04\x02ZZgg\x03\x02=>\x03" +
+		"\x02\x17\x18\x02\u0221\x02y\x03\x02\x02\x02\x04~\x03\x02\x02\x02\x06\x84" +
+		"\x03\x02\x02\x02\b\x87\x03\x02\x02\x02\n\x92\x03\x02\x02\x02\f\x98\x03" +
+		"\x02\x02\x02\x0E\x9A\x03\x02\x02\x02\x10\xB5\x03\x02\x02\x02\x12\xBD\x03" +
+		"\x02\x02\x02\x14\xCA\x03\x02\x02\x02\x16\xD6\x03\x02\x02\x02\x18\xD8\x03" +
+		"\x02\x02\x02\x1A\xE0\x03\x02\x02\x02\x1C\xE2\x03\x02\x02\x02\x1E\xE6\x03" +
+		"\x02\x02\x02 \xE8\x03\x02\x02\x02\"\xEA\x03\x02\x02\x02$\xF4\x03\x02\x02" +
+		"\x02&\xF6\x03\x02\x02\x02(\xFA\x03\x02\x02\x02*\xFD\x03\x02\x02\x02,\u010E" +
+		"\x03\x02\x02\x02.\u0110\x03\x02\x02\x020\u0116\x03\x02\x02\x022\u0118" +
+		"\x03\x02\x02\x024\u011A\x03\x02\x02\x026\u011C\x03\x02\x02\x028\u0121" +
+		"\x03\x02\x02\x02:\u0123\x03\x02\x02\x02<\u0125\x03\x02\x02\x02>\u0127" +
+		"\x03\x02\x02\x02@\u012F\x03\x02\x02\x02B\u0131\x03\x02\x02\x02D\u0133" +
+		"\x03\x02\x02\x02F\u013B\x03\x02\x02\x02H\u0144\x03\x02\x02\x02J\u016B" +
+		"\x03\x02\x02\x02L\u016D\x03\x02\x02\x02N\u0177\x03\x02\x02\x02P\u017C" +
+		"\x03\x02\x02\x02R\u0184\x03\x02\x02\x02T\u0186\x03\x02\x02\x02V\u0188" +
+		"\x03\x02\x02\x02X\u018E\x03\x02\x02\x02Z\u0199\x03\x02\x02\x02\\\u019D" +
+		"\x03\x02\x02\x02^\u01A3\x03\x02\x02\x02`\u01A9\x03\x02\x02\x02b\u01B8" +
+		"\x03\x02\x02\x02d\u01C4\x03\x02\x02\x02f\u01D4\x03\x02\x02\x02h\u01D6" +
+		"\x03\x02\x02\x02j\u01E5\x03\x02\x02\x02l\u01F2\x03\x02\x02\x02n\u01FA" +
+		"\x03\x02\x02\x02p\u0201\x03\x02\x02\x02r\u0203\x03\x02\x02\x02t\u020B" +
+		"\x03\x02\x02\x02vx\x05\x04\x03\x02wv\x03\x02\x02\x02x{\x03\x02\x02\x02" +
+		"yw\x03\x02\x02\x02yz\x03\x02\x02\x02z|\x03\x02\x02\x02{y\x03\x02\x02\x02" +
+		"|}\x07\x02\x02\x03}\x03\x03\x02\x02\x02~\x7F\x05\x06\x04\x02\x7F\x80\x07" +
+		"N\x02\x02\x80\x05\x03\x02\x02\x02\x81\x85\x05\b\x05\x02\x82\x85\x05\f" +
+		"\x07\x02\x83\x85\x05V,\x02\x84\x81\x03\x02\x02\x02\x84\x82\x03\x02\x02" +
+		"\x02\x84\x83\x03\x02\x02\x02\x85\x07\x03\x02\x02\x02\x86\x88\x05t;\x02" +
+		"\x87\x86\x03\x02\x02\x02\x87\x88\x03\x02\x02\x02\x88\x89\x03\x02\x02\x02" +
+		"\x89\x8A\x07g\x02\x02\x8A\x8B\x07O\x02\x02\x8B\x8C\x05\n\x06\x02\x8C\t" +
+		"\x03\x02\x02\x02\x8D\x93\x05D#\x02\x8E\x93\x05\f\x07\x02\x8F\x93\x05d" +
+		"3\x02\x90\x93\x05f4\x02\x91\x93\x05b2\x02\x92\x8D\x03\x02\x02\x02\x92" +
+		"\x8E\x03\x02\x02\x02\x92\x8F\x03\x02\x02\x02\x92\x90\x03\x02\x02\x02\x92" +
+		"\x91\x03\x02\x02\x02\x93\v\x03\x02\x02\x02\x94\x99\x05\x0E\b\x02\x95\x99" +
+		"\x05X-\x02\x96\x99\x05`1\x02\x97\x99\x058\x1D\x02\x98\x94\x03\x02\x02" +
+		"\x02\x98\x95\x03\x02\x02\x02\x98\x96\x03\x02\x02\x02\x98\x97\x03\x02\x02" +
+		"\x02\x99\r\x03\x02\x02\x02\x9A\x9C\x07/\x02\x02\x9B\x9D\x074\x02\x02\x9C" +
+		"\x9B\x03\x02\x02\x02\x9C\x9D\x03\x02\x02\x02\x9D\x9E\x03\x02\x02\x02\x9E" +
+		"\x9F\x05\x12\n\x02\x9F\xA0\x070\x02\x02\xA0\xA3\x05\x1A\x0E\x02\xA1\xA2" +
+		"\x072\x02\x02\xA2\xA4\x05\x1E\x10\x02\xA3\xA1\x03\x02\x02\x02\xA3\xA4" +
+		"\x03\x02\x02\x02\xA4\xA8\x03\x02\x02\x02\xA5\xA6\x07\x1C\x02\x02\xA6\xA7" +
+		"\x07\x1D\x02\x02\xA7\xA9\x05 \x11\x02\xA8\xA5\x03\x02\x02\x02\xA8\xA9" +
+		"\x03\x02\x02\x02\xA9\xAD\x03\x02\x02\x02\xAA\xAB\x07\x1B\x02\x02\xAB\xAC" +
+		"\x07\x1D\x02\x02\xAC\xAE\x05\"\x12\x02\xAD\xAA\x03\x02\x02\x02\xAD\xAE" +
+		"\x03\x02\x02\x02\xAE\xB0\x03\x02\x02\x02\xAF\xB1\x05*\x16\x02\xB0\xAF" +
+		"\x03\x02\x02\x02\xB0\xB1\x03\x02\x02\x02\xB1\xB3\x03\x02\x02\x02\xB2\xB4" +
+		"\x05.\x18\x02\xB3\xB2\x03\x02\x02\x02\xB3\xB4\x03\x02\x02\x02\xB4\x0F" +
+		"\x03\x02\x02\x02\xB5\xBA\x05D#\x02\xB6\xB7\x07\x03\x02\x02\xB7\xB9\x05" +
+		"D#\x02\xB8\xB6\x03\x02\x02\x02\xB9\xBC\x03\x02\x02\x02\xBA\xB8\x03\x02" +
+		"\x02\x02\xBA\xBB\x03\x02\x02\x02\xBB\x11\x03\x02\x02\x02\xBC\xBA\x03\x02" +
+		"\x02\x02\xBD\xC2\x05\x14\v\x02\xBE\xBF\x07\x03\x02\x02\xBF\xC1\x05\x14" +
+		"\v\x02\xC0\xBE\x03\x02\x02\x02\xC1\xC4\x03\x02\x02\x02\xC2\xC0\x03\x02" +
+		"\x02\x02\xC2\xC3\x03\x02\x02\x02\xC3\x13\x03\x02\x02\x02\xC4\xC2\x03\x02" +
+		"\x02\x02\xC5\xC7\x05\x16\f\x02\xC6\xC8\x05\x18\r\x02\xC7\xC6\x03\x02\x02" +
+		"\x02\xC7\xC8\x03\x02\x02\x02\xC8\xCB\x03\x02\x02\x02\xC9\xCB\x07W\x02" +
+		"\x02\xCA\xC5\x03\x02\x02\x02\xCA\xC9\x03\x02\x02\x02\xCB\x15\x03\x02\x02" +
+		"\x02\xCC\xCD\x07g\x02\x02\xCD\xCE\x07\x04\x02\x02\xCE\xCF\x07W\x02\x02" +
+		"\xCF\xD7\x07\x05\x02\x02\xD0\xD1\x07g\x02\x02\xD1\xD2\x07\x04\x02\x02" +
+		"\xD2\xD3\x05D#\x02\xD3\xD4\x07\x05\x02\x02\xD4\xD7\x03\x02\x02\x02\xD5" +
+		"\xD7\x05D#\x02\xD6\xCC\x03\x02\x02\x02\xD6\xD0\x03\x02\x02\x02\xD6\xD5" +
+		"\x03\x02\x02\x02\xD7\x17\x03\x02\x02\x02\xD8\xDA\x07@\x02\x02\xD9\xDB" +
+		"\x05:\x1E\x02\xDA\xD9\x03\x02\x02\x02\xDA\xDB\x03\x02\x02\x02\xDB\xDC" +
+		"\x03\x02\x02\x02\xDC\xDD\x07g\x02\x02\xDD\x19\x03\x02\x02\x02\xDE\xE1" +
+		"\x05\x1C\x0F\x02\xDF\xE1\x05D#\x02\xE0\xDE\x03\x02\x02\x02\xE0\xDF\x03" +
+		"\x02\x02\x02\xE1\x1B\x03\x02\x02\x02\xE2\xE3\x07\x04\x02\x02\xE3\xE4\x05" +
+		"\x0E\b\x02\xE4\xE5\x07\x05\x02\x02\xE5\x1D\x03\x02\x02\x02\xE6\xE7\x05" +
+		"H%\x02\xE7\x1F\x03\x02\x02\x02\xE8\xE9\x05\x10\t\x02\xE9!\x03\x02\x02" +
+		"\x02\xEA\xEF\x05$\x13\x02\xEB\xEC\x07\x03\x02\x02\xEC\xEE\x05$\x13\x02" +
+		"\xED\xEB\x03\x02\x02\x02\xEE\xF1\x03\x02\x02\x02\xEF\xED\x03\x02\x02\x02" +
+		"\xEF\xF0\x03\x02\x02\x02\xF0#\x03\x02\x02\x02\xF1\xEF\x03\x02\x02\x02" +
+		"\xF2\xF5\x05&\x14\x02\xF3\xF5\x05(\x15\x02\xF4\xF2\x03\x02\x02\x02\xF4" +
+		"\xF3\x03\x02\x02\x02\xF5%\x03\x02\x02\x02\xF6\xF8\x05\x10\t\x02\xF7\xF9" +
+		"\x07\x19\x02\x02\xF8\xF7\x03\x02\x02\x02\xF8\xF9\x03\x02\x02\x02\xF9\'" +
+		"\x03\x02\x02\x02\xFA\xFB\x05\x10\t\x02\xFB\xFC\x07\x1A\x02\x02\xFC)\x03" +
+		"\x02\x02\x02\xFD\xFE\x05,\x17\x02\xFE\xFF\x075\x02\x02\xFF\u0100\x05D" +
+		"#\x02\u0100\u0101\x07+\x02\x02\u0101\u0102\x05D#\x02\u0102\u0103\x056" +
+		"\x1C\x02\u0103\u0104\x05D#\x02\u0104+\x03\x02\x02\x02\u0105\u0107\x07" +
+		"6\x02\x02\u0106\u0105\x03\x02\x02\x02\u0106\u0107\x03\x02\x02\x02\u0107" +
+		"\u010F\x03\x02\x02\x02\u0108\u010A\t\x02\x02\x02\u0109\u010B\x07:\x02" +
+		"\x02\u010A\u0109\x03\x02\x02\x02\u010A\u010B\x03\x02\x02\x02\u010B\u010F" +
+		"\x03\x02\x02\x02\u010C\u010D\x079\x02\x02\u010D\u010F\x07:\x02\x02\u010E" +
+		"\u0106\x03\x02\x02\x02\u010E\u0108\x03\x02\x02\x02\u010E\u010C\x03\x02" +
+		"\x02\x02\u010F-\x03\x02\x02\x02\u0110\u0111\x07I\x02\x02\u0111\u0114\x05" +
+		"P)\x02\u0112\u0113\x07J\x02\x02\u0113\u0115\x05P)\x02\u0114\u0112\x03" +
+		"\x02\x02\x02\u0114\u0115\x03\x02\x02\x02\u0115/\x03\x02\x02\x02\u0116" +
+		"\u0117\t\x03\x02\x02\u01171\x03\x02\x02\x02\u0118\u0119\t\x04\x02\x02" +
+		"\u01193\x03\x02\x02\x02\u011A\u011B\t\x05\x02\x02\u011B5\x03\x02\x02\x02" +
+		"\u011C\u011D\t\x06\x02\x02\u011D7\x03\x02\x02\x02\u011E\u0122\x05P)\x02" +
+		"\u011F\u0122\x05R*\x02\u0120\u0122\x05T+\x02\u0121\u011E\x03\x02\x02\x02" +
+		"\u0121\u011F\x03\x02\x02\x02\u0121\u0120\x03\x02\x02\x02\u01229\x03\x02" +
+		"\x02\x02\u0123\u0124\t\x07\x02\x02\u0124;\x03\x02\x02\x02\u0125\u0126" +
+		"\t\b\x02\x02\u0126=\x03\x02\x02\x02\u0127\u012C\x05@!\x02\u0128\u0129" +
+		"\x07\x06\x02\x02\u0129\u012B\x05B\"\x02\u012A\u0128\x03\x02\x02\x02\u012B" +
+		"\u012E\x03\x02\x02\x02\u012C\u012A\x03\x02\x02\x02\u012C\u012D\x03\x02" +
+		"\x02\x02\u012D?\x03\x02\x02\x02\u012E\u012C\x03\x02\x02\x02\u012F\u0130" +
+		"\t\t\x02\x02\u0130A\x03\x02\x02\x02\u0131\u0132\t\n\x02\x02\u0132C\x03" +
+		"\x02\x02\x02\u0133\u0138\x07g\x02\x02\u0134\u0135\x07\x06\x02\x02\u0135" +
+		"\u0137\x07g\x02\x02\u0136\u0134\x03\x02\x02\x02\u0137\u013A\x03\x02\x02" +
+		"\x02\u0138\u0136\x03\x02\x02\x02\u0138\u0139\x03\x02\x02\x02\u0139E\x03" +
+		"\x02\x02\x02\u013A\u0138\x03\x02\x02\x02\u013B\u013C\x05H%\x02\u013CG" +
+		"\x03\x02\x02\x02\u013D\u013E\b%\x01\x02\u013E\u0140\x05L\'\x02\u013F\u0141" +
+		"\x05J&\x02\u0140\u013F\x03\x02\x02\x02\u0140\u0141\x03\x02\x02\x02\u0141" +
+		"\u0145\x03\x02\x02\x02\u0142\u0143\x07]\x02\x02\u0143\u0145\x05H%\x05" +
+		"\u0144\u013D\x03\x02\x02\x02\u0144\u0142\x03\x02\x02\x02\u0145\u014E\x03" +
+		"\x02\x02\x02\u0146\u0147\f\x04\x02\x02\u0147\u0148\x07[\x02\x02\u0148" +
+		"\u014D\x05H%\x05\u0149\u014A\f\x03\x02\x02\u014A\u014B\x07\\\x02\x02\u014B" +
+		"\u014D\x05H%\x04\u014C\u0146\x03\x02\x02\x02\u014C\u0149\x03\x02\x02\x02" +
+		"\u014D\u0150\x03\x02\x02\x02\u014E\u014C\x03\x02\x02\x02\u014E\u014F\x03" +
+		"\x02\x02\x02\u014FI\x03\x02\x02\x02\u0150\u014E\x03\x02\x02\x02\u0151" +
+		"\u0152\x052\x1A\x02\u0152\u0153\x05L\'\x02\u0153\u016C\x03\x02\x02\x02" +
+		"\u0154\u0156\x07]\x02\x02\u0155\u0154\x03\x02\x02\x02\u0155\u0156\x03" +
+		"\x02\x02\x02\u0156\u0157\x03\x02\x02\x02\u0157\u0158\x07_\x02\x02\u0158" +
+		"\u0159\x05L\'\x02\u0159\u015A\x07[\x02\x02\u015A\u015B\x05L\'\x02\u015B" +
+		"\u016C\x03\x02\x02\x02\u015C\u015E\x07]\x02\x02\u015D\u015C\x03\x02\x02" +
+		"\x02\u015D\u015E\x03\x02\x02\x02\u015E\u015F\x03\x02\x02\x02\u015F\u0160" +
+		"\x07^\x02\x02\u0160\u0161\x07\x04\x02\x02\u0161\u0166\x05L\'\x02\u0162" +
+		"\u0163\x07\x03\x02\x02\u0163\u0165\x05L\'\x02\u0164\u0162\x03\x02\x02" +
+		"\x02\u0165\u0168\x03\x02\x02\x02\u0166\u0164\x03\x02\x02\x02\u0166\u0167" +
+		"\x03\x02\x02\x02\u0167\u0169\x03\x02\x02\x02\u0168\u0166\x03\x02\x02\x02" +
+		"\u0169\u016A\x07\x05\x02\x02\u016A\u016C\x03\x02\x02\x02\u016B\u0151\x03" +
+		"\x02\x02\x02\u016B\u0155\x03\x02\x02\x02\u016B\u015D\x03\x02\x02\x02\u016C" +
+		"K\x03\x02\x02\x02\u016D\u016E\x05N(\x02\u016EM\x03\x02\x02\x02\u016F\u0178" +
+		"\x07g\x02\x02\u0170\u0178\x05P)\x02\u0171\u0178\x05T+\x02\u0172\u0178" +
+		"\x05R*\x02\u0173\u0174\x07\x04\x02\x02\u0174\u0175\x05F$\x02\u0175\u0176" +
+		"\x07\x05\x02\x02\u0176\u0178\x03\x02\x02\x02\u0177\u016F\x03\x02\x02\x02" +
+		"\u0177\u0170\x03\x02\x02\x02\u0177\u0171\x03\x02\x02\x02\u0177\u0172\x03" +
+		"\x02\x02\x02\u0177\u0173\x03\x02\x02\x02\u0178O\x03\x02\x02\x02\u0179" +
+		"\u017D\x07e\x02\x02\u017A\u017D\x07f\x02\x02\u017B\u017D\x07d\x02\x02" +
+		"\u017C\u0179\x03\x02\x02\x02\u017C\u017A\x03\x02\x02\x02\u017C\u017B\x03" +
+		"\x02\x02\x02\u017DQ\x03\x02\x02\x02\u017E\u0185\x07a\x02\x02\u017F\u0182" +
+		"\x07b\x02\x02\u0180\u0181\x07L\x02\x02\u0181\u0183\x07a\x02\x02\u0182" +
+		"\u0180\x03\x02\x02\x02\u0182\u0183\x03\x02\x02\x02\u0183\u0185\x03\x02" +
+		"\x02\x02\u0184\u017E\x03\x02\x02\x02\u0184\u017F\x03\x02\x02\x02\u0185" +
+		"S\x03\x02\x02\x02\u0186\u0187\t\v\x02\x02\u0187U\x03\x02\x02\x02\u0188" +
+		"\u0189\x07?\x02\x02\u0189\u018C\x05> \x02\u018A\u018B\x07@\x02\x02\u018B" +
+		"\u018D\x07g\x02\x02\u018C\u018A\x03\x02\x02\x02\u018C\u018D\x03\x02\x02" +
+		"\x02\u018DW\x03\x02\x02\x02\u018E\u018F\x07&\x02\x02\u018F\u0191\x05Z" +
+		".\x02\u0190\u0192\x05\\/\x02\u0191\u0190\x03\x02\x02\x02\u0191\u0192\x03" +
+		"\x02\x02\x02\u0192\u0194\x03\x02\x02\x02\u0193\u0195\x05^0\x02\u0194\u0193" +
+		"\x03\x02\x02\x02\u0194\u0195\x03\x02\x02\x02\u0195Y\x03\x02\x02\x02\u0196" +
+		"\u019A\x05D#\x02\u0197\u019A\x05\x0E\b\x02\u0198\u019A\x058\x1D\x02\u0199" +
+		"\u0196\x03\x02\x02\x02\u0199\u0197\x03\x02\x02\x02\u0199\u0198\x03\x02" +
+		"\x02\x02\u019A[\x03\x02\x02\x02\u019B\u019C\x07G\x02\x02\u019C\u019E\x07" +
+		"O\x02\x02\u019D\u019B\x03\x02\x02\x02\u019D\u019E\x03\x02\x02\x02\u019E" +
+		"\u019F\x03\x02\x02\x02\u019F\u01A0\x07g\x02\x02\u01A0]\x03\x02\x02\x02" +
+		"\u01A1\u01A2\x07C\x02\x02\u01A2\u01A4\x07O\x02\x02\u01A3\u01A1\x03\x02" +
+		"\x02\x02\u01A3\u01A4\x03\x02\x02\x02\u01A4\u01A5\x03\x02\x02\x02\u01A5" +
+		"\u01A7\x07a\x02\x02\u01A6\u01A8\x07)\x02\x02\u01A7\u01A6\x03\x02\x02\x02" +
+		"\u01A7\u01A8\x03\x02\x02\x02\u01A8_\x03\x02\x02\x02\u01A9\u01AA\x07%\x02" +
+		"\x02\u01AA\u01AB\x070\x02\x02\u01AB\u01AE\x05D#\x02\u01AC\u01AD\x07G\x02" +
+		"\x02\u01AD\u01AF\x07O\x02\x02\u01AE\u01AC\x03\x02\x02\x02\u01AE\u01AF" +
+		"\x03\x02\x02\x02\u01AF\u01B0\x03\x02\x02\x02\u01B0\u01B6\x07g\x02\x02" +
+		"\u01B1\u01B2\x07M\x02\x02\u01B2\u01B4\x07O\x02\x02\u01B3\u01B1\x03\x02" +
+		"\x02\x02\u01B3\u01B4\x03\x02\x02\x02\u01B4\u01B5\x03\x02\x02\x02\u01B5" +
+		"\u01B7\x07g\x02\x02\u01B6\u01B3\x03\x02\x02\x02\u01B6\u01B7\x03\x02\x02" +
+		"\x02\u01B7a\x03\x02\x02\x02\u01B8\u01B9\x07K\x02\x02\u01B9\u01BF\x07\x07" +
+		"\x02\x02\u01BA\u01BB\x05\b\x05\x02\u01BB\u01BC\x07N\x02\x02\u01BC\u01BE" +
+		"\x03\x02\x02\x02\u01BD\u01BA\x03\x02\x02\x02\u01BE\u01C1\x03\x02\x02\x02" +
+		"\u01BF\u01BD\x03\x02\x02\x02\u01BF\u01C0\x03\x02\x02\x02\u01C0\u01C2\x03" +
+		"\x02\x02\x02\u01C1\u01BF\x03\x02\x02\x02\u01C2\u01C3\x07\b\x02\x02\u01C3" +
+		"c\x03\x02\x02\x02\u01C4\u01C5\x07\x12\x02\x02\u01C5\u01C6\x07\x11\x02" +
+		"\x02\u01C6\u01C9\x05D#\x02\u01C7\u01C8\x07\x13\x02\x02\u01C8\u01CA\x07" +
+		"g\x02\x02\u01C9\u01C7\x03\x02\x02\x02\u01C9\u01CA\x03\x02\x02\x02\u01CA" +
+		"\u01CB\x03\x02\x02\x02\u01CB\u01CC\x05<\x1F\x02\u01CC\u01CF\x07g\x02\x02" +
+		"\u01CD\u01CE\x07\x03\x02\x02\u01CE\u01D0\x05:\x1E\x02\u01CF\u01CD\x03" +
+		"\x02\x02\x02\u01CF\u01D0\x03\x02\x02\x02\u01D0e\x03\x02\x02\x02\u01D1" +
+		"\u01D5\x05h5\x02\u01D2\u01D5\x05r:\x02\u01D3\u01D5\x05j6\x02\u01D4\u01D1" +
+		"\x03\x02\x02\x02\u01D4\u01D2\x03\x02\x02\x02\u01D4\u01D3\x03\x02\x02\x02" +
+		"\u01D5g\x03\x02\x02\x02\u01D6\u01D7\x07#\x02\x02\u01D7\u01D8\x070\x02" +
+		"\x02\u01D8\u01D9\x05D#\x02\u01D9\u01DA\x07\x03\x02\x02\u01DA\u01DD\x05" +
+		"D#\x02\u01DB\u01DC\x07\x03\x02\x02\u01DC\u01DE\x05D#\x02\u01DD\u01DB\x03" +
+		"\x02\x02\x02\u01DD\u01DE\x03\x02\x02\x02\u01DE\u01DF\x03\x02\x02\x02\u01DF" +
+		"\u01E0\x07E\x02\x02\u01E0\u01E3\x07g\x02\x02\u01E1\u01E2\x07\'\x02\x02" +
+		"\u01E2\u01E4\x05l7\x02\u01E3\u01E1\x03\x02\x02\x02\u01E3\u01E4\x03\x02" +
+		"\x02\x02\u01E4i\x03\x02\x02\x02\u01E5\u01E6\x07$\x02\x02\u01E6\u01E7\x07" +
+		"0\x02\x02\u01E7\u01EA\x05D#\x02\u01E8\u01E9\x07\x03\x02\x02\u01E9\u01EB" +
+		"\x05D#\x02\u01EA\u01E8\x03\x02\x02\x02\u01EA\u01EB\x03\x02\x02\x02\u01EB" +
+		"\u01EC\x03\x02\x02\x02\u01EC\u01ED\x07E\x02\x02\u01ED\u01F0\x07g\x02\x02" +
+		"\u01EE\u01EF\x07\'\x02\x02\u01EF\u01F1\x05l7\x02\u01F0\u01EE\x03\x02\x02" +
+		"\x02\u01F0\u01F1\x03\x02\x02\x02\u01F1k\x03\x02\x02\x02\u01F2\u01F7\x05" +
+		"n8\x02\u01F3\u01F4\x07\x03\x02\x02\u01F4\u01F6\x05n8\x02\u01F5\u01F3\x03" +
+		"\x02\x02\x02\u01F6\u01F9\x03\x02\x02\x02\u01F7\u01F5\x03\x02\x02\x02\u01F7" +
+		"\u01F8\x03\x02\x02\x02\u01F8m\x03\x02\x02\x02\u01F9\u01F7\x03\x02\x02" +
+		"\x02\u01FA\u01FB\x07g\x02\x02\u01FB\u01FC\x07O\x02\x02\u01FC\u01FD\x05" +
+		"p9\x02\u01FDo\x03\x02\x02\x02\u01FE\u0202\x05P)\x02\u01FF\u0202\x05R*" +
+		"\x02\u0200\u0202\x05D#\x02\u0201\u01FE\x03\x02\x02\x02\u0201\u01FF\x03" +
+		"\x02\x02\x02\u0201\u0200\x03\x02\x02\x02\u0202q\x03\x02\x02\x02\u0203" +
+		"\u0204\x07$\x02\x02\u0204\u0205\x05D#\x02\u0205\u0206\x070\x02\x02\u0206" +
+		"\u0209\x05D#\x02\u0207\u0208\x07E\x02\x02\u0208\u020A\x07g\x02\x02\u0209" +
+		"\u0207\x03\x02\x02\x02\u0209\u020A\x03\x02\x02\x02\u020As\x03\x02\x02" +
+		"\x02\u020B\u020C\t\f\x02\x02\u020Cu\x03\x02\x02\x02?y\x84\x87\x92\x98" +
 		"\x9C\xA3\xA8\xAD\xB0\xB3\xBA\xC2\xC7\xCA\xD6\xDA\xE0\xEF\xF4\xF8\u0106" +
-		"\u010A\u010E\u011E\u0129\u0135\u013D\u0141\u0149\u014B\u0152\u015A\u0163" +
-		"\u0168\u0174\u0179\u017F\u0181\u0189\u018E\u0191\u0196\u019A\u01A0\u01A4" +
-		"\u01AB\u01B0\u01B3\u01BC\u01C6\u01CC\u01D1\u01DA\u01E0\u01E7\u01ED\u01F4" +
-		"\u01FE\u0206";
+		"\u010A\u010E\u0114\u0121\u012C\u0138\u0140\u0144\u014C\u014E\u0155\u015D" +
+		"\u0166\u016B\u0177\u017C\u0182\u0184\u018C\u0191\u0194\u0199\u019D\u01A3" +
+		"\u01A7\u01AE\u01B3\u01B6\u01BF\u01C9\u01CF\u01D4\u01DD\u01E3\u01EA\u01F0" +
+		"\u01F7\u0201\u0209";
 	public static __ATN: ATN;
 	public static get _ATN(): ATN {
 		if (!HSQLParser.__ATN) {
@@ -3470,8 +3486,8 @@ export class SelectStmtContext extends ParserRuleContext {
 	public joinClause(): JoinClauseContext | undefined {
 		return this.tryGetRuleContext(0, JoinClauseContext);
 	}
-	public limitClause(): LimitClauseContext | undefined {
-		return this.tryGetRuleContext(0, LimitClauseContext);
+	public limitOffsetClause(): LimitOffsetClauseContext | undefined {
+		return this.tryGetRuleContext(0, LimitOffsetClauseContext);
 	}
 	public selectWhereClause(): SelectWhereClauseContext | undefined {
 		return this.tryGetRuleContext(0, SelectWhereClauseContext);
@@ -3962,20 +3978,27 @@ export class FullOuterJoinContext extends JoinTypeContext {
 }
 
 
-export class LimitClauseContext extends ParserRuleContext {
+export class LimitOffsetClauseContext extends ParserRuleContext {
 	public LIMIT(): TerminalNode { return this.getToken(HSQLParser.LIMIT, 0); }
-	public number(): NumberContext {
-		return this.getRuleContext(0, NumberContext);
+	public number(): NumberContext[];
+	public number(i: number): NumberContext;
+	public number(i?: number): NumberContext | NumberContext[] {
+		if (i === undefined) {
+			return this.getRuleContexts(NumberContext);
+		} else {
+			return this.getRuleContext(i, NumberContext);
+		}
 	}
+	public OFFSET(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.OFFSET, 0); }
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
 	}
 	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_limitClause; }
+	public get ruleIndex(): number { return HSQLParser.RULE_limitOffsetClause; }
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitLimitClause) {
-			return visitor.visitLimitClause(this);
+		if (visitor.visitLimitOffsetClause) {
+			return visitor.visitLimitOffsetClause(this);
 		} else {
 			return visitor.visitChildren(this);
 		}
