@@ -12,6 +12,12 @@ import { InListContext } from "./HSQLParser";
 import { DecimalLiteralContext } from "./HSQLParser";
 import { DoubleLiteralContext } from "./HSQLParser";
 import { IntegerLiteralContext } from "./HSQLParser";
+import { CountAggrContext } from "./HSQLParser";
+import { AvgAggrContext } from "./HSQLParser";
+import { MinAggrContext } from "./HSQLParser";
+import { MaxAggrContext } from "./HSQLParser";
+import { SumAggrContext } from "./HSQLParser";
+import { TrimAggrContext } from "./HSQLParser";
 import { ValueExpressionDefaultContext } from "./HSQLParser";
 import { BasicStringLiteralContext } from "./HSQLParser";
 import { UnicodeStringLiteralContext } from "./HSQLParser";
@@ -55,7 +61,6 @@ import { LimitClauseContext } from "./HSQLParser";
 import { OffsetClauseContext } from "./HSQLParser";
 import { AggregationOperatorContext } from "./HSQLParser";
 import { ComparisonOperatorContext } from "./HSQLParser";
-import { ArithmeticOPERATORContext } from "./HSQLParser";
 import { LogicalOperatorContext } from "./HSQLParser";
 import { LiteralContext } from "./HSQLParser";
 import { DataTypeContext } from "./HSQLParser";
@@ -169,6 +174,54 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitIntegerLiteral?: (ctx: IntegerLiteralContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `countAggr`
+	 * labeled alternative in `HSQLParser.aggregationOperator`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitCountAggr?: (ctx: CountAggrContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `avgAggr`
+	 * labeled alternative in `HSQLParser.aggregationOperator`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitAvgAggr?: (ctx: AvgAggrContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `minAggr`
+	 * labeled alternative in `HSQLParser.aggregationOperator`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitMinAggr?: (ctx: MinAggrContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `maxAggr`
+	 * labeled alternative in `HSQLParser.aggregationOperator`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitMaxAggr?: (ctx: MaxAggrContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `sumAggr`
+	 * labeled alternative in `HSQLParser.aggregationOperator`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitSumAggr?: (ctx: SumAggrContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `trimAggr`
+	 * labeled alternative in `HSQLParser.aggregationOperator`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitTrimAggr?: (ctx: TrimAggrContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by the `valueExpressionDefault`
@@ -486,13 +539,6 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitComparisonOperator?: (ctx: ComparisonOperatorContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.arithmeticOPERATOR`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitArithmeticOPERATOR?: (ctx: ArithmeticOPERATORContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `HSQLParser.logicalOperator`.

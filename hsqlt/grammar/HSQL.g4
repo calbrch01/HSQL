@@ -67,20 +67,27 @@ joinClause:
 joinType:
 	INNER?									# innerJoin
 	| (specifier = (LEFT | RIGHT) OUTER?)	# outerJoin
-	| specifier = FULL OUTER				# fullOuterJoin;
+	| (specifier = FULL OUTER)				# fullOuterJoin;
 
 limitClause: LIMIT number;
 offsetClause: OFFSET number;
 
 // operators: comparisonOperator | arithmeticOPERATOR | logicalOperator;
-aggregationOperator: COUNT | AVG | MIN | MAX | SUM;
+aggregationOperator
+	: COUNT #countAggr
+	| AVG #avgAggr
+	| MIN # minAggr
+	| MAX # maxAggr
+	| SUM # sumAggr
+	| TRIM # trimAggr
+	;
 comparisonOperator: EQ | NEQ | LT | LTE | GT | GTE;
-arithmeticOPERATOR:
-	PLUS
-	| SUBSTRACT
-	| MULTIPLY
-	| DIVIDE
-	| MODULO;
+// arithmeticOPERATOR:
+// 	PLUS
+// 	| SUBSTRACT
+// 	| MULTIPLY
+// 	| DIVIDE
+// 	| MODULO;
 logicalOperator: AND | OR | NOT | IN | BETWEEN | EXISTS;
 literal: number | string | booleanValue;
 // todo: More precise defination
@@ -238,6 +245,7 @@ AVG: A V G;
 SUM: S U M;
 MIN: M I N;
 MAX: M A X;
+TRIM: T R I M;
 
 // Actions
 TRAIN: T R A I N;
