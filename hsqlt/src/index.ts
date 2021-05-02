@@ -18,26 +18,31 @@ const { argv: args } = yargs(process.argv.slice(2))
         desc: 'No warnings',
         alias: ['no-warn'],
         type: 'boolean',
+        default: false,
     })
     .option('e', {
         desc: 'Skip dependency type checks',
         alias: ['depcheck-skip'],
         type: 'boolean',
+        default: false,
     })
     .option('p', {
         desc: 'pedantic (Throw errors for warnings too)',
         alias: ['pedantic'],
         type: 'boolean',
+        default: false,
     })
     .option('o', {
         desc: 'Output to stdout',
         alias: ['output-std'],
         type: 'boolean',
+        default: false,
     })
     .option('d', {
         desc: 'Skip writing dependencies to files',
         alias: 'dont-write-deps',
         type: 'boolean',
+        default: false,
     })
     .option('t', {
         desc: 'Target',
@@ -136,7 +141,7 @@ function main(argv: argType, execMode: ExecMode): void {
     // initialize managers
     const writer: OutputManager = argv.o ? new StandardOutput() : new FileOutput();
     //taskmap must have no map, and no baseloc for now
-    const taskmanager = new TaskManager(argv.file, argv.p ?? false, undefined, writer, undefined, argv.k);
+    const taskmanager = new TaskManager(argv.file, argv.p, undefined, writer, undefined, argv.k);
 
     switch (execMode) {
         case ExecMode.TREE:
