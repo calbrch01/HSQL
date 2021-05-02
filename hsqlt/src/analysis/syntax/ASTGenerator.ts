@@ -7,22 +7,9 @@ import { HSQLVisitor } from '../../misc/grammar/HSQLVisitor';
 import { ReadingManager } from '../../managers/ReadingManager';
 import { ErrorManager } from '../../misc/error/Error';
 import { TaskManager } from '../../managers/TaskManager';
+// import { IdentifierCollector } from './IdentifierCollector';
 import { QualifiedIdentifier } from '../../misc/ast/QualifiedIdentifier';
-import { TerminalNode } from 'antlr4ts/tree/TerminalNode';
 
-class IdentifierCollector
-    extends AbstractParseTreeVisitor<QualifiedIdentifier>
-    implements HSQLVisitor<QualifiedIdentifier> {
-    defaultResult() {
-        return new QualifiedIdentifier();
-    }
-    visitTerminal(ctx: TerminalNode) {
-        return new QualifiedIdentifier(ctx.text);
-    }
-    protected aggregateResult(aggregate: QualifiedIdentifier, nextResult: QualifiedIdentifier) {
-        return new QualifiedIdentifier(...aggregate.qidentifier, ...nextResult.qidentifier);
-    }
-}
 export class ASTGenerator extends AbstractParseTreeVisitor<void> implements HSQLVisitor<void> {
     protected ast: AST;
     constructor(protected taskManager: TaskManager, protected errorManager: ErrorManager) {
@@ -34,7 +21,7 @@ export class ASTGenerator extends AbstractParseTreeVisitor<void> implements HSQL
     }
 
     visitImportStmt(ctx: ImportStmtContext) {
-        const importFrom = ctx.overQualifiedIdentifier().accept(new IdentifierCollector());
+        const importFrom = QualifiedIdentifier.fromOverDefinition(ctx.overDefinition()); //ctx.overDefinition().accept(new IdentifierCollector());
         const importAs = ctx.IDENTIFIER()?.text;
         /*
          * Now since the identifiers list is a ts tuple
