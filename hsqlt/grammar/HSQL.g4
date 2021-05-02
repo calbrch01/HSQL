@@ -20,14 +20,13 @@ actionStmt: selectStmt | outputStmt | plotStmt | literal;
 /* SELECT STATEMENT
  */
 selectStmt:
-	SELECT DISTINCT? columns = selectColumns FROM fromclause = selectFromClause (
+	SELECT DISTINCT? columns = selectColumns FROM fromclause = selectFromClause joinClause? (
 		WHERE whereclause = selectWhereClause
 	)? selectGroupByClause? (
 		ORDER BY orderbyclause = orderByClause
-	)? joinClause? limitClause? offsetClause?;
+	)? limitClause? offsetClause?;
 
 selectGroupByClause: GROUP BY groupByClause;
-
 
 definitionSet: definition ( ',' definition)*;
 
@@ -73,21 +72,15 @@ limitClause: LIMIT number;
 offsetClause: OFFSET number;
 
 // operators: comparisonOperator | arithmeticOPERATOR | logicalOperator;
-aggregationOperator
-	: COUNT #countAggr
-	| AVG #avgAggr
-	| MIN # minAggr
-	| MAX # maxAggr
-	| SUM # sumAggr
-	| TRIM # trimAggr
-	;
+aggregationOperator:
+	COUNT	# countAggr
+	| AVG	# avgAggr
+	| MIN	# minAggr
+	| MAX	# maxAggr
+	| SUM	# sumAggr
+	| TRIM	# trimAggr;
 comparisonOperator: EQ | NEQ | LT | LTE | GT | GTE;
-// arithmeticOPERATOR:
-// 	PLUS
-// 	| SUBSTRACT
-// 	| MULTIPLY
-// 	| DIVIDE
-// 	| MODULO;
+// arithmeticOPERATOR: PLUS | SUBSTRACT | MULTIPLY | DIVIDE | MODULO;
 logicalOperator: AND | OR | NOT | IN | BETWEEN | EXISTS;
 literal: number | string | booleanValue;
 // todo: More precise defination
