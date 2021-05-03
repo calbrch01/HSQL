@@ -1,7 +1,10 @@
+[SQL 92 reference](http://www.contrib.andrew.cmu.edu/~shadow/sql/sql1992.txt)
+[SQLite Grammar](https://github.com/antlr/grammars-v4/blob/master/sql/sqlite/SQLiteParser.g4)
+
 ```ecl
 
 /*
-    Example code - use without restriction.  
+    Example code - use without restriction.
 */
 Layout_Person := RECORD
   UNSIGNED1 PersonID;
@@ -22,7 +25,7 @@ ss:= TABLE(ap,{ C:=COUNT(group)});
 // ss:= count(ap)
 ss;
 
-// 
+//
 
 // select personid, count(personid) group by personid;
 // group by and having(-> another table based filter) ??
@@ -53,7 +56,7 @@ sg;
 sl := table(ap)[1..3];
 sl;
 
-// offset 
+// offset
 // select * from ap limit 3 offset 2
 // need to do some calcs
 // lower bound = 1 + offset
