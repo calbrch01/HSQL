@@ -6,7 +6,7 @@ completestmt: stmt SEMICOLON;
 
 stmt: definitionStmt | actionStmt | importStmt;
 
-definitionStmt: scope? label = IDENTIFIER EQ expr;
+definitionStmt: scope label = IDENTIFIER EQ expr;
 
 expr:
 	definition
@@ -17,20 +17,20 @@ expr:
 
 actionStmt: selectStmt | outputStmt | plotStmt | literal;
 
-/* SELECT STATEMENT
- */
+// SELECT STATEMENT
 selectStmt:
-	SELECT DISTINCT? columns = selectColumns FROM fromclause = selectFromClause joinClause? (
+	SELECT DISTINCT? columns = selectColumns selectFromClause (
 		WHERE whereclause = selectWhereClause
 	)? selectGroupByClause? (
 		ORDER BY orderbyclause = orderByClause
-	)? limitClause? offsetClause?;
+	)? (HAVING selectHavingClause)? limitClause? offsetClause?;
 
+selectHavingClause: booleanExpression;
 selectGroupByClause: GROUP BY groupByClause;
 
-definitionSet: definition ( ',' definition)*;
+definitionSet: definition ( COMMA_ definition)*;
 
-selectColumns: selectCol ( ',' selectCol)*;
+selectColumns: selectCol ( COMMA_ selectCol)*;
 
 selectCol:
 	col aliasingCol[$col.ctx]?	# normalCol
@@ -38,9 +38,9 @@ selectCol:
 
 // columns `can` be definitions. This is very helpful in resolving cases of multi-table selects
 col:
-	IDENTIFIER '(' MULTIPLY ')'					# selectAggregatedEverythingCol
-	| IDENTIFIER '(' column = definition ')'	# selectAggregatedOneCol
-	| column = definition						# selectOneCol;
+	IDENTIFIER BSTART_ MULTIPLY BEND_				# selectAggregatedEverythingCol
+	| IDENTIFIER BSTART_ column = definition BEND_	# selectAggregatedOneCol
+	| column = definition							# selectOneCol;
 /*
  * Allow access to the column it was applied to. this should be helpful while generating the
  * AST/code
@@ -48,37 +48,73 @@ col:
 aliasingCol[ParserRuleContext ctx]:
 	AS (dataType)? alias = IDENTIFIER;
 
-// code generation
-selectFromClause: nestedSelectStmt | definition;
-nestedSelectStmt: '(' selectStmt ')';
+/* note that from can actually have multiple sources. However, while dealing with codegen, we may
+ need to split the cases for 1 table and 1+ tables
+ */
+//TODO: CONSIDER ALT GRAMMAR TO DEAL WITH 1+ TABLES
+selectFromClause:
+	FROM (
+		selectFromTableReference (
+			COMMA_ selectFromTableReference
+		)*
+		| joinedTable
+	);
+
+// here's a big issue -> antlr does not like mutually left recursive grammar. However, direct left
+// recursion works.
+
+// the selectfromtablereference needs a big change due to this
+selectFromTableReference:
+	BSTART_ selectStmt BEND_ selectAlias[$selectStmt.ctx]	# selectFromDerivedTable
+	| definition selectAlias[$definition.ctx]?				# selectFromDefinition
+	| BSTART_ selectFromTableReference (
+		COMMA_ selectFromTableReference
+	)* BEND_ # selectBracketedFromTable;
+
+selectAlias[ParserRuleContext ctx]: AS? IDENTIFIER;
+
+join_operator:
+	COMMA_
+	| NATURAL? (
+		LEFT OUTER?
+		| RIGHT OUTER?
+		| FULL OUTER?
+		| INNER
+		| CROSS
+	)? JOIN;
+// nestedSelectStmt: BSTART_ selectStmt BEND_;
 selectWhereClause: booleanExpression;
 
+//we limit it to qualifiedidentifiers only
+joinedTable:
+	selectFromTableReference (
+		join_operator selectFromTableReference ON joinSpecification
+	)*;
+//colRef: USING BSTART_ IDENTIFIER (COMMA_ IDENTIFIER)* BEND_ 
+
+//the clause is allowed to be an entire join condition *but*
+joinSpecification:
+	leftrecset = definition logicalOperator rightrecset = definition;
+//joinSpecification: ON booleanExpression;
+
 groupByClause: definitionSet;
-orderByClause: sortItem (',' sortItem)*;
+orderByClause: sortItem (COMMA_ sortItem)*;
 sortItem: ascSortItem | descSortItem;
 ascSortItem: definitionSet (ASC)?;
 descSortItem: definitionSet DESC;
-joinClause:
-	joinType JOIN joinidentifier = definition ON (
-		leftrecset = definition joincondition = logicalOperator rightrecset = definition
-	);
+// joinClause: joinType JOIN joinidentifier = definition ON ( leftrecset = definition joincondition
+// = logicalOperator rightrecset = definition );
 
-joinType:
-	INNER?									# innerJoin
-	| (specifier = (LEFT | RIGHT) OUTER?)	# outerJoin
-	| (specifier = FULL OUTER)				# fullOuterJoin;
+// joinType: INNER? # innerJoin | (specifier = (LEFT | RIGHT | FULL) OUTER?) # outerJoin |
+// (specifier = FULL OUTER) # fullOuterJoin;
 
 limitClause: LIMIT number;
 offsetClause: OFFSET number;
 
 // operators: comparisonOperator | arithmeticOPERATOR | logicalOperator;
-aggregationOperator:
-	COUNT	# countAggr
-	| AVG	# avgAggr
-	| MIN	# minAggr
-	| MAX	# maxAggr
-	| SUM	# sumAggr
-	| TRIM	# trimAggr;
+
+// aggregationOperator: COUNT # countAggr | AVG # avgAggr | MIN # minAggr | MAX # maxAggr | SUM #
+// sumAggr | TRIM # trimAggr;
 comparisonOperator: EQ | NEQ | LT | LTE | GT | GTE;
 // arithmeticOPERATOR: PLUS | SUBSTRACT | MULTIPLY | DIVIDE | MODULO;
 logicalOperator: AND | OR | NOT | IN | BETWEEN | EXISTS;
@@ -111,16 +147,16 @@ booleanExpression:
 predicate[ParserRuleContext ctx]:
 	comparisonOperator right = valueExpression							# comparison
 	| NOT? BETWEEN lower = valueExpression AND upper = valueExpression	# between
-	| NOT? IN '(' valueExpression (',' valueExpression)* ')'			# inList;
+	| NOT? IN BSTART_ valueExpression (COMMA_ valueExpression)* BEND_	# inList;
 
 valueExpression: primaryExpression # valueExpressionDefault;
 
 primaryExpression:
-	IDENTIFIER				# identifier
-	| number				# numericLiteral
-	| booleanValue			# booleanLiteral
-	| string				# stringLiteral
-	| '(' expression ')'	# parenthesizedExpression;
+	IDENTIFIER					# identifier
+	| number					# numericLiteral
+	| booleanValue				# booleanLiteral
+	| string					# stringLiteral
+	| BSTART_ expression BEND_	# parenthesizedExpression;
 
 number:
 	DECIMAL_VALUE	# decimalLiteral
@@ -136,7 +172,7 @@ booleanValue: TRUE | FALSE;
 /* IMPORT STATEMENT
  */
 
-importStmt: IMPORT overDefinition (AS alias = IDENTIFIER)?;
+importStmt: IMPORT overDefinition (AS IDENTIFIER)?;
 
 // $.^ AS upperDir
 
@@ -146,27 +182,26 @@ importStmt: IMPORT overDefinition (AS alias = IDENTIFIER)?;
 outputStmt: OUTPUT attribute ( namedOutput)? ( toFile)?;
 
 attribute: definition | selectStmt | literal;
-namedOutput: (TITLE EQ)? IDENTIFIER;
-toFile: (FILE EQ)? STRING (OVERWRITE)?;
+namedOutput: (TITLE)? IDENTIFIER;
+toFile: (FILE)? STRING (OVERWRITE)?;
 
 /* PLOT STATEMENT
  */
 plotStmt:
-	PLOT FROM definition (TITLE EQ)? IDENTIFIER (
-		(TYPE EQ)? IDENTIFIER
-	)?;
+	PLOT FROM definition (TITLE)? IDENTIFIER ((TYPE)? IDENTIFIER)?;
 
 /* MODULE STATEMENT
  */
 
-moduleStmt: MODULE '{' (definitionStmt SEMICOLON)* '}';
+moduleStmt:
+	MODULE CURLY_BSTART_ (definitionStmt SEMICOLON)* CURLY_BEND_;
 
 /* TRANSFORM STATEMENT
  */
 
 transformStmt:
 	ALTER TABLE definition (TO IDENTIFIER)? alterOperator colName = IDENTIFIER (
-		',' dataType
+		COMMA_ dataType
 	)?;
 
 /* ML STATEMENT SAME AS v0
@@ -175,17 +210,17 @@ mlStmt: train | predict | elementaryML;
 
 // This is a standard get model operation
 train:
-	TRAIN FROM ind = definition ',' dep = definition (
-		',' test = definition
+	TRAIN FROM ind = definition COMMA_ dep = definition (
+		COMMA_ test = definition
 	)? METHOD method = IDENTIFIER (OPTION trainOptions)?;
 
 // This variant of ML is useful in DBScan where a separate model isnt trained
 elementaryML:
-	PREDICT FROM ind = definition (',' ind2 = definition)? METHOD method = IDENTIFIER (
+	PREDICT FROM ind = definition (COMMA_ ind2 = definition)? METHOD method = IDENTIFIER (
 		OPTION trainOptions
 	)?;
 
-trainOptions: (trainOption) ( ',' trainOption)*;
+trainOptions: (trainOption) ( COMMA_ trainOption)*;
 
 trainOption: IDENTIFIER EQ trainValue;
 
@@ -196,7 +231,7 @@ predict:
 		METHOD method = IDENTIFIER
 	)?;
 
-scope: EXPORT | SHARED;
+scope: EXPORT | SHARED |;
 
 //****************************************Lexer Rules******************************************/
 
@@ -233,12 +268,7 @@ ORDER: O R D E R;
 // Aggregation
 GROUP: G R O U P;
 BY: B Y;
-COUNT: C O U N T;
-AVG: A V G;
-SUM: S U M;
-MIN: M I N;
-MAX: M A X;
-TRIM: T R I M;
+// COUNT: C O U N T; AVG: A V G; SUM: S U M; MIN: M I N; MAX: M A X; TRIM: T R I M;
 
 // Actions
 TRAIN: T R A I N;
@@ -264,6 +294,8 @@ HAVING: H A V I N G;
 DISTINCT: D I S T I N C T;
 
 //For joins
+NATURAL: N A T U R A L;
+CROSS: C R O S S;
 JOIN: J O I N;
 INNER: I N N E R;
 LEFT: L E F T;
@@ -274,7 +306,8 @@ ONLY: O N L Y;
 
 // Condition
 CASE: C A S E;
-//*****************TBD
+
+// booleans
 TRUE: T R U E;
 FALSE: F A L S E;
 
@@ -298,7 +331,7 @@ UESCAPE: U E S C A P E;
 TYPE: T Y P E;
 //PLOT
 
-SEMICOLON: ';';
+SEMICOLON: [;;];
 
 //operators
 EQ: '=';
@@ -341,6 +374,12 @@ DOUBLE_VALUE:
 	| '.' DIGIT+ EXPONENT;
 
 IDENTIFIER: LETTER (LETTER | DIGIT | '_')*;
+COMMA_: ',';
+BSTART_: '(';
+BEND_: ')';
+
+CURLY_BSTART_: '{';
+CURLY_BEND_: '}';
 
 ECL_SNIPPETS: '_$' ~[$]* '$';
 SIMPLE_COMMENT: '--' ~[\r\n]* '\r'? '\n'? -> channel(HIDDEN);
