@@ -1,6 +1,6 @@
 import { BaseASTNode } from '../../ast/stmt/base/BaseASTNode';
 import { Literal } from '../../ast/stmt/Literal';
-import { IASTVisitor } from './IASTVisitor';
+import { IASTVisitor } from '../../ast/IASTVisitor';
 
 export class ECLGen extends IASTVisitor<void> {
     defaultResult() {}

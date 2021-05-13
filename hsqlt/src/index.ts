@@ -1,3 +1,9 @@
+/**
+ * CLI Interface to HSQL.
+ * Note that this module is called `main` and not `index` as otherwise it wipes the index
+ * @module main
+ */
+
 import yargs, { Arguments } from 'yargs';
 import { FileOutput, OutputManager, StandardOutput } from './managers/OutputManagers';
 import { TaskManager } from './managers/TaskManager';
@@ -129,14 +135,14 @@ const { argv: args } = yargs(process.argv.slice(2))
     )
     .demandCommand(2);
 
-type argType = typeof args;
+export type argType = typeof args;
 
 /**
  * Entrypoint
  * @param argv arguments
  * @param execMode execution mode
  */
-function main(argv: argType, execMode: ExecMode): void {
+export function main(argv: argType, execMode: ExecMode): void {
     argv.a && console.log('<args>:', argv);
     // initialize managers
     const writer: OutputManager = argv.o ? new StandardOutput() : new FileOutput();

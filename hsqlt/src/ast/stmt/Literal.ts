@@ -1,4 +1,4 @@
-import { IASTVisitor } from '../../analysis/ast/IASTVisitor';
+import { IASTVisitor } from '../IASTVisitor';
 import { BaseASTNode } from './base/BaseASTNode';
 import { StmtExpression } from './base/StmtExpression';
 

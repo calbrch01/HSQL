@@ -1,3 +1,9 @@
+/**
+ * Stores various miscellaneous strings used by the project,
+ * and some miscellaneous functions for formatting.
+ * @module
+ */
+
 import { ErrorSeverity, ErrorType } from './error/Error';
 
 /**
@@ -42,6 +48,6 @@ export function issuePrepender(
 }
 
 /**
- * Refer to @see issuePrepender
+ * Short alias to {@link issuePrepender}
  */
 export const iP = issuePrepender;

@@ -10,6 +10,9 @@ import { TaskManager } from '../../managers/TaskManager';
 // import { IdentifierCollector } from './IdentifierCollector';
 import { QualifiedIdentifier } from '../../misc/ast/QualifiedIdentifier';
 
+/**
+ * Generate an AST
+ */
 export class ASTGenerator extends AbstractParseTreeVisitor<void> implements HSQLVisitor<void> {
     protected ast: AST;
     constructor(protected taskManager: TaskManager, protected errorManager: ErrorManager) {

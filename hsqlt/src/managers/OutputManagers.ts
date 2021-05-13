@@ -1,7 +1,16 @@
+/**
+ * A collection of classes that work to output code and other output (Eg. issues)
+ * @module
+ */
+
 import fs from 'fs';
 import { TranslationError } from '../misc/error/Error';
 import { iP } from '../misc/strings';
 
+/**
+ * Represents an output method.
+ * Note that by default {@link OutputManager.reportIssues} uses stdout to output. Override if required.
+ */
 export abstract class OutputManager {
     /**
      * A function called for each file

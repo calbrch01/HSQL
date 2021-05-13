@@ -1,4 +1,4 @@
-import { IASTVisitor } from '../../../analysis/ast/IASTVisitor';
+import { IASTVisitor } from '../../IASTVisitor';
 
 /**
  * A generic node

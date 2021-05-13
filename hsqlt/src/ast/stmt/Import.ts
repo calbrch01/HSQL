@@ -1,4 +1,4 @@
-import { IASTVisitor } from '../../analysis/ast/IASTVisitor';
+import { IASTVisitor } from '../IASTVisitor';
 import { NonValuedExpression } from './base/NonValuedExpression';
 
 export class Import implements NonValuedExpression {
