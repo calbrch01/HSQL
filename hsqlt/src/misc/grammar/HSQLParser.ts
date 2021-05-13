@@ -2730,7 +2730,7 @@ export class HSQLParser extends Parser {
 			this.state = 491;
 			this.match(HSQLParser.MODULE);
 			this.state = 492;
-			this.match(HSQLParser.CURLY_BSTART_);
+			this.match(HSQLParser.BSTART_);
 			this.state = 498;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
@@ -2748,7 +2748,7 @@ export class HSQLParser extends Parser {
 				_la = this._input.LA(1);
 			}
 			this.state = 501;
-			this.match(HSQLParser.CURLY_BEND_);
+			this.match(HSQLParser.BEND_);
 			}
 		}
 		catch (re) {
@@ -3460,11 +3460,11 @@ export class HSQLParser extends Parser {
 		"_\x02\x02\u01E7\u01E9\x07E\x02\x02\u01E8\u01E7\x03\x02\x02\x02\u01E8\u01E9" +
 		"\x03\x02\x02\x02\u01E9\u01EA\x03\x02\x02\x02\u01EA\u01EC\x07_\x02\x02" +
 		"\u01EB\u01E8\x03\x02\x02\x02\u01EB\u01EC\x03\x02\x02\x02\u01ECg\x03\x02" +
-		"\x02\x02\u01ED\u01EE\x07C\x02\x02\u01EE\u01F4\x07c\x02\x02\u01EF\u01F0" +
+		"\x02\x02\u01ED\u01EE\x07C\x02\x02\u01EE\u01F4\x07a\x02\x02\u01EF\u01F0" +
 		"\x05\b\x05\x02\u01F0\u01F1\x07F\x02\x02\u01F1\u01F3\x03\x02\x02\x02\u01F2" +
 		"\u01EF\x03\x02\x02\x02\u01F3\u01F6\x03\x02\x02\x02\u01F4\u01F2\x03\x02" +
 		"\x02\x02\u01F4\u01F5\x03\x02\x02\x02\u01F5\u01F7\x03\x02\x02\x02\u01F6" +
-		"\u01F4\x03\x02\x02\x02\u01F7\u01F8\x07d\x02\x02\u01F8i\x03\x02\x02\x02" +
+		"\u01F4\x03\x02\x02\x02\u01F7\u01F8\x07b\x02\x02\u01F8i\x03\x02\x02\x02" +
 		"\u01F9\u01FA\x07\r\x02\x02\u01FA\u01FB\x07\f\x02\x02\u01FB\u01FE\x05J" +
 		"&\x02\u01FC\u01FD\x07\x0E\x02\x02\u01FD\u01FF\x07_\x02\x02\u01FE\u01FC" +
 		"\x03\x02\x02\x02\u01FE\u01FF\x03\x02\x02\x02\u01FF\u0200\x03\x02\x02\x02" +
@@ -5233,8 +5233,8 @@ export class PlotStmtContext extends ParserRuleContext {
 
 export class ModuleStmtContext extends ParserRuleContext {
 	public MODULE(): TerminalNode { return this.getToken(HSQLParser.MODULE, 0); }
-	public CURLY_BSTART_(): TerminalNode { return this.getToken(HSQLParser.CURLY_BSTART_, 0); }
-	public CURLY_BEND_(): TerminalNode { return this.getToken(HSQLParser.CURLY_BEND_, 0); }
+	public BSTART_(): TerminalNode { return this.getToken(HSQLParser.BSTART_, 0); }
+	public BEND_(): TerminalNode { return this.getToken(HSQLParser.BEND_, 0); }
 	public definitionStmt(): DefinitionStmtContext[];
 	public definitionStmt(i: number): DefinitionStmtContext;
 	public definitionStmt(i?: number): DefinitionStmtContext | DefinitionStmtContext[] {

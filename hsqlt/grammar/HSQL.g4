@@ -193,8 +193,7 @@ plotStmt:
 /* MODULE STATEMENT
  */
 
-moduleStmt:
-	MODULE CURLY_BSTART_ (definitionStmt SEMICOLON)* CURLY_BEND_;
+moduleStmt: MODULE BSTART_ (definitionStmt SEMICOLON)* BEND_;
 
 /* TRANSFORM STATEMENT
  */
