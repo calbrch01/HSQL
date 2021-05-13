@@ -20,4 +20,15 @@ describe('ECL Code class', () => {
         assert.strictEqual(code1.toString(), 'OUTPUT(5;);');
         assert.strictEqual(code2.toString(), 'OUTPUT(5);');
     });
+
+    it('Mutability', () => {
+        const code = new ECLCode('5');
+        const code1 = code.newCoverCode('OUTPUT(', ')', false);
+        assert.strictEqual(code.toString(), '5;', 'Initial string should not be changed');
+        assert.strictEqual(code1.toString(), 'OUTPUT(5);', 'Initial cover code');
+
+        code1.coverCode('return ', '', false, true);
+        assert.strictEqual(code1.toString(), 'return OUTPUT(5);');
+        // code1.coverCode;
+    });
 });

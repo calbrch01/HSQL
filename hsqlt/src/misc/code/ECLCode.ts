@@ -1,3 +1,7 @@
+/**
+ * A class representing code generated in ECL.
+ * It is barebones but isolates the insertion of the semicolon to join time
+ */
 export class ECLCode {
     /**
      *
@@ -21,15 +25,20 @@ export class ECLCode {
 
     /**
      * Same as @see {coverCode} but creates a new object
-     * @param leftSide
-     * @param rightSide
-     * @param setSemi
+     * @param leftSide left part of code
+     * @param rightSide right part of code
+     * @param respectSemi whether to place the semicolon inside (defaults to inner insertSemi)
+     * @param insertSemi whether to enable insertSemi or not (defaults to true)
      * @returns
      */
     newCoverCode(leftSide: string, rightSide: string = '', respectSemi = this.insertSemi, insertSemi = true) {
         return new ECLCode(leftSide + this.code + (respectSemi ? ';' : '') + rightSide, insertSemi);
     }
 
+    /**
+     * Bring the code to String
+     * @returns The string representation of the code
+     */
     toString() {
         if (this.insertSemi) return this.code + ';';
         else return this.code;
