@@ -1,10 +1,10 @@
-import { AST } from '../../ast/AST';
-import { BaseASTNode } from '../../ast/stmt/base/BaseASTNode';
-import { EqualDefinition } from '../../ast/stmt/EqualDefinition';
-import { Import } from '../../ast/stmt/Import';
-import { Literal } from '../../ast/stmt/Literal';
-import { Output } from '../../ast/stmt/Output';
-import { Select } from '../../ast/stmt/Select';
+import { AST } from './AST';
+import { BaseASTNode } from './stmt/base/BaseASTNode';
+import { EqualDefinition } from './stmt/EqualDefinition';
+import { Import } from './stmt/Import';
+import { Literal } from './stmt/Literal';
+import { Output } from './stmt/Output';
+import { Select } from './stmt/Select';
 
 /**
  * Interface for traversing an AST
