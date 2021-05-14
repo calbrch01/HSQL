@@ -1,3 +1,4 @@
+import { ParserRuleContext } from 'antlr4ts';
 import { IASTVisitor } from '../IASTVisitor';
 import { BaseASTNode } from './base/BaseASTNode';
 import { StmtExpression } from './base/StmtExpression';
@@ -7,7 +8,7 @@ import { StmtExpression } from './base/StmtExpression';
  * Note: needs a type stored for it
  */
 export class Literal implements StmtExpression {
-    constructor(private _val: string) {}
+    constructor(public node: ParserRuleContext, private _val: string) {}
     public get val(): string {
         return this._val;
     }

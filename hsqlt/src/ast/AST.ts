@@ -6,6 +6,7 @@ import { StmtExpression } from './stmt/base/StmtExpression';
 import { Import } from './stmt/Import';
 import { VariableTable, VariableVisibility } from './symbol/VariableTable';
 import { TaskManager } from '../managers/TaskManager';
+import { ImportStmtContext } from '../misc/grammar/HSQLParser';
 
 /**
  * AST root node
@@ -24,15 +25,15 @@ export class AST {
         this.stmts = [];
     }
 
-    async addImport(name: QualifiedIdentifier, alias?: string) {
+    async addImport(ctx: ImportStmtContext, name: QualifiedIdentifier, alias?: string) {
         // FIXME
         // assert that it doesnt exist
-        const nameStr = name.toString()
+        const nameStr = name.toString();
         const res = this.TaskMgr.resolve(name);
         this.variableManager.add(alias ?? nameStr, {
             data: res,
             vis: VariableVisibility.DEFAULT,
         });
-        this.stmts.push(new Import(nameStr, alias));
+        this.stmts.push(new Import(ctx, nameStr, alias));
     }
 }

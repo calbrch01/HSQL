@@ -5,7 +5,7 @@
 
 import fs from 'fs';
 import { TranslationError } from '../misc/error/Error';
-import { iP } from '../misc/strings';
+import { iP } from '../misc/strings/misc';
 
 /**
  * Represents an output method.

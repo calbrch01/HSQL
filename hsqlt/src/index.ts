@@ -7,7 +7,7 @@
 import yargs from 'yargs';
 import { FileOutput, OutputManager, StandardOutput } from './managers/OutputManagers';
 import { TaskManager } from './managers/TaskManager';
-import { ExecMode } from './misc/execModes';
+import { ExecIntent, ExecCheckMode, ExecUnimplemented, ExecTreeMode } from './misc/execModes';
 
 // 2 ignores the node call and the script name
 // TODO add -t and -c
@@ -91,7 +91,7 @@ const { argv: args } = yargs(process.argv.slice(2))
                 demandOption: true,
             }),
         args => {
-            main(args, ExecMode.TREE);
+            main(args, new ExecTreeMode());
         }
     )
     .command(
@@ -104,7 +104,7 @@ const { argv: args } = yargs(process.argv.slice(2))
                 demandOption: true,
             }),
         args => {
-            main(args, ExecMode.CHECK);
+            main(args, /* ExecMode.CHECK */ new ExecCheckMode());
         }
     )
     .command(
@@ -117,7 +117,7 @@ const { argv: args } = yargs(process.argv.slice(2))
                 demandOption: true,
             }),
         args => {
-            main(args, ExecMode.MAKE);
+            main(args, /* ExecMode.MAKE */ new ExecUnimplemented());
         }
     )
     .command(
@@ -130,7 +130,7 @@ const { argv: args } = yargs(process.argv.slice(2))
                 demandOption: true,
             }),
         args => {
-            main(args, ExecMode.RUN);
+            main(args, new ExecUnimplemented());
         }
     )
     .demandCommand(2);
@@ -142,24 +142,15 @@ export type argType = typeof args;
  * @param argv arguments
  * @param execMode execution mode
  */
-export function main(argv: argType, execMode: ExecMode): void {
+export function main(argv: argType, /*execMode: ExecMode*/ execMode: ExecIntent): void {
     argv.a && console.log('<args>:', argv);
     // initialize managers
     const writer: OutputManager = argv.o ? new StandardOutput() : new FileOutput();
     //taskmap must have no map, and no baseloc for now
     const taskmanager = new TaskManager(argv.file, argv.p, undefined, writer, undefined, argv.k);
 
-    switch (execMode) {
-        case ExecMode.TREE:
-            const { strTree } = taskmanager.getStringTree();
-            console.log(strTree, '\n');
-            break;
-        case ExecMode.CHECK:
-            const { ast, tree } = taskmanager.generateAST();
-            break;
-        default:
-            console.error('I>Not yet supported');
-    }
-    // need to report errors anyways
+    execMode.do(taskmanager, writer);
+
+    // need to report errors
     taskmanager.reportErrors();
 }

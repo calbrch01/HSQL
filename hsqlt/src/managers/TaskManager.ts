@@ -8,26 +8,8 @@ import { ErrorManager, ErrorMode, ErrorSeverity, TranslationError } from '../mis
 import { ImportStmtContext } from '../misc/grammar/HSQLParser';
 import { NoOutput, OutputManager } from './OutputManagers';
 import { ReadingManager } from './ReadingManager';
-import { resultStrings, iP } from '../misc/strings';
-
-/**
- * What to do for program
- * @deprecated
- */
-export enum Intent {
-    /**
-     * construct AST
-     */
-    CHECK,
-    /**
-     * Generate code from AST
-     */
-    MAKE,
-    /**
-     * Send to execution
-     */
-    RUN,
-}
+import { iP } from '../misc/strings/misc';
+import rs from '../misc/strings/resultStrings.json';
 
 export enum OutputMethod {
     FILES,
@@ -46,7 +28,7 @@ export enum OutputMethod {
  */
 export class TaskManager {
     protected readingMgr: ReadingManager;
-    protected errorManager: ErrorManager;
+    protected _errorManager: ErrorManager;
     protected treeFactory: HSQLTreeFactory;
     protected ASTMap: Map<string, AST>;
 
@@ -67,10 +49,14 @@ export class TaskManager {
         protected suppressIssues: boolean = false
     ) {
         // choose either pedantic or normal based on the bool present
-        this.errorManager = new ErrorManager(pedantic ? ErrorMode.PEDANTIC : ErrorMode.NORMAL);
-        this.readingMgr = new ReadingManager(this.errorManager, fileMap, baseLoc);
+        this._errorManager = new ErrorManager(pedantic ? ErrorMode.PEDANTIC : ErrorMode.NORMAL);
+        this.readingMgr = new ReadingManager(this._errorManager, fileMap, baseLoc);
         this.ASTMap = new Map<string, AST>();
-        this.treeFactory = new HSQLTreeFactory(this.errorManager);
+        this.treeFactory = new HSQLTreeFactory(this._errorManager);
+    }
+
+    public get errorManager() {
+        return this._errorManager;
     }
 
     /**
@@ -82,7 +68,7 @@ export class TaskManager {
      */
     generateAST(fn: string = this.mainFile, includes: string[] = [], cause?: ImportStmtContext) {
         if (includes.includes(fn)) {
-            this.errorManager.push(
+            this._errorManager.push(
                 TranslationError.semanticErrorToken('Import cycle detected. Please remove redundant import', cause)
             );
         }
@@ -90,7 +76,7 @@ export class TaskManager {
         const file = this.readingMgr.readSync(fn);
 
         const { tree, charStreams, tokenStreams } = this.treeFactory.makeTree(file);
-        const x = new ASTGenerator(this, this.errorManager);
+        const x = new ASTGenerator(this, this._errorManager);
         // get AST will read imports and call the rest of the required generate ASTS
         const ast = x.getAST(tree);
         this.ASTMap.set(fn, ast);
@@ -112,6 +98,10 @@ export class TaskManager {
         };
     }
 
+    generateOutputs(fn: string = this.mainFile) {
+        // TODO: stub
+    }
+
     /**
      * reportErrors if suppress
      */
@@ -119,7 +109,7 @@ export class TaskManager {
         // run this function if it exists else warn the user
         // but, only if its true
         !this.suppressIssues &&
-            (this.outputManager.reportIssues(this.errorManager.issues) ?? console.log(iP(resultStrings.noErrorOutput)));
+            (this.outputManager.reportIssues(this._errorManager.issues) ?? console.log(iP(rs.noErrorOutput)));
     }
 
     /**

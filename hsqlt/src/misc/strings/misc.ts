@@ -4,14 +4,7 @@
  * @module
  */
 
-import { ErrorSeverity, ErrorType } from './error/Error';
-
-/**
- * Fixed string outputs can be looked up from here. Makes it easy to change them later
- */
-export const resultStrings = {
-    noErrorOutput: 'Issues are being suppressed',
-};
+import { ErrorSeverity, ErrorType } from '../error/Error';
 
 /**
  * Assign string codes to these enums

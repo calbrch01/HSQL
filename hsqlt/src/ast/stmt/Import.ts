@@ -1,8 +1,9 @@
+import { ParserRuleContext } from 'antlr4ts';
 import { IASTVisitor } from '../IASTVisitor';
 import { NonValuedExpression } from './base/NonValuedExpression';
 
 export class Import implements NonValuedExpression {
-    constructor(protected moduleName: string, protected alias?: string) {}
+    constructor(public node: ParserRuleContext, protected moduleName: string, protected alias?: string) {}
 
     /**
      * The module name to be used

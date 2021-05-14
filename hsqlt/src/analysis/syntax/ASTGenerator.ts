@@ -34,7 +34,7 @@ export class ASTGenerator extends AbstractParseTreeVisitor<void> implements HSQL
          * or if theres only one element
          * this.ast.addImport(identifiers[0]);
          */
-        this.ast.addImport(importFrom, importAs);
+        this.ast.addImport(ctx, importFrom, importAs);
     }
 
     getAST(x: ProgramContext) {
