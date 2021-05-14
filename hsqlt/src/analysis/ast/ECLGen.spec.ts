@@ -16,9 +16,11 @@ describe('ECL Generation', function () {
             0,
             'There should have been no errors'
         );
-        console.log(`opm`, opm);
+        assert.strictEqual(opm.fileMap.get('mod'), `IMPORT abc;`);
+
+        // console.log(`opm`, opm);
     });
-    it('Simple Generation', async () => {
+    it('Generation for alias', async () => {
         const opm = new MapOutput();
         const tm = new TaskManager('mod', false, new Map([['mod', 'import abc as bcd;']]), opm);
         const { ast } = tm.generateAST();
@@ -29,6 +31,8 @@ describe('ECL Generation', function () {
             0,
             'There should have been no errors'
         );
-        console.log(`opm`, opm);
+        // TODO file extension work
+        assert.strictEqual(opm.fileMap.get('mod'), `IMPORT abc as bcd;`);
+        // console.log(`opm`, opm);
     });
 });
