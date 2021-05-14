@@ -57,7 +57,7 @@ export class MapOutput extends OutputManager {
     }
     do(fn: string, contents: string): boolean {
         // could not write if already exists
-        if (!this.fileMap.has(fn)) return false;
+        if (this.fileMap.has(fn)) return false;
         this.fileMap.set(fn, contents);
         return true;
     }

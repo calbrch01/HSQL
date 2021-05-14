@@ -23,19 +23,19 @@ describe('import AST node tests', function () {
     });
     it('no alias', async () => {
         const a = new Import(importContexts[0]!, moduleName1);
-        assert.strictEqual(a.getModuleName(), moduleName1);
+        assert.strictEqual(a.moduleName, moduleName1);
         assert.strictEqual(a.getImportedName(), moduleName1);
     });
 
     it('alias is equal', async () => {
         const a = new Import(importContexts[1]!, moduleName1, moduleName1);
-        assert.strictEqual(a.getModuleName(), moduleName1);
+        assert.strictEqual(a.moduleName, moduleName1);
         assert.strictEqual(a.getImportedName(), moduleName1);
     });
 
     it('an alias', async () => {
         const a = new Import(importContexts[2]!, moduleName1, alias1);
-        assert.strictEqual(a.getModuleName(), moduleName1);
+        assert.strictEqual(a.moduleName, moduleName1);
         assert.strictEqual(a.getImportedName(), alias1);
     });
 });
