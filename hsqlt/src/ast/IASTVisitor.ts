@@ -21,7 +21,9 @@ export abstract class IASTVisitor<T> {
      */
     abstract reducer(total: T, current: T): T;
 
-    public abstract visit(node: BaseASTNode): T;
+    public visit(node: BaseASTNode): T {
+        return node.accept(this);
+    }
 
     visitAST(x: AST) {
         const stmts = x.stmts;

@@ -45,6 +45,24 @@ export class StandardOutput extends OutputManager {
     }
 }
 
+/**
+ * Write to a map
+ * Useful for Debug Output and maintaining a workspace
+ */
+export class MapOutput extends OutputManager {
+    public fileMap: Map<string, string>;
+    constructor() {
+        super();
+        this.fileMap = new Map();
+    }
+    do(fn: string, contents: string): boolean {
+        // could not write if already exists
+        if (!this.fileMap.has(fn)) return false;
+        this.fileMap.set(fn, contents);
+        return true;
+    }
+}
+
 export class NoOutput extends OutputManager {
     do(fn: string, contents: string): boolean {
         return true;
@@ -53,7 +71,11 @@ export class NoOutput extends OutputManager {
 
 export class FileOutput extends OutputManager {
     do(fn: string, contents: string) {
-        fs.writeFileSync(fn, contents);
+        try {
+            fs.writeFileSync(fn, contents);
+        } catch (e) {
+            return false;
+        }
         return true;
     }
 }

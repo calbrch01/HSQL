@@ -3,16 +3,19 @@ import { IASTVisitor } from '../IASTVisitor';
 import { NonValuedExpression } from './base/NonValuedExpression';
 
 export class Import implements NonValuedExpression {
-    constructor(public node: ParserRuleContext, protected moduleName: string, protected alias?: string) {}
+    public hasAlias: boolean;
+    constructor(public node: ParserRuleContext, public _moduleName: string, public alias?: string) {
+        this.hasAlias = !(alias === undefined);
+    }
 
     /**
      * The module name to be used
      */
-    getModuleName() {
-        return this.moduleName;
+    get moduleName() {
+        return this._moduleName;
     }
     getImportedName() {
-        return this.alias ?? this.moduleName;
+        return this.alias ?? this._moduleName;
     }
     accept<T>(t: IASTVisitor<T>) {
         return t.visitImport(this);

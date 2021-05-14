@@ -15,9 +15,13 @@ import { QualifiedIdentifier } from '../../misc/ast/QualifiedIdentifier';
  */
 export class ASTGenerator extends AbstractParseTreeVisitor<void> implements HSQLVisitor<void> {
     protected ast: AST;
-    constructor(protected taskManager: TaskManager, protected errorManager: ErrorManager) {
+    constructor(
+        protected taskManager: TaskManager,
+        protected errorManager: ErrorManager,
+        protected rootContext: ProgramContext
+    ) {
         super();
-        this.ast = new AST(taskManager);
+        this.ast = new AST(taskManager, rootContext);
     }
     defaultResult() {
         return;
@@ -37,8 +41,8 @@ export class ASTGenerator extends AbstractParseTreeVisitor<void> implements HSQL
         this.ast.addImport(ctx, importFrom, importAs);
     }
 
-    getAST(x: ProgramContext) {
-        this.visit(x);
+    getAST() {
+        this.visit(this.rootContext);
         return this.ast;
     }
 }

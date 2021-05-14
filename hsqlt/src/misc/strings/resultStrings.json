@@ -1,5 +1,6 @@
 {
     "noErrorOutput": "Issues are being suppressed",
-    "notImplemented": "Method or command not implemented"
+    "notImplemented": "Method or command not implemented",
+    "couldNotWrite":"Could not write file {0}"
 }
 

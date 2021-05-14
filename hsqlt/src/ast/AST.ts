@@ -7,11 +7,13 @@ import { Import } from './stmt/Import';
 import { VariableTable, VariableVisibility } from './symbol/VariableTable';
 import { TaskManager } from '../managers/TaskManager';
 import { ImportStmtContext } from '../misc/grammar/HSQLParser';
+import { IASTVisitor } from './IASTVisitor';
+import { ParserRuleContext } from 'antlr4ts';
 
 /**
  * AST root node
  */
-export class AST {
+export class AST implements BaseASTNode {
     /**
      * Holds existing variables
      */
@@ -20,7 +22,7 @@ export class AST {
     // TODO fix something here
     stmts: BaseASTNode[];
 
-    constructor(protected TaskMgr: TaskManager) {
+    constructor(protected TaskMgr: TaskManager, public node: ParserRuleContext) {
         this.variableManager = new VariableTable();
         this.stmts = [];
     }
@@ -35,5 +37,8 @@ export class AST {
             vis: VariableVisibility.DEFAULT,
         });
         this.stmts.push(new Import(ctx, nameStr, alias));
+    }
+    accept<T>(visitor: IASTVisitor<T>) {
+        return visitor.visitAST(this);
     }
 }

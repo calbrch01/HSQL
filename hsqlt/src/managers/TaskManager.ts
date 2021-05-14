@@ -10,6 +10,9 @@ import { NoOutput, OutputManager } from './OutputManagers';
 import { ReadingManager } from './ReadingManager';
 import { iP } from '../misc/strings/misc';
 import rs from '../misc/strings/resultStrings.json';
+import { ECLCode } from '../code/ECLCode';
+import { ECLGen } from '../analysis/ast/ECLGen';
+import format from 'string-template';
 
 export enum OutputMethod {
     FILES,
@@ -37,7 +40,7 @@ export class TaskManager {
      * @param mainFile Root file to start translation from
      * @param pedantic Whether to be pedantic or not
      * @param fileMap A fileMap. Missing files will be taken from disk
-     * @param outputManager Output strategy
+     * @param outputManager Output strategy - default is no output
      * @param baseLoc (does nothing for now) output relocation
      */
     constructor(
@@ -76,9 +79,9 @@ export class TaskManager {
         const file = this.readingMgr.readSync(fn);
 
         const { tree, charStreams, tokenStreams } = this.treeFactory.makeTree(file);
-        const x = new ASTGenerator(this, this._errorManager);
+        const x = new ASTGenerator(this, this._errorManager, tree);
         // get AST will read imports and call the rest of the required generate ASTS
-        const ast = x.getAST(tree);
+        const ast = x.getAST();
         this.ASTMap.set(fn, ast);
         return { ast, tree, tokenStreams, asts: this.ASTMap };
     }
@@ -98,8 +101,19 @@ export class TaskManager {
         };
     }
 
-    generateOutputs(fn: string = this.mainFile) {
-        // TODO: stub
+    /**
+     * Generate outputs for all files
+     *
+     */
+    generateOutputs() {
+        // TODO: add support for specific files only
+        for (const [fn, ast] of this.ASTMap) {
+            // console.debug(`File:${fn}`);
+            const x = new ECLGen(this.errorManager, ast).getCode();
+            // console.log(`Result`, x);
+            const res = this.outputManager.do(fn, x.toString());
+            if (!res) this.errorManager.push(new TranslationError(format(rs.couldNotWrite)));
+        }
     }
 
     /**
