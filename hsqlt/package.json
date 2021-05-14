@@ -17,7 +17,7 @@
     },
     "scripts": {
         "test": "find ./src -name '*.spec.ts' | xargs ts-mocha src/test/*.ts",
-        "testing-help":"ts-node src --help",
+        "testing-help": "ts-node src --help",
         "start": "ts-node src",
         "check": "tsc --watch --noEmit",
         "doc": "typedoc ",
@@ -37,6 +37,7 @@
     "dependencies": {
         "@types/node": "^14.14.22",
         "antlr4ts": "^0.5.0-alpha.4",
+        "string-template": "^1.0.0",
         "ts-node": "^9.1.1",
         "yargs": "^16.2.0"
     },
@@ -52,6 +53,7 @@
     "devDependencies": {
         "@types/chai": "^4.2.14",
         "@types/mocha": "^8.2.0",
+        "@types/string-template": "^1.0.2",
         "@types/yargs": "^16.0.0",
         "antlr4ts-cli": "^0.5.0-alpha.4",
         "chai": "^4.2.0",
