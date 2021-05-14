@@ -3,7 +3,7 @@ import { ErrorManager } from '../../misc/error/Error';
 import { ReadingManager } from '../../managers/ReadingManager';
 import { HSQLTreeFactory } from '../tree';
 import { ASTGenerator } from './ASTGenerator';
-import { Intent, TaskManager } from '../../managers/TaskManager';
+import { TaskManager } from '../../managers/TaskManager';
 
 describe('AST Generator Visitor', function () {
     // this.timeout('100s');

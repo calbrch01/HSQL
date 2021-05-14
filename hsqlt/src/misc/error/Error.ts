@@ -12,11 +12,17 @@ import {
     Token,
 } from 'antlr4ts';
 
+/**
+ * Severity of errors
+ */
 export enum ErrorSeverity {
     INFO,
     WARNING,
     ERROR,
 }
+/**
+ * Source/Type of Error
+ */
 export enum ErrorType {
     SETUP,
     IO,
