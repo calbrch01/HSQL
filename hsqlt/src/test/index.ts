@@ -25,9 +25,14 @@ describe('Grammar generation tests', function () {
 
     it('Grammar must be valid', async () => {
         // generate grammar and put it into a tmp file
-        const returncode = await execAndGetCode(`antlr4ts -visitor -no-listener ${gpath} -o ${tmpdir}`);
+        const returnCode = await execAndGetCode(`antlr4ts -visitor -no-listener ${gpath} -o ${tmpdir}`);
         // the returncode shall be 0 for valid grammar or non-zero for invalid grammar
-        assert.strictEqual(returncode, 0, 'Should have been valid grammar');
+        assert.strictEqual(returnCode, 0, 'Should have been valid grammar');
+    });
+
+    it('Help command in the program', async () => {
+        const returnCode = await execAndGetCode(`npm run testing-help`);
+        assert.strictEqual(returnCode, 0, 'Should have been valid grammar');
     });
 });
 
@@ -44,12 +49,17 @@ async function execAndGetCode(command: string) {
             if (err) rej(err);
         });
 
+        /** If we error out, bail and reject */
         proc.on('error', err => {
             rej(err);
         });
+
+        /** If we are done, exit */
         proc.on('exit', code => {
             res(code);
         });
+
+        /** If we close, exit */
         proc.on('close', code => {
             res(code);
         });

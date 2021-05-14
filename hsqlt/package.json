@@ -17,6 +17,7 @@
     },
     "scripts": {
         "test": "find ./src -name '*.spec.ts' | xargs ts-mocha src/test/*.ts",
+        "testing-help":"ts-node src --help",
         "start": "ts-node src",
         "check": "tsc --watch --noEmit",
         "doc": "typedoc ",
