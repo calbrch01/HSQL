@@ -4,10 +4,10 @@
  * @module main
  */
 
-import yargs, { Arguments } from 'yargs';
+import yargs from 'yargs';
 import { FileOutput, OutputManager, StandardOutput } from './managers/OutputManagers';
 import { TaskManager } from './managers/TaskManager';
-import { addCommandFileBuild, ExecMode } from './misc/execModes';
+import { ExecMode } from './misc/execModes';
 
 // 2 ignores the node call and the script name
 // TODO add -t and -c
@@ -163,5 +163,3 @@ export function main(argv: argType, execMode: ExecMode): void {
     // need to report errors anyways
     taskmanager.reportErrors();
 }
-
-// main(); //.catch(console.log);

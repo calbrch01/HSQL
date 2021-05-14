@@ -9,10 +9,24 @@ import { ImportStmtContext } from '../misc/grammar/HSQLParser';
 import { NoOutput, OutputManager } from './OutputManagers';
 import { ReadingManager } from './ReadingManager';
 import { resultStrings, iP } from '../misc/strings';
+
+/**
+ * What to do for program
+ * @deprecated
+ */
 export enum Intent {
-    CHECK, // construct AST
-    MAKE, // Generate code from AST
-    RUN, // Send to execution
+    /**
+     * construct AST
+     */
+    CHECK,
+    /**
+     * Generate code from AST
+     */
+    MAKE,
+    /**
+     * Send to execution
+     */
+    RUN,
 }
 
 export enum OutputMethod {

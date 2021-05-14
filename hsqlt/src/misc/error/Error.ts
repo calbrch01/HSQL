@@ -1,3 +1,8 @@
+/**
+ * Contains Error handlers, and supporting code
+ * @module
+ */
+
 import {
     ANTLRErrorListener,
     BailErrorStrategy,

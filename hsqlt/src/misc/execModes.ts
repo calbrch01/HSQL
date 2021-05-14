@@ -13,6 +13,9 @@ export const addCommandFileBuild = <T extends {}>(yargs: yargs.Argv<T>) => {
     });
 };
 
+/**
+ * Execution Mode
+ */
 export enum ExecMode {
     TREE,
     CHECK,
