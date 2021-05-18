@@ -11,6 +11,8 @@ export class HSQLTreeFactory {
     makeTree(str: string, fn?: string) {
         const charStreams = fn === undefined ? CharStreams.fromString(str) : CharStreams.fromString(str, fn);
         const lexer = new HSQLLexer(charStreams);
+
+        // extract error listener for use in the scanner and parser
         const errorListener = this.errorManager.newErrorListener();
 
         // remove the error listener. We want to put our own

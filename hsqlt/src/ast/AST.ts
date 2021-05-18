@@ -27,7 +27,7 @@ export class AST implements BaseASTNode {
         this.stmts = [];
     }
 
-    async addImport(ctx: ImportStmtContext, name: QualifiedIdentifier, alias?: string) {
+    addImport(ctx: ImportStmtContext, name: QualifiedIdentifier, alias?: string) {
         // FIXME
         // assert that it doesnt exist
         const nameStr = name.toString();
