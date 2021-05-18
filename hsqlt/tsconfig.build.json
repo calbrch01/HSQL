@@ -1,19 +1,12 @@
 {
     "extends":"./tsconfig.json",
+    // remove the tests
     "exclude": [
         "src/**/*.spec.ts",
         "src/test/*.ts"
     ],
     "compilerOptions": {
-        "target":"ES2019",
-        "module":"commonjs",
-        "outDir": "./build",
-        "rootDir": "./src",
+        // trim out the comments -> should help in either way for output
         "removeComments": true,
-        "noImplicitAny":true,
-        "esModuleInterop": true,
-        "skipLibCheck": true,
-        "forceConsistentCasingInFileNames": true,
-        "resolveJsonModule": true
     }
 }
