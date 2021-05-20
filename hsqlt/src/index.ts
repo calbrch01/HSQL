@@ -7,8 +7,10 @@
 import yargs from 'yargs';
 import { FileOutput, OutputManager, StandardOutput } from './managers/OutputManagers';
 import { TaskManager } from './managers/TaskManager';
-import { ExecIntent, ExecCheckMode, ExecUnimplemented, ExecTreeMode } from './misc/execModes';
-
+import { ErrorType, HaltError, TranslationError } from './misc/error/Error';
+import { ExecIntent, ExecCheckMode, ExecUnimplemented, ExecTreeMode, ExecMakeMode } from './misc/execModes';
+import format from 'string-template';
+import rs from './misc/strings/resultStrings.json';
 // 2 ignores the node call and the script name
 // TODO add -t and -c
 // This syntax is shorthand to writing `const args = yargs(...).argv`
@@ -117,7 +119,7 @@ const { argv: args } = yargs(process.argv.slice(2))
                 demandOption: true,
             }),
         args => {
-            main(args, /* ExecMode.MAKE */ new ExecUnimplemented());
+            main(args, /* ExecMode.MAKE */ new ExecMakeMode());
         }
     )
     .command(
@@ -149,8 +151,22 @@ export async function main(argv: argType, /*execMode: ExecMode*/ execMode: ExecI
     //taskmap must have no map, and no baseloc for now
     const taskmanager = new TaskManager(argv.file, argv.p, undefined, writer, undefined, argv.k);
 
-    execMode.do(taskmanager, writer);
-
-    // need to report errors
-    taskmanager.reportErrors();
+    try {
+        execMode.do(taskmanager, writer);
+    } catch (e) {
+        // if e is an instance, that means we have already added it, and it is a error that was used to halt the process.
+        // if it is not, we should report.
+        if (!(e instanceof HaltError)) {
+            // throw this error into the error manager
+            taskmanager.errorManager.push(
+                TranslationError.generalErrorToken(
+                    format(rs.unexpectedErrorTagged, [e.msg ?? e.message ?? 'Unexpected Error']),
+                    ErrorType.OTHER
+                )
+            );
+        }
+    } finally {
+        // need to report errors
+        taskmanager.reportErrors();
+    }
 }

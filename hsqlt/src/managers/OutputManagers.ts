@@ -3,7 +3,7 @@
  * @module
  */
 
-import fs from 'fs';
+import { promises as fs } from 'fs';
 import { TranslationError } from '../misc/error/Error';
 import { iP } from '../misc/strings/misc';
 
@@ -13,11 +13,12 @@ import { iP } from '../misc/strings/misc';
  */
 export abstract class OutputManager {
     /**
-     * A function called for each file
-     * @param fn
-     * @param contents
+     * A function called for each file.
+     * Resolves on done, else rejects
+     * @param fn Filename
+     * @param contents File contents
      */
-    abstract do(fn: string, contents: string): boolean;
+    abstract do(fn: string, contents: string): Promise<void>;
 
     /**
      * Report issues
@@ -35,10 +36,9 @@ export abstract class OutputManager {
 }
 
 export class StandardOutput extends OutputManager {
-    do(fn: string, contents: string) {
+    async do(fn: string, contents: string) {
         console.log('File:', fn);
         console.log(contents);
-        return true;
     }
     done() {
         console.log();
@@ -55,27 +55,21 @@ export class MapOutput extends OutputManager {
         super();
         this.fileMap = new Map();
     }
-    do(fn: string, contents: string): boolean {
+    async do(fn: string, contents: string) {
         // could not write if already exists
-        if (this.fileMap.has(fn)) return false;
+        if (this.fileMap.has(fn)) throw Error('File already exists');
         this.fileMap.set(fn, contents);
-        return true;
     }
 }
 
 export class NoOutput extends OutputManager {
-    do(fn: string, contents: string): boolean {
-        return true;
+    async do(fn: string, contents: string) {
+        // no need to do anything, our output is wrapped in a Promise automatically :)
     }
 }
 
 export class FileOutput extends OutputManager {
-    do(fn: string, contents: string) {
-        try {
-            fs.writeFileSync(fn, contents);
-        } catch (e) {
-            return false;
-        }
-        return true;
+    async do(fn: string, contents: string) {
+        await fs.writeFile(fn, contents);
     }
 }

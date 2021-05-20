@@ -10,7 +10,7 @@ describe('ECL Generation', function () {
         const tm = new TaskManager('mod', false, new Map([['mod', 'import abc;']]), opm);
         const { ast } = tm.generateAST();
         // const eclgenerator = new ECLGen(tm.errorManager);
-        tm.generateOutputs();
+        await tm.generateOutputs();
         assert.lengthOf(
             tm.errorManager.issues.filter(e => e.severity === ErrorSeverity.ERROR),
             0,
@@ -25,7 +25,7 @@ describe('ECL Generation', function () {
         const tm = new TaskManager('mod', false, new Map([['mod', 'import abc as bcd;']]), opm);
         const { ast } = tm.generateAST();
         // const eclgenerator = new ECLGen(tm.errorManager);
-        tm.generateOutputs();
+        await tm.generateOutputs();
         assert.lengthOf(
             tm.errorManager.issues.filter(e => e.severity === ErrorSeverity.ERROR),
             0,

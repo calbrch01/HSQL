@@ -32,6 +32,14 @@ export class ExecCheckMode implements ExecIntent {
     }
 }
 
+// FIXME change output names
+export class ExecMakeMode implements ExecIntent {
+    async do(taskmanager: TaskManager, outputmanager: OutputManager): Promise<void> {
+        taskmanager.generateAST();
+        await taskmanager.generateOutputs();
+    }
+}
+
 /**
  * Unimplemented Syntax check
  */

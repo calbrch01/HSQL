@@ -105,15 +105,36 @@ export class TaskManager {
      * Generate outputs for all files
      *
      */
-    generateOutputs() {
-        // TODO: add support for specific files only
-        for (const [fn, ast] of this.ASTMap) {
+    async generateOutputs() {
+        // TODO: rework referencing code
+
+        const work: Promise<void>[] = [];
+        const fns = [...this.ASTMap.entries()];
+        for (const [fn, ast] of fns) {
             // console.debug(`File:${fn}`);
             const x = new ECLGen(this.errorManager, ast).getCode();
             // console.log(`Result`, x);
             const res = this.outputManager.do(fn, x.toString());
-            if (!res) this.errorManager.push(new TranslationError(format(rs.couldNotWrite)));
+            work.push(res);
         }
+        // Note: Promise.allSettled does not as per API throw any errors.
+        // This was put in because as the MDN does not explicitly state if
+        // there's _ever_ any condition on which it rejects. Remove if sure.
+        try {
+            const results = await Promise.allSettled(work);
+            //gather the rejected errors
+            results.forEach((e, i) => {
+                if (e.status === 'rejected') {
+                    // equivalent to writing `const fn = fns[i][0]`
+                    const [fn] = fns[i];
+                    this.errorManager.push(new TranslationError(format(rs.couldNotWrite, [fn])));
+                }
+            });
+        } catch (e) {
+            // FIXME deal with the rejection
+            this.errorManager.push(new TranslationError(format(rs.unexpectedError)));
+        }
+        // if (!res) this.errorManager.push(new TranslationError(format(rs.couldNotWrite)));
     }
 
     /**
