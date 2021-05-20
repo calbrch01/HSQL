@@ -28,8 +28,7 @@ export class AST implements BaseASTNode {
     }
 
     addImport(ctx: ImportStmtContext, name: QualifiedIdentifier, alias?: string) {
-        // FIXME
-        // assert that it doesnt exist
+        // FIXME assert that it doesnt exist already
         const nameStr = name.toString();
         const res = this.TaskMgr.resolve(name);
         this.variableManager.add(alias ?? nameStr, {

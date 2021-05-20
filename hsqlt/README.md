@@ -26,15 +26,10 @@ devDependencies(Dependencies that are used during development):
 -   antlr4ts-cli - Provides a CLI to work with the ANTLR tool
 -   pkg - Compile to bytecode and package into executable
 
-## Why Typescript
 
--   Type safe, and easier to understand code, as all types are present and explained.
--   Can set translation target, so we can use newer language features without worrying about underlying JS.
--   Have to redesign the visitor code to allow for AST Generation
--   Do not need to track ANTLR tool
+## Development + Notes
 
-## Development notes
-
+Please refer to [notes](notes/index.md)
 ### Debugging grammar
 
 In VSCode, use the ANTLR extension.

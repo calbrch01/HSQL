@@ -143,7 +143,7 @@ export class TaskManager {
         // }
         // return joinable;
 
-        // FIXME actually resolve
+        // FIXME actually resolve, currently we just eject an anymodule
         return new AnyModule();
     }
 

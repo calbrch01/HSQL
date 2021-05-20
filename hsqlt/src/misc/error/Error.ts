@@ -6,6 +6,7 @@
 import {
     ANTLRErrorListener,
     BailErrorStrategy,
+    Parser,
     ParserRuleContext,
     RecognitionException,
     Recognizer,
@@ -30,9 +31,9 @@ export enum ErrorType {
     SEMANTIC,
     OTHER,
     /**
-     * This should never occur
+     * Halt on these errors
      */
-    OTHERWORDLY,
+    HALTING,
 }
 
 export enum ErrorMode {
@@ -66,6 +67,10 @@ export class TranslationError {
             ErrorSeverity.ERROR,
             ErrorType.SEMANTIC
         );
+    }
+
+    static generalErrorToken(msg: string, et: ErrorType, cause?: ParserRuleContext) {
+        return new TranslationError(msg, cause?.start.line, cause?.start.charPositionInLine, ErrorSeverity.ERROR, et);
     }
 }
 
@@ -109,7 +114,27 @@ export class ErrorManager {
         return new ErrorManager(ErrorMode.PEDANTIC);
     }
 
-    push(e: TranslationError) {
+    /**
+     * Halt with given error
+     * @param e
+     */
+    halt(e?: TranslationError): never {
+        if (e !== undefined) {
+            this._errors.push(e);
+        }
+        throw new HaltError();
+    }
+
+    push(e: TranslationError): void {
         this._errors.push(e);
+        if (e.type === ErrorType.HALTING) {
+            this.halt();
+        }
     }
 }
+
+/**
+ * Tag class
+ * This class is useful for halting when any error occurs
+ */
+export class HaltError extends Error {}

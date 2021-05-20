@@ -142,7 +142,7 @@ export type argType = typeof args;
  * @param argv arguments
  * @param execMode execution mode
  */
-export function main(argv: argType, /*execMode: ExecMode*/ execMode: ExecIntent): void {
+export async function main(argv: argType, /*execMode: ExecMode*/ execMode: ExecIntent): Promise<void> {
     argv.a && console.log('<args>:', argv);
     // initialize managers
     const writer: OutputManager = argv.o ? new StandardOutput() : new FileOutput();

@@ -2,18 +2,33 @@ import { AbstractParseTreeVisitor } from 'antlr4ts/tree/AbstractParseTreeVisitor
 import { ParseTreeListener } from 'antlr4ts/tree/ParseTreeListener';
 import { AST } from '../../ast/AST';
 import { VariableTable } from '../../ast/symbol/VariableTable';
-import { ImportStmtContext, ProgramContext } from '../../misc/grammar/HSQLParser';
+import {
+    DefinitionContext,
+    DefinitionStmtContext,
+    ExprContext,
+    ImportStmtContext,
+    ProgramContext,
+    SelectStmtContext,
+} from '../../misc/grammar/HSQLParser';
 import { HSQLVisitor } from '../../misc/grammar/HSQLVisitor';
 import { ReadingManager } from '../../managers/ReadingManager';
 import { ErrorManager } from '../../misc/error/Error';
 import { TaskManager } from '../../managers/TaskManager';
 // import { IdentifierCollector } from './IdentifierCollector';
 import { QualifiedIdentifier } from '../../misc/ast/QualifiedIdentifier';
+import { DataType } from '../../ast/data/base/DataType';
+import { BaseASTNode } from '../../ast/stmt/base/BaseASTNode';
+import { pullVEO, VEO, VEOMaybe } from '../../misc/holders/VEO';
+import { StmtExpression } from '../../ast/stmt/base/StmtExpression';
+import { Select } from '../../ast/stmt/Select';
+import { Table } from '../../ast/data/Table';
 
 /**
- * Generate an AST
+ * Generate an AST.
+ * Note that there's two specific ways this is done
+ * 1.
  */
-export class ASTGenerator extends AbstractParseTreeVisitor<void> implements HSQLVisitor<void> {
+export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements HSQLVisitor<VEOMaybe> {
     protected ast: AST;
     constructor(
         protected taskManager: TaskManager,
@@ -23,8 +38,9 @@ export class ASTGenerator extends AbstractParseTreeVisitor<void> implements HSQL
         super();
         this.ast = new AST(taskManager, rootContext);
     }
+    // TODO: may have to implement the aggregateResult also
     defaultResult() {
-        return;
+        return null;
     }
 
     visitImportStmt(ctx: ImportStmtContext) {
@@ -39,9 +55,26 @@ export class ASTGenerator extends AbstractParseTreeVisitor<void> implements HSQL
          * this.ast.addImport(identifiers[0]);
          */
         this.ast.addImport(ctx, importFrom, importAs);
+        return null;
     }
 
-    getAST() {
+    visitDefinitionStmt(ctx: DefinitionStmtContext) {
+        const lhstext = ctx.IDENTIFIER().text;
+        const rhsdata: VEOMaybe<DataType, StmtExpression> = ctx.expr().accept(this);
+        //rhsdata is bound to exist
+        const x = pullVEO(rhsdata, this.errorManager, ctx);
+
+        return null;
+    }
+
+    // FIXME add actual code
+    visitSelectStmt(ctx: SelectStmtContext) {
+        const ct = new Select(ctx, []);
+        const dt = new Table();
+        return new VEO(dt, ct);
+    }
+
+    getAST(): AST {
         this.visit(this.rootContext);
         return this.ast;
     }

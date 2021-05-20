@@ -1,11 +1,16 @@
 ## Basic syntaxes
 
+### Starting with work
+
+The current objective is to get code generation working.
+After that, all assumptions made (can be tracked with `FIXME`) should be worked on.
+
 
 ### Todo list
 - [ ] Typedef
 - [ ] Having syntax
 
-### Idea
+### Goals
 
 HSQL
 - SQL 92 syntax support
@@ -14,6 +19,14 @@ HSQL
 - VS Code support
 - Full ML support
 
+## [Program UI](./programui.md)
+
+## [Scratchpad](./scratchpad.md)
+
+## Current architecture
+
+![Architecture](structure.drawio.png)
+## Translation sets
 ### Select
 > Use `+`,`JOIN(...,TRUE,ALL)`
 1. Select all from existing table (copy)
