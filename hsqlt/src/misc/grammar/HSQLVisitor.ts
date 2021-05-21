@@ -6,6 +6,8 @@ import { ParseTreeVisitor } from "antlr4ts/tree/ParseTreeVisitor";
 import { SelectAggregatedEverythingColContext } from "./HSQLParser";
 import { SelectAggregatedOneColContext } from "./HSQLParser";
 import { SelectOneColContext } from "./HSQLParser";
+import { NormalTailIdentifierContext } from "./HSQLParser";
+import { ParentTailIdentifierContext } from "./HSQLParser";
 import { ComparisonContext } from "./HSQLParser";
 import { BetweenContext } from "./HSQLParser";
 import { InListContext } from "./HSQLParser";
@@ -28,6 +30,9 @@ import { ParenthesizedExpressionContext } from "./HSQLParser";
 import { PredicatedContext } from "./HSQLParser";
 import { LogicalNotContext } from "./HSQLParser";
 import { LogicalBinaryContext } from "./HSQLParser";
+import { NormalIdentifierContext } from "./HSQLParser";
+import { RootIdentifierContext } from "./HSQLParser";
+import { ParentIdentifierContext } from "./HSQLParser";
 import { ProgramContext } from "./HSQLParser";
 import { CompletestmtContext } from "./HSQLParser";
 import { StmtContext } from "./HSQLParser";
@@ -122,6 +127,22 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitSelectOneCol?: (ctx: SelectOneColContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `normalTailIdentifier`
+	 * labeled alternative in `HSQLParser.overDefinitionTail`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitNormalTailIdentifier?: (ctx: NormalTailIdentifierContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `parentTailIdentifier`
+	 * labeled alternative in `HSQLParser.overDefinitionTail`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitParentTailIdentifier?: (ctx: ParentTailIdentifierContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by the `comparison`
@@ -298,6 +319,30 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitLogicalBinary?: (ctx: LogicalBinaryContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `normalIdentifier`
+	 * labeled alternative in `HSQLParser.overDefinitionRoot`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitNormalIdentifier?: (ctx: NormalIdentifierContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `rootIdentifier`
+	 * labeled alternative in `HSQLParser.overDefinitionRoot`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitRootIdentifier?: (ctx: RootIdentifierContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `parentIdentifier`
+	 * labeled alternative in `HSQLParser.overDefinitionRoot`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitParentIdentifier?: (ctx: ParentIdentifierContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `HSQLParser.program`.

@@ -7,7 +7,7 @@ import { QualifiedIdentifier } from '../misc/ast/QualifiedIdentifier';
 import { ErrorManager, ErrorMode, ErrorSeverity, TranslationError } from '../misc/error/Error';
 import { ImportStmtContext } from '../misc/grammar/HSQLParser';
 import { NoOutput, OutputManager } from './OutputManagers';
-import { ReadingManager } from './ReadingManager';
+import { FILETYPE, ReadingManager } from './ReadingManager';
 import { iP } from '../misc/strings/misc';
 import rs from '../misc/strings/resultStrings.json';
 import { ECLCode } from '../code/ECLCode';
@@ -108,13 +108,16 @@ export class TaskManager {
     async generateOutputs() {
         // TODO: rework referencing code
 
+        /** Entries needed to write */
         const work: Promise<void>[] = [];
         const fns = [...this.ASTMap.entries()];
         for (const [fn, ast] of fns) {
             // console.debug(`File:${fn}`);
             const x = new ECLGen(this.errorManager, ast).getCode();
             // console.log(`Result`, x);
-            const res = this.outputManager.do(fn, x.toString());
+            //get new filename
+            const newFn = this.readingMgr.changeExtension(fn, FILETYPE.ECL);
+            const res = this.outputManager.do(newFn, x.toString());
             work.push(res);
         }
         // Note: Promise.allSettled does not as per API throw any errors.

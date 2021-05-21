@@ -131,8 +131,13 @@ alterOperator: ADD | DROP | MODIFY;
 
 // use % instead of $ -> that operator is used in ECL SNIPPETS for now
 overDefinition: overDefinitionRoot ( '.' overDefinitionTail)*;
-overDefinitionRoot: IDENTIFIER | MODULO | XOR;
-overDefinitionTail: IDENTIFIER | XOR;
+overDefinitionRoot:
+	IDENTIFIER	# normalIdentifier
+	| MODULO	# rootIdentifier
+	| XOR		# parentIdentifier;
+overDefinitionTail:
+	IDENTIFIER	# normalTailIdentifier
+	| XOR		# parentTailIdentifier;
 
 definition: IDENTIFIER ('.' IDENTIFIER)*;
 
@@ -269,7 +274,6 @@ GROUP: G R O U P;
 BY: B Y;
 // COUNT: C O U N T; AVG: A V G; SUM: S U M; MIN: M I N; MAX: M A X; TRIM: T R I M;
 
-// Actions
 TRAIN: T R A I N;
 PREDICT: P R E D I C T;
 PLOT: P L O T;

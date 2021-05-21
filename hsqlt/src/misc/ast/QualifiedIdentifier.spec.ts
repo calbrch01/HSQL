@@ -42,7 +42,9 @@ describe('Qualified Identifier tests', function () {
 
         const qid = QualifiedIdentifier.fromOverDefinition(treeRoot);
 
-        assert.sameDeepOrderedMembers(qid.qidentifier, overIdentifierSet);
+        const newOrderedSet = [...overIdentifierSet];
+        newOrderedSet[0] = '$';
+        assert.sameDeepOrderedMembers(qid.qidentifier, newOrderedSet);
     });
 
     it('to String', async () => {

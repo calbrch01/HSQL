@@ -26,7 +26,12 @@ export class AST implements BaseASTNode {
         this.variableManager = new VariableTable();
         this.stmts = [];
     }
-
+    /**
+     * Add import to AST
+     * @param ctx
+     * @param name
+     * @param alias
+     */
     addImport(ctx: ImportStmtContext, name: QualifiedIdentifier, alias?: string) {
         // FIXME assert that it doesnt exist already
         const nameStr = name.toString();

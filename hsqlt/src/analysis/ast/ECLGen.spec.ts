@@ -16,7 +16,7 @@ describe('ECL Generation', function () {
             0,
             'There should have been no errors'
         );
-        assert.strictEqual(opm.fileMap.get('mod'), `IMPORT abc;`);
+        assert.strictEqual(opm.fileMap.get('mod.ecl'), `IMPORT abc;`);
 
         // console.log(`opm`, opm);
     });
@@ -32,7 +32,7 @@ describe('ECL Generation', function () {
             'There should have been no errors'
         );
         // TODO file extension work
-        assert.strictEqual(opm.fileMap.get('mod'), `IMPORT abc as bcd;`);
+        assert.strictEqual(opm.fileMap.get('mod.ecl'), `IMPORT abc as bcd;`);
         // console.log(`opm`, opm);
     });
 });

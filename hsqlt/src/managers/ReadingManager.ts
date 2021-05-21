@@ -1,12 +1,16 @@
 import { QualifiedIdentifier } from '../misc/ast/QualifiedIdentifier';
 import fs from 'fs';
-import path, { sep } from 'path';
+import path from 'path';
 import { Module } from '../ast/data/Module';
 import { ErrorManager, TranslationError } from '../misc/error/Error';
 import { AnyModule } from '../ast/data/AnyModule';
 import { iP } from '../misc/strings/misc';
 import rs from '../misc/strings/resultStrings.json';
 import format from 'string-template';
+
+/**
+ * File type enum
+ */
 export enum FILETYPE {
     OTHER,
     ECL,
@@ -16,6 +20,7 @@ export enum FILETYPE {
 
 /**
  * Read and resolve types for files
+ * Additionally manages extensions.
  */
 export class ReadingManager {
     /**
@@ -26,7 +31,7 @@ export class ReadingManager {
      */
     constructor(
         protected errorManager: ErrorManager,
-        protected memFileMap: Map<string, string> = new Map<string, string>(),
+        protected memFileMap: Map<string, string> = new Map(),
         protected baseLoc?: string
     ) {}
 
@@ -59,7 +64,7 @@ export class ReadingManager {
     }
 
     /**
-     * check if sourcefile exists in map
+     * Check if sourcefile exists in map
      * @param s source name
      * @returns
      */
@@ -67,6 +72,10 @@ export class ReadingManager {
         return this.memFileMap.has(s);
     }
 
+    /**
+     * Entries of the memory map
+     * @returns
+     */
     entries() {
         return this.memFileMap.entries();
     }

@@ -39,7 +39,7 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
         this.ast = new AST(taskManager, rootContext);
     }
     // TODO: may have to implement the aggregateResult also
-    defaultResult() {
+    protected defaultResult() {
         return null;
     }
 
