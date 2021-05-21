@@ -2,11 +2,15 @@ import { QualifiedIdentifier } from '../misc/ast/QualifiedIdentifier';
 import fs from 'fs';
 import path, { sep } from 'path';
 import { Module } from '../ast/data/Module';
-import { ErrorManager } from '../misc/error/Error';
+import { ErrorManager, TranslationError } from '../misc/error/Error';
 import { AnyModule } from '../ast/data/AnyModule';
+import { iP } from '../misc/strings/misc';
+import rs from '../misc/strings/resultStrings.json';
+import format from 'string-template';
 export enum FILETYPE {
+    OTHER,
     ECL,
-    DECL,
+    DHSQL,
     HSQL,
 }
 
@@ -16,12 +20,12 @@ export enum FILETYPE {
 export class ReadingManager {
     /**
      *
-     * @param errorListener Error listener
+     * @param errorManager Error listener
      * @param memFileMap Override for files
      * @param baseLoc Base location to read from
      */
     constructor(
-        protected errorListener: ErrorManager,
+        protected errorManager: ErrorManager,
         protected memFileMap: Map<string, string> = new Map<string, string>(),
         protected baseLoc?: string
     ) {}
@@ -86,5 +90,60 @@ export class ReadingManager {
         const file = await fs.promises.readFile(fileName);
         return file.toString();
     }
+    // FIXME add
     discoverFileType(q: QualifiedIdentifier) {}
+
+    /**
+     * Get the file type
+     * @param pathString
+     * @param override
+     * @returns
+     */
+    getFileType(pathString: string, override?: FILETYPE): FILETYPE {
+        const x = path.extname(pathString);
+        // are switch cases really bad?
+        // TODO Discuss whether fallback should be ECL
+        switch (x) {
+            case '.hsql':
+                return override ?? FILETYPE.HSQL;
+            case '.dhsql':
+                return override ?? FILETYPE.DHSQL;
+            case '.ecl':
+                return override ?? FILETYPE.ECL;
+            default:
+                return override ?? FILETYPE.OTHER;
+        }
+    }
+
+    /**
+     * Change extension of a file
+     * @param pathString path of the file
+     * @param newExtension either the extension or the string
+     * @returns
+     */
+    changeExtension(pathString: string, newExtension: FILETYPE | string): string {
+        const pathParsed = path.parse(pathString);
+        if (typeof newExtension === 'string') {
+            pathParsed.ext = newExtension;
+        } else {
+            // TODO Extensions are hardcoded - Fix them later?
+            switch (newExtension) {
+                case FILETYPE.HSQL:
+                    pathParsed.ext = '.hsql';
+                    break;
+                case FILETYPE.ECL:
+                    pathParsed.ext = '.ecl';
+                    break;
+                case FILETYPE.DHSQL:
+                    pathParsed.ext = '.dhsql';
+                    break;
+                default:
+                    this.errorManager.halt(new TranslationError(format(rs.invalidFileExtension, [pathString])));
+            }
+        }
+        // as per the docs, setting it to undefined leads it to use the other properties
+        // this should be a safe way of changing extensions for files
+        pathParsed.base = undefined!;
+        return path.format(pathParsed);
+    }
 }

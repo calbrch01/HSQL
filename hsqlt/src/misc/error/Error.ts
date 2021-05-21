@@ -90,7 +90,7 @@ export class ErrorManager {
      * Note: They are bound via closures so it can be relocated freely
      */
     newErrorListener() {
-        const errors = this._errors;
+        const errors = this;
         const listener: ANTLRErrorListener<LexerOrParserSymbol> = {
             syntaxError(rec, offendingSymbol, line, charPositionInLine, msg, e) {
                 errors.push(new TranslationError(msg, line, charPositionInLine));
