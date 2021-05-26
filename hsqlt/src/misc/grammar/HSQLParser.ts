@@ -28,164 +28,189 @@ import { HSQLVisitor } from "./HSQLVisitor";
 
 export class HSQLParser extends Parser {
 	public static readonly T__0 = 1;
-	public static readonly T__1 = 2;
-	public static readonly T__2 = 3;
-	public static readonly T__3 = 4;
-	public static readonly T__4 = 5;
-	public static readonly OUTER = 6;
-	public static readonly ONLY = 7;
-	public static readonly REAL_TYPE = 8;
-	public static readonly INTEGER_TYPE = 9;
-	public static readonly DECIMAL_TYPE = 10;
-	public static readonly VARSTRING_TYPE = 11;
-	public static readonly STRING_TYPE = 12;
-	public static readonly UNSTABLE = 13;
-	public static readonly STABLE = 14;
-	public static readonly TABLE = 15;
+	public static readonly REAL_TYPE = 2;
+	public static readonly INTEGER_TYPE = 3;
+	public static readonly DECIMAL_TYPE = 4;
+	public static readonly VARSTRING_TYPE = 5;
+	public static readonly STRING_TYPE = 6;
+	public static readonly BOOLEAN = 7;
+	public static readonly UNSTABLE = 8;
+	public static readonly STABLE = 9;
+	public static readonly TABLE = 10;
+	public static readonly ALTER = 11;
+	public static readonly TO = 12;
+	public static readonly ADD = 13;
+	public static readonly DROP = 14;
+	public static readonly MODIFY = 15;
 	public static readonly EXPORT = 16;
-	public static readonly AND = 17;
-	public static readonly AS = 18;
-	public static readonly ASC = 19;
-	public static readonly BETWEEN = 20;
-	public static readonly BY = 21;
-	public static readonly DESC = 22;
-	public static readonly DEPENDENT = 23;
-	public static readonly FROM = 24;
-	public static readonly GROUP = 25;
-	public static readonly IMPORT = 26;
+	public static readonly SHARED = 17;
+	public static readonly ASC = 18;
+	public static readonly DESC = 19;
+	public static readonly ORDER = 20;
+	public static readonly GROUP = 21;
+	public static readonly BY = 22;
+	public static readonly TRAIN = 23;
+	public static readonly PREDICT = 24;
+	public static readonly PLOT = 25;
+	public static readonly OUTPUT = 26;
 	public static readonly OPTION = 27;
 	public static readonly OPTIONS = 28;
 	public static readonly OVERWRITE = 29;
 	public static readonly UPDATE = 30;
-	public static readonly IN = 31;
-	public static readonly ON = 32;
-	public static readonly INDEPENDENT = 33;
-	public static readonly IDCOLUMN = 34;
-	public static readonly CREATE = 35;
-	public static readonly LAYOUT = 36;
-	public static readonly TRAIN = 37;
-	public static readonly FILE = 38;
-	public static readonly MAP = 39;
-	public static readonly METHOD = 40;
-	public static readonly NOT = 41;
-	public static readonly OR = 42;
-	public static readonly ORDER = 43;
-	public static readonly OUTPUT = 44;
-	public static readonly PLOT = 45;
-	public static readonly PREDICT = 46;
-	public static readonly PROJECT = 47;
-	public static readonly SELECT = 48;
-	public static readonly JOIN = 49;
-	public static readonly INNER = 50;
-	public static readonly LEFT = 51;
-	public static readonly RIGHT = 52;
-	public static readonly FULL = 53;
-	public static readonly SUM = 54;
-	public static readonly TITLE = 55;
-	public static readonly EXPIRE = 56;
-	public static readonly TRUE = 57;
-	public static readonly FALSE = 58;
-	public static readonly UESCAPE = 59;
-	public static readonly WHERE = 60;
-	public static readonly TYPE = 61;
-	public static readonly NCOMPILE = 62;
-	public static readonly SEMICOLON = 63;
-	public static readonly EQ = 64;
-	public static readonly NEQ = 65;
-	public static readonly LT = 66;
-	public static readonly LTE = 67;
-	public static readonly GT = 68;
-	public static readonly GTE = 69;
-	public static readonly STRING = 70;
-	public static readonly UNICODE_STRING = 71;
-	public static readonly BINARY_LITERAL = 72;
-	public static readonly INTEGER_VALUE = 73;
-	public static readonly DECIMAL_VALUE = 74;
-	public static readonly DOUBLE_VALUE = 75;
-	public static readonly IDENTIFIER = 76;
-	public static readonly ECL_SNIPPETS = 77;
-	public static readonly SIMPLE_COMMENT = 78;
-	public static readonly SIMPLE_C_COMMENT = 79;
-	public static readonly BRACKETED_COMMENT = 80;
-	public static readonly WS = 81;
+	public static readonly ON = 31;
+	public static readonly INDEPENDENT = 32;
+	public static readonly IDCOLUMN = 33;
+	public static readonly PROJECT = 34;
+	public static readonly SELECT = 35;
+	public static readonly FROM = 36;
+	public static readonly TOP = 37;
+	public static readonly WHERE = 38;
+	public static readonly HAVING = 39;
+	public static readonly DISTINCT = 40;
+	public static readonly NATURAL = 41;
+	public static readonly CROSS = 42;
+	public static readonly JOIN = 43;
+	public static readonly INNER = 44;
+	public static readonly LEFT = 45;
+	public static readonly RIGHT = 46;
+	public static readonly FULL = 47;
+	public static readonly OUTER = 48;
+	public static readonly ONLY = 49;
+	public static readonly CASE = 50;
+	public static readonly TRUE = 51;
+	public static readonly FALSE = 52;
+	public static readonly IMPORT = 53;
+	public static readonly AS = 54;
+	public static readonly CREATE = 55;
+	public static readonly LAYOUT = 56;
+	public static readonly FILE = 57;
+	public static readonly MAP = 58;
+	public static readonly METHOD = 59;
+	public static readonly DEPENDENT = 60;
+	public static readonly TITLE = 61;
+	public static readonly EXPIRE = 62;
+	public static readonly LIMIT = 63;
+	public static readonly OFFSET = 64;
+	public static readonly MODULE = 65;
+	public static readonly UESCAPE = 66;
+	public static readonly TYPE = 67;
+	public static readonly SEMICOLON = 68;
+	public static readonly EQ = 69;
+	public static readonly NEQ = 70;
+	public static readonly LT = 71;
+	public static readonly LTE = 72;
+	public static readonly GT = 73;
+	public static readonly GTE = 74;
+	public static readonly PLUS = 75;
+	public static readonly SUBSTRACT = 76;
+	public static readonly MULTIPLY = 77;
+	public static readonly DIVIDE = 78;
+	public static readonly MODULO = 79;
+	public static readonly XOR = 80;
+	public static readonly AND = 81;
+	public static readonly OR = 82;
+	public static readonly NOT = 83;
+	public static readonly IN = 84;
+	public static readonly BETWEEN = 85;
+	public static readonly EXISTS = 86;
+	public static readonly STRING = 87;
+	public static readonly UNICODE_STRING = 88;
+	public static readonly BINARY_LITERAL = 89;
+	public static readonly INTEGER_VALUE = 90;
+	public static readonly DECIMAL_VALUE = 91;
+	public static readonly DOUBLE_VALUE = 92;
+	public static readonly IDENTIFIER = 93;
+	public static readonly COMMA_ = 94;
+	public static readonly BSTART_ = 95;
+	public static readonly BEND_ = 96;
+	public static readonly CURLY_BSTART_ = 97;
+	public static readonly CURLY_BEND_ = 98;
+	public static readonly ECL_SNIPPETS = 99;
+	public static readonly SIMPLE_COMMENT = 100;
+	public static readonly SIMPLE_C_COMMENT = 101;
+	public static readonly BRACKETED_COMMENT = 102;
+	public static readonly WS = 103;
 	public static readonly RULE_program = 0;
 	public static readonly RULE_completestmt = 1;
 	public static readonly RULE_stmt = 2;
-	public static readonly RULE_assignStmt = 3;
-	public static readonly RULE_actionStmt = 4;
-	public static readonly RULE_typeDefStmt = 5;
-	public static readonly RULE_typeDefExport = 6;
-	public static readonly RULE_mapExportable = 7;
-	public static readonly RULE_tableExport = 8;
-	public static readonly RULE_layoutExport = 9;
-	public static readonly RULE_identifierExport = 10;
-	public static readonly RULE_importStmt = 11;
-	public static readonly RULE_implicitActionStmt = 12;
-	public static readonly RULE_expr = 13;
-	public static readonly RULE_simpleIdentifier = 14;
-	public static readonly RULE_outputStmt = 15;
-	public static readonly RULE_outputVariant = 16;
-	public static readonly RULE_namedOutputStatement = 17;
-	public static readonly RULE_fileOutputStatement = 18;
-	public static readonly RULE_outputUpdateOption = 19;
-	public static readonly RULE_outputExpireOption = 20;
-	public static readonly RULE_plotStmt = 21;
-	public static readonly RULE_mlStmt = 22;
-	public static readonly RULE_train = 23;
-	public static readonly RULE_elementaryML = 24;
-	public static readonly RULE_trainOptions = 25;
-	public static readonly RULE_trainOption = 26;
-	public static readonly RULE_trainValue = 27;
-	public static readonly RULE_predict = 28;
-	public static readonly RULE_selectStmt = 29;
-	public static readonly RULE_joinClause = 30;
-	public static readonly RULE_joinType = 31;
-	public static readonly RULE_selectColumns = 32;
-	public static readonly RULE_aggregatedSelectColumn = 33;
-	public static readonly RULE_selectColumn = 34;
-	public static readonly RULE_selectFromClause = 35;
-	public static readonly RULE_nestedSelectStmt = 36;
-	public static readonly RULE_selectDataset = 37;
-	public static readonly RULE_selectDatasetFile = 38;
-	public static readonly RULE_selectTableName = 39;
-	public static readonly RULE_selectWhereClause = 40;
-	public static readonly RULE_orderByClause = 41;
-	public static readonly RULE_sortItem = 42;
-	public static readonly RULE_ascSortItem = 43;
-	public static readonly RULE_descSortItem = 44;
-	public static readonly RULE_groupByClause = 45;
-	public static readonly RULE_layoutStmt = 46;
-	public static readonly RULE_layoutContent = 47;
-	public static readonly RULE_inlineStmt = 48;
-	public static readonly RULE_qualifiedIdentifier = 49;
-	public static readonly RULE_dataType = 50;
-	public static readonly RULE_expression = 51;
-	public static readonly RULE_booleanExpression = 52;
-	public static readonly RULE_predicate = 53;
-	public static readonly RULE_valueExpression = 54;
-	public static readonly RULE_primaryExpression = 55;
-	public static readonly RULE_number = 56;
-	public static readonly RULE_string = 57;
-	public static readonly RULE_booleanValue = 58;
-	public static readonly RULE_comparisonOperator = 59;
+	public static readonly RULE_definitionStmt = 3;
+	public static readonly RULE_expr = 4;
+	public static readonly RULE_actionStmt = 5;
+	public static readonly RULE_selectStmt = 6;
+	public static readonly RULE_selectHavingClause = 7;
+	public static readonly RULE_selectGroupByClause = 8;
+	public static readonly RULE_definitionSet = 9;
+	public static readonly RULE_selectColumns = 10;
+	public static readonly RULE_selectCol = 11;
+	public static readonly RULE_col = 12;
+	public static readonly RULE_aliasingCol = 13;
+	public static readonly RULE_selectFromClause = 14;
+	public static readonly RULE_selectFromTableReference = 15;
+	public static readonly RULE_selectAlias = 16;
+	public static readonly RULE_join_operator = 17;
+	public static readonly RULE_selectWhereClause = 18;
+	public static readonly RULE_joinedTable = 19;
+	public static readonly RULE_joinSpecification = 20;
+	public static readonly RULE_groupByClause = 21;
+	public static readonly RULE_orderByClause = 22;
+	public static readonly RULE_sortItem = 23;
+	public static readonly RULE_ascSortItem = 24;
+	public static readonly RULE_descSortItem = 25;
+	public static readonly RULE_limitClause = 26;
+	public static readonly RULE_offsetClause = 27;
+	public static readonly RULE_comparisonOperator = 28;
+	public static readonly RULE_logicalOperator = 29;
+	public static readonly RULE_literal = 30;
+	public static readonly RULE_dataType = 31;
+	public static readonly RULE_alterOperator = 32;
+	public static readonly RULE_overDefinition = 33;
+	public static readonly RULE_overDefinitionRoot = 34;
+	public static readonly RULE_overDefinitionTail = 35;
+	public static readonly RULE_definition = 36;
+	public static readonly RULE_expression = 37;
+	public static readonly RULE_booleanExpression = 38;
+	public static readonly RULE_predicate = 39;
+	public static readonly RULE_valueExpression = 40;
+	public static readonly RULE_primaryExpression = 41;
+	public static readonly RULE_number = 42;
+	public static readonly RULE_string = 43;
+	public static readonly RULE_booleanValue = 44;
+	public static readonly RULE_importStmt = 45;
+	public static readonly RULE_outputStmt = 46;
+	public static readonly RULE_attribute = 47;
+	public static readonly RULE_namedOutput = 48;
+	public static readonly RULE_toFile = 49;
+	public static readonly RULE_plotStmt = 50;
+	public static readonly RULE_moduleStmt = 51;
+	public static readonly RULE_transformStmt = 52;
+	public static readonly RULE_mlStmt = 53;
+	public static readonly RULE_train = 54;
+	public static readonly RULE_elementaryML = 55;
+	public static readonly RULE_trainOptions = 56;
+	public static readonly RULE_trainOption = 57;
+	public static readonly RULE_trainValue = 58;
+	public static readonly RULE_predict = 59;
+	public static readonly RULE_scope = 60;
 	// tslint:disable:no-trailing-whitespace
 	public static readonly ruleNames: string[] = [
-		"program", "completestmt", "stmt", "assignStmt", "actionStmt", "typeDefStmt", 
-		"typeDefExport", "mapExportable", "tableExport", "layoutExport", "identifierExport", 
-		"importStmt", "implicitActionStmt", "expr", "simpleIdentifier", "outputStmt", 
-		"outputVariant", "namedOutputStatement", "fileOutputStatement", "outputUpdateOption", 
-		"outputExpireOption", "plotStmt", "mlStmt", "train", "elementaryML", "trainOptions", 
-		"trainOption", "trainValue", "predict", "selectStmt", "joinClause", "joinType", 
-		"selectColumns", "aggregatedSelectColumn", "selectColumn", "selectFromClause", 
-		"nestedSelectStmt", "selectDataset", "selectDatasetFile", "selectTableName", 
-		"selectWhereClause", "orderByClause", "sortItem", "ascSortItem", "descSortItem", 
-		"groupByClause", "layoutStmt", "layoutContent", "inlineStmt", "qualifiedIdentifier", 
-		"dataType", "expression", "booleanExpression", "predicate", "valueExpression", 
-		"primaryExpression", "number", "string", "booleanValue", "comparisonOperator",
+		"program", "completestmt", "stmt", "definitionStmt", "expr", "actionStmt", 
+		"selectStmt", "selectHavingClause", "selectGroupByClause", "definitionSet", 
+		"selectColumns", "selectCol", "col", "aliasingCol", "selectFromClause", 
+		"selectFromTableReference", "selectAlias", "join_operator", "selectWhereClause", 
+		"joinedTable", "joinSpecification", "groupByClause", "orderByClause", 
+		"sortItem", "ascSortItem", "descSortItem", "limitClause", "offsetClause", 
+		"comparisonOperator", "logicalOperator", "literal", "dataType", "alterOperator", 
+		"overDefinition", "overDefinitionRoot", "overDefinitionTail", "definition", 
+		"expression", "booleanExpression", "predicate", "valueExpression", "primaryExpression", 
+		"number", "string", "booleanValue", "importStmt", "outputStmt", "attribute", 
+		"namedOutput", "toFile", "plotStmt", "moduleStmt", "transformStmt", "mlStmt", 
+		"train", "elementaryML", "trainOptions", "trainOption", "trainValue", 
+		"predict", "scope",
 	];
 
 	private static readonly _LITERAL_NAMES: Array<string | undefined> = [
-		undefined, "'('", "','", "')'", "'*'", "'.'", undefined, undefined, undefined, 
+		undefined, "'.'", undefined, undefined, undefined, undefined, undefined, 
+		undefined, undefined, undefined, undefined, undefined, undefined, undefined, 
 		undefined, undefined, undefined, undefined, undefined, undefined, undefined, 
 		undefined, undefined, undefined, undefined, undefined, undefined, undefined, 
 		undefined, undefined, undefined, undefined, undefined, undefined, undefined, 
@@ -194,21 +219,27 @@ export class HSQLParser extends Parser {
 		undefined, undefined, undefined, undefined, undefined, undefined, undefined, 
 		undefined, undefined, undefined, undefined, undefined, undefined, undefined, 
 		undefined, undefined, undefined, undefined, undefined, undefined, "'='", 
-		undefined, "'<'", "'<='", "'>'", "'>='",
+		undefined, "'<'", "'<='", "'>'", "'>='", "'+'", "'-'", "'*'", "'/'", "'%'", 
+		"'^'", undefined, undefined, undefined, undefined, undefined, undefined, 
+		undefined, undefined, undefined, undefined, undefined, undefined, undefined, 
+		"','", "'('", "')'", "'{'", "'}'",
 	];
 	private static readonly _SYMBOLIC_NAMES: Array<string | undefined> = [
-		undefined, undefined, undefined, undefined, undefined, undefined, "OUTER", 
-		"ONLY", "REAL_TYPE", "INTEGER_TYPE", "DECIMAL_TYPE", "VARSTRING_TYPE", 
-		"STRING_TYPE", "UNSTABLE", "STABLE", "TABLE", "EXPORT", "AND", "AS", "ASC", 
-		"BETWEEN", "BY", "DESC", "DEPENDENT", "FROM", "GROUP", "IMPORT", "OPTION", 
-		"OPTIONS", "OVERWRITE", "UPDATE", "IN", "ON", "INDEPENDENT", "IDCOLUMN", 
-		"CREATE", "LAYOUT", "TRAIN", "FILE", "MAP", "METHOD", "NOT", "OR", "ORDER", 
-		"OUTPUT", "PLOT", "PREDICT", "PROJECT", "SELECT", "JOIN", "INNER", "LEFT", 
-		"RIGHT", "FULL", "SUM", "TITLE", "EXPIRE", "TRUE", "FALSE", "UESCAPE", 
-		"WHERE", "TYPE", "NCOMPILE", "SEMICOLON", "EQ", "NEQ", "LT", "LTE", "GT", 
-		"GTE", "STRING", "UNICODE_STRING", "BINARY_LITERAL", "INTEGER_VALUE", 
-		"DECIMAL_VALUE", "DOUBLE_VALUE", "IDENTIFIER", "ECL_SNIPPETS", "SIMPLE_COMMENT", 
-		"SIMPLE_C_COMMENT", "BRACKETED_COMMENT", "WS",
+		undefined, undefined, "REAL_TYPE", "INTEGER_TYPE", "DECIMAL_TYPE", "VARSTRING_TYPE", 
+		"STRING_TYPE", "BOOLEAN", "UNSTABLE", "STABLE", "TABLE", "ALTER", "TO", 
+		"ADD", "DROP", "MODIFY", "EXPORT", "SHARED", "ASC", "DESC", "ORDER", "GROUP", 
+		"BY", "TRAIN", "PREDICT", "PLOT", "OUTPUT", "OPTION", "OPTIONS", "OVERWRITE", 
+		"UPDATE", "ON", "INDEPENDENT", "IDCOLUMN", "PROJECT", "SELECT", "FROM", 
+		"TOP", "WHERE", "HAVING", "DISTINCT", "NATURAL", "CROSS", "JOIN", "INNER", 
+		"LEFT", "RIGHT", "FULL", "OUTER", "ONLY", "CASE", "TRUE", "FALSE", "IMPORT", 
+		"AS", "CREATE", "LAYOUT", "FILE", "MAP", "METHOD", "DEPENDENT", "TITLE", 
+		"EXPIRE", "LIMIT", "OFFSET", "MODULE", "UESCAPE", "TYPE", "SEMICOLON", 
+		"EQ", "NEQ", "LT", "LTE", "GT", "GTE", "PLUS", "SUBSTRACT", "MULTIPLY", 
+		"DIVIDE", "MODULO", "XOR", "AND", "OR", "NOT", "IN", "BETWEEN", "EXISTS", 
+		"STRING", "UNICODE_STRING", "BINARY_LITERAL", "INTEGER_VALUE", "DECIMAL_VALUE", 
+		"DOUBLE_VALUE", "IDENTIFIER", "COMMA_", "BSTART_", "BEND_", "CURLY_BSTART_", 
+		"CURLY_BEND_", "ECL_SNIPPETS", "SIMPLE_COMMENT", "SIMPLE_C_COMMENT", "BRACKETED_COMMENT", 
+		"WS",
 	];
 	public static readonly VOCABULARY: Vocabulary = new VocabularyImpl(HSQLParser._LITERAL_NAMES, HSQLParser._SYMBOLIC_NAMES, []);
 
@@ -232,9 +263,6 @@ export class HSQLParser extends Parser {
 		return new FailedPredicateException(this, predicate, message);
 	}
 
-
-	  //Nothing here anymore
-
 	constructor(input: TokenStream) {
 		super(input);
 		this._interp = new ParserATNSimulator(HSQLParser._ATN, this);
@@ -247,21 +275,21 @@ export class HSQLParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 123;
+			this.state = 125;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
-			while (((((_la - 16)) & ~0x1F) === 0 && ((1 << (_la - 16)) & ((1 << (HSQLParser.EXPORT - 16)) | (1 << (HSQLParser.IMPORT - 16)) | (1 << (HSQLParser.MAP - 16)) | (1 << (HSQLParser.OUTPUT - 16)) | (1 << (HSQLParser.PLOT - 16)))) !== 0) || ((((_la - 48)) & ~0x1F) === 0 && ((1 << (_la - 48)) & ((1 << (HSQLParser.SELECT - 48)) | (1 << (HSQLParser.NCOMPILE - 48)) | (1 << (HSQLParser.IDENTIFIER - 48)) | (1 << (HSQLParser.ECL_SNIPPETS - 48)))) !== 0)) {
+			while ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << HSQLParser.EXPORT) | (1 << HSQLParser.SHARED) | (1 << HSQLParser.PLOT) | (1 << HSQLParser.OUTPUT))) !== 0) || ((((_la - 35)) & ~0x1F) === 0 && ((1 << (_la - 35)) & ((1 << (HSQLParser.SELECT - 35)) | (1 << (HSQLParser.TRUE - 35)) | (1 << (HSQLParser.FALSE - 35)) | (1 << (HSQLParser.IMPORT - 35)))) !== 0) || ((((_la - 87)) & ~0x1F) === 0 && ((1 << (_la - 87)) & ((1 << (HSQLParser.STRING - 87)) | (1 << (HSQLParser.UNICODE_STRING - 87)) | (1 << (HSQLParser.INTEGER_VALUE - 87)) | (1 << (HSQLParser.DECIMAL_VALUE - 87)) | (1 << (HSQLParser.DOUBLE_VALUE - 87)) | (1 << (HSQLParser.IDENTIFIER - 87)))) !== 0)) {
 				{
 				{
-				this.state = 120;
+				this.state = 122;
 				this.completestmt();
 				}
 				}
-				this.state = 125;
+				this.state = 127;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 			}
-			this.state = 126;
+			this.state = 128;
 			this.match(HSQLParser.EOF);
 			}
 		}
@@ -286,9 +314,9 @@ export class HSQLParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 128;
+			this.state = 130;
 			this.stmt();
-			this.state = 129;
+			this.state = 131;
 			this.match(HSQLParser.SEMICOLON);
 			}
 		}
@@ -311,54 +339,41 @@ export class HSQLParser extends Parser {
 		let _localctx: StmtContext = new StmtContext(this._ctx, this.state);
 		this.enterRule(_localctx, 4, HSQLParser.RULE_stmt);
 		try {
-			this.state = 137;
+			this.state = 136;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
-			case HSQLParser.OUTPUT:
-			case HSQLParser.PLOT:
+			case HSQLParser.EXPORT:
+			case HSQLParser.SHARED:
+			case HSQLParser.IDENTIFIER:
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 131;
+				this.state = 133;
+				this.definitionStmt();
+				}
+				break;
+			case HSQLParser.PLOT:
+			case HSQLParser.OUTPUT:
+			case HSQLParser.SELECT:
+			case HSQLParser.TRUE:
+			case HSQLParser.FALSE:
+			case HSQLParser.STRING:
+			case HSQLParser.UNICODE_STRING:
+			case HSQLParser.INTEGER_VALUE:
+			case HSQLParser.DECIMAL_VALUE:
+			case HSQLParser.DOUBLE_VALUE:
+				this.enterOuterAlt(_localctx, 2);
+				{
+				this.state = 134;
 				this.actionStmt();
 				}
 				break;
-			case HSQLParser.SELECT:
-				this.enterOuterAlt(_localctx, 2);
-				{
-				this.state = 132;
-				this.implicitActionStmt();
-				}
-				break;
-			case HSQLParser.EXPORT:
-			case HSQLParser.IDENTIFIER:
+			case HSQLParser.IMPORT:
 				this.enterOuterAlt(_localctx, 3);
 				{
-				this.state = 133;
-				this.assignStmt();
-				}
-				break;
-			case HSQLParser.IMPORT:
-				this.enterOuterAlt(_localctx, 4);
-				{
-				this.state = 134;
+				this.state = 135;
 				this.importStmt();
 				}
 				break;
-			case HSQLParser.MAP:
-				this.enterOuterAlt(_localctx, 5);
-				{
-				this.state = 135;
-				this.typeDefStmt();
-				}
-				break;
-			case HSQLParser.NCOMPILE:
-			case HSQLParser.ECL_SNIPPETS:
-				this.enterOuterAlt(_localctx, 6);
-				{
-				this.state = 136;
-				this.inlineStmt();
-				}
-				break;
 			default:
 				throw new NoViableAltException(this);
 			}
@@ -378,375 +393,20 @@ export class HSQLParser extends Parser {
 		return _localctx;
 	}
 	// @RuleVersion(0)
-	public assignStmt(): AssignStmtContext {
-		let _localctx: AssignStmtContext = new AssignStmtContext(this._ctx, this.state);
-		this.enterRule(_localctx, 6, HSQLParser.RULE_assignStmt);
-		let _la: number;
+	public definitionStmt(): DefinitionStmtContext {
+		let _localctx: DefinitionStmtContext = new DefinitionStmtContext(this._ctx, this.state);
+		this.enterRule(_localctx, 6, HSQLParser.RULE_definitionStmt);
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 140;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === HSQLParser.EXPORT) {
-				{
-				this.state = 139;
-				this.match(HSQLParser.EXPORT);
-				}
-			}
-
-			this.state = 142;
+			this.state = 138;
+			this.scope();
+			this.state = 139;
 			_localctx._label = this.match(HSQLParser.IDENTIFIER);
-			this.state = 143;
+			this.state = 140;
 			this.match(HSQLParser.EQ);
-			this.state = 144;
+			this.state = 141;
 			this.expr();
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public actionStmt(): ActionStmtContext {
-		let _localctx: ActionStmtContext = new ActionStmtContext(this._ctx, this.state);
-		this.enterRule(_localctx, 8, HSQLParser.RULE_actionStmt);
-		try {
-			this.state = 148;
-			this._errHandler.sync(this);
-			switch (this._input.LA(1)) {
-			case HSQLParser.OUTPUT:
-				this.enterOuterAlt(_localctx, 1);
-				{
-				this.state = 146;
-				this.outputStmt();
-				}
-				break;
-			case HSQLParser.PLOT:
-				this.enterOuterAlt(_localctx, 2);
-				{
-				this.state = 147;
-				this.plotStmt();
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public typeDefStmt(): TypeDefStmtContext {
-		let _localctx: TypeDefStmtContext = new TypeDefStmtContext(this._ctx, this.state);
-		this.enterRule(_localctx, 10, HSQLParser.RULE_typeDefStmt);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 150;
-			this.match(HSQLParser.MAP);
-			this.state = 152;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === HSQLParser.EXPORT) {
-				{
-				this.state = 151;
-				this.typeDefExport();
-				}
-			}
-
-			this.state = 154;
-			this.mapExportable();
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public typeDefExport(): TypeDefExportContext {
-		let _localctx: TypeDefExportContext = new TypeDefExportContext(this._ctx, this.state);
-		this.enterRule(_localctx, 12, HSQLParser.RULE_typeDefExport);
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 156;
-			this.match(HSQLParser.EXPORT);
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public mapExportable(): MapExportableContext {
-		let _localctx: MapExportableContext = new MapExportableContext(this._ctx, this.state);
-		this.enterRule(_localctx, 14, HSQLParser.RULE_mapExportable);
-		try {
-			this.state = 161;
-			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 5, this._ctx) ) {
-			case 1:
-				this.enterOuterAlt(_localctx, 1);
-				{
-				this.state = 158;
-				this.tableExport();
-				}
-				break;
-
-			case 2:
-				this.enterOuterAlt(_localctx, 2);
-				{
-				this.state = 159;
-				this.layoutExport();
-				}
-				break;
-
-			case 3:
-				this.enterOuterAlt(_localctx, 3);
-				{
-				this.state = 160;
-				this.identifierExport();
-				}
-				break;
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public tableExport(): TableExportContext {
-		let _localctx: TableExportContext = new TableExportContext(this._ctx, this.state);
-		this.enterRule(_localctx, 16, HSQLParser.RULE_tableExport);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			{
-			this.state = 163;
-			this.match(HSQLParser.IDENTIFIER);
-			this.state = 164;
-			this.match(HSQLParser.TABLE);
-			this.state = 165;
-			this.match(HSQLParser.T__0);
-			this.state = 166;
-			this.identifierExport();
-			this.state = 171;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			while (_la === HSQLParser.T__1) {
-				{
-				{
-				this.state = 167;
-				this.match(HSQLParser.T__1);
-				this.state = 168;
-				this.identifierExport();
-				}
-				}
-				this.state = 173;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-			}
-			}
-			this.state = 174;
-			this.match(HSQLParser.T__2);
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public layoutExport(): LayoutExportContext {
-		let _localctx: LayoutExportContext = new LayoutExportContext(this._ctx, this.state);
-		this.enterRule(_localctx, 18, HSQLParser.RULE_layoutExport);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			{
-			this.state = 176;
-			this.match(HSQLParser.IDENTIFIER);
-			this.state = 177;
-			this.match(HSQLParser.LAYOUT);
-			this.state = 178;
-			this.match(HSQLParser.T__0);
-			this.state = 179;
-			this.identifierExport();
-			this.state = 184;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			while (_la === HSQLParser.T__1) {
-				{
-				{
-				this.state = 180;
-				this.match(HSQLParser.T__1);
-				this.state = 181;
-				this.identifierExport();
-				}
-				}
-				this.state = 186;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-			}
-			}
-			this.state = 187;
-			this.match(HSQLParser.T__2);
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public identifierExport(): IdentifierExportContext {
-		let _localctx: IdentifierExportContext = new IdentifierExportContext(this._ctx, this.state);
-		this.enterRule(_localctx, 20, HSQLParser.RULE_identifierExport);
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 189;
-			this.match(HSQLParser.IDENTIFIER);
-			this.state = 190;
-			this.dataType();
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public importStmt(): ImportStmtContext {
-		let _localctx: ImportStmtContext = new ImportStmtContext(this._ctx, this.state);
-		this.enterRule(_localctx, 22, HSQLParser.RULE_importStmt);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 192;
-			this.match(HSQLParser.IMPORT);
-			this.state = 193;
-			this.match(HSQLParser.IDENTIFIER);
-			this.state = 196;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === HSQLParser.AS) {
-				{
-				this.state = 194;
-				this.match(HSQLParser.AS);
-				this.state = 195;
-				_localctx._alias = this.match(HSQLParser.IDENTIFIER);
-				}
-			}
-
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public implicitActionStmt(): ImplicitActionStmtContext {
-		let _localctx: ImplicitActionStmtContext = new ImplicitActionStmtContext(this._ctx, this.state);
-		this.enterRule(_localctx, 24, HSQLParser.RULE_implicitActionStmt);
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 198;
-			this.selectStmt();
 			}
 		}
 		catch (re) {
@@ -766,46 +426,54 @@ export class HSQLParser extends Parser {
 	// @RuleVersion(0)
 	public expr(): ExprContext {
 		let _localctx: ExprContext = new ExprContext(this._ctx, this.state);
-		this.enterRule(_localctx, 26, HSQLParser.RULE_expr);
+		this.enterRule(_localctx, 8, HSQLParser.RULE_expr);
 		try {
-			this.state = 205;
+			this.state = 148;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
 			case HSQLParser.IDENTIFIER:
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 200;
-				this.simpleIdentifier();
+				this.state = 143;
+				this.definition();
 				}
 				break;
+			case HSQLParser.PLOT:
+			case HSQLParser.OUTPUT:
 			case HSQLParser.SELECT:
+			case HSQLParser.TRUE:
+			case HSQLParser.FALSE:
+			case HSQLParser.STRING:
+			case HSQLParser.UNICODE_STRING:
+			case HSQLParser.INTEGER_VALUE:
+			case HSQLParser.DECIMAL_VALUE:
+			case HSQLParser.DOUBLE_VALUE:
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 201;
-				this.selectStmt();
+				this.state = 144;
+				this.actionStmt();
+				}
+				break;
+			case HSQLParser.ALTER:
+				this.enterOuterAlt(_localctx, 3);
+				{
+				this.state = 145;
+				this.transformStmt();
 				}
 				break;
 			case HSQLParser.TRAIN:
 			case HSQLParser.PREDICT:
-				this.enterOuterAlt(_localctx, 3);
+				this.enterOuterAlt(_localctx, 4);
 				{
-				this.state = 202;
+				this.state = 146;
 				this.mlStmt();
 				}
 				break;
-			case HSQLParser.CREATE:
-				this.enterOuterAlt(_localctx, 4);
-				{
-				this.state = 203;
-				this.layoutStmt();
-				}
-				break;
-			case HSQLParser.NCOMPILE:
-			case HSQLParser.ECL_SNIPPETS:
+			case HSQLParser.MODULE:
 				this.enterOuterAlt(_localctx, 5);
 				{
-				this.state = 204;
-				this.inlineStmt();
+				this.state = 147;
+				this.moduleStmt();
 				}
 				break;
 			default:
@@ -827,611 +495,49 @@ export class HSQLParser extends Parser {
 		return _localctx;
 	}
 	// @RuleVersion(0)
-	public simpleIdentifier(): SimpleIdentifierContext {
-		let _localctx: SimpleIdentifierContext = new SimpleIdentifierContext(this._ctx, this.state);
-		this.enterRule(_localctx, 28, HSQLParser.RULE_simpleIdentifier);
+	public actionStmt(): ActionStmtContext {
+		let _localctx: ActionStmtContext = new ActionStmtContext(this._ctx, this.state);
+		this.enterRule(_localctx, 10, HSQLParser.RULE_actionStmt);
 		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 207;
-			this.qualifiedIdentifier();
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public outputStmt(): OutputStmtContext {
-		let _localctx: OutputStmtContext = new OutputStmtContext(this._ctx, this.state);
-		this.enterRule(_localctx, 30, HSQLParser.RULE_outputStmt);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 209;
-			this.match(HSQLParser.OUTPUT);
-			this.state = 210;
-			_localctx._label = this.match(HSQLParser.IDENTIFIER);
-			this.state = 212;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === HSQLParser.FILE || _la === HSQLParser.TITLE) {
-				{
-				this.state = 211;
-				this.outputVariant();
-				}
-			}
-
-			this.state = 215;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === HSQLParser.OVERWRITE || _la === HSQLParser.UPDATE) {
-				{
-				this.state = 214;
-				this.outputUpdateOption();
-				}
-			}
-
-			this.state = 218;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === HSQLParser.EXPIRE) {
-				{
-				this.state = 217;
-				this.outputExpireOption();
-				}
-			}
-
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public outputVariant(): OutputVariantContext {
-		let _localctx: OutputVariantContext = new OutputVariantContext(this._ctx, this.state);
-		this.enterRule(_localctx, 32, HSQLParser.RULE_outputVariant);
-		try {
-			this.state = 222;
+			this.state = 154;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
-			case HSQLParser.TITLE:
+			case HSQLParser.SELECT:
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 220;
-				this.namedOutputStatement();
+				this.state = 150;
+				this.selectStmt();
 				}
 				break;
-			case HSQLParser.FILE:
+			case HSQLParser.OUTPUT:
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 221;
-				this.fileOutputStatement();
+				this.state = 151;
+				this.outputStmt();
 				}
 				break;
-			default:
-				throw new NoViableAltException(this);
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public namedOutputStatement(): NamedOutputStatementContext {
-		let _localctx: NamedOutputStatementContext = new NamedOutputStatementContext(this._ctx, this.state);
-		this.enterRule(_localctx, 34, HSQLParser.RULE_namedOutputStatement);
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 224;
-			this.match(HSQLParser.TITLE);
-			this.state = 225;
-			this.string();
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public fileOutputStatement(): FileOutputStatementContext {
-		let _localctx: FileOutputStatementContext = new FileOutputStatementContext(this._ctx, this.state);
-		this.enterRule(_localctx, 36, HSQLParser.RULE_fileOutputStatement);
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 227;
-			this.match(HSQLParser.FILE);
-			this.state = 228;
-			_localctx._fileName = this.string();
-			this.state = 229;
-			_localctx._fileType = this.match(HSQLParser.IDENTIFIER);
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public outputUpdateOption(): OutputUpdateOptionContext {
-		let _localctx: OutputUpdateOptionContext = new OutputUpdateOptionContext(this._ctx, this.state);
-		this.enterRule(_localctx, 38, HSQLParser.RULE_outputUpdateOption);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 231;
-			_la = this._input.LA(1);
-			if (!(_la === HSQLParser.OVERWRITE || _la === HSQLParser.UPDATE)) {
-			this._errHandler.recoverInline(this);
-			} else {
-				if (this._input.LA(1) === Token.EOF) {
-					this.matchedEOF = true;
-				}
-
-				this._errHandler.reportMatch(this);
-				this.consume();
-			}
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public outputExpireOption(): OutputExpireOptionContext {
-		let _localctx: OutputExpireOptionContext = new OutputExpireOptionContext(this._ctx, this.state);
-		this.enterRule(_localctx, 40, HSQLParser.RULE_outputExpireOption);
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 233;
-			this.match(HSQLParser.EXPIRE);
-			this.state = 234;
-			this.number();
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public plotStmt(): PlotStmtContext {
-		let _localctx: PlotStmtContext = new PlotStmtContext(this._ctx, this.state);
-		this.enterRule(_localctx, 42, HSQLParser.RULE_plotStmt);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 236;
-			this.match(HSQLParser.PLOT);
-			this.state = 237;
-			this.match(HSQLParser.FROM);
-			this.state = 238;
-			_localctx._labelIdentifier = this.qualifiedIdentifier();
-			this.state = 239;
-			this.match(HSQLParser.TITLE);
-			this.state = 240;
-			_localctx._titleIdentifier = this.match(HSQLParser.STRING);
-			this.state = 243;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === HSQLParser.TYPE) {
-				{
-				this.state = 241;
-				this.match(HSQLParser.TYPE);
-				this.state = 242;
-				_localctx._plottype = this.match(HSQLParser.IDENTIFIER);
-				}
-			}
-
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public mlStmt(): MlStmtContext {
-		let _localctx: MlStmtContext = new MlStmtContext(this._ctx, this.state);
-		this.enterRule(_localctx, 44, HSQLParser.RULE_mlStmt);
-		try {
-			this.state = 248;
-			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 15, this._ctx) ) {
-			case 1:
-				this.enterOuterAlt(_localctx, 1);
-				{
-				this.state = 245;
-				this.train();
-				}
-				break;
-
-			case 2:
-				this.enterOuterAlt(_localctx, 2);
-				{
-				this.state = 246;
-				this.predict();
-				}
-				break;
-
-			case 3:
+			case HSQLParser.PLOT:
 				this.enterOuterAlt(_localctx, 3);
 				{
-				this.state = 247;
-				this.elementaryML();
+				this.state = 152;
+				this.plotStmt();
 				}
 				break;
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public train(): TrainContext {
-		let _localctx: TrainContext = new TrainContext(this._ctx, this.state);
-		this.enterRule(_localctx, 46, HSQLParser.RULE_train);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 250;
-			this.match(HSQLParser.TRAIN);
-			this.state = 251;
-			this.match(HSQLParser.FROM);
-			this.state = 252;
-			_localctx._ind = this.qualifiedIdentifier();
-			this.state = 253;
-			this.match(HSQLParser.T__1);
-			this.state = 254;
-			_localctx._dep = this.qualifiedIdentifier();
-			this.state = 257;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === HSQLParser.T__1) {
-				{
-				this.state = 255;
-				this.match(HSQLParser.T__1);
-				this.state = 256;
-				_localctx._test = this.qualifiedIdentifier();
-				}
-			}
-
-			this.state = 259;
-			this.match(HSQLParser.METHOD);
-			this.state = 260;
-			_localctx._method = this.match(HSQLParser.IDENTIFIER);
-			this.state = 263;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === HSQLParser.OPTION) {
-				{
-				this.state = 261;
-				this.match(HSQLParser.OPTION);
-				this.state = 262;
-				this.trainOptions();
-				}
-			}
-
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public elementaryML(): ElementaryMLContext {
-		let _localctx: ElementaryMLContext = new ElementaryMLContext(this._ctx, this.state);
-		this.enterRule(_localctx, 48, HSQLParser.RULE_elementaryML);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 265;
-			this.match(HSQLParser.PREDICT);
-			this.state = 266;
-			this.match(HSQLParser.FROM);
-			this.state = 267;
-			_localctx._ind = this.qualifiedIdentifier();
-			this.state = 270;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === HSQLParser.T__1) {
-				{
-				this.state = 268;
-				this.match(HSQLParser.T__1);
-				this.state = 269;
-				_localctx._ind2 = this.qualifiedIdentifier();
-				}
-			}
-
-			this.state = 272;
-			this.match(HSQLParser.METHOD);
-			this.state = 273;
-			_localctx._method = this.match(HSQLParser.IDENTIFIER);
-			this.state = 276;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === HSQLParser.OPTION) {
-				{
-				this.state = 274;
-				this.match(HSQLParser.OPTION);
-				this.state = 275;
-				this.trainOptions();
-				}
-			}
-
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public trainOptions(): TrainOptionsContext {
-		let _localctx: TrainOptionsContext = new TrainOptionsContext(this._ctx, this.state);
-		this.enterRule(_localctx, 50, HSQLParser.RULE_trainOptions);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			{
-			this.state = 278;
-			this.trainOption();
-			}
-			this.state = 283;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			while (_la === HSQLParser.T__1) {
-				{
-				{
-				this.state = 279;
-				this.match(HSQLParser.T__1);
-				this.state = 280;
-				this.trainOption();
-				}
-				}
-				this.state = 285;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-			}
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public trainOption(): TrainOptionContext {
-		let _localctx: TrainOptionContext = new TrainOptionContext(this._ctx, this.state);
-		this.enterRule(_localctx, 52, HSQLParser.RULE_trainOption);
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 286;
-			this.match(HSQLParser.IDENTIFIER);
-			this.state = 287;
-			this.match(HSQLParser.EQ);
-			this.state = 288;
-			this.trainValue();
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public trainValue(): TrainValueContext {
-		let _localctx: TrainValueContext = new TrainValueContext(this._ctx, this.state);
-		this.enterRule(_localctx, 54, HSQLParser.RULE_trainValue);
-		try {
-			this.state = 293;
-			this._errHandler.sync(this);
-			switch (this._input.LA(1)) {
+			case HSQLParser.TRUE:
+			case HSQLParser.FALSE:
+			case HSQLParser.STRING:
+			case HSQLParser.UNICODE_STRING:
 			case HSQLParser.INTEGER_VALUE:
 			case HSQLParser.DECIMAL_VALUE:
 			case HSQLParser.DOUBLE_VALUE:
-				this.enterOuterAlt(_localctx, 1);
+				this.enterOuterAlt(_localctx, 4);
 				{
-				this.state = 290;
-				this.number();
-				}
-				break;
-			case HSQLParser.STRING:
-			case HSQLParser.UNICODE_STRING:
-				this.enterOuterAlt(_localctx, 2);
-				{
-				this.state = 291;
-				this.string();
-				}
-				break;
-			case HSQLParser.IDENTIFIER:
-				this.enterOuterAlt(_localctx, 3);
-				{
-				this.state = 292;
-				this.qualifiedIdentifier();
+				this.state = 153;
+				this.literal();
 				}
 				break;
 			default:
 				throw new NoViableAltException(this);
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public predict(): PredictContext {
-		let _localctx: PredictContext = new PredictContext(this._ctx, this.state);
-		this.enterRule(_localctx, 56, HSQLParser.RULE_predict);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 295;
-			this.match(HSQLParser.PREDICT);
-			this.state = 296;
-			_localctx._model = this.qualifiedIdentifier();
-			this.state = 297;
-			this.match(HSQLParser.FROM);
-			this.state = 298;
-			_localctx._ind = this.qualifiedIdentifier();
-			this.state = 301;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === HSQLParser.METHOD) {
-				{
-				this.state = 299;
-				this.match(HSQLParser.METHOD);
-				this.state = 300;
-				_localctx._method = this.match(HSQLParser.IDENTIFIER);
-				}
-			}
-
 			}
 		}
 		catch (re) {
@@ -1451,66 +557,92 @@ export class HSQLParser extends Parser {
 	// @RuleVersion(0)
 	public selectStmt(): SelectStmtContext {
 		let _localctx: SelectStmtContext = new SelectStmtContext(this._ctx, this.state);
-		this.enterRule(_localctx, 58, HSQLParser.RULE_selectStmt);
+		this.enterRule(_localctx, 12, HSQLParser.RULE_selectStmt);
 		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 303;
+			this.state = 156;
 			this.match(HSQLParser.SELECT);
-			this.state = 304;
+			this.state = 158;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			if (_la === HSQLParser.DISTINCT) {
+				{
+				this.state = 157;
+				this.match(HSQLParser.DISTINCT);
+				}
+			}
+
+			this.state = 160;
 			_localctx._columns = this.selectColumns();
-			this.state = 305;
-			this.match(HSQLParser.FROM);
-			this.state = 306;
-			_localctx._fromclause = this.selectFromClause();
-			this.state = 309;
+			this.state = 161;
+			this.selectFromClause();
+			this.state = 164;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if (_la === HSQLParser.WHERE) {
 				{
-				this.state = 307;
+				this.state = 162;
 				this.match(HSQLParser.WHERE);
-				this.state = 308;
+				this.state = 163;
 				_localctx._whereclause = this.selectWhereClause();
 				}
 			}
 
-			this.state = 314;
+			this.state = 167;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if (_la === HSQLParser.GROUP) {
 				{
-				this.state = 311;
-				this.match(HSQLParser.GROUP);
-				this.state = 312;
-				this.match(HSQLParser.BY);
-				this.state = 313;
-				_localctx._groupbyclause = this.groupByClause();
+				this.state = 166;
+				this.selectGroupByClause();
 				}
 			}
 
-			this.state = 319;
+			this.state = 172;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if (_la === HSQLParser.ORDER) {
 				{
-				this.state = 316;
+				this.state = 169;
 				this.match(HSQLParser.ORDER);
-				this.state = 317;
+				this.state = 170;
 				this.match(HSQLParser.BY);
-				this.state = 318;
+				this.state = 171;
 				_localctx._orderbyclause = this.orderByClause();
 				}
 			}
 
-			this.state = 322;
+			this.state = 176;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
-			if (((((_la - 49)) & ~0x1F) === 0 && ((1 << (_la - 49)) & ((1 << (HSQLParser.JOIN - 49)) | (1 << (HSQLParser.INNER - 49)) | (1 << (HSQLParser.LEFT - 49)) | (1 << (HSQLParser.RIGHT - 49)) | (1 << (HSQLParser.FULL - 49)))) !== 0)) {
+			if (_la === HSQLParser.HAVING) {
 				{
-				this.state = 321;
-				this.joinClause();
+				this.state = 174;
+				this.match(HSQLParser.HAVING);
+				this.state = 175;
+				this.selectHavingClause();
+				}
+			}
+
+			this.state = 179;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			if (_la === HSQLParser.LIMIT) {
+				{
+				this.state = 178;
+				this.limitClause();
+				}
+			}
+
+			this.state = 182;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			if (_la === HSQLParser.OFFSET) {
+				{
+				this.state = 181;
+				this.offsetClause();
 				}
 			}
 
@@ -1531,37 +663,14 @@ export class HSQLParser extends Parser {
 		return _localctx;
 	}
 	// @RuleVersion(0)
-	public joinClause(): JoinClauseContext {
-		let _localctx: JoinClauseContext = new JoinClauseContext(this._ctx, this.state);
-		this.enterRule(_localctx, 60, HSQLParser.RULE_joinClause);
-		let _la: number;
+	public selectHavingClause(): SelectHavingClauseContext {
+		let _localctx: SelectHavingClauseContext = new SelectHavingClauseContext(this._ctx, this.state);
+		this.enterRule(_localctx, 14, HSQLParser.RULE_selectHavingClause);
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 325;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (((((_la - 50)) & ~0x1F) === 0 && ((1 << (_la - 50)) & ((1 << (HSQLParser.INNER - 50)) | (1 << (HSQLParser.LEFT - 50)) | (1 << (HSQLParser.RIGHT - 50)) | (1 << (HSQLParser.FULL - 50)))) !== 0)) {
-				{
-				this.state = 324;
-				this.joinType();
-				}
-			}
-
-			this.state = 327;
-			this.match(HSQLParser.JOIN);
-			this.state = 328;
-			_localctx._joinidentifier = this.qualifiedIdentifier();
-			this.state = 329;
-			this.match(HSQLParser.ON);
-			{
-			this.state = 330;
-			_localctx._leftrecset = this.qualifiedIdentifier();
-			this.state = 331;
-			_localctx._joincondition = this.comparisonOperator();
-			this.state = 332;
-			_localctx._rightrecset = this.qualifiedIdentifier();
-			}
+			this.state = 184;
+			this.booleanExpression(0);
 			}
 		}
 		catch (re) {
@@ -1579,58 +688,62 @@ export class HSQLParser extends Parser {
 		return _localctx;
 	}
 	// @RuleVersion(0)
-	public joinType(): JoinTypeContext {
-		let _localctx: JoinTypeContext = new JoinTypeContext(this._ctx, this.state);
-		this.enterRule(_localctx, 62, HSQLParser.RULE_joinType);
-		let _la: number;
+	public selectGroupByClause(): SelectGroupByClauseContext {
+		let _localctx: SelectGroupByClauseContext = new SelectGroupByClauseContext(this._ctx, this.state);
+		this.enterRule(_localctx, 16, HSQLParser.RULE_selectGroupByClause);
 		try {
-			this.state = 337;
+			this.enterOuterAlt(_localctx, 1);
+			{
+			this.state = 186;
+			this.match(HSQLParser.GROUP);
+			this.state = 187;
+			this.match(HSQLParser.BY);
+			this.state = 188;
+			this.groupByClause();
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public definitionSet(): DefinitionSetContext {
+		let _localctx: DefinitionSetContext = new DefinitionSetContext(this._ctx, this.state);
+		this.enterRule(_localctx, 18, HSQLParser.RULE_definitionSet);
+		try {
+			let _alt: number;
+			this.enterOuterAlt(_localctx, 1);
+			{
+			this.state = 190;
+			this.definition();
+			this.state = 195;
 			this._errHandler.sync(this);
-			switch (this._input.LA(1)) {
-			case HSQLParser.INNER:
-				this.enterOuterAlt(_localctx, 1);
-				{
-				{
-				this.state = 334;
-				this.match(HSQLParser.INNER);
-				}
-				}
-				break;
-			case HSQLParser.LEFT:
-			case HSQLParser.RIGHT:
-			case HSQLParser.FULL:
-				this.enterOuterAlt(_localctx, 2);
-				{
-				{
-				this.state = 335;
-				_la = this._input.LA(1);
-				if (!(((((_la - 51)) & ~0x1F) === 0 && ((1 << (_la - 51)) & ((1 << (HSQLParser.LEFT - 51)) | (1 << (HSQLParser.RIGHT - 51)) | (1 << (HSQLParser.FULL - 51)))) !== 0))) {
-				this._errHandler.recoverInline(this);
-				} else {
-					if (this._input.LA(1) === Token.EOF) {
-						this.matchedEOF = true;
+			_alt = this.interpreter.adaptivePredict(this._input, 11, this._ctx);
+			while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
+				if (_alt === 1) {
+					{
+					{
+					this.state = 191;
+					this.match(HSQLParser.COMMA_);
+					this.state = 192;
+					this.definition();
 					}
-
-					this._errHandler.reportMatch(this);
-					this.consume();
-				}
-				this.state = 336;
-				_la = this._input.LA(1);
-				if (!(_la === HSQLParser.OUTER || _la === HSQLParser.ONLY)) {
-				this._errHandler.recoverInline(this);
-				} else {
-					if (this._input.LA(1) === Token.EOF) {
-						this.matchedEOF = true;
 					}
-
-					this._errHandler.reportMatch(this);
-					this.consume();
 				}
-				}
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
+				this.state = 197;
+				this._errHandler.sync(this);
+				_alt = this.interpreter.adaptivePredict(this._input, 11, this._ctx);
+			}
 			}
 		}
 		catch (re) {
@@ -1650,62 +763,30 @@ export class HSQLParser extends Parser {
 	// @RuleVersion(0)
 	public selectColumns(): SelectColumnsContext {
 		let _localctx: SelectColumnsContext = new SelectColumnsContext(this._ctx, this.state);
-		this.enterRule(_localctx, 64, HSQLParser.RULE_selectColumns);
+		this.enterRule(_localctx, 20, HSQLParser.RULE_selectColumns);
 		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			{
-			this.state = 341;
-			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 29, this._ctx) ) {
-			case 1:
-				{
-				this.state = 339;
-				this.aggregatedSelectColumn();
-				}
-				break;
-
-			case 2:
-				{
-				this.state = 340;
-				this.selectColumn();
-				}
-				break;
-			}
-			this.state = 350;
+			this.state = 198;
+			this.selectCol();
+			this.state = 203;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
-			while (_la === HSQLParser.T__1) {
+			while (_la === HSQLParser.COMMA_) {
 				{
 				{
-				this.state = 343;
-				this.match(HSQLParser.T__1);
-				this.state = 346;
-				this._errHandler.sync(this);
-				switch ( this.interpreter.adaptivePredict(this._input, 30, this._ctx) ) {
-				case 1:
-					{
-					this.state = 344;
-					this.aggregatedSelectColumn();
-					}
-					break;
-
-				case 2:
-					{
-					this.state = 345;
-					this.selectColumn();
-					}
-					break;
+				this.state = 199;
+				this.match(HSQLParser.COMMA_);
+				this.state = 200;
+				this.selectCol();
 				}
 				}
-				}
-				this.state = 352;
+				this.state = 205;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 			}
 			}
-			}
 		}
 		catch (re) {
 			if (re instanceof RecognitionException) {
@@ -1722,83 +803,142 @@ export class HSQLParser extends Parser {
 		return _localctx;
 	}
 	// @RuleVersion(0)
-	public aggregatedSelectColumn(): AggregatedSelectColumnContext {
-		let _localctx: AggregatedSelectColumnContext = new AggregatedSelectColumnContext(this._ctx, this.state);
-		this.enterRule(_localctx, 66, HSQLParser.RULE_aggregatedSelectColumn);
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 353;
-			_localctx._aggregate = this.match(HSQLParser.IDENTIFIER);
-			this.state = 354;
-			this.match(HSQLParser.T__0);
-			this.state = 355;
-			this.selectColumn();
-			this.state = 356;
-			this.match(HSQLParser.T__2);
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public selectColumn(): SelectColumnContext {
-		let _localctx: SelectColumnContext = new SelectColumnContext(this._ctx, this.state);
-		this.enterRule(_localctx, 68, HSQLParser.RULE_selectColumn);
+	public selectCol(): SelectColContext {
+		let _localctx: SelectColContext = new SelectColContext(this._ctx, this.state);
+		this.enterRule(_localctx, 22, HSQLParser.RULE_selectCol);
 		let _la: number;
 		try {
-			this.state = 367;
+			this.state = 211;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
-			case HSQLParser.T__3:
+			case HSQLParser.IDENTIFIER:
+				_localctx = new NormalColContext(_localctx);
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 358;
-				_localctx._wild = this.match(HSQLParser.T__3);
-				}
-				break;
-			case HSQLParser.IDENTIFIER:
-				this.enterOuterAlt(_localctx, 2);
-				{
-				this.state = 359;
-				_localctx._column = this.match(HSQLParser.IDENTIFIER);
-				this.state = 365;
+				this.state = 206;
+				(_localctx as NormalColContext)._col = this.col();
+				this.state = 208;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 				if (_la === HSQLParser.AS) {
 					{
-					this.state = 360;
-					this.match(HSQLParser.AS);
-					this.state = 362;
-					this._errHandler.sync(this);
-					_la = this._input.LA(1);
-					if ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << HSQLParser.REAL_TYPE) | (1 << HSQLParser.INTEGER_TYPE) | (1 << HSQLParser.DECIMAL_TYPE) | (1 << HSQLParser.VARSTRING_TYPE) | (1 << HSQLParser.STRING_TYPE))) !== 0)) {
-						{
-						this.state = 361;
-						_localctx._type = this.dataType();
-						}
-					}
-
-					this.state = 364;
-					_localctx._alias = this.match(HSQLParser.IDENTIFIER);
+					this.state = 207;
+					this.aliasingCol((_localctx as NormalColContext)._col);
 					}
 				}
 
 				}
 				break;
+			case HSQLParser.MULTIPLY:
+				_localctx = new WildAllContext(_localctx);
+				this.enterOuterAlt(_localctx, 2);
+				{
+				this.state = 210;
+				this.match(HSQLParser.MULTIPLY);
+				}
+				break;
 			default:
 				throw new NoViableAltException(this);
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public col(): ColContext {
+		let _localctx: ColContext = new ColContext(this._ctx, this.state);
+		this.enterRule(_localctx, 24, HSQLParser.RULE_col);
+		try {
+			this.state = 223;
+			this._errHandler.sync(this);
+			switch ( this.interpreter.adaptivePredict(this._input, 15, this._ctx) ) {
+			case 1:
+				_localctx = new SelectAggregatedEverythingColContext(_localctx);
+				this.enterOuterAlt(_localctx, 1);
+				{
+				this.state = 213;
+				this.match(HSQLParser.IDENTIFIER);
+				this.state = 214;
+				this.match(HSQLParser.BSTART_);
+				this.state = 215;
+				this.match(HSQLParser.MULTIPLY);
+				this.state = 216;
+				this.match(HSQLParser.BEND_);
+				}
+				break;
+
+			case 2:
+				_localctx = new SelectAggregatedOneColContext(_localctx);
+				this.enterOuterAlt(_localctx, 2);
+				{
+				this.state = 217;
+				this.match(HSQLParser.IDENTIFIER);
+				this.state = 218;
+				this.match(HSQLParser.BSTART_);
+				this.state = 219;
+				(_localctx as SelectAggregatedOneColContext)._column = this.definition();
+				this.state = 220;
+				this.match(HSQLParser.BEND_);
+				}
+				break;
+
+			case 3:
+				_localctx = new SelectOneColContext(_localctx);
+				this.enterOuterAlt(_localctx, 3);
+				{
+				this.state = 222;
+				(_localctx as SelectOneColContext)._column = this.definition();
+				}
+				break;
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public aliasingCol(ctx: ParserRuleContext): AliasingColContext {
+		let _localctx: AliasingColContext = new AliasingColContext(this._ctx, this.state, ctx);
+		this.enterRule(_localctx, 26, HSQLParser.RULE_aliasingCol);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+			this.state = 225;
+			this.match(HSQLParser.AS);
+			this.state = 227;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			if ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << HSQLParser.REAL_TYPE) | (1 << HSQLParser.INTEGER_TYPE) | (1 << HSQLParser.DECIMAL_TYPE) | (1 << HSQLParser.VARSTRING_TYPE) | (1 << HSQLParser.STRING_TYPE) | (1 << HSQLParser.BOOLEAN))) !== 0)) {
+				{
+				this.state = 226;
+				this.dataType();
+				}
+			}
+
+			this.state = 229;
+			_localctx._alias = this.match(HSQLParser.IDENTIFIER);
 			}
 		}
 		catch (re) {
@@ -1818,30 +958,290 @@ export class HSQLParser extends Parser {
 	// @RuleVersion(0)
 	public selectFromClause(): SelectFromClauseContext {
 		let _localctx: SelectFromClauseContext = new SelectFromClauseContext(this._ctx, this.state);
-		this.enterRule(_localctx, 70, HSQLParser.RULE_selectFromClause);
+		this.enterRule(_localctx, 28, HSQLParser.RULE_selectFromClause);
+		let _la: number;
 		try {
-			this.state = 372;
+			this.enterOuterAlt(_localctx, 1);
+			{
+			this.state = 231;
+			this.match(HSQLParser.FROM);
+			this.state = 241;
 			this._errHandler.sync(this);
-			switch (this._input.LA(1)) {
-			case HSQLParser.T__0:
+			switch ( this.interpreter.adaptivePredict(this._input, 18, this._ctx) ) {
+			case 1:
+				{
+				this.state = 232;
+				this.selectFromTableReference();
+				this.state = 237;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				while (_la === HSQLParser.COMMA_) {
+					{
+					{
+					this.state = 233;
+					this.match(HSQLParser.COMMA_);
+					this.state = 234;
+					this.selectFromTableReference();
+					}
+					}
+					this.state = 239;
+					this._errHandler.sync(this);
+					_la = this._input.LA(1);
+				}
+				}
+				break;
+
+			case 2:
+				{
+				this.state = 240;
+				this.joinedTable();
+				}
+				break;
+			}
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public selectFromTableReference(): SelectFromTableReferenceContext {
+		let _localctx: SelectFromTableReferenceContext = new SelectFromTableReferenceContext(this._ctx, this.state);
+		this.enterRule(_localctx, 30, HSQLParser.RULE_selectFromTableReference);
+		let _la: number;
+		try {
+			this.state = 263;
+			this._errHandler.sync(this);
+			switch ( this.interpreter.adaptivePredict(this._input, 21, this._ctx) ) {
+			case 1:
+				_localctx = new SelectFromDerivedTableContext(_localctx);
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 369;
-				this.nestedSelectStmt();
+				this.state = 243;
+				this.match(HSQLParser.BSTART_);
+				this.state = 244;
+				(_localctx as SelectFromDerivedTableContext)._selectStmt = this.selectStmt();
+				this.state = 245;
+				this.match(HSQLParser.BEND_);
+				this.state = 246;
+				this.selectAlias((_localctx as SelectFromDerivedTableContext)._selectStmt);
 				}
 				break;
-			case HSQLParser.IDENTIFIER:
+
+			case 2:
+				_localctx = new SelectFromDefinitionContext(_localctx);
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 370;
-				this.selectTableName();
+				this.state = 248;
+				(_localctx as SelectFromDefinitionContext)._definition = this.definition();
+				this.state = 250;
+				this._errHandler.sync(this);
+				switch ( this.interpreter.adaptivePredict(this._input, 19, this._ctx) ) {
+				case 1:
+					{
+					this.state = 249;
+					this.selectAlias((_localctx as SelectFromDefinitionContext)._definition);
+					}
+					break;
+				}
 				}
 				break;
-			case HSQLParser.STRING:
+
+			case 3:
+				_localctx = new SelectBracketedFromTableContext(_localctx);
 				this.enterOuterAlt(_localctx, 3);
 				{
-				this.state = 371;
-				this.selectDataset();
+				this.state = 252;
+				this.match(HSQLParser.BSTART_);
+				this.state = 253;
+				this.selectFromTableReference();
+				this.state = 258;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				while (_la === HSQLParser.COMMA_) {
+					{
+					{
+					this.state = 254;
+					this.match(HSQLParser.COMMA_);
+					this.state = 255;
+					this.selectFromTableReference();
+					}
+					}
+					this.state = 260;
+					this._errHandler.sync(this);
+					_la = this._input.LA(1);
+				}
+				this.state = 261;
+				this.match(HSQLParser.BEND_);
+				}
+				break;
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public selectAlias(ctx: ParserRuleContext): SelectAliasContext {
+		let _localctx: SelectAliasContext = new SelectAliasContext(this._ctx, this.state, ctx);
+		this.enterRule(_localctx, 32, HSQLParser.RULE_selectAlias);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+			this.state = 266;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			if (_la === HSQLParser.AS) {
+				{
+				this.state = 265;
+				this.match(HSQLParser.AS);
+				}
+			}
+
+			this.state = 268;
+			this.match(HSQLParser.IDENTIFIER);
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public join_operator(): Join_operatorContext {
+		let _localctx: Join_operatorContext = new Join_operatorContext(this._ctx, this.state);
+		this.enterRule(_localctx, 34, HSQLParser.RULE_join_operator);
+		let _la: number;
+		try {
+			this.state = 291;
+			this._errHandler.sync(this);
+			switch (this._input.LA(1)) {
+			case HSQLParser.COMMA_:
+				this.enterOuterAlt(_localctx, 1);
+				{
+				this.state = 270;
+				this.match(HSQLParser.COMMA_);
+				}
+				break;
+			case HSQLParser.NATURAL:
+			case HSQLParser.CROSS:
+			case HSQLParser.JOIN:
+			case HSQLParser.INNER:
+			case HSQLParser.LEFT:
+			case HSQLParser.RIGHT:
+			case HSQLParser.FULL:
+				this.enterOuterAlt(_localctx, 2);
+				{
+				this.state = 272;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === HSQLParser.NATURAL) {
+					{
+					this.state = 271;
+					this.match(HSQLParser.NATURAL);
+					}
+				}
+
+				this.state = 288;
+				this._errHandler.sync(this);
+				switch (this._input.LA(1)) {
+				case HSQLParser.LEFT:
+					{
+					this.state = 274;
+					this.match(HSQLParser.LEFT);
+					this.state = 276;
+					this._errHandler.sync(this);
+					_la = this._input.LA(1);
+					if (_la === HSQLParser.OUTER) {
+						{
+						this.state = 275;
+						this.match(HSQLParser.OUTER);
+						}
+					}
+
+					}
+					break;
+				case HSQLParser.RIGHT:
+					{
+					this.state = 278;
+					this.match(HSQLParser.RIGHT);
+					this.state = 280;
+					this._errHandler.sync(this);
+					_la = this._input.LA(1);
+					if (_la === HSQLParser.OUTER) {
+						{
+						this.state = 279;
+						this.match(HSQLParser.OUTER);
+						}
+					}
+
+					}
+					break;
+				case HSQLParser.FULL:
+					{
+					this.state = 282;
+					this.match(HSQLParser.FULL);
+					this.state = 284;
+					this._errHandler.sync(this);
+					_la = this._input.LA(1);
+					if (_la === HSQLParser.OUTER) {
+						{
+						this.state = 283;
+						this.match(HSQLParser.OUTER);
+						}
+					}
+
+					}
+					break;
+				case HSQLParser.INNER:
+					{
+					this.state = 286;
+					this.match(HSQLParser.INNER);
+					}
+					break;
+				case HSQLParser.CROSS:
+					{
+					this.state = 287;
+					this.match(HSQLParser.CROSS);
+					}
+					break;
+				case HSQLParser.JOIN:
+					break;
+				default:
+					break;
+				}
+				this.state = 290;
+				this.match(HSQLParser.JOIN);
 				}
 				break;
 			default:
@@ -1863,18 +1263,14 @@ export class HSQLParser extends Parser {
 		return _localctx;
 	}
 	// @RuleVersion(0)
-	public nestedSelectStmt(): NestedSelectStmtContext {
-		let _localctx: NestedSelectStmtContext = new NestedSelectStmtContext(this._ctx, this.state);
-		this.enterRule(_localctx, 72, HSQLParser.RULE_nestedSelectStmt);
+	public selectWhereClause(): SelectWhereClauseContext {
+		let _localctx: SelectWhereClauseContext = new SelectWhereClauseContext(this._ctx, this.state);
+		this.enterRule(_localctx, 36, HSQLParser.RULE_selectWhereClause);
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 374;
-			this.match(HSQLParser.T__0);
-			this.state = 375;
-			this.selectStmt();
-			this.state = 376;
-			this.match(HSQLParser.T__2);
+			this.state = 293;
+			this.booleanExpression(0);
 			}
 		}
 		catch (re) {
@@ -1892,56 +1288,35 @@ export class HSQLParser extends Parser {
 		return _localctx;
 	}
 	// @RuleVersion(0)
-	public selectDataset(): SelectDatasetContext {
-		let _localctx: SelectDatasetContext = new SelectDatasetContext(this._ctx, this.state);
-		this.enterRule(_localctx, 74, HSQLParser.RULE_selectDataset);
+	public joinedTable(): JoinedTableContext {
+		let _localctx: JoinedTableContext = new JoinedTableContext(this._ctx, this.state);
+		this.enterRule(_localctx, 38, HSQLParser.RULE_joinedTable);
 		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 378;
-			_localctx._str = this.match(HSQLParser.STRING);
-			this.state = 379;
-			this.match(HSQLParser.LAYOUT);
-			this.state = 380;
-			this.qualifiedIdentifier();
-			this.state = 383;
+			this.state = 295;
+			this.selectFromTableReference();
+			this.state = 303;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
-			if (_la === HSQLParser.TYPE) {
+			while (((((_la - 41)) & ~0x1F) === 0 && ((1 << (_la - 41)) & ((1 << (HSQLParser.NATURAL - 41)) | (1 << (HSQLParser.CROSS - 41)) | (1 << (HSQLParser.JOIN - 41)) | (1 << (HSQLParser.INNER - 41)) | (1 << (HSQLParser.LEFT - 41)) | (1 << (HSQLParser.RIGHT - 41)) | (1 << (HSQLParser.FULL - 41)))) !== 0) || _la === HSQLParser.COMMA_) {
 				{
-				this.state = 381;
-				this.match(HSQLParser.TYPE);
-				this.state = 382;
-				this.selectDatasetFile();
+				{
+				this.state = 296;
+				this.join_operator();
+				this.state = 297;
+				this.selectFromTableReference();
+				this.state = 298;
+				this.match(HSQLParser.ON);
+				this.state = 299;
+				this.joinSpecification();
 				}
+				}
+				this.state = 305;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
 			}
-
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public selectDatasetFile(): SelectDatasetFileContext {
-		let _localctx: SelectDatasetFileContext = new SelectDatasetFileContext(this._ctx, this.state);
-		this.enterRule(_localctx, 76, HSQLParser.RULE_selectDatasetFile);
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 385;
-			this.match(HSQLParser.IDENTIFIER);
 			}
 		}
 		catch (re) {
@@ -1959,14 +1334,18 @@ export class HSQLParser extends Parser {
 		return _localctx;
 	}
 	// @RuleVersion(0)
-	public selectTableName(): SelectTableNameContext {
-		let _localctx: SelectTableNameContext = new SelectTableNameContext(this._ctx, this.state);
-		this.enterRule(_localctx, 78, HSQLParser.RULE_selectTableName);
+	public joinSpecification(): JoinSpecificationContext {
+		let _localctx: JoinSpecificationContext = new JoinSpecificationContext(this._ctx, this.state);
+		this.enterRule(_localctx, 40, HSQLParser.RULE_joinSpecification);
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 387;
-			this.qualifiedIdentifier();
+			this.state = 306;
+			_localctx._leftrecset = this.definition();
+			this.state = 307;
+			this.logicalOperator();
+			this.state = 308;
+			_localctx._rightrecset = this.definition();
 			}
 		}
 		catch (re) {
@@ -1984,14 +1363,14 @@ export class HSQLParser extends Parser {
 		return _localctx;
 	}
 	// @RuleVersion(0)
-	public selectWhereClause(): SelectWhereClauseContext {
-		let _localctx: SelectWhereClauseContext = new SelectWhereClauseContext(this._ctx, this.state);
-		this.enterRule(_localctx, 80, HSQLParser.RULE_selectWhereClause);
+	public groupByClause(): GroupByClauseContext {
+		let _localctx: GroupByClauseContext = new GroupByClauseContext(this._ctx, this.state);
+		this.enterRule(_localctx, 42, HSQLParser.RULE_groupByClause);
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 389;
-			this.booleanExpression(0);
+			this.state = 310;
+			this.definitionSet();
 			}
 		}
 		catch (re) {
@@ -2011,26 +1390,26 @@ export class HSQLParser extends Parser {
 	// @RuleVersion(0)
 	public orderByClause(): OrderByClauseContext {
 		let _localctx: OrderByClauseContext = new OrderByClauseContext(this._ctx, this.state);
-		this.enterRule(_localctx, 82, HSQLParser.RULE_orderByClause);
+		this.enterRule(_localctx, 44, HSQLParser.RULE_orderByClause);
 		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 391;
+			this.state = 312;
 			this.sortItem();
-			this.state = 396;
+			this.state = 317;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
-			while (_la === HSQLParser.T__1) {
+			while (_la === HSQLParser.COMMA_) {
 				{
 				{
-				this.state = 392;
-				this.match(HSQLParser.T__1);
-				this.state = 393;
+				this.state = 313;
+				this.match(HSQLParser.COMMA_);
+				this.state = 314;
 				this.sortItem();
 				}
 				}
-				this.state = 398;
+				this.state = 319;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 			}
@@ -2053,15 +1432,15 @@ export class HSQLParser extends Parser {
 	// @RuleVersion(0)
 	public sortItem(): SortItemContext {
 		let _localctx: SortItemContext = new SortItemContext(this._ctx, this.state);
-		this.enterRule(_localctx, 84, HSQLParser.RULE_sortItem);
+		this.enterRule(_localctx, 46, HSQLParser.RULE_sortItem);
 		try {
-			this.state = 401;
+			this.state = 322;
 			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 38, this._ctx) ) {
+			switch ( this.interpreter.adaptivePredict(this._input, 31, this._ctx) ) {
 			case 1:
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 399;
+				this.state = 320;
 				this.ascSortItem();
 				}
 				break;
@@ -2069,7 +1448,7 @@ export class HSQLParser extends Parser {
 			case 2:
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 400;
+				this.state = 321;
 				this.descSortItem();
 				}
 				break;
@@ -2092,19 +1471,19 @@ export class HSQLParser extends Parser {
 	// @RuleVersion(0)
 	public ascSortItem(): AscSortItemContext {
 		let _localctx: AscSortItemContext = new AscSortItemContext(this._ctx, this.state);
-		this.enterRule(_localctx, 86, HSQLParser.RULE_ascSortItem);
+		this.enterRule(_localctx, 48, HSQLParser.RULE_ascSortItem);
 		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 403;
-			this.expression();
-			this.state = 405;
+			this.state = 324;
+			this.definitionSet();
+			this.state = 326;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if (_la === HSQLParser.ASC) {
 				{
-				this.state = 404;
+				this.state = 325;
 				this.match(HSQLParser.ASC);
 				}
 			}
@@ -2128,17 +1507,15 @@ export class HSQLParser extends Parser {
 	// @RuleVersion(0)
 	public descSortItem(): DescSortItemContext {
 		let _localctx: DescSortItemContext = new DescSortItemContext(this._ctx, this.state);
-		this.enterRule(_localctx, 88, HSQLParser.RULE_descSortItem);
+		this.enterRule(_localctx, 50, HSQLParser.RULE_descSortItem);
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 407;
-			this.expression();
-			{
-			this.state = 408;
+			this.state = 328;
+			this.definitionSet();
+			this.state = 329;
 			this.match(HSQLParser.DESC);
 			}
-			}
 		}
 		catch (re) {
 			if (re instanceof RecognitionException) {
@@ -2155,14 +1532,16 @@ export class HSQLParser extends Parser {
 		return _localctx;
 	}
 	// @RuleVersion(0)
-	public groupByClause(): GroupByClauseContext {
-		let _localctx: GroupByClauseContext = new GroupByClauseContext(this._ctx, this.state);
-		this.enterRule(_localctx, 90, HSQLParser.RULE_groupByClause);
+	public limitClause(): LimitClauseContext {
+		let _localctx: LimitClauseContext = new LimitClauseContext(this._ctx, this.state);
+		this.enterRule(_localctx, 52, HSQLParser.RULE_limitClause);
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 410;
-			this.qualifiedIdentifier();
+			this.state = 331;
+			this.match(HSQLParser.LIMIT);
+			this.state = 332;
+			this.number();
 			}
 		}
 		catch (re) {
@@ -2180,22 +1559,16 @@ export class HSQLParser extends Parser {
 		return _localctx;
 	}
 	// @RuleVersion(0)
-	public layoutStmt(): LayoutStmtContext {
-		let _localctx: LayoutStmtContext = new LayoutStmtContext(this._ctx, this.state);
-		this.enterRule(_localctx, 92, HSQLParser.RULE_layoutStmt);
+	public offsetClause(): OffsetClauseContext {
+		let _localctx: OffsetClauseContext = new OffsetClauseContext(this._ctx, this.state);
+		this.enterRule(_localctx, 54, HSQLParser.RULE_offsetClause);
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 412;
-			this.match(HSQLParser.CREATE);
-			this.state = 413;
-			this.match(HSQLParser.LAYOUT);
-			this.state = 414;
-			this.match(HSQLParser.T__0);
-			this.state = 415;
-			this.layoutContent();
-			this.state = 416;
-			this.match(HSQLParser.T__2);
+			this.state = 334;
+			this.match(HSQLParser.OFFSET);
+			this.state = 335;
+			this.number();
 			}
 		}
 		catch (re) {
@@ -2213,142 +1586,16 @@ export class HSQLParser extends Parser {
 		return _localctx;
 	}
 	// @RuleVersion(0)
-	public layoutContent(): LayoutContentContext {
-		let _localctx: LayoutContentContext = new LayoutContentContext(this._ctx, this.state);
-		this.enterRule(_localctx, 94, HSQLParser.RULE_layoutContent);
+	public comparisonOperator(): ComparisonOperatorContext {
+		let _localctx: ComparisonOperatorContext = new ComparisonOperatorContext(this._ctx, this.state);
+		this.enterRule(_localctx, 56, HSQLParser.RULE_comparisonOperator);
 		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 418;
-			this.identifierExport();
-			this.state = 423;
-			this._errHandler.sync(this);
+			this.state = 337;
 			_la = this._input.LA(1);
-			while (_la === HSQLParser.T__1) {
-				{
-				{
-				this.state = 419;
-				this.match(HSQLParser.T__1);
-				this.state = 420;
-				this.identifierExport();
-				}
-				}
-				this.state = 425;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-			}
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public inlineStmt(): InlineStmtContext {
-		let _localctx: InlineStmtContext = new InlineStmtContext(this._ctx, this.state);
-		this.enterRule(_localctx, 96, HSQLParser.RULE_inlineStmt);
-		try {
-			this.state = 429;
-			this._errHandler.sync(this);
-			switch (this._input.LA(1)) {
-			case HSQLParser.NCOMPILE:
-				this.enterOuterAlt(_localctx, 1);
-				{
-				this.state = 426;
-				this.match(HSQLParser.NCOMPILE);
-				this.state = 427;
-				this.match(HSQLParser.STRING);
-				}
-				break;
-			case HSQLParser.ECL_SNIPPETS:
-				this.enterOuterAlt(_localctx, 2);
-				{
-				this.state = 428;
-				this.match(HSQLParser.ECL_SNIPPETS);
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public qualifiedIdentifier(): QualifiedIdentifierContext {
-		let _localctx: QualifiedIdentifierContext = new QualifiedIdentifierContext(this._ctx, this.state);
-		this.enterRule(_localctx, 98, HSQLParser.RULE_qualifiedIdentifier);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 431;
-			this.match(HSQLParser.IDENTIFIER);
-			this.state = 436;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			while (_la === HSQLParser.T__4) {
-				{
-				{
-				this.state = 432;
-				this.match(HSQLParser.T__4);
-				this.state = 433;
-				this.match(HSQLParser.IDENTIFIER);
-				}
-				}
-				this.state = 438;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-			}
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public dataType(): DataTypeContext {
-		let _localctx: DataTypeContext = new DataTypeContext(this._ctx, this.state);
-		this.enterRule(_localctx, 100, HSQLParser.RULE_dataType);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 439;
-			_la = this._input.LA(1);
-			if (!((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << HSQLParser.REAL_TYPE) | (1 << HSQLParser.INTEGER_TYPE) | (1 << HSQLParser.DECIMAL_TYPE) | (1 << HSQLParser.VARSTRING_TYPE) | (1 << HSQLParser.STRING_TYPE))) !== 0))) {
+			if (!(((((_la - 69)) & ~0x1F) === 0 && ((1 << (_la - 69)) & ((1 << (HSQLParser.EQ - 69)) | (1 << (HSQLParser.NEQ - 69)) | (1 << (HSQLParser.LT - 69)) | (1 << (HSQLParser.LTE - 69)) | (1 << (HSQLParser.GT - 69)) | (1 << (HSQLParser.GTE - 69)))) !== 0))) {
 			this._errHandler.recoverInline(this);
 			} else {
 				if (this._input.LA(1) === Token.EOF) {
@@ -2375,13 +1622,348 @@ export class HSQLParser extends Parser {
 		return _localctx;
 	}
 	// @RuleVersion(0)
-	public expression(): ExpressionContext {
-		let _localctx: ExpressionContext = new ExpressionContext(this._ctx, this.state);
-		this.enterRule(_localctx, 102, HSQLParser.RULE_expression);
+	public logicalOperator(): LogicalOperatorContext {
+		let _localctx: LogicalOperatorContext = new LogicalOperatorContext(this._ctx, this.state);
+		this.enterRule(_localctx, 58, HSQLParser.RULE_logicalOperator);
+		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 441;
+			this.state = 339;
+			_la = this._input.LA(1);
+			if (!(((((_la - 81)) & ~0x1F) === 0 && ((1 << (_la - 81)) & ((1 << (HSQLParser.AND - 81)) | (1 << (HSQLParser.OR - 81)) | (1 << (HSQLParser.NOT - 81)) | (1 << (HSQLParser.IN - 81)) | (1 << (HSQLParser.BETWEEN - 81)) | (1 << (HSQLParser.EXISTS - 81)))) !== 0))) {
+			this._errHandler.recoverInline(this);
+			} else {
+				if (this._input.LA(1) === Token.EOF) {
+					this.matchedEOF = true;
+				}
+
+				this._errHandler.reportMatch(this);
+				this.consume();
+			}
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public literal(): LiteralContext {
+		let _localctx: LiteralContext = new LiteralContext(this._ctx, this.state);
+		this.enterRule(_localctx, 60, HSQLParser.RULE_literal);
+		try {
+			this.state = 344;
+			this._errHandler.sync(this);
+			switch (this._input.LA(1)) {
+			case HSQLParser.INTEGER_VALUE:
+			case HSQLParser.DECIMAL_VALUE:
+			case HSQLParser.DOUBLE_VALUE:
+				this.enterOuterAlt(_localctx, 1);
+				{
+				this.state = 341;
+				this.number();
+				}
+				break;
+			case HSQLParser.STRING:
+			case HSQLParser.UNICODE_STRING:
+				this.enterOuterAlt(_localctx, 2);
+				{
+				this.state = 342;
+				this.string();
+				}
+				break;
+			case HSQLParser.TRUE:
+			case HSQLParser.FALSE:
+				this.enterOuterAlt(_localctx, 3);
+				{
+				this.state = 343;
+				this.booleanValue();
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public dataType(): DataTypeContext {
+		let _localctx: DataTypeContext = new DataTypeContext(this._ctx, this.state);
+		this.enterRule(_localctx, 62, HSQLParser.RULE_dataType);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+			this.state = 346;
+			_la = this._input.LA(1);
+			if (!((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << HSQLParser.REAL_TYPE) | (1 << HSQLParser.INTEGER_TYPE) | (1 << HSQLParser.DECIMAL_TYPE) | (1 << HSQLParser.VARSTRING_TYPE) | (1 << HSQLParser.STRING_TYPE) | (1 << HSQLParser.BOOLEAN))) !== 0))) {
+			this._errHandler.recoverInline(this);
+			} else {
+				if (this._input.LA(1) === Token.EOF) {
+					this.matchedEOF = true;
+				}
+
+				this._errHandler.reportMatch(this);
+				this.consume();
+			}
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public alterOperator(): AlterOperatorContext {
+		let _localctx: AlterOperatorContext = new AlterOperatorContext(this._ctx, this.state);
+		this.enterRule(_localctx, 64, HSQLParser.RULE_alterOperator);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+			this.state = 348;
+			_la = this._input.LA(1);
+			if (!((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << HSQLParser.ADD) | (1 << HSQLParser.DROP) | (1 << HSQLParser.MODIFY))) !== 0))) {
+			this._errHandler.recoverInline(this);
+			} else {
+				if (this._input.LA(1) === Token.EOF) {
+					this.matchedEOF = true;
+				}
+
+				this._errHandler.reportMatch(this);
+				this.consume();
+			}
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public overDefinition(): OverDefinitionContext {
+		let _localctx: OverDefinitionContext = new OverDefinitionContext(this._ctx, this.state);
+		this.enterRule(_localctx, 66, HSQLParser.RULE_overDefinition);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+			this.state = 350;
+			this.overDefinitionRoot();
+			this.state = 355;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			while (_la === HSQLParser.T__0) {
+				{
+				{
+				this.state = 351;
+				this.match(HSQLParser.T__0);
+				this.state = 352;
+				this.overDefinitionTail();
+				}
+				}
+				this.state = 357;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+			}
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public overDefinitionRoot(): OverDefinitionRootContext {
+		let _localctx: OverDefinitionRootContext = new OverDefinitionRootContext(this._ctx, this.state);
+		this.enterRule(_localctx, 68, HSQLParser.RULE_overDefinitionRoot);
+		try {
+			this.state = 361;
+			this._errHandler.sync(this);
+			switch (this._input.LA(1)) {
+			case HSQLParser.IDENTIFIER:
+				_localctx = new NormalIdentifierContext(_localctx);
+				this.enterOuterAlt(_localctx, 1);
+				{
+				this.state = 358;
+				this.match(HSQLParser.IDENTIFIER);
+				}
+				break;
+			case HSQLParser.MODULO:
+				_localctx = new RootIdentifierContext(_localctx);
+				this.enterOuterAlt(_localctx, 2);
+				{
+				this.state = 359;
+				this.match(HSQLParser.MODULO);
+				}
+				break;
+			case HSQLParser.XOR:
+				_localctx = new ParentIdentifierContext(_localctx);
+				this.enterOuterAlt(_localctx, 3);
+				{
+				this.state = 360;
+				this.match(HSQLParser.XOR);
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public overDefinitionTail(): OverDefinitionTailContext {
+		let _localctx: OverDefinitionTailContext = new OverDefinitionTailContext(this._ctx, this.state);
+		this.enterRule(_localctx, 70, HSQLParser.RULE_overDefinitionTail);
+		try {
+			this.state = 365;
+			this._errHandler.sync(this);
+			switch (this._input.LA(1)) {
+			case HSQLParser.IDENTIFIER:
+				_localctx = new NormalTailIdentifierContext(_localctx);
+				this.enterOuterAlt(_localctx, 1);
+				{
+				this.state = 363;
+				this.match(HSQLParser.IDENTIFIER);
+				}
+				break;
+			case HSQLParser.XOR:
+				_localctx = new ParentTailIdentifierContext(_localctx);
+				this.enterOuterAlt(_localctx, 2);
+				{
+				this.state = 364;
+				this.match(HSQLParser.XOR);
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public definition(): DefinitionContext {
+		let _localctx: DefinitionContext = new DefinitionContext(this._ctx, this.state);
+		this.enterRule(_localctx, 72, HSQLParser.RULE_definition);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+			this.state = 367;
+			this.match(HSQLParser.IDENTIFIER);
+			this.state = 372;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			while (_la === HSQLParser.T__0) {
+				{
+				{
+				this.state = 368;
+				this.match(HSQLParser.T__0);
+				this.state = 369;
+				this.match(HSQLParser.IDENTIFIER);
+				}
+				}
+				this.state = 374;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+			}
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public expression(): ExpressionContext {
+		let _localctx: ExpressionContext = new ExpressionContext(this._ctx, this.state);
+		this.enterRule(_localctx, 74, HSQLParser.RULE_expression);
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+			this.state = 375;
 			this.booleanExpression(0);
 			}
 		}
@@ -2412,16 +1994,15 @@ export class HSQLParser extends Parser {
 		let _parentState: number = this.state;
 		let _localctx: BooleanExpressionContext = new BooleanExpressionContext(this._ctx, _parentState);
 		let _prevctx: BooleanExpressionContext = _localctx;
-		let _startState: number = 104;
-		this.enterRecursionRule(_localctx, 104, HSQLParser.RULE_booleanExpression, _p);
+		let _startState: number = 76;
+		this.enterRecursionRule(_localctx, 76, HSQLParser.RULE_booleanExpression, _p);
 		try {
 			let _alt: number;
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 450;
+			this.state = 384;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
-			case HSQLParser.T__0:
 			case HSQLParser.TRUE:
 			case HSQLParser.FALSE:
 			case HSQLParser.STRING:
@@ -2430,19 +2011,20 @@ export class HSQLParser extends Parser {
 			case HSQLParser.DECIMAL_VALUE:
 			case HSQLParser.DOUBLE_VALUE:
 			case HSQLParser.IDENTIFIER:
+			case HSQLParser.BSTART_:
 				{
 				_localctx = new PredicatedContext(_localctx);
 				this._ctx = _localctx;
 				_prevctx = _localctx;
 
-				this.state = 444;
+				this.state = 378;
 				(_localctx as PredicatedContext)._valueExpression = this.valueExpression();
-				this.state = 446;
+				this.state = 380;
 				this._errHandler.sync(this);
-				switch ( this.interpreter.adaptivePredict(this._input, 43, this._ctx) ) {
+				switch ( this.interpreter.adaptivePredict(this._input, 38, this._ctx) ) {
 				case 1:
 					{
-					this.state = 445;
+					this.state = 379;
 					this.predicate((_localctx as PredicatedContext)._valueExpression);
 					}
 					break;
@@ -2454,9 +2036,9 @@ export class HSQLParser extends Parser {
 				_localctx = new LogicalNotContext(_localctx);
 				this._ctx = _localctx;
 				_prevctx = _localctx;
-				this.state = 448;
+				this.state = 382;
 				this.match(HSQLParser.NOT);
-				this.state = 449;
+				this.state = 383;
 				this.booleanExpression(3);
 				}
 				break;
@@ -2464,9 +2046,9 @@ export class HSQLParser extends Parser {
 				throw new NoViableAltException(this);
 			}
 			this._ctx._stop = this._input.tryLT(-1);
-			this.state = 460;
+			this.state = 394;
 			this._errHandler.sync(this);
-			_alt = this.interpreter.adaptivePredict(this._input, 46, this._ctx);
+			_alt = this.interpreter.adaptivePredict(this._input, 41, this._ctx);
 			while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
 				if (_alt === 1) {
 					if (this._parseListeners != null) {
@@ -2474,21 +2056,21 @@ export class HSQLParser extends Parser {
 					}
 					_prevctx = _localctx;
 					{
-					this.state = 458;
+					this.state = 392;
 					this._errHandler.sync(this);
-					switch ( this.interpreter.adaptivePredict(this._input, 45, this._ctx) ) {
+					switch ( this.interpreter.adaptivePredict(this._input, 40, this._ctx) ) {
 					case 1:
 						{
 						_localctx = new LogicalBinaryContext(new BooleanExpressionContext(_parentctx, _parentState));
 						(_localctx as LogicalBinaryContext)._left = _prevctx;
 						this.pushNewRecursionContext(_localctx, _startState, HSQLParser.RULE_booleanExpression);
-						this.state = 452;
+						this.state = 386;
 						if (!(this.precpred(this._ctx, 2))) {
 							throw this.createFailedPredicateException("this.precpred(this._ctx, 2)");
 						}
-						this.state = 453;
+						this.state = 387;
 						(_localctx as LogicalBinaryContext)._operator = this.match(HSQLParser.AND);
-						this.state = 454;
+						this.state = 388;
 						(_localctx as LogicalBinaryContext)._right = this.booleanExpression(3);
 						}
 						break;
@@ -2498,22 +2080,22 @@ export class HSQLParser extends Parser {
 						_localctx = new LogicalBinaryContext(new BooleanExpressionContext(_parentctx, _parentState));
 						(_localctx as LogicalBinaryContext)._left = _prevctx;
 						this.pushNewRecursionContext(_localctx, _startState, HSQLParser.RULE_booleanExpression);
-						this.state = 455;
+						this.state = 389;
 						if (!(this.precpred(this._ctx, 1))) {
 							throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
 						}
-						this.state = 456;
+						this.state = 390;
 						(_localctx as LogicalBinaryContext)._operator = this.match(HSQLParser.OR);
-						this.state = 457;
+						this.state = 391;
 						(_localctx as LogicalBinaryContext)._right = this.booleanExpression(2);
 						}
 						break;
 					}
 					}
 				}
-				this.state = 462;
+				this.state = 396;
 				this._errHandler.sync(this);
-				_alt = this.interpreter.adaptivePredict(this._input, 46, this._ctx);
+				_alt = this.interpreter.adaptivePredict(this._input, 41, this._ctx);
 			}
 			}
 		}
@@ -2532,21 +2114,21 @@ export class HSQLParser extends Parser {
 		return _localctx;
 	}
 	// @RuleVersion(0)
-	public predicate(value: ParserRuleContext): PredicateContext {
-		let _localctx: PredicateContext = new PredicateContext(this._ctx, this.state, value);
-		this.enterRule(_localctx, 106, HSQLParser.RULE_predicate);
+	public predicate(ctx: ParserRuleContext): PredicateContext {
+		let _localctx: PredicateContext = new PredicateContext(this._ctx, this.state, ctx);
+		this.enterRule(_localctx, 78, HSQLParser.RULE_predicate);
 		let _la: number;
 		try {
-			this.state = 489;
+			this.state = 423;
 			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 50, this._ctx) ) {
+			switch ( this.interpreter.adaptivePredict(this._input, 45, this._ctx) ) {
 			case 1:
 				_localctx = new ComparisonContext(_localctx);
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 463;
+				this.state = 397;
 				this.comparisonOperator();
-				this.state = 464;
+				this.state = 398;
 				(_localctx as ComparisonContext)._right = this.valueExpression();
 				}
 				break;
@@ -2555,23 +2137,23 @@ export class HSQLParser extends Parser {
 				_localctx = new BetweenContext(_localctx);
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 467;
+				this.state = 401;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 				if (_la === HSQLParser.NOT) {
 					{
-					this.state = 466;
+					this.state = 400;
 					this.match(HSQLParser.NOT);
 					}
 				}
 
-				this.state = 469;
+				this.state = 403;
 				this.match(HSQLParser.BETWEEN);
-				this.state = 470;
+				this.state = 404;
 				(_localctx as BetweenContext)._lower = this.valueExpression();
-				this.state = 471;
+				this.state = 405;
 				this.match(HSQLParser.AND);
-				this.state = 472;
+				this.state = 406;
 				(_localctx as BetweenContext)._upper = this.valueExpression();
 				}
 				break;
@@ -2580,40 +2162,40 @@ export class HSQLParser extends Parser {
 				_localctx = new InListContext(_localctx);
 				this.enterOuterAlt(_localctx, 3);
 				{
-				this.state = 475;
+				this.state = 409;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 				if (_la === HSQLParser.NOT) {
 					{
-					this.state = 474;
+					this.state = 408;
 					this.match(HSQLParser.NOT);
 					}
 				}
 
-				this.state = 477;
+				this.state = 411;
 				this.match(HSQLParser.IN);
-				this.state = 478;
-				this.match(HSQLParser.T__0);
-				this.state = 479;
+				this.state = 412;
+				this.match(HSQLParser.BSTART_);
+				this.state = 413;
 				this.valueExpression();
-				this.state = 484;
+				this.state = 418;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-				while (_la === HSQLParser.T__1) {
+				while (_la === HSQLParser.COMMA_) {
 					{
 					{
-					this.state = 480;
-					this.match(HSQLParser.T__1);
-					this.state = 481;
+					this.state = 414;
+					this.match(HSQLParser.COMMA_);
+					this.state = 415;
 					this.valueExpression();
 					}
 					}
-					this.state = 486;
+					this.state = 420;
 					this._errHandler.sync(this);
 					_la = this._input.LA(1);
 				}
-				this.state = 487;
-				this.match(HSQLParser.T__2);
+				this.state = 421;
+				this.match(HSQLParser.BEND_);
 				}
 				break;
 			}
@@ -2635,12 +2217,12 @@ export class HSQLParser extends Parser {
 	// @RuleVersion(0)
 	public valueExpression(): ValueExpressionContext {
 		let _localctx: ValueExpressionContext = new ValueExpressionContext(this._ctx, this.state);
-		this.enterRule(_localctx, 108, HSQLParser.RULE_valueExpression);
+		this.enterRule(_localctx, 80, HSQLParser.RULE_valueExpression);
 		try {
 			_localctx = new ValueExpressionDefaultContext(_localctx);
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 491;
+			this.state = 425;
 			this.primaryExpression();
 			}
 		}
@@ -2661,16 +2243,16 @@ export class HSQLParser extends Parser {
 	// @RuleVersion(0)
 	public primaryExpression(): PrimaryExpressionContext {
 		let _localctx: PrimaryExpressionContext = new PrimaryExpressionContext(this._ctx, this.state);
-		this.enterRule(_localctx, 110, HSQLParser.RULE_primaryExpression);
+		this.enterRule(_localctx, 82, HSQLParser.RULE_primaryExpression);
 		try {
-			this.state = 501;
+			this.state = 435;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
 			case HSQLParser.IDENTIFIER:
 				_localctx = new IdentifierContext(_localctx);
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 493;
+				this.state = 427;
 				this.match(HSQLParser.IDENTIFIER);
 				}
 				break;
@@ -2680,7 +2262,7 @@ export class HSQLParser extends Parser {
 				_localctx = new NumericLiteralContext(_localctx);
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 494;
+				this.state = 428;
 				this.number();
 				}
 				break;
@@ -2689,7 +2271,7 @@ export class HSQLParser extends Parser {
 				_localctx = new BooleanLiteralContext(_localctx);
 				this.enterOuterAlt(_localctx, 3);
 				{
-				this.state = 495;
+				this.state = 429;
 				this.booleanValue();
 				}
 				break;
@@ -2698,20 +2280,20 @@ export class HSQLParser extends Parser {
 				_localctx = new StringLiteralContext(_localctx);
 				this.enterOuterAlt(_localctx, 4);
 				{
-				this.state = 496;
+				this.state = 430;
 				this.string();
 				}
 				break;
-			case HSQLParser.T__0:
+			case HSQLParser.BSTART_:
 				_localctx = new ParenthesizedExpressionContext(_localctx);
 				this.enterOuterAlt(_localctx, 5);
 				{
-				this.state = 497;
-				this.match(HSQLParser.T__0);
-				this.state = 498;
+				this.state = 431;
+				this.match(HSQLParser.BSTART_);
+				this.state = 432;
 				this.expression();
-				this.state = 499;
-				this.match(HSQLParser.T__2);
+				this.state = 433;
+				this.match(HSQLParser.BEND_);
 				}
 				break;
 			default:
@@ -2735,16 +2317,16 @@ export class HSQLParser extends Parser {
 	// @RuleVersion(0)
 	public number(): NumberContext {
 		let _localctx: NumberContext = new NumberContext(this._ctx, this.state);
-		this.enterRule(_localctx, 112, HSQLParser.RULE_number);
+		this.enterRule(_localctx, 84, HSQLParser.RULE_number);
 		try {
-			this.state = 506;
+			this.state = 440;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
 			case HSQLParser.DECIMAL_VALUE:
 				_localctx = new DecimalLiteralContext(_localctx);
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 503;
+				this.state = 437;
 				this.match(HSQLParser.DECIMAL_VALUE);
 				}
 				break;
@@ -2752,7 +2334,7 @@ export class HSQLParser extends Parser {
 				_localctx = new DoubleLiteralContext(_localctx);
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 504;
+				this.state = 438;
 				this.match(HSQLParser.DOUBLE_VALUE);
 				}
 				break;
@@ -2760,7 +2342,7 @@ export class HSQLParser extends Parser {
 				_localctx = new IntegerLiteralContext(_localctx);
 				this.enterOuterAlt(_localctx, 3);
 				{
-				this.state = 505;
+				this.state = 439;
 				this.match(HSQLParser.INTEGER_VALUE);
 				}
 				break;
@@ -2785,16 +2367,16 @@ export class HSQLParser extends Parser {
 	// @RuleVersion(0)
 	public string(): StringContext {
 		let _localctx: StringContext = new StringContext(this._ctx, this.state);
-		this.enterRule(_localctx, 114, HSQLParser.RULE_string);
+		this.enterRule(_localctx, 86, HSQLParser.RULE_string);
 		try {
-			this.state = 514;
+			this.state = 448;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
 			case HSQLParser.STRING:
 				_localctx = new BasicStringLiteralContext(_localctx);
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 508;
+				this.state = 442;
 				this.match(HSQLParser.STRING);
 				}
 				break;
@@ -2802,16 +2384,16 @@ export class HSQLParser extends Parser {
 				_localctx = new UnicodeStringLiteralContext(_localctx);
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 509;
+				this.state = 443;
 				this.match(HSQLParser.UNICODE_STRING);
-				this.state = 512;
+				this.state = 446;
 				this._errHandler.sync(this);
-				switch ( this.interpreter.adaptivePredict(this._input, 53, this._ctx) ) {
+				switch ( this.interpreter.adaptivePredict(this._input, 48, this._ctx) ) {
 				case 1:
 					{
-					this.state = 510;
+					this.state = 444;
 					this.match(HSQLParser.UESCAPE);
-					this.state = 511;
+					this.state = 445;
 					this.match(HSQLParser.STRING);
 					}
 					break;
@@ -2839,12 +2421,12 @@ export class HSQLParser extends Parser {
 	// @RuleVersion(0)
 	public booleanValue(): BooleanValueContext {
 		let _localctx: BooleanValueContext = new BooleanValueContext(this._ctx, this.state);
-		this.enterRule(_localctx, 116, HSQLParser.RULE_booleanValue);
+		this.enterRule(_localctx, 88, HSQLParser.RULE_booleanValue);
 		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 516;
+			this.state = 450;
 			_la = this._input.LA(1);
 			if (!(_la === HSQLParser.TRUE || _la === HSQLParser.FALSE)) {
 			this._errHandler.recoverInline(this);
@@ -2873,25 +2455,758 @@ export class HSQLParser extends Parser {
 		return _localctx;
 	}
 	// @RuleVersion(0)
-	public comparisonOperator(): ComparisonOperatorContext {
-		let _localctx: ComparisonOperatorContext = new ComparisonOperatorContext(this._ctx, this.state);
-		this.enterRule(_localctx, 118, HSQLParser.RULE_comparisonOperator);
+	public importStmt(): ImportStmtContext {
+		let _localctx: ImportStmtContext = new ImportStmtContext(this._ctx, this.state);
+		this.enterRule(_localctx, 90, HSQLParser.RULE_importStmt);
 		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 518;
+			this.state = 452;
+			this.match(HSQLParser.IMPORT);
+			this.state = 453;
+			this.overDefinition();
+			this.state = 456;
+			this._errHandler.sync(this);
 			_la = this._input.LA(1);
-			if (!(((((_la - 64)) & ~0x1F) === 0 && ((1 << (_la - 64)) & ((1 << (HSQLParser.EQ - 64)) | (1 << (HSQLParser.NEQ - 64)) | (1 << (HSQLParser.LT - 64)) | (1 << (HSQLParser.LTE - 64)) | (1 << (HSQLParser.GT - 64)) | (1 << (HSQLParser.GTE - 64)))) !== 0))) {
-			this._errHandler.recoverInline(this);
+			if (_la === HSQLParser.AS) {
+				{
+				this.state = 454;
+				this.match(HSQLParser.AS);
+				this.state = 455;
+				this.match(HSQLParser.IDENTIFIER);
+				}
+			}
+
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
 			} else {
-				if (this._input.LA(1) === Token.EOF) {
-					this.matchedEOF = true;
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public outputStmt(): OutputStmtContext {
+		let _localctx: OutputStmtContext = new OutputStmtContext(this._ctx, this.state);
+		this.enterRule(_localctx, 92, HSQLParser.RULE_outputStmt);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+			this.state = 458;
+			this.match(HSQLParser.OUTPUT);
+			this.state = 459;
+			this.attribute();
+			this.state = 461;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			if (_la === HSQLParser.TITLE || _la === HSQLParser.IDENTIFIER) {
+				{
+				this.state = 460;
+				this.namedOutput();
+				}
+			}
+
+			this.state = 464;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			if (_la === HSQLParser.FILE || _la === HSQLParser.STRING) {
+				{
+				this.state = 463;
+				this.toFile();
+				}
+			}
+
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public attribute(): AttributeContext {
+		let _localctx: AttributeContext = new AttributeContext(this._ctx, this.state);
+		this.enterRule(_localctx, 94, HSQLParser.RULE_attribute);
+		try {
+			this.state = 469;
+			this._errHandler.sync(this);
+			switch (this._input.LA(1)) {
+			case HSQLParser.IDENTIFIER:
+				this.enterOuterAlt(_localctx, 1);
+				{
+				this.state = 466;
+				this.definition();
+				}
+				break;
+			case HSQLParser.SELECT:
+				this.enterOuterAlt(_localctx, 2);
+				{
+				this.state = 467;
+				this.selectStmt();
+				}
+				break;
+			case HSQLParser.TRUE:
+			case HSQLParser.FALSE:
+			case HSQLParser.STRING:
+			case HSQLParser.UNICODE_STRING:
+			case HSQLParser.INTEGER_VALUE:
+			case HSQLParser.DECIMAL_VALUE:
+			case HSQLParser.DOUBLE_VALUE:
+				this.enterOuterAlt(_localctx, 3);
+				{
+				this.state = 468;
+				this.literal();
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public namedOutput(): NamedOutputContext {
+		let _localctx: NamedOutputContext = new NamedOutputContext(this._ctx, this.state);
+		this.enterRule(_localctx, 96, HSQLParser.RULE_namedOutput);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+			this.state = 472;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			if (_la === HSQLParser.TITLE) {
+				{
+				this.state = 471;
+				this.match(HSQLParser.TITLE);
+				}
+			}
+
+			this.state = 474;
+			this.match(HSQLParser.IDENTIFIER);
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public toFile(): ToFileContext {
+		let _localctx: ToFileContext = new ToFileContext(this._ctx, this.state);
+		this.enterRule(_localctx, 98, HSQLParser.RULE_toFile);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+			this.state = 477;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			if (_la === HSQLParser.FILE) {
+				{
+				this.state = 476;
+				this.match(HSQLParser.FILE);
+				}
+			}
+
+			this.state = 479;
+			this.match(HSQLParser.STRING);
+			this.state = 481;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			if (_la === HSQLParser.OVERWRITE) {
+				{
+				this.state = 480;
+				this.match(HSQLParser.OVERWRITE);
+				}
+			}
+
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public plotStmt(): PlotStmtContext {
+		let _localctx: PlotStmtContext = new PlotStmtContext(this._ctx, this.state);
+		this.enterRule(_localctx, 100, HSQLParser.RULE_plotStmt);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+			this.state = 483;
+			this.match(HSQLParser.PLOT);
+			this.state = 484;
+			this.match(HSQLParser.FROM);
+			this.state = 485;
+			this.definition();
+			this.state = 487;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			if (_la === HSQLParser.TITLE) {
+				{
+				this.state = 486;
+				this.match(HSQLParser.TITLE);
+				}
+			}
+
+			this.state = 489;
+			this.match(HSQLParser.IDENTIFIER);
+			this.state = 494;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			if (_la === HSQLParser.TYPE || _la === HSQLParser.IDENTIFIER) {
+				{
+				this.state = 491;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === HSQLParser.TYPE) {
+					{
+					this.state = 490;
+					this.match(HSQLParser.TYPE);
+					}
 				}
 
-				this._errHandler.reportMatch(this);
-				this.consume();
+				this.state = 493;
+				this.match(HSQLParser.IDENTIFIER);
+				}
 			}
+
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public moduleStmt(): ModuleStmtContext {
+		let _localctx: ModuleStmtContext = new ModuleStmtContext(this._ctx, this.state);
+		this.enterRule(_localctx, 102, HSQLParser.RULE_moduleStmt);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+			this.state = 496;
+			this.match(HSQLParser.MODULE);
+			this.state = 497;
+			this.match(HSQLParser.BSTART_);
+			this.state = 503;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			while (_la === HSQLParser.EXPORT || _la === HSQLParser.SHARED || _la === HSQLParser.IDENTIFIER) {
+				{
+				{
+				this.state = 498;
+				this.definitionStmt();
+				this.state = 499;
+				this.match(HSQLParser.SEMICOLON);
+				}
+				}
+				this.state = 505;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+			}
+			this.state = 506;
+			this.match(HSQLParser.BEND_);
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public transformStmt(): TransformStmtContext {
+		let _localctx: TransformStmtContext = new TransformStmtContext(this._ctx, this.state);
+		this.enterRule(_localctx, 104, HSQLParser.RULE_transformStmt);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+			this.state = 508;
+			this.match(HSQLParser.ALTER);
+			this.state = 509;
+			this.match(HSQLParser.TABLE);
+			this.state = 510;
+			this.definition();
+			this.state = 513;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			if (_la === HSQLParser.TO) {
+				{
+				this.state = 511;
+				this.match(HSQLParser.TO);
+				this.state = 512;
+				this.match(HSQLParser.IDENTIFIER);
+				}
+			}
+
+			this.state = 515;
+			this.alterOperator();
+			this.state = 516;
+			_localctx._colName = this.match(HSQLParser.IDENTIFIER);
+			this.state = 519;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			if (_la === HSQLParser.COMMA_) {
+				{
+				this.state = 517;
+				this.match(HSQLParser.COMMA_);
+				this.state = 518;
+				this.dataType();
+				}
+			}
+
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public mlStmt(): MlStmtContext {
+		let _localctx: MlStmtContext = new MlStmtContext(this._ctx, this.state);
+		this.enterRule(_localctx, 106, HSQLParser.RULE_mlStmt);
+		try {
+			this.state = 524;
+			this._errHandler.sync(this);
+			switch ( this.interpreter.adaptivePredict(this._input, 63, this._ctx) ) {
+			case 1:
+				this.enterOuterAlt(_localctx, 1);
+				{
+				this.state = 521;
+				this.train();
+				}
+				break;
+
+			case 2:
+				this.enterOuterAlt(_localctx, 2);
+				{
+				this.state = 522;
+				this.predict();
+				}
+				break;
+
+			case 3:
+				this.enterOuterAlt(_localctx, 3);
+				{
+				this.state = 523;
+				this.elementaryML();
+				}
+				break;
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public train(): TrainContext {
+		let _localctx: TrainContext = new TrainContext(this._ctx, this.state);
+		this.enterRule(_localctx, 108, HSQLParser.RULE_train);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+			this.state = 526;
+			this.match(HSQLParser.TRAIN);
+			this.state = 527;
+			this.match(HSQLParser.FROM);
+			this.state = 528;
+			_localctx._ind = this.definition();
+			this.state = 529;
+			this.match(HSQLParser.COMMA_);
+			this.state = 530;
+			_localctx._dep = this.definition();
+			this.state = 533;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			if (_la === HSQLParser.COMMA_) {
+				{
+				this.state = 531;
+				this.match(HSQLParser.COMMA_);
+				this.state = 532;
+				_localctx._test = this.definition();
+				}
+			}
+
+			this.state = 535;
+			this.match(HSQLParser.METHOD);
+			this.state = 536;
+			_localctx._method = this.match(HSQLParser.IDENTIFIER);
+			this.state = 539;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			if (_la === HSQLParser.OPTION) {
+				{
+				this.state = 537;
+				this.match(HSQLParser.OPTION);
+				this.state = 538;
+				this.trainOptions();
+				}
+			}
+
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public elementaryML(): ElementaryMLContext {
+		let _localctx: ElementaryMLContext = new ElementaryMLContext(this._ctx, this.state);
+		this.enterRule(_localctx, 110, HSQLParser.RULE_elementaryML);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+			this.state = 541;
+			this.match(HSQLParser.PREDICT);
+			this.state = 542;
+			this.match(HSQLParser.FROM);
+			this.state = 543;
+			_localctx._ind = this.definition();
+			this.state = 546;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			if (_la === HSQLParser.COMMA_) {
+				{
+				this.state = 544;
+				this.match(HSQLParser.COMMA_);
+				this.state = 545;
+				_localctx._ind2 = this.definition();
+				}
+			}
+
+			this.state = 548;
+			this.match(HSQLParser.METHOD);
+			this.state = 549;
+			_localctx._method = this.match(HSQLParser.IDENTIFIER);
+			this.state = 552;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			if (_la === HSQLParser.OPTION) {
+				{
+				this.state = 550;
+				this.match(HSQLParser.OPTION);
+				this.state = 551;
+				this.trainOptions();
+				}
+			}
+
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public trainOptions(): TrainOptionsContext {
+		let _localctx: TrainOptionsContext = new TrainOptionsContext(this._ctx, this.state);
+		this.enterRule(_localctx, 112, HSQLParser.RULE_trainOptions);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+			{
+			this.state = 554;
+			this.trainOption();
+			}
+			this.state = 559;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			while (_la === HSQLParser.COMMA_) {
+				{
+				{
+				this.state = 555;
+				this.match(HSQLParser.COMMA_);
+				this.state = 556;
+				this.trainOption();
+				}
+				}
+				this.state = 561;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+			}
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public trainOption(): TrainOptionContext {
+		let _localctx: TrainOptionContext = new TrainOptionContext(this._ctx, this.state);
+		this.enterRule(_localctx, 114, HSQLParser.RULE_trainOption);
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+			this.state = 562;
+			this.match(HSQLParser.IDENTIFIER);
+			this.state = 563;
+			this.match(HSQLParser.EQ);
+			this.state = 564;
+			this.trainValue();
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public trainValue(): TrainValueContext {
+		let _localctx: TrainValueContext = new TrainValueContext(this._ctx, this.state);
+		this.enterRule(_localctx, 116, HSQLParser.RULE_trainValue);
+		try {
+			this.state = 569;
+			this._errHandler.sync(this);
+			switch (this._input.LA(1)) {
+			case HSQLParser.INTEGER_VALUE:
+			case HSQLParser.DECIMAL_VALUE:
+			case HSQLParser.DOUBLE_VALUE:
+				this.enterOuterAlt(_localctx, 1);
+				{
+				this.state = 566;
+				this.number();
+				}
+				break;
+			case HSQLParser.STRING:
+			case HSQLParser.UNICODE_STRING:
+				this.enterOuterAlt(_localctx, 2);
+				{
+				this.state = 567;
+				this.string();
+				}
+				break;
+			case HSQLParser.IDENTIFIER:
+				this.enterOuterAlt(_localctx, 3);
+				{
+				this.state = 568;
+				this.definition();
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public predict(): PredictContext {
+		let _localctx: PredictContext = new PredictContext(this._ctx, this.state);
+		this.enterRule(_localctx, 118, HSQLParser.RULE_predict);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+			this.state = 571;
+			this.match(HSQLParser.PREDICT);
+			this.state = 572;
+			_localctx._model = this.definition();
+			this.state = 573;
+			this.match(HSQLParser.FROM);
+			this.state = 574;
+			_localctx._ind = this.definition();
+			this.state = 577;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			if (_la === HSQLParser.METHOD) {
+				{
+				this.state = 575;
+				this.match(HSQLParser.METHOD);
+				this.state = 576;
+				_localctx._method = this.match(HSQLParser.IDENTIFIER);
+				}
+			}
+
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public scope(): ScopeContext {
+		let _localctx: ScopeContext = new ScopeContext(this._ctx, this.state);
+		this.enterRule(_localctx, 120, HSQLParser.RULE_scope);
+		try {
+			this.state = 582;
+			this._errHandler.sync(this);
+			switch (this._input.LA(1)) {
+			case HSQLParser.EXPORT:
+				this.enterOuterAlt(_localctx, 1);
+				{
+				this.state = 579;
+				this.match(HSQLParser.EXPORT);
+				}
+				break;
+			case HSQLParser.SHARED:
+				this.enterOuterAlt(_localctx, 2);
+				{
+				this.state = 580;
+				this.match(HSQLParser.SHARED);
+				}
+				break;
+			case HSQLParser.IDENTIFIER:
+				this.enterOuterAlt(_localctx, 3);
+				// tslint:disable-next-line:no-empty
+				{
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
 			}
 		}
 		catch (re) {
@@ -2911,7 +3226,7 @@ export class HSQLParser extends Parser {
 
 	public sempred(_localctx: RuleContext, ruleIndex: number, predIndex: number): boolean {
 		switch (ruleIndex) {
-		case 52:
+		case 38:
 			return this.booleanExpression_sempred(_localctx as BooleanExpressionContext, predIndex);
 		}
 		return true;
@@ -2927,8 +3242,9 @@ export class HSQLParser extends Parser {
 		return true;
 	}
 
-	public static readonly _serializedATN: string =
-		"\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03S\u020B\x04\x02" +
+	private static readonly _serializedATNSegments: number = 2;
+	private static readonly _serializedATNSegment0: string =
+		"\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03i\u024B\x04\x02" +
 		"\t\x02\x04\x03\t\x03\x04\x04\t\x04\x04\x05\t\x05\x04\x06\t\x06\x04\x07" +
 		"\t\x07\x04\b\t\b\x04\t\t\t\x04\n\t\n\x04\v\t\v\x04\f\t\f\x04\r\t\r\x04" +
 		"\x0E\t\x0E\x04\x0F\t\x0F\x04\x10\t\x10\x04\x11\t\x11\x04\x12\t\x12\x04" +
@@ -2938,239 +3254,287 @@ export class HSQLParser extends Parser {
 		"\t#\x04$\t$\x04%\t%\x04&\t&\x04\'\t\'\x04(\t(\x04)\t)\x04*\t*\x04+\t+" +
 		"\x04,\t,\x04-\t-\x04.\t.\x04/\t/\x040\t0\x041\t1\x042\t2\x043\t3\x044" +
 		"\t4\x045\t5\x046\t6\x047\t7\x048\t8\x049\t9\x04:\t:\x04;\t;\x04<\t<\x04" +
-		"=\t=\x03\x02\x07\x02|\n\x02\f\x02\x0E\x02\x7F\v\x02\x03\x02\x03\x02\x03" +
-		"\x03\x03\x03\x03\x03\x03\x04\x03\x04\x03\x04\x03\x04\x03\x04\x03\x04\x05" +
-		"\x04\x8C\n\x04\x03\x05\x05\x05\x8F\n\x05\x03\x05\x03\x05\x03\x05\x03\x05" +
-		"\x03\x06\x03\x06\x05\x06\x97\n\x06\x03\x07\x03\x07\x05\x07\x9B\n\x07\x03" +
-		"\x07\x03\x07\x03\b\x03\b\x03\t\x03\t\x03\t\x05\t\xA4\n\t\x03\n\x03\n\x03" +
-		"\n\x03\n\x03\n\x03\n\x07\n\xAC\n\n\f\n\x0E\n\xAF\v\n\x03\n\x03\n\x03\v" +
-		"\x03\v\x03\v\x03\v\x03\v\x03\v\x07\v\xB9\n\v\f\v\x0E\v\xBC\v\v\x03\v\x03" +
-		"\v\x03\f\x03\f\x03\f\x03\r\x03\r\x03\r\x03\r\x05\r\xC7\n\r\x03\x0E\x03" +
-		"\x0E\x03\x0F\x03\x0F\x03\x0F\x03\x0F\x03\x0F\x05\x0F\xD0\n\x0F\x03\x10" +
-		"\x03\x10\x03\x11\x03\x11\x03\x11\x05\x11\xD7\n\x11\x03\x11\x05\x11\xDA" +
-		"\n\x11\x03\x11\x05\x11\xDD\n\x11\x03\x12\x03\x12\x05\x12\xE1\n\x12\x03" +
-		"\x13\x03\x13\x03\x13\x03\x14\x03\x14\x03\x14\x03\x14\x03\x15\x03\x15\x03" +
-		"\x16\x03\x16\x03\x16\x03\x17\x03\x17\x03\x17\x03\x17\x03\x17\x03\x17\x03" +
-		"\x17\x05\x17\xF6\n\x17\x03\x18\x03\x18\x03\x18\x05\x18\xFB\n\x18\x03\x19" +
-		"\x03\x19\x03\x19\x03\x19\x03\x19\x03\x19\x03\x19\x05\x19\u0104\n\x19\x03" +
-		"\x19\x03\x19\x03\x19\x03\x19\x05\x19\u010A\n\x19\x03\x1A\x03\x1A\x03\x1A" +
-		"\x03\x1A\x03\x1A\x05\x1A\u0111\n\x1A\x03\x1A\x03\x1A\x03\x1A\x03\x1A\x05" +
-		"\x1A\u0117\n\x1A\x03\x1B\x03\x1B\x03\x1B\x07\x1B\u011C\n\x1B\f\x1B\x0E" +
-		"\x1B\u011F\v\x1B\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x03\x1D\x03\x1D\x03\x1D" +
-		"\x05\x1D\u0128\n\x1D\x03\x1E\x03\x1E\x03\x1E\x03\x1E\x03\x1E\x03\x1E\x05" +
-		"\x1E\u0130\n\x1E\x03\x1F\x03\x1F\x03\x1F\x03\x1F\x03\x1F\x03\x1F\x05\x1F" +
-		"\u0138\n\x1F\x03\x1F\x03\x1F\x03\x1F\x05\x1F\u013D\n\x1F\x03\x1F\x03\x1F" +
-		"\x03\x1F\x05\x1F\u0142\n\x1F\x03\x1F\x05\x1F\u0145\n\x1F\x03 \x05 \u0148" +
-		"\n \x03 \x03 \x03 \x03 \x03 \x03 \x03 \x03!\x03!\x03!\x05!\u0154\n!\x03" +
-		"\"\x03\"\x05\"\u0158\n\"\x03\"\x03\"\x03\"\x05\"\u015D\n\"\x07\"\u015F" +
-		"\n\"\f\"\x0E\"\u0162\v\"\x03#\x03#\x03#\x03#\x03#\x03$\x03$\x03$\x03$" +
-		"\x05$\u016D\n$\x03$\x05$\u0170\n$\x05$\u0172\n$\x03%\x03%\x03%\x05%\u0177" +
-		"\n%\x03&\x03&\x03&\x03&\x03\'\x03\'\x03\'\x03\'\x03\'\x05\'\u0182\n\'" +
-		"\x03(\x03(\x03)\x03)\x03*\x03*\x03+\x03+\x03+\x07+\u018D\n+\f+\x0E+\u0190" +
-		"\v+\x03,\x03,\x05,\u0194\n,\x03-\x03-\x05-\u0198\n-\x03.\x03.\x03.\x03" +
-		"/\x03/\x030\x030\x030\x030\x030\x030\x031\x031\x031\x071\u01A8\n1\f1\x0E" +
-		"1\u01AB\v1\x032\x032\x032\x052\u01B0\n2\x033\x033\x033\x073\u01B5\n3\f" +
-		"3\x0E3\u01B8\v3\x034\x034\x035\x035\x036\x036\x036\x056\u01C1\n6\x036" +
-		"\x036\x056\u01C5\n6\x036\x036\x036\x036\x036\x036\x076\u01CD\n6\f6\x0E" +
-		"6\u01D0\v6\x037\x037\x037\x037\x057\u01D6\n7\x037\x037\x037\x037\x037" +
-		"\x037\x057\u01DE\n7\x037\x037\x037\x037\x037\x077\u01E5\n7\f7\x0E7\u01E8" +
-		"\v7\x037\x037\x057\u01EC\n7\x038\x038\x039\x039\x039\x039\x039\x039\x03" +
-		"9\x039\x059\u01F8\n9\x03:\x03:\x03:\x05:\u01FD\n:\x03;\x03;\x03;\x03;" +
-		"\x05;\u0203\n;\x05;\u0205\n;\x03<\x03<\x03=\x03=\x03=\x02\x02\x03j>\x02" +
-		"\x02\x04\x02\x06\x02\b\x02\n\x02\f\x02\x0E\x02\x10\x02\x12\x02\x14\x02" +
-		"\x16\x02\x18\x02\x1A\x02\x1C\x02\x1E\x02 \x02\"\x02$\x02&\x02(\x02*\x02" +
-		",\x02.\x020\x022\x024\x026\x028\x02:\x02<\x02>\x02@\x02B\x02D\x02F\x02" +
-		"H\x02J\x02L\x02N\x02P\x02R\x02T\x02V\x02X\x02Z\x02\\\x02^\x02`\x02b\x02" +
-		"d\x02f\x02h\x02j\x02l\x02n\x02p\x02r\x02t\x02v\x02x\x02\x02\b\x03\x02" +
-		"\x1F \x03\x0257\x03\x02\b\t\x03\x02\n\x0E\x03\x02;<\x03\x02BG\x02\u0215" +
-		"\x02}\x03\x02\x02\x02\x04\x82\x03\x02\x02\x02\x06\x8B\x03\x02\x02\x02" +
-		"\b\x8E\x03\x02\x02\x02\n\x96\x03\x02\x02\x02\f\x98\x03\x02\x02\x02\x0E" +
-		"\x9E\x03\x02\x02\x02\x10\xA3\x03\x02\x02\x02\x12\xA5\x03\x02\x02\x02\x14" +
-		"\xB2\x03\x02\x02\x02\x16\xBF\x03\x02\x02\x02\x18\xC2\x03\x02\x02\x02\x1A" +
-		"\xC8\x03\x02\x02\x02\x1C\xCF\x03\x02\x02\x02\x1E\xD1\x03\x02\x02\x02 " +
-		"\xD3\x03\x02\x02\x02\"\xE0\x03\x02\x02\x02$\xE2\x03\x02\x02\x02&\xE5\x03" +
-		"\x02\x02\x02(\xE9\x03\x02\x02\x02*\xEB\x03\x02\x02\x02,\xEE\x03\x02\x02" +
-		"\x02.\xFA\x03\x02\x02\x020\xFC\x03\x02\x02\x022\u010B\x03\x02\x02\x02" +
-		"4\u0118\x03\x02\x02\x026\u0120\x03\x02\x02\x028\u0127\x03\x02\x02\x02" +
-		":\u0129\x03\x02\x02\x02<\u0131\x03\x02\x02\x02>\u0147\x03\x02\x02\x02" +
-		"@\u0153\x03\x02\x02\x02B\u0157\x03\x02\x02\x02D\u0163\x03\x02\x02\x02" +
-		"F\u0171\x03\x02\x02\x02H\u0176\x03\x02\x02\x02J\u0178\x03\x02\x02\x02" +
-		"L\u017C\x03\x02\x02\x02N\u0183\x03\x02\x02\x02P\u0185\x03\x02\x02\x02" +
-		"R\u0187\x03\x02\x02\x02T\u0189\x03\x02\x02\x02V\u0193\x03\x02\x02\x02" +
-		"X\u0195\x03\x02\x02\x02Z\u0199\x03\x02\x02\x02\\\u019C\x03\x02\x02\x02" +
-		"^\u019E\x03\x02\x02\x02`\u01A4\x03\x02\x02\x02b\u01AF\x03\x02\x02\x02" +
-		"d\u01B1\x03\x02\x02\x02f\u01B9\x03\x02\x02\x02h\u01BB\x03\x02\x02\x02" +
-		"j\u01C4\x03\x02\x02\x02l\u01EB\x03\x02\x02\x02n\u01ED\x03\x02\x02\x02" +
-		"p\u01F7\x03\x02\x02\x02r\u01FC\x03\x02\x02\x02t\u0204\x03\x02\x02\x02" +
-		"v\u0206\x03\x02\x02\x02x\u0208\x03\x02\x02\x02z|\x05\x04\x03\x02{z\x03" +
-		"\x02\x02\x02|\x7F\x03\x02\x02\x02}{\x03\x02\x02\x02}~\x03\x02\x02\x02" +
-		"~\x80\x03\x02\x02\x02\x7F}\x03\x02\x02\x02\x80\x81\x07\x02\x02\x03\x81" +
-		"\x03\x03\x02\x02\x02\x82\x83\x05\x06\x04\x02\x83\x84\x07A\x02\x02\x84" +
-		"\x05\x03\x02\x02\x02\x85\x8C\x05\n\x06\x02\x86\x8C\x05\x1A\x0E\x02\x87" +
-		"\x8C\x05\b\x05\x02\x88\x8C\x05\x18\r\x02\x89\x8C\x05\f\x07\x02\x8A\x8C" +
-		"\x05b2\x02\x8B\x85\x03\x02\x02\x02\x8B\x86\x03\x02\x02\x02\x8B\x87\x03" +
-		"\x02\x02\x02\x8B\x88\x03\x02\x02\x02\x8B\x89\x03\x02\x02\x02\x8B\x8A\x03" +
-		"\x02\x02\x02\x8C\x07\x03\x02\x02\x02\x8D\x8F\x07\x12\x02\x02\x8E\x8D\x03" +
-		"\x02\x02\x02\x8E\x8F\x03\x02\x02\x02\x8F\x90\x03\x02\x02\x02\x90\x91\x07" +
-		"N\x02\x02\x91\x92\x07B\x02\x02\x92\x93\x05\x1C\x0F\x02\x93\t\x03\x02\x02" +
-		"\x02\x94\x97\x05 \x11\x02\x95\x97\x05,\x17\x02\x96\x94\x03\x02\x02\x02" +
-		"\x96\x95\x03\x02\x02\x02\x97\v\x03\x02\x02\x02\x98\x9A\x07)\x02\x02\x99" +
-		"\x9B\x05\x0E\b\x02\x9A\x99\x03\x02\x02\x02\x9A\x9B\x03\x02\x02\x02\x9B" +
-		"\x9C\x03\x02\x02\x02\x9C\x9D\x05\x10\t\x02\x9D\r\x03\x02\x02\x02\x9E\x9F" +
-		"\x07\x12\x02\x02\x9F\x0F\x03\x02\x02\x02\xA0\xA4\x05\x12\n\x02\xA1\xA4" +
-		"\x05\x14\v\x02\xA2\xA4\x05\x16\f\x02\xA3\xA0\x03\x02\x02\x02\xA3\xA1\x03" +
-		"\x02\x02\x02\xA3\xA2\x03\x02\x02\x02\xA4\x11\x03\x02\x02\x02\xA5\xA6\x07" +
-		"N\x02\x02\xA6\xA7\x07\x11\x02\x02\xA7\xA8\x07\x03\x02\x02\xA8\xAD\x05" +
-		"\x16\f\x02\xA9\xAA\x07\x04\x02\x02\xAA\xAC\x05\x16\f\x02\xAB\xA9\x03\x02" +
-		"\x02\x02\xAC\xAF\x03\x02\x02\x02\xAD\xAB\x03\x02\x02\x02\xAD\xAE\x03\x02" +
-		"\x02\x02\xAE\xB0\x03\x02\x02\x02\xAF\xAD\x03\x02\x02\x02\xB0\xB1\x07\x05" +
-		"\x02\x02\xB1\x13\x03\x02\x02\x02\xB2\xB3\x07N\x02\x02\xB3\xB4\x07&\x02" +
-		"\x02\xB4\xB5\x07\x03\x02\x02\xB5\xBA\x05\x16\f\x02\xB6\xB7\x07\x04\x02" +
-		"\x02\xB7\xB9\x05\x16\f\x02\xB8\xB6\x03\x02\x02\x02\xB9\xBC\x03\x02\x02" +
-		"\x02\xBA\xB8\x03\x02\x02\x02\xBA\xBB\x03\x02\x02\x02\xBB\xBD\x03\x02\x02" +
-		"\x02\xBC\xBA\x03\x02\x02\x02\xBD\xBE\x07\x05\x02\x02\xBE\x15\x03\x02\x02" +
-		"\x02\xBF\xC0\x07N\x02\x02\xC0\xC1\x05f4\x02\xC1\x17\x03\x02\x02\x02\xC2" +
-		"\xC3\x07\x1C\x02\x02\xC3\xC6\x07N\x02\x02\xC4\xC5\x07\x14\x02\x02\xC5" +
-		"\xC7\x07N\x02\x02\xC6\xC4\x03\x02\x02\x02\xC6\xC7\x03\x02\x02\x02\xC7" +
-		"\x19\x03\x02\x02\x02\xC8\xC9\x05<\x1F\x02\xC9\x1B\x03\x02\x02\x02\xCA" +
-		"\xD0\x05\x1E\x10\x02\xCB\xD0\x05<\x1F\x02\xCC\xD0\x05.\x18\x02\xCD\xD0" +
-		"\x05^0\x02\xCE\xD0\x05b2\x02\xCF\xCA\x03\x02\x02\x02\xCF\xCB\x03\x02\x02" +
-		"\x02\xCF\xCC\x03\x02\x02\x02\xCF\xCD\x03\x02\x02\x02\xCF\xCE\x03\x02\x02" +
-		"\x02\xD0\x1D\x03\x02\x02\x02\xD1\xD2\x05d3\x02\xD2\x1F\x03\x02\x02\x02" +
-		"\xD3\xD4\x07.\x02\x02\xD4\xD6\x07N\x02\x02\xD5\xD7\x05\"\x12\x02\xD6\xD5" +
-		"\x03\x02\x02\x02\xD6\xD7\x03\x02\x02\x02\xD7\xD9\x03\x02\x02\x02\xD8\xDA" +
-		"\x05(\x15\x02\xD9\xD8\x03\x02\x02\x02\xD9\xDA\x03\x02\x02\x02\xDA\xDC" +
-		"\x03\x02\x02\x02\xDB\xDD\x05*\x16\x02\xDC\xDB\x03\x02\x02\x02\xDC\xDD" +
-		"\x03\x02\x02\x02\xDD!\x03\x02\x02\x02\xDE\xE1\x05$\x13\x02\xDF\xE1\x05" +
-		"&\x14\x02\xE0\xDE\x03\x02\x02\x02\xE0\xDF\x03\x02\x02\x02\xE1#\x03\x02" +
-		"\x02\x02\xE2\xE3\x079\x02\x02\xE3\xE4\x05t;\x02\xE4%\x03\x02\x02\x02\xE5" +
-		"\xE6\x07(\x02\x02\xE6\xE7\x05t;\x02\xE7\xE8\x07N\x02\x02\xE8\'\x03\x02" +
-		"\x02\x02\xE9\xEA\t\x02\x02\x02\xEA)\x03\x02\x02\x02\xEB\xEC\x07:\x02\x02" +
-		"\xEC\xED\x05r:\x02\xED+\x03\x02\x02\x02\xEE\xEF\x07/\x02\x02\xEF\xF0\x07" +
-		"\x1A\x02\x02\xF0\xF1\x05d3\x02\xF1\xF2\x079\x02\x02\xF2\xF5\x07H\x02\x02" +
-		"\xF3\xF4\x07?\x02\x02\xF4\xF6\x07N\x02\x02\xF5\xF3\x03\x02\x02\x02\xF5" +
-		"\xF6\x03\x02\x02\x02\xF6-\x03\x02\x02\x02\xF7\xFB\x050\x19\x02\xF8\xFB" +
-		"\x05:\x1E\x02\xF9\xFB\x052\x1A\x02\xFA\xF7\x03\x02\x02\x02\xFA\xF8\x03" +
-		"\x02\x02\x02\xFA\xF9\x03\x02\x02\x02\xFB/\x03\x02\x02\x02\xFC\xFD\x07" +
-		"\'\x02\x02\xFD\xFE\x07\x1A\x02\x02\xFE\xFF\x05d3\x02\xFF\u0100\x07\x04" +
-		"\x02\x02\u0100\u0103\x05d3\x02\u0101\u0102\x07\x04\x02\x02\u0102\u0104" +
-		"\x05d3\x02\u0103\u0101\x03\x02\x02\x02\u0103\u0104\x03\x02\x02\x02\u0104" +
-		"\u0105\x03\x02\x02\x02\u0105\u0106\x07*\x02\x02\u0106\u0109\x07N\x02\x02" +
-		"\u0107\u0108\x07\x1D\x02\x02\u0108\u010A\x054\x1B\x02\u0109\u0107\x03" +
-		"\x02\x02\x02\u0109\u010A\x03\x02\x02\x02\u010A1\x03\x02\x02\x02\u010B" +
-		"\u010C\x070\x02\x02\u010C\u010D\x07\x1A\x02\x02\u010D\u0110\x05d3\x02" +
-		"\u010E\u010F\x07\x04\x02\x02\u010F\u0111\x05d3\x02\u0110\u010E\x03\x02" +
-		"\x02\x02\u0110\u0111\x03\x02\x02\x02\u0111\u0112\x03\x02\x02\x02\u0112" +
-		"\u0113\x07*\x02\x02\u0113\u0116\x07N\x02\x02\u0114\u0115\x07\x1D\x02\x02" +
-		"\u0115\u0117\x054\x1B\x02\u0116\u0114\x03\x02\x02\x02\u0116\u0117\x03" +
-		"\x02\x02\x02\u01173\x03\x02\x02\x02\u0118\u011D\x056\x1C\x02\u0119\u011A" +
-		"\x07\x04\x02\x02\u011A\u011C\x056\x1C\x02\u011B\u0119\x03\x02\x02\x02" +
-		"\u011C\u011F\x03\x02\x02\x02\u011D\u011B\x03\x02\x02\x02\u011D\u011E\x03" +
-		"\x02\x02\x02\u011E5\x03\x02\x02\x02\u011F\u011D\x03\x02\x02\x02\u0120" +
-		"\u0121\x07N\x02\x02\u0121\u0122\x07B\x02\x02\u0122\u0123\x058\x1D\x02" +
-		"\u01237\x03\x02\x02\x02\u0124\u0128\x05r:\x02\u0125\u0128\x05t;\x02\u0126" +
-		"\u0128\x05d3\x02\u0127\u0124\x03\x02\x02\x02\u0127\u0125\x03\x02\x02\x02" +
-		"\u0127\u0126\x03\x02\x02\x02\u01289\x03\x02\x02\x02\u0129\u012A\x070\x02" +
-		"\x02\u012A\u012B\x05d3\x02\u012B\u012C\x07\x1A\x02\x02\u012C\u012F\x05" +
-		"d3\x02\u012D\u012E\x07*\x02\x02\u012E\u0130\x07N\x02\x02\u012F\u012D\x03" +
-		"\x02\x02\x02\u012F\u0130\x03\x02\x02\x02\u0130;\x03\x02\x02\x02\u0131" +
-		"\u0132\x072\x02\x02\u0132\u0133\x05B\"\x02\u0133\u0134\x07\x1A\x02\x02" +
-		"\u0134\u0137\x05H%\x02\u0135\u0136\x07>\x02\x02\u0136\u0138\x05R*\x02" +
-		"\u0137\u0135\x03\x02\x02\x02\u0137\u0138\x03\x02\x02\x02\u0138\u013C\x03" +
-		"\x02\x02\x02\u0139\u013A\x07\x1B\x02\x02\u013A\u013B\x07\x17\x02\x02\u013B" +
-		"\u013D\x05\\/\x02\u013C\u0139\x03\x02\x02\x02\u013C\u013D\x03\x02\x02" +
-		"\x02\u013D\u0141\x03\x02\x02\x02\u013E\u013F\x07-\x02\x02\u013F\u0140" +
-		"\x07\x17\x02\x02\u0140\u0142\x05T+\x02\u0141\u013E\x03\x02\x02\x02\u0141" +
-		"\u0142\x03\x02\x02\x02\u0142\u0144\x03\x02\x02\x02\u0143\u0145\x05> \x02" +
-		"\u0144\u0143\x03\x02\x02\x02\u0144\u0145\x03\x02\x02\x02\u0145=\x03\x02" +
-		"\x02\x02\u0146\u0148\x05@!\x02\u0147\u0146\x03\x02\x02\x02\u0147\u0148" +
-		"\x03\x02\x02\x02\u0148\u0149\x03\x02\x02\x02\u0149\u014A\x073\x02\x02" +
-		"\u014A\u014B\x05d3\x02\u014B\u014C\x07\"\x02\x02\u014C\u014D\x05d3\x02" +
-		"\u014D\u014E\x05x=\x02\u014E\u014F\x05d3\x02\u014F?\x03\x02\x02\x02\u0150" +
-		"\u0154\x074\x02\x02\u0151\u0152\t\x03\x02\x02\u0152\u0154\t\x04\x02\x02" +
-		"\u0153\u0150\x03\x02\x02\x02\u0153\u0151\x03\x02\x02\x02\u0154A\x03\x02" +
-		"\x02\x02\u0155\u0158\x05D#\x02\u0156\u0158\x05F$\x02\u0157\u0155\x03\x02" +
-		"\x02\x02\u0157\u0156\x03\x02\x02\x02\u0158\u0160\x03\x02\x02\x02\u0159" +
-		"\u015C\x07\x04\x02\x02\u015A\u015D\x05D#\x02\u015B\u015D\x05F$\x02\u015C" +
-		"\u015A\x03\x02\x02\x02\u015C\u015B\x03\x02\x02\x02\u015D\u015F\x03\x02" +
-		"\x02\x02\u015E\u0159\x03\x02\x02\x02\u015F\u0162\x03\x02\x02\x02\u0160" +
-		"\u015E\x03\x02\x02\x02\u0160\u0161\x03\x02\x02\x02\u0161C\x03\x02\x02" +
-		"\x02\u0162\u0160\x03\x02\x02\x02\u0163\u0164\x07N\x02\x02\u0164\u0165" +
-		"\x07\x03\x02\x02\u0165\u0166\x05F$\x02\u0166\u0167\x07\x05\x02\x02\u0167" +
-		"E\x03\x02\x02\x02\u0168\u0172\x07\x06\x02\x02\u0169\u016F\x07N\x02\x02" +
-		"\u016A\u016C\x07\x14\x02\x02\u016B\u016D\x05f4\x02\u016C\u016B\x03\x02" +
-		"\x02\x02\u016C\u016D\x03\x02\x02\x02\u016D\u016E\x03\x02\x02\x02\u016E" +
-		"\u0170\x07N\x02\x02\u016F\u016A\x03\x02\x02\x02\u016F\u0170\x03\x02\x02" +
-		"\x02\u0170\u0172\x03\x02\x02\x02\u0171\u0168\x03\x02\x02\x02\u0171\u0169" +
-		"\x03\x02\x02\x02\u0172G\x03\x02\x02\x02\u0173\u0177\x05J&\x02\u0174\u0177" +
-		"\x05P)\x02\u0175\u0177\x05L\'\x02\u0176\u0173\x03\x02\x02\x02\u0176\u0174" +
-		"\x03\x02\x02\x02\u0176\u0175\x03\x02\x02\x02\u0177I\x03\x02\x02\x02\u0178" +
-		"\u0179\x07\x03\x02\x02\u0179\u017A\x05<\x1F\x02\u017A\u017B\x07\x05\x02" +
-		"\x02\u017BK\x03\x02\x02\x02\u017C\u017D\x07H\x02\x02\u017D\u017E\x07&" +
-		"\x02\x02\u017E\u0181\x05d3\x02\u017F\u0180\x07?\x02\x02\u0180\u0182\x05" +
-		"N(\x02\u0181\u017F\x03\x02\x02\x02\u0181\u0182\x03\x02\x02\x02\u0182M" +
-		"\x03\x02\x02\x02\u0183\u0184\x07N\x02\x02\u0184O\x03\x02\x02\x02\u0185" +
-		"\u0186\x05d3\x02\u0186Q\x03\x02\x02\x02\u0187\u0188\x05j6\x02\u0188S\x03" +
-		"\x02\x02\x02\u0189\u018E\x05V,\x02\u018A\u018B\x07\x04\x02\x02\u018B\u018D" +
-		"\x05V,\x02\u018C\u018A\x03\x02\x02\x02\u018D\u0190\x03\x02\x02\x02\u018E" +
-		"\u018C\x03\x02\x02\x02\u018E\u018F\x03\x02\x02\x02\u018FU\x03\x02\x02" +
-		"\x02\u0190\u018E\x03\x02\x02\x02\u0191\u0194\x05X-\x02\u0192\u0194\x05" +
-		"Z.\x02\u0193\u0191\x03\x02\x02\x02\u0193\u0192\x03\x02\x02\x02\u0194W" +
-		"\x03\x02\x02\x02\u0195\u0197\x05h5\x02\u0196\u0198\x07\x15\x02\x02\u0197" +
-		"\u0196\x03\x02\x02\x02\u0197\u0198\x03\x02\x02\x02\u0198Y\x03\x02\x02" +
-		"\x02\u0199\u019A\x05h5\x02\u019A\u019B\x07\x18\x02\x02\u019B[\x03\x02" +
-		"\x02\x02\u019C\u019D\x05d3\x02\u019D]\x03\x02\x02\x02\u019E\u019F\x07" +
-		"%\x02\x02\u019F\u01A0\x07&\x02\x02\u01A0\u01A1\x07\x03\x02\x02\u01A1\u01A2" +
-		"\x05`1\x02\u01A2\u01A3\x07\x05\x02\x02\u01A3_\x03\x02\x02\x02\u01A4\u01A9" +
-		"\x05\x16\f\x02\u01A5\u01A6\x07\x04\x02\x02\u01A6\u01A8\x05\x16\f\x02\u01A7" +
-		"\u01A5\x03\x02\x02\x02\u01A8\u01AB\x03\x02\x02\x02\u01A9\u01A7\x03\x02" +
-		"\x02\x02\u01A9\u01AA\x03\x02\x02\x02\u01AAa\x03\x02\x02\x02\u01AB\u01A9" +
-		"\x03\x02\x02\x02\u01AC\u01AD\x07@\x02\x02\u01AD\u01B0\x07H\x02\x02\u01AE" +
-		"\u01B0\x07O\x02\x02\u01AF\u01AC\x03\x02\x02\x02\u01AF\u01AE\x03\x02\x02" +
-		"\x02\u01B0c\x03\x02\x02\x02\u01B1\u01B6\x07N\x02\x02\u01B2\u01B3\x07\x07" +
-		"\x02\x02\u01B3\u01B5\x07N\x02\x02\u01B4\u01B2\x03\x02\x02\x02\u01B5\u01B8" +
-		"\x03\x02\x02\x02\u01B6\u01B4\x03\x02\x02\x02\u01B6\u01B7\x03\x02\x02\x02" +
-		"\u01B7e\x03\x02\x02\x02\u01B8\u01B6\x03\x02\x02\x02\u01B9\u01BA\t\x05" +
-		"\x02\x02\u01BAg\x03\x02\x02\x02\u01BB\u01BC\x05j6\x02\u01BCi\x03\x02\x02" +
-		"\x02\u01BD\u01BE\b6\x01\x02\u01BE\u01C0\x05n8\x02\u01BF\u01C1\x05l7\x02" +
-		"\u01C0\u01BF\x03\x02\x02\x02\u01C0\u01C1\x03\x02\x02\x02\u01C1\u01C5\x03" +
-		"\x02\x02\x02\u01C2\u01C3\x07+\x02\x02\u01C3\u01C5\x05j6\x05\u01C4\u01BD" +
-		"\x03\x02\x02\x02\u01C4\u01C2\x03\x02\x02\x02\u01C5\u01CE\x03\x02\x02\x02" +
-		"\u01C6\u01C7\f\x04\x02\x02\u01C7\u01C8\x07\x13\x02\x02\u01C8\u01CD\x05" +
-		"j6\x05\u01C9\u01CA\f\x03\x02\x02\u01CA\u01CB\x07,\x02\x02\u01CB\u01CD" +
-		"\x05j6\x04\u01CC\u01C6\x03\x02\x02\x02\u01CC\u01C9\x03\x02\x02\x02\u01CD" +
-		"\u01D0\x03\x02\x02\x02\u01CE\u01CC\x03\x02\x02\x02\u01CE\u01CF\x03\x02" +
-		"\x02\x02\u01CFk\x03\x02\x02\x02\u01D0\u01CE\x03\x02\x02\x02\u01D1\u01D2" +
-		"\x05x=\x02\u01D2\u01D3\x05n8\x02\u01D3\u01EC\x03\x02\x02\x02\u01D4\u01D6" +
-		"\x07+\x02\x02\u01D5\u01D4\x03\x02\x02\x02\u01D5\u01D6\x03\x02\x02\x02" +
-		"\u01D6\u01D7\x03\x02\x02\x02\u01D7\u01D8\x07\x16\x02\x02\u01D8\u01D9\x05" +
-		"n8\x02\u01D9\u01DA\x07\x13\x02\x02\u01DA\u01DB\x05n8\x02\u01DB\u01EC\x03" +
-		"\x02\x02\x02\u01DC\u01DE\x07+\x02\x02\u01DD\u01DC\x03\x02\x02\x02\u01DD" +
-		"\u01DE\x03\x02\x02\x02\u01DE\u01DF\x03\x02\x02\x02\u01DF\u01E0\x07!\x02" +
-		"\x02\u01E0\u01E1\x07\x03\x02\x02\u01E1\u01E6\x05n8\x02\u01E2\u01E3\x07" +
-		"\x04\x02\x02\u01E3\u01E5\x05n8\x02\u01E4\u01E2\x03\x02\x02\x02\u01E5\u01E8" +
-		"\x03\x02\x02\x02\u01E6\u01E4\x03\x02\x02\x02\u01E6\u01E7\x03\x02\x02\x02" +
-		"\u01E7\u01E9\x03\x02\x02\x02\u01E8\u01E6\x03\x02\x02\x02\u01E9\u01EA\x07" +
-		"\x05\x02\x02\u01EA\u01EC\x03\x02\x02\x02\u01EB\u01D1\x03\x02\x02\x02\u01EB" +
-		"\u01D5\x03\x02\x02\x02\u01EB\u01DD\x03\x02\x02\x02\u01ECm\x03\x02\x02" +
-		"\x02\u01ED\u01EE\x05p9\x02\u01EEo\x03\x02\x02\x02\u01EF\u01F8\x07N\x02" +
-		"\x02\u01F0\u01F8\x05r:\x02\u01F1\u01F8\x05v<\x02\u01F2\u01F8\x05t;\x02" +
-		"\u01F3\u01F4\x07\x03\x02\x02\u01F4\u01F5\x05h5\x02\u01F5\u01F6\x07\x05" +
-		"\x02\x02\u01F6\u01F8\x03\x02\x02\x02\u01F7\u01EF\x03\x02\x02\x02\u01F7" +
-		"\u01F0\x03\x02\x02\x02\u01F7\u01F1\x03\x02\x02\x02\u01F7\u01F2\x03\x02" +
-		"\x02\x02\u01F7\u01F3\x03\x02\x02\x02\u01F8q\x03\x02\x02\x02\u01F9\u01FD" +
-		"\x07L\x02\x02\u01FA\u01FD\x07M\x02\x02\u01FB\u01FD\x07K\x02\x02\u01FC" +
-		"\u01F9\x03\x02\x02\x02\u01FC\u01FA\x03\x02\x02\x02\u01FC\u01FB\x03\x02" +
-		"\x02\x02\u01FDs\x03\x02\x02\x02\u01FE\u0205\x07H\x02\x02\u01FF\u0202\x07" +
-		"I\x02\x02\u0200\u0201\x07=\x02\x02\u0201\u0203\x07H\x02\x02\u0202\u0200" +
-		"\x03\x02\x02\x02\u0202\u0203\x03\x02\x02\x02\u0203\u0205\x03\x02\x02\x02" +
-		"\u0204\u01FE\x03\x02\x02\x02\u0204\u01FF\x03\x02\x02\x02\u0205u\x03\x02" +
-		"\x02\x02\u0206\u0207\t\x06\x02\x02\u0207w\x03\x02\x02\x02\u0208\u0209" +
-		"\t\x07\x02\x02\u0209y\x03\x02\x02\x029}\x8B\x8E\x96\x9A\xA3\xAD\xBA\xC6" +
-		"\xCF\xD6\xD9\xDC\xE0\xF5\xFA\u0103\u0109\u0110\u0116\u011D\u0127\u012F" +
-		"\u0137\u013C\u0141\u0144\u0147\u0153\u0157\u015C\u0160\u016C\u016F\u0171" +
-		"\u0176\u0181\u018E\u0193\u0197\u01A9\u01AF\u01B6\u01C0\u01C4\u01CC\u01CE" +
-		"\u01D5\u01DD\u01E6\u01EB\u01F7\u01FC\u0202\u0204";
+		"=\t=\x04>\t>\x03\x02\x07\x02~\n\x02\f\x02\x0E\x02\x81\v\x02\x03\x02\x03" +
+		"\x02\x03\x03\x03\x03\x03\x03\x03\x04\x03\x04\x03\x04\x05\x04\x8B\n\x04" +
+		"\x03\x05\x03\x05\x03\x05\x03\x05\x03\x05\x03\x06\x03\x06\x03\x06\x03\x06" +
+		"\x03\x06\x05\x06\x97\n\x06\x03\x07\x03\x07\x03\x07\x03\x07\x05\x07\x9D" +
+		"\n\x07\x03\b\x03\b\x05\b\xA1\n\b\x03\b\x03\b\x03\b\x03\b\x05\b\xA7\n\b" +
+		"\x03\b\x05\b\xAA\n\b\x03\b\x03\b\x03\b\x05\b\xAF\n\b\x03\b\x03\b\x05\b" +
+		"\xB3\n\b\x03\b\x05\b\xB6\n\b\x03\b\x05\b\xB9\n\b\x03\t\x03\t\x03\n\x03" +
+		"\n\x03\n\x03\n\x03\v\x03\v\x03\v\x07\v\xC4\n\v\f\v\x0E\v\xC7\v\v\x03\f" +
+		"\x03\f\x03\f\x07\f\xCC\n\f\f\f\x0E\f\xCF\v\f\x03\r\x03\r\x05\r\xD3\n\r" +
+		"\x03\r\x05\r\xD6\n\r\x03\x0E\x03\x0E\x03\x0E\x03\x0E\x03\x0E\x03\x0E\x03" +
+		"\x0E\x03\x0E\x03\x0E\x03\x0E\x05\x0E\xE2\n\x0E\x03\x0F\x03\x0F\x05\x0F" +
+		"\xE6\n\x0F\x03\x0F\x03\x0F\x03\x10\x03\x10\x03\x10\x03\x10\x07\x10\xEE" +
+		"\n\x10\f\x10\x0E\x10\xF1\v\x10\x03\x10\x05\x10\xF4\n\x10\x03\x11\x03\x11" +
+		"\x03\x11\x03\x11\x03\x11\x03\x11\x03\x11\x05\x11\xFD\n\x11\x03\x11\x03" +
+		"\x11\x03\x11\x03\x11\x07\x11\u0103\n\x11\f\x11\x0E\x11\u0106\v\x11\x03" +
+		"\x11\x03\x11\x05\x11\u010A\n\x11\x03\x12\x05\x12\u010D\n\x12\x03\x12\x03" +
+		"\x12\x03\x13\x03\x13\x05\x13\u0113\n\x13\x03\x13\x03\x13\x05\x13\u0117" +
+		"\n\x13\x03\x13\x03\x13\x05\x13\u011B\n\x13\x03\x13\x03\x13\x05\x13\u011F" +
+		"\n\x13\x03\x13\x03\x13\x05\x13\u0123\n\x13\x03\x13\x05\x13\u0126\n\x13" +
+		"\x03\x14\x03\x14\x03\x15\x03\x15\x03\x15\x03\x15\x03\x15\x03\x15\x07\x15" +
+		"\u0130\n\x15\f\x15\x0E\x15\u0133\v\x15\x03\x16\x03\x16\x03\x16\x03\x16" +
+		"\x03\x17\x03\x17\x03\x18\x03\x18\x03\x18\x07\x18\u013E\n\x18\f\x18\x0E" +
+		"\x18\u0141\v\x18\x03\x19\x03\x19\x05\x19\u0145\n\x19\x03\x1A\x03\x1A\x05" +
+		"\x1A\u0149\n\x1A\x03\x1B\x03\x1B\x03\x1B\x03\x1C\x03\x1C\x03\x1C\x03\x1D" +
+		"\x03\x1D\x03\x1D\x03\x1E\x03\x1E\x03\x1F\x03\x1F\x03 \x03 \x03 \x05 \u015B" +
+		"\n \x03!\x03!\x03\"\x03\"\x03#\x03#\x03#\x07#\u0164\n#\f#\x0E#\u0167\v" +
+		"#\x03$\x03$\x03$\x05$\u016C\n$\x03%\x03%\x05%\u0170\n%\x03&\x03&\x03&" +
+		"\x07&\u0175\n&\f&\x0E&\u0178\v&\x03\'\x03\'\x03(\x03(\x03(\x05(\u017F" +
+		"\n(\x03(\x03(\x05(\u0183\n(\x03(\x03(\x03(\x03(\x03(\x03(\x07(\u018B\n" +
+		"(\f(\x0E(\u018E\v(\x03)\x03)\x03)\x03)\x05)\u0194\n)\x03)\x03)\x03)\x03" +
+		")\x03)\x03)\x05)\u019C\n)\x03)\x03)\x03)\x03)\x03)\x07)\u01A3\n)\f)\x0E" +
+		")\u01A6\v)\x03)\x03)\x05)\u01AA\n)\x03*\x03*\x03+\x03+\x03+\x03+\x03+" +
+		"\x03+\x03+\x03+\x05+\u01B6\n+\x03,\x03,\x03,\x05,\u01BB\n,\x03-\x03-\x03" +
+		"-\x03-\x05-\u01C1\n-\x05-\u01C3\n-\x03.\x03.\x03/\x03/\x03/\x03/\x05/" +
+		"\u01CB\n/\x030\x030\x030\x050\u01D0\n0\x030\x050\u01D3\n0\x031\x031\x03" +
+		"1\x051\u01D8\n1\x032\x052\u01DB\n2\x032\x032\x033\x053\u01E0\n3\x033\x03" +
+		"3\x053\u01E4\n3\x034\x034\x034\x034\x054\u01EA\n4\x034\x034\x054\u01EE" +
+		"\n4\x034\x054\u01F1\n4\x035\x035\x035\x035\x035\x075\u01F8\n5\f5\x0E5" +
+		"\u01FB\v5\x035\x035\x036\x036\x036\x036\x036\x056\u0204\n6\x036\x036\x03" +
+		"6\x036\x056\u020A\n6\x037\x037\x037\x057\u020F\n7\x038\x038\x038\x038" +
+		"\x038\x038\x038\x058\u0218\n8\x038\x038\x038\x038\x058\u021E\n8\x039\x03" +
+		"9\x039\x039\x039\x059\u0225\n9\x039\x039\x039\x039\x059\u022B\n9\x03:" +
+		"\x03:\x03:\x07:\u0230\n:\f:\x0E:\u0233\v:\x03;\x03;\x03;\x03;\x03<\x03" +
+		"<\x03<\x05<\u023C\n<\x03=\x03=\x03=\x03=\x03=\x03=\x05=\u0244\n=\x03>" +
+		"\x03>\x03>\x05>\u0249\n>\x03>\x02\x02\x03N?\x02\x02\x04\x02\x06\x02\b" +
+		"\x02\n\x02\f\x02\x0E\x02\x10\x02\x12\x02\x14\x02\x16\x02\x18\x02\x1A\x02" +
+		"\x1C\x02\x1E\x02 \x02\"\x02$\x02&\x02(\x02*\x02,\x02.\x020\x022\x024\x02" +
+		"6\x028\x02:\x02<\x02>\x02@\x02B\x02D\x02F\x02H\x02J\x02L\x02N\x02P\x02" +
+		"R\x02T\x02V\x02X\x02Z\x02\\\x02^\x02`\x02b\x02d\x02f\x02h\x02j\x02l\x02" +
+		"n\x02p\x02r\x02t\x02v\x02x\x02z\x02\x02\x07\x03\x02GL\x03\x02SX\x03\x02" +
+		"\x04\t\x03\x02\x0F\x11\x03\x0256\x02\u026C\x02\x7F\x03\x02\x02\x02\x04" +
+		"\x84\x03\x02\x02\x02\x06\x8A\x03\x02\x02\x02\b\x8C\x03\x02\x02\x02\n\x96" +
+		"\x03\x02\x02\x02\f\x9C\x03\x02\x02\x02\x0E\x9E\x03\x02\x02\x02\x10\xBA" +
+		"\x03\x02\x02\x02\x12\xBC\x03\x02\x02\x02\x14\xC0\x03\x02\x02\x02\x16\xC8" +
+		"\x03\x02\x02\x02\x18\xD5\x03\x02\x02\x02\x1A\xE1\x03\x02\x02\x02\x1C\xE3" +
+		"\x03\x02\x02\x02\x1E\xE9\x03\x02\x02\x02 \u0109\x03\x02\x02\x02\"\u010C" +
+		"\x03\x02\x02\x02$\u0125\x03\x02\x02\x02&\u0127\x03\x02\x02\x02(\u0129" +
+		"\x03\x02\x02\x02*\u0134\x03\x02\x02\x02,\u0138\x03\x02\x02\x02.\u013A" +
+		"\x03\x02\x02\x020\u0144\x03\x02\x02\x022\u0146\x03\x02\x02\x024\u014A" +
+		"\x03\x02\x02\x026\u014D\x03\x02\x02\x028\u0150\x03\x02\x02\x02:\u0153" +
+		"\x03\x02\x02\x02<\u0155\x03\x02\x02\x02>\u015A\x03\x02\x02\x02@\u015C" +
+		"\x03\x02\x02\x02B\u015E\x03\x02\x02\x02D\u0160\x03\x02\x02\x02F\u016B" +
+		"\x03\x02\x02\x02H\u016F\x03\x02\x02\x02J\u0171\x03\x02\x02\x02L\u0179" +
+		"\x03\x02\x02\x02N\u0182\x03\x02\x02\x02P\u01A9\x03\x02\x02\x02R\u01AB" +
+		"\x03\x02\x02\x02T\u01B5\x03\x02\x02\x02V\u01BA\x03\x02\x02\x02X\u01C2" +
+		"\x03\x02\x02\x02Z\u01C4\x03\x02\x02\x02\\\u01C6\x03\x02\x02\x02^\u01CC" +
+		"\x03\x02\x02\x02`\u01D7\x03\x02\x02\x02b\u01DA\x03\x02\x02\x02d\u01DF" +
+		"\x03\x02\x02\x02f\u01E5\x03\x02\x02\x02h\u01F2\x03\x02\x02\x02j\u01FE" +
+		"\x03\x02\x02\x02l\u020E\x03\x02\x02\x02n\u0210\x03\x02\x02\x02p\u021F" +
+		"\x03\x02\x02\x02r\u022C\x03\x02\x02\x02t\u0234\x03\x02\x02\x02v\u023B" +
+		"\x03\x02\x02\x02x\u023D\x03\x02\x02\x02z\u0248\x03\x02\x02\x02|~\x05\x04" +
+		"\x03\x02}|\x03\x02\x02\x02~\x81\x03\x02\x02\x02\x7F}\x03\x02\x02\x02\x7F" +
+		"\x80\x03\x02\x02\x02\x80\x82\x03\x02\x02\x02\x81\x7F\x03\x02\x02\x02\x82" +
+		"\x83\x07\x02\x02\x03\x83\x03\x03\x02\x02\x02\x84\x85\x05\x06\x04\x02\x85" +
+		"\x86\x07F\x02\x02\x86\x05\x03\x02\x02\x02\x87\x8B\x05\b\x05\x02\x88\x8B" +
+		"\x05\f\x07\x02\x89\x8B\x05\\/\x02\x8A\x87\x03\x02\x02\x02\x8A\x88\x03" +
+		"\x02\x02\x02\x8A\x89\x03\x02\x02\x02\x8B\x07\x03\x02\x02\x02\x8C\x8D\x05" +
+		"z>\x02\x8D\x8E\x07_\x02\x02\x8E\x8F\x07G\x02\x02\x8F\x90\x05\n\x06\x02" +
+		"\x90\t\x03\x02\x02\x02\x91\x97\x05J&\x02\x92\x97\x05\f\x07\x02\x93\x97" +
+		"\x05j6\x02\x94\x97\x05l7\x02\x95\x97\x05h5\x02\x96\x91\x03\x02\x02\x02" +
+		"\x96\x92\x03\x02\x02\x02\x96\x93\x03\x02\x02\x02\x96\x94\x03\x02\x02\x02" +
+		"\x96\x95\x03\x02\x02\x02\x97\v\x03\x02\x02\x02\x98\x9D\x05\x0E\b\x02\x99" +
+		"\x9D\x05^0\x02\x9A\x9D\x05f4\x02\x9B\x9D\x05> \x02\x9C\x98\x03\x02\x02" +
+		"\x02\x9C\x99\x03\x02\x02\x02\x9C\x9A\x03\x02\x02\x02\x9C\x9B\x03\x02\x02" +
+		"\x02\x9D\r\x03\x02\x02\x02\x9E\xA0\x07%\x02\x02\x9F\xA1\x07*\x02\x02\xA0" +
+		"\x9F\x03\x02\x02\x02\xA0\xA1\x03\x02\x02\x02\xA1\xA2\x03\x02\x02\x02\xA2" +
+		"\xA3\x05\x16\f\x02\xA3\xA6\x05\x1E\x10\x02\xA4\xA5\x07(\x02\x02\xA5\xA7" +
+		"\x05&\x14\x02\xA6\xA4\x03\x02\x02\x02\xA6\xA7\x03\x02\x02\x02\xA7\xA9" +
+		"\x03\x02\x02\x02\xA8\xAA\x05\x12\n\x02\xA9\xA8\x03\x02\x02\x02\xA9\xAA" +
+		"\x03\x02\x02\x02\xAA\xAE\x03\x02\x02\x02\xAB\xAC\x07\x16\x02\x02\xAC\xAD" +
+		"\x07\x18\x02\x02\xAD\xAF\x05.\x18\x02\xAE\xAB\x03\x02\x02\x02\xAE\xAF" +
+		"\x03\x02\x02\x02\xAF\xB2\x03\x02\x02\x02\xB0\xB1\x07)\x02\x02\xB1\xB3" +
+		"\x05\x10\t\x02\xB2\xB0\x03\x02\x02\x02\xB2\xB3\x03\x02\x02\x02\xB3\xB5" +
+		"\x03\x02\x02\x02\xB4\xB6\x056\x1C\x02\xB5\xB4\x03\x02\x02\x02\xB5\xB6" +
+		"\x03\x02\x02\x02\xB6\xB8\x03\x02\x02\x02\xB7\xB9\x058\x1D\x02\xB8\xB7" +
+		"\x03\x02\x02\x02\xB8\xB9\x03\x02\x02\x02\xB9\x0F\x03\x02\x02\x02\xBA\xBB" +
+		"\x05N(\x02\xBB\x11\x03\x02\x02\x02\xBC\xBD\x07\x17\x02\x02\xBD\xBE\x07" +
+		"\x18\x02\x02\xBE\xBF\x05,\x17\x02\xBF\x13\x03\x02\x02\x02\xC0\xC5\x05" +
+		"J&\x02\xC1\xC2\x07`\x02\x02\xC2\xC4\x05J&\x02\xC3\xC1\x03\x02\x02\x02" +
+		"\xC4\xC7\x03\x02\x02\x02\xC5\xC3\x03\x02\x02\x02\xC5\xC6\x03\x02\x02\x02" +
+		"\xC6\x15\x03\x02\x02\x02\xC7\xC5\x03\x02\x02\x02\xC8\xCD\x05\x18\r\x02" +
+		"\xC9\xCA\x07`\x02\x02\xCA\xCC\x05\x18\r\x02\xCB\xC9\x03\x02\x02\x02\xCC" +
+		"\xCF\x03\x02\x02\x02\xCD\xCB\x03\x02\x02\x02\xCD\xCE\x03\x02\x02\x02\xCE" +
+		"\x17\x03\x02\x02\x02\xCF\xCD\x03\x02\x02\x02\xD0\xD2\x05\x1A\x0E\x02\xD1" +
+		"\xD3\x05\x1C\x0F\x02\xD2\xD1\x03\x02\x02\x02\xD2\xD3\x03\x02\x02\x02\xD3" +
+		"\xD6\x03\x02\x02\x02\xD4\xD6\x07O\x02\x02\xD5\xD0\x03\x02\x02\x02\xD5" +
+		"\xD4\x03\x02\x02\x02\xD6\x19\x03\x02\x02\x02\xD7\xD8\x07_\x02\x02\xD8" +
+		"\xD9\x07a\x02\x02\xD9\xDA\x07O\x02\x02\xDA\xE2\x07b\x02\x02\xDB\xDC\x07" +
+		"_\x02\x02\xDC\xDD\x07a\x02\x02\xDD\xDE\x05J&\x02\xDE\xDF\x07b\x02\x02" +
+		"\xDF\xE2\x03\x02\x02\x02\xE0\xE2\x05J&\x02\xE1\xD7\x03\x02\x02\x02\xE1" +
+		"\xDB\x03\x02\x02\x02\xE1\xE0\x03\x02\x02\x02\xE2\x1B\x03\x02\x02\x02\xE3" +
+		"\xE5\x078\x02\x02\xE4\xE6\x05@!\x02\xE5\xE4\x03\x02\x02\x02\xE5\xE6\x03" +
+		"\x02\x02\x02\xE6\xE7\x03\x02\x02\x02\xE7\xE8\x07_\x02\x02\xE8\x1D\x03" +
+		"\x02\x02\x02\xE9\xF3\x07&\x02\x02\xEA\xEF\x05 \x11\x02\xEB\xEC\x07`\x02" +
+		"\x02\xEC\xEE\x05 \x11\x02\xED\xEB\x03\x02\x02\x02\xEE\xF1\x03\x02\x02" +
+		"\x02\xEF\xED\x03\x02\x02\x02\xEF\xF0\x03\x02\x02\x02\xF0\xF4\x03\x02\x02" +
+		"\x02\xF1\xEF\x03\x02\x02\x02\xF2\xF4\x05(\x15\x02\xF3\xEA\x03\x02\x02" +
+		"\x02\xF3\xF2\x03\x02\x02\x02\xF4\x1F\x03\x02\x02\x02\xF5\xF6\x07a\x02" +
+		"\x02\xF6\xF7\x05\x0E\b\x02\xF7\xF8\x07b\x02\x02\xF8\xF9\x05\"\x12\x02" +
+		"\xF9\u010A\x03\x02\x02\x02\xFA\xFC\x05J&\x02\xFB\xFD\x05\"\x12\x02\xFC" +
+		"\xFB\x03\x02\x02\x02\xFC\xFD\x03\x02\x02\x02\xFD\u010A\x03\x02\x02\x02" +
+		"\xFE\xFF\x07a\x02\x02\xFF\u0104\x05 \x11\x02\u0100\u0101\x07`\x02\x02" +
+		"\u0101\u0103\x05 \x11\x02\u0102\u0100\x03\x02\x02\x02\u0103\u0106\x03" +
+		"\x02\x02\x02\u0104\u0102\x03\x02\x02\x02\u0104\u0105\x03\x02\x02\x02\u0105" +
+		"\u0107\x03\x02\x02\x02\u0106\u0104\x03\x02\x02\x02\u0107\u0108\x07b\x02" +
+		"\x02\u0108\u010A\x03\x02\x02\x02\u0109\xF5\x03\x02\x02\x02\u0109\xFA\x03" +
+		"\x02\x02\x02\u0109\xFE\x03\x02\x02\x02\u010A!\x03\x02\x02\x02\u010B\u010D" +
+		"\x078\x02\x02\u010C\u010B\x03\x02\x02\x02\u010C\u010D\x03\x02\x02\x02" +
+		"\u010D\u010E\x03\x02\x02\x02\u010E\u010F\x07_\x02\x02\u010F#\x03\x02\x02" +
+		"\x02\u0110\u0126\x07`\x02\x02\u0111\u0113\x07+\x02\x02\u0112\u0111\x03" +
+		"\x02\x02\x02\u0112\u0113\x03\x02\x02\x02\u0113\u0122\x03\x02\x02\x02\u0114" +
+		"\u0116\x07/\x02\x02\u0115\u0117\x072\x02\x02\u0116\u0115\x03\x02\x02\x02" +
+		"\u0116\u0117\x03\x02\x02\x02\u0117\u0123\x03\x02\x02\x02\u0118\u011A\x07" +
+		"0\x02\x02\u0119\u011B\x072\x02\x02\u011A\u0119\x03\x02\x02\x02\u011A\u011B" +
+		"\x03\x02\x02\x02\u011B\u0123\x03\x02\x02\x02\u011C\u011E\x071\x02\x02" +
+		"\u011D\u011F\x072\x02\x02\u011E\u011D\x03\x02\x02\x02\u011E\u011F\x03" +
+		"\x02\x02\x02\u011F\u0123\x03\x02\x02\x02\u0120\u0123\x07.\x02\x02\u0121" +
+		"\u0123\x07,\x02\x02\u0122\u0114\x03\x02\x02\x02\u0122\u0118\x03\x02\x02" +
+		"\x02\u0122\u011C\x03\x02\x02\x02\u0122\u0120\x03\x02\x02\x02\u0122\u0121" +
+		"\x03\x02\x02\x02\u0122\u0123\x03\x02\x02\x02\u0123\u0124\x03\x02\x02\x02" +
+		"\u0124\u0126\x07-\x02\x02\u0125\u0110\x03\x02\x02\x02\u0125\u0112\x03" +
+		"\x02\x02\x02\u0126%\x03\x02\x02\x02\u0127\u0128\x05N(\x02\u0128\'\x03" +
+		"\x02\x02\x02\u0129\u0131\x05 \x11\x02\u012A\u012B\x05$\x13\x02\u012B\u012C" +
+		"\x05 \x11\x02\u012C\u012D\x07!\x02\x02\u012D\u012E\x05*\x16\x02\u012E" +
+		"\u0130\x03\x02\x02\x02\u012F\u012A\x03\x02\x02\x02\u0130\u0133\x03\x02" +
+		"\x02\x02\u0131\u012F\x03\x02\x02\x02\u0131\u0132\x03\x02\x02\x02\u0132" +
+		")\x03\x02\x02\x02\u0133\u0131\x03\x02\x02\x02\u0134\u0135\x05J&\x02\u0135" +
+		"\u0136\x05<\x1F\x02\u0136\u0137\x05J&\x02\u0137+\x03\x02\x02\x02\u0138" +
+		"\u0139\x05\x14\v\x02\u0139-\x03\x02\x02\x02\u013A\u013F\x050\x19\x02\u013B" +
+		"\u013C\x07`\x02\x02\u013C\u013E\x050\x19\x02\u013D\u013B\x03\x02\x02\x02" +
+		"\u013E\u0141\x03\x02\x02\x02\u013F\u013D\x03\x02\x02\x02\u013F\u0140\x03" +
+		"\x02\x02\x02\u0140/\x03\x02\x02\x02\u0141\u013F\x03\x02\x02\x02\u0142" +
+		"\u0145\x052\x1A\x02\u0143\u0145\x054\x1B\x02\u0144\u0142\x03\x02\x02\x02" +
+		"\u0144\u0143\x03\x02\x02\x02\u01451\x03\x02\x02\x02\u0146\u0148\x05\x14" +
+		"\v\x02\u0147\u0149\x07\x14\x02\x02\u0148\u0147\x03\x02\x02\x02\u0148\u0149" +
+		"\x03\x02\x02\x02\u01493\x03\x02\x02\x02\u014A\u014B\x05\x14\v\x02\u014B" +
+		"\u014C\x07\x15\x02\x02\u014C5\x03\x02\x02\x02\u014D\u014E\x07A\x02\x02" +
+		"\u014E\u014F\x05V,\x02\u014F7\x03\x02\x02\x02\u0150\u0151\x07B\x02\x02" +
+		"\u0151\u0152\x05V,\x02\u01529\x03\x02\x02\x02\u0153\u0154\t\x02\x02\x02" +
+		"\u0154;\x03\x02\x02\x02\u0155\u0156\t\x03\x02\x02\u0156=\x03\x02\x02\x02" +
+		"\u0157\u015B\x05V,\x02\u0158\u015B\x05X-\x02\u0159\u015B\x05Z.\x02\u015A" +
+		"\u0157\x03\x02\x02\x02\u015A\u0158\x03\x02\x02\x02\u015A\u0159\x03\x02" +
+		"\x02\x02\u015B?\x03\x02\x02\x02\u015C\u015D\t\x04\x02\x02\u015DA\x03\x02" +
+		"\x02\x02\u015E\u015F\t\x05\x02\x02\u015FC\x03\x02\x02\x02\u0160\u0165" +
+		"\x05F$\x02\u0161\u0162\x07\x03\x02\x02\u0162\u0164\x05H%\x02\u0163\u0161" +
+		"\x03\x02\x02\x02\u0164\u0167\x03\x02\x02\x02\u0165\u0163\x03\x02\x02\x02" +
+		"\u0165\u0166\x03\x02\x02\x02\u0166E\x03\x02\x02\x02\u0167\u0165\x03\x02" +
+		"\x02\x02\u0168\u016C\x07_\x02\x02\u0169\u016C\x07Q\x02\x02\u016A\u016C" +
+		"\x07R\x02\x02\u016B\u0168\x03\x02\x02\x02\u016B\u0169\x03\x02\x02\x02" +
+		"\u016B\u016A\x03\x02\x02\x02\u016CG\x03\x02\x02\x02\u016D\u0170\x07_\x02" +
+		"\x02\u016E\u0170\x07R\x02\x02\u016F\u016D\x03\x02\x02\x02\u016F\u016E" +
+		"\x03\x02\x02\x02\u0170I\x03\x02\x02\x02\u0171\u0176\x07_\x02\x02\u0172" +
+		"\u0173\x07\x03\x02\x02\u0173\u0175\x07_\x02\x02\u0174\u0172\x03\x02\x02" +
+		"\x02\u0175\u0178\x03\x02\x02\x02\u0176\u0174\x03\x02\x02\x02\u0176\u0177" +
+		"\x03\x02\x02\x02\u0177K\x03\x02\x02\x02\u0178\u0176\x03\x02\x02\x02\u0179" +
+		"\u017A\x05N(\x02\u017AM\x03\x02\x02\x02\u017B\u017C\b(\x01\x02\u017C\u017E" +
+		"\x05R*\x02\u017D\u017F\x05P)\x02\u017E\u017D\x03\x02\x02\x02\u017E\u017F" +
+		"\x03\x02\x02\x02\u017F\u0183\x03\x02\x02\x02\u0180\u0181\x07U\x02\x02" +
+		"\u0181\u0183\x05N(\x05\u0182\u017B\x03\x02\x02\x02\u0182\u0180\x03\x02" +
+		"\x02\x02\u0183\u018C\x03\x02\x02\x02\u0184\u0185\f\x04\x02\x02\u0185\u0186" +
+		"\x07S\x02\x02\u0186\u018B\x05N(\x05\u0187\u0188\f\x03\x02\x02\u0188\u0189" +
+		"\x07T\x02\x02\u0189\u018B\x05N(\x04\u018A\u0184\x03\x02\x02\x02\u018A" +
+		"\u0187\x03\x02\x02\x02\u018B\u018E\x03\x02\x02\x02\u018C\u018A\x03\x02" +
+		"\x02\x02\u018C\u018D\x03\x02\x02\x02\u018DO\x03\x02\x02\x02\u018E\u018C" +
+		"\x03\x02\x02\x02\u018F\u0190\x05:\x1E\x02\u0190\u0191\x05R*\x02\u0191" +
+		"\u01AA\x03\x02\x02\x02\u0192\u0194\x07U\x02\x02\u0193\u0192\x03\x02\x02" +
+		"\x02\u0193\u0194\x03\x02\x02\x02\u0194\u0195\x03\x02\x02\x02\u0195\u0196" +
+		"\x07W\x02\x02\u0196\u0197\x05R*\x02\u0197\u0198\x07S\x02\x02\u0198\u0199" +
+		"\x05R*\x02\u0199\u01AA\x03\x02\x02\x02\u019A\u019C\x07U\x02\x02\u019B" +
+		"\u019A\x03\x02\x02\x02\u019B\u019C\x03\x02\x02\x02\u019C\u019D\x03\x02" +
+		"\x02\x02\u019D\u019E\x07V\x02\x02\u019E\u019F\x07a\x02\x02\u019F\u01A4" +
+		"\x05R*\x02\u01A0\u01A1\x07`\x02\x02\u01A1\u01A3\x05R*\x02\u01A2\u01A0" +
+		"\x03\x02\x02\x02\u01A3\u01A6\x03\x02\x02\x02\u01A4\u01A2\x03\x02\x02\x02" +
+		"\u01A4\u01A5\x03\x02\x02\x02\u01A5\u01A7\x03\x02\x02\x02\u01A6\u01A4\x03" +
+		"\x02\x02\x02\u01A7\u01A8\x07b\x02\x02\u01A8\u01AA\x03\x02\x02\x02\u01A9" +
+		"\u018F\x03\x02\x02\x02\u01A9\u0193\x03\x02\x02\x02\u01A9\u019B\x03\x02" +
+		"\x02\x02\u01AAQ\x03\x02\x02\x02\u01AB\u01AC\x05T+\x02\u01ACS\x03\x02\x02" +
+		"\x02\u01AD\u01B6\x07_\x02\x02\u01AE\u01B6\x05V,\x02\u01AF\u01B6\x05Z." +
+		"\x02\u01B0\u01B6\x05X-\x02\u01B1\u01B2\x07a\x02\x02\u01B2\u01B3\x05L\'" +
+		"\x02\u01B3\u01B4\x07b\x02\x02\u01B4\u01B6\x03\x02\x02\x02\u01B5\u01AD" +
+		"\x03\x02\x02\x02\u01B5\u01AE\x03\x02\x02\x02\u01B5\u01AF\x03\x02\x02\x02" +
+		"\u01B5\u01B0\x03\x02\x02\x02\u01B5\u01B1\x03\x02\x02\x02\u01B6U\x03\x02" +
+		"\x02\x02\u01B7\u01BB\x07]\x02\x02\u01B8\u01BB\x07^\x02\x02\u01B9\u01BB" +
+		"\x07\\\x02\x02\u01BA\u01B7\x03\x02\x02\x02\u01BA\u01B8\x03\x02\x02\x02" +
+		"\u01BA\u01B9\x03\x02\x02\x02\u01BBW\x03\x02\x02\x02\u01BC\u01C3\x07Y\x02" +
+		"\x02\u01BD\u01C0\x07Z\x02\x02\u01BE\u01BF\x07D\x02\x02\u01BF\u01C1\x07" +
+		"Y\x02\x02\u01C0\u01BE\x03\x02\x02\x02\u01C0\u01C1\x03\x02\x02\x02\u01C1" +
+		"\u01C3\x03\x02\x02\x02\u01C2\u01BC\x03\x02\x02\x02\u01C2\u01BD\x03\x02" +
+		"\x02\x02\u01C3Y\x03\x02\x02\x02\u01C4\u01C5\t\x06\x02\x02\u01C5[\x03\x02" +
+		"\x02\x02\u01C6\u01C7\x077\x02\x02\u01C7\u01CA\x05D#\x02\u01C8\u01C9\x07" +
+		"8\x02\x02\u01C9\u01CB\x07_\x02\x02\u01CA\u01C8\x03\x02\x02\x02\u01CA\u01CB" +
+		"\x03\x02\x02\x02\u01CB]\x03\x02\x02\x02\u01CC\u01CD\x07\x1C\x02\x02\u01CD" +
+		"\u01CF\x05`1\x02\u01CE\u01D0\x05b2\x02\u01CF\u01CE\x03\x02\x02\x02\u01CF" +
+		"\u01D0\x03\x02\x02\x02\u01D0\u01D2\x03\x02\x02\x02\u01D1\u01D3\x05d3\x02" +
+		"\u01D2\u01D1\x03\x02\x02\x02\u01D2\u01D3\x03\x02\x02\x02\u01D3_\x03\x02" +
+		"\x02\x02\u01D4\u01D8\x05J&\x02\u01D5\u01D8\x05\x0E\b\x02\u01D6\u01D8\x05" +
+		"> \x02\u01D7\u01D4\x03\x02\x02\x02\u01D7\u01D5\x03\x02\x02\x02\u01D7\u01D6" +
+		"\x03\x02\x02\x02\u01D8a\x03\x02\x02\x02\u01D9\u01DB\x07?\x02\x02\u01DA" +
+		"\u01D9\x03\x02\x02\x02\u01DA\u01DB\x03\x02\x02\x02\u01DB\u01DC\x03\x02" +
+		"\x02\x02\u01DC\u01DD\x07_\x02\x02\u01DDc\x03\x02\x02\x02\u01DE\u01E0\x07" +
+		";\x02\x02\u01DF\u01DE\x03\x02\x02\x02\u01DF\u01E0\x03\x02\x02\x02\u01E0" +
+		"\u01E1\x03\x02\x02\x02\u01E1\u01E3\x07Y\x02\x02\u01E2\u01E4\x07\x1F\x02" +
+		"\x02\u01E3\u01E2\x03\x02\x02\x02\u01E3\u01E4\x03\x02\x02\x02\u01E4e\x03" +
+		"\x02\x02\x02\u01E5\u01E6\x07\x1B\x02\x02\u01E6\u01E7\x07&\x02\x02\u01E7" +
+		"\u01E9\x05J&\x02\u01E8\u01EA\x07?\x02\x02\u01E9\u01E8\x03\x02\x02\x02" +
+		"\u01E9\u01EA\x03\x02\x02\x02\u01EA\u01EB\x03\x02\x02\x02\u01EB\u01F0\x07" +
+		"_\x02\x02\u01EC\u01EE\x07E\x02\x02\u01ED\u01EC\x03\x02\x02\x02\u01ED\u01EE" +
+		"\x03\x02\x02\x02\u01EE\u01EF\x03\x02\x02\x02\u01EF\u01F1\x07_\x02\x02" +
+		"\u01F0\u01ED\x03\x02\x02\x02\u01F0\u01F1\x03\x02\x02\x02\u01F1g\x03\x02" +
+		"\x02\x02\u01F2\u01F3\x07C\x02\x02\u01F3\u01F9\x07a\x02\x02\u01F4\u01F5" +
+		"\x05\b\x05\x02\u01F5\u01F6\x07F\x02\x02\u01F6\u01F8\x03\x02\x02\x02\u01F7" +
+		"\u01F4\x03\x02\x02\x02\u01F8\u01FB\x03\x02\x02\x02\u01F9\u01F7\x03\x02" +
+		"\x02\x02\u01F9\u01FA\x03\x02\x02\x02\u01FA\u01FC\x03\x02\x02\x02\u01FB" +
+		"\u01F9\x03\x02\x02\x02\u01FC\u01FD\x07b\x02\x02\u01FDi\x03\x02\x02\x02" +
+		"\u01FE\u01FF\x07\r\x02\x02\u01FF\u0200\x07\f\x02\x02\u0200\u0203\x05J" +
+		"&\x02\u0201\u0202\x07\x0E\x02\x02\u0202\u0204\x07_\x02\x02\u0203\u0201" +
+		"\x03\x02\x02\x02\u0203\u0204\x03\x02\x02\x02\u0204\u0205\x03\x02\x02\x02" +
+		"\u0205\u0206\x05B\"\x02\u0206\u0209\x07_\x02\x02\u0207\u0208\x07`\x02" +
+		"\x02\u0208\u020A\x05@!\x02\u0209\u0207\x03\x02\x02\x02\u0209\u020A\x03" +
+		"\x02\x02\x02\u020Ak\x03\x02\x02\x02\u020B\u020F\x05n8\x02\u020C\u020F" +
+		"\x05x=\x02\u020D\u020F\x05p9\x02\u020E\u020B\x03\x02\x02\x02\u020E\u020C" +
+		"\x03\x02\x02\x02\u020E\u020D\x03\x02\x02\x02\u020Fm\x03\x02\x02\x02\u0210" +
+		"\u0211\x07\x19\x02\x02\u0211\u0212\x07&\x02\x02\u0212\u0213\x05J&\x02" +
+		"\u0213\u0214\x07`\x02\x02\u0214\u0217\x05J&\x02\u0215\u0216\x07`\x02\x02" +
+		"\u0216\u0218\x05J&\x02\u0217\u0215\x03\x02\x02\x02\u0217\u0218\x03\x02" +
+		"\x02\x02\u0218\u0219\x03\x02\x02\x02\u0219\u021A\x07=\x02\x02\u021A\u021D" +
+		"\x07_\x02\x02\u021B\u021C\x07\x1D\x02\x02\u021C\u021E\x05r:\x02\u021D" +
+		"\u021B\x03\x02\x02\x02\u021D\u021E\x03\x02\x02\x02\u021Eo\x03\x02\x02" +
+		"\x02\u021F\u0220\x07\x1A\x02\x02\u0220\u0221\x07&\x02\x02\u0221\u0224" +
+		"\x05J&\x02\u0222\u0223\x07`\x02\x02\u0223\u0225\x05J&\x02\u0224\u0222" +
+		"\x03\x02\x02\x02\u0224\u0225\x03\x02\x02\x02\u0225\u0226\x03\x02\x02\x02" +
+		"\u0226\u0227\x07=\x02\x02\u0227\u022A\x07_\x02\x02\u0228\u0229\x07\x1D" +
+		"\x02\x02\u0229\u022B\x05r:\x02\u022A\u0228\x03\x02\x02\x02\u022A\u022B" +
+		"\x03\x02\x02\x02\u022Bq\x03\x02\x02\x02\u022C\u0231\x05t;\x02\u022D\u022E" +
+		"\x07`\x02\x02\u022E\u0230\x05t;\x02\u022F\u022D\x03\x02\x02\x02\u0230" +
+		"\u0233\x03\x02\x02\x02\u0231\u022F\x03\x02\x02\x02\u0231\u0232\x03\x02" +
+		"\x02\x02\u0232s\x03\x02\x02\x02\u0233\u0231\x03\x02\x02\x02\u0234\u0235" +
+		"\x07_\x02\x02\u0235\u0236\x07G\x02\x02\u0236\u0237\x05v<\x02\u0237u\x03" +
+		"\x02\x02\x02\u0238\u023C\x05V,\x02\u0239\u023C\x05X-\x02\u023A";
+	private static readonly _serializedATNSegment1: string =
+		"\u023C\x05J&\x02\u023B\u0238\x03\x02\x02\x02\u023B\u0239\x03\x02\x02\x02" +
+		"\u023B\u023A\x03\x02\x02\x02\u023Cw\x03\x02\x02\x02\u023D\u023E\x07\x1A" +
+		"\x02\x02\u023E\u023F\x05J&\x02\u023F\u0240\x07&\x02\x02\u0240\u0243\x05" +
+		"J&\x02\u0241\u0242\x07=\x02\x02\u0242\u0244\x07_\x02\x02\u0243\u0241\x03" +
+		"\x02\x02\x02\u0243\u0244\x03\x02\x02\x02\u0244y\x03\x02\x02\x02\u0245" +
+		"\u0249\x07\x12\x02\x02\u0246\u0249\x07\x13\x02\x02\u0247\u0249\x03\x02" +
+		"\x02\x02\u0248\u0245\x03\x02\x02\x02\u0248\u0246\x03\x02\x02\x02\u0248" +
+		"\u0247\x03\x02\x02\x02\u0249{\x03\x02\x02\x02J\x7F\x8A\x96\x9C\xA0\xA6" +
+		"\xA9\xAE\xB2\xB5\xB8\xC5\xCD\xD2\xD5\xE1\xE5\xEF\xF3\xFC\u0104\u0109\u010C" +
+		"\u0112\u0116\u011A\u011E\u0122\u0125\u0131\u013F\u0144\u0148\u015A\u0165" +
+		"\u016B\u016F\u0176\u017E\u0182\u018A\u018C\u0193\u019B\u01A4\u01A9\u01B5" +
+		"\u01BA\u01C0\u01C2\u01CA\u01CF\u01D2\u01D7\u01DA\u01DF\u01E3\u01E9\u01ED" +
+		"\u01F0\u01F9\u0203\u0209\u020E\u0217\u021D\u0224\u022A\u0231\u023B\u0243" +
+		"\u0248";
+	public static readonly _serializedATN: string = Utils.join(
+		[
+			HSQLParser._serializedATNSegment0,
+			HSQLParser._serializedATNSegment1,
+		],
+		"",
+	);
 	public static __ATN: ATN;
 	public static get _ATN(): ATN {
 		if (!HSQLParser.__ATN) {
@@ -3231,23 +3595,14 @@ export class CompletestmtContext extends ParserRuleContext {
 
 
 export class StmtContext extends ParserRuleContext {
+	public definitionStmt(): DefinitionStmtContext | undefined {
+		return this.tryGetRuleContext(0, DefinitionStmtContext);
+	}
 	public actionStmt(): ActionStmtContext | undefined {
 		return this.tryGetRuleContext(0, ActionStmtContext);
 	}
-	public implicitActionStmt(): ImplicitActionStmtContext | undefined {
-		return this.tryGetRuleContext(0, ImplicitActionStmtContext);
-	}
-	public assignStmt(): AssignStmtContext | undefined {
-		return this.tryGetRuleContext(0, AssignStmtContext);
-	}
 	public importStmt(): ImportStmtContext | undefined {
 		return this.tryGetRuleContext(0, ImportStmtContext);
-	}
-	public typeDefStmt(): TypeDefStmtContext | undefined {
-		return this.tryGetRuleContext(0, TypeDefStmtContext);
-	}
-	public inlineStmt(): InlineStmtContext | undefined {
-		return this.tryGetRuleContext(0, InlineStmtContext);
 	}
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
@@ -3265,240 +3620,25 @@ export class StmtContext extends ParserRuleContext {
 }
 
 
-export class AssignStmtContext extends ParserRuleContext {
+export class DefinitionStmtContext extends ParserRuleContext {
 	public _label!: Token;
+	public scope(): ScopeContext {
+		return this.getRuleContext(0, ScopeContext);
+	}
 	public EQ(): TerminalNode { return this.getToken(HSQLParser.EQ, 0); }
 	public expr(): ExprContext {
 		return this.getRuleContext(0, ExprContext);
 	}
 	public IDENTIFIER(): TerminalNode { return this.getToken(HSQLParser.IDENTIFIER, 0); }
-	public EXPORT(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.EXPORT, 0); }
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
 	}
 	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_assignStmt; }
+	public get ruleIndex(): number { return HSQLParser.RULE_definitionStmt; }
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitAssignStmt) {
-			return visitor.visitAssignStmt(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
-}
-
-
-export class ActionStmtContext extends ParserRuleContext {
-	public outputStmt(): OutputStmtContext | undefined {
-		return this.tryGetRuleContext(0, OutputStmtContext);
-	}
-	public plotStmt(): PlotStmtContext | undefined {
-		return this.tryGetRuleContext(0, PlotStmtContext);
-	}
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_actionStmt; }
-	// @Override
-	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitActionStmt) {
-			return visitor.visitActionStmt(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
-}
-
-
-export class TypeDefStmtContext extends ParserRuleContext {
-	public MAP(): TerminalNode { return this.getToken(HSQLParser.MAP, 0); }
-	public mapExportable(): MapExportableContext {
-		return this.getRuleContext(0, MapExportableContext);
-	}
-	public typeDefExport(): TypeDefExportContext | undefined {
-		return this.tryGetRuleContext(0, TypeDefExportContext);
-	}
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_typeDefStmt; }
-	// @Override
-	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitTypeDefStmt) {
-			return visitor.visitTypeDefStmt(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
-}
-
-
-export class TypeDefExportContext extends ParserRuleContext {
-	public EXPORT(): TerminalNode { return this.getToken(HSQLParser.EXPORT, 0); }
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_typeDefExport; }
-	// @Override
-	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitTypeDefExport) {
-			return visitor.visitTypeDefExport(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
-}
-
-
-export class MapExportableContext extends ParserRuleContext {
-	public tableExport(): TableExportContext | undefined {
-		return this.tryGetRuleContext(0, TableExportContext);
-	}
-	public layoutExport(): LayoutExportContext | undefined {
-		return this.tryGetRuleContext(0, LayoutExportContext);
-	}
-	public identifierExport(): IdentifierExportContext | undefined {
-		return this.tryGetRuleContext(0, IdentifierExportContext);
-	}
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_mapExportable; }
-	// @Override
-	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitMapExportable) {
-			return visitor.visitMapExportable(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
-}
-
-
-export class TableExportContext extends ParserRuleContext {
-	public IDENTIFIER(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.IDENTIFIER, 0); }
-	public TABLE(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.TABLE, 0); }
-	public identifierExport(): IdentifierExportContext[];
-	public identifierExport(i: number): IdentifierExportContext;
-	public identifierExport(i?: number): IdentifierExportContext | IdentifierExportContext[] {
-		if (i === undefined) {
-			return this.getRuleContexts(IdentifierExportContext);
-		} else {
-			return this.getRuleContext(i, IdentifierExportContext);
-		}
-	}
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_tableExport; }
-	// @Override
-	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitTableExport) {
-			return visitor.visitTableExport(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
-}
-
-
-export class LayoutExportContext extends ParserRuleContext {
-	public IDENTIFIER(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.IDENTIFIER, 0); }
-	public LAYOUT(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.LAYOUT, 0); }
-	public identifierExport(): IdentifierExportContext[];
-	public identifierExport(i: number): IdentifierExportContext;
-	public identifierExport(i?: number): IdentifierExportContext | IdentifierExportContext[] {
-		if (i === undefined) {
-			return this.getRuleContexts(IdentifierExportContext);
-		} else {
-			return this.getRuleContext(i, IdentifierExportContext);
-		}
-	}
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_layoutExport; }
-	// @Override
-	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitLayoutExport) {
-			return visitor.visitLayoutExport(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
-}
-
-
-export class IdentifierExportContext extends ParserRuleContext {
-	public IDENTIFIER(): TerminalNode { return this.getToken(HSQLParser.IDENTIFIER, 0); }
-	public dataType(): DataTypeContext {
-		return this.getRuleContext(0, DataTypeContext);
-	}
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_identifierExport; }
-	// @Override
-	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitIdentifierExport) {
-			return visitor.visitIdentifierExport(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
-}
-
-
-export class ImportStmtContext extends ParserRuleContext {
-	public _alias!: Token;
-	public IMPORT(): TerminalNode { return this.getToken(HSQLParser.IMPORT, 0); }
-	public IDENTIFIER(): TerminalNode[];
-	public IDENTIFIER(i: number): TerminalNode;
-	public IDENTIFIER(i?: number): TerminalNode | TerminalNode[] {
-		if (i === undefined) {
-			return this.getTokens(HSQLParser.IDENTIFIER);
-		} else {
-			return this.getToken(HSQLParser.IDENTIFIER, i);
-		}
-	}
-	public AS(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.AS, 0); }
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_importStmt; }
-	// @Override
-	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitImportStmt) {
-			return visitor.visitImportStmt(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
-}
-
-
-export class ImplicitActionStmtContext extends ParserRuleContext {
-	public selectStmt(): SelectStmtContext {
-		return this.getRuleContext(0, SelectStmtContext);
-	}
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_implicitActionStmt; }
-	// @Override
-	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitImplicitActionStmt) {
-			return visitor.visitImplicitActionStmt(this);
+		if (visitor.visitDefinitionStmt) {
+			return visitor.visitDefinitionStmt(this);
 		} else {
 			return visitor.visitChildren(this);
 		}
@@ -3507,20 +3647,20 @@ export class ImplicitActionStmtContext extends ParserRuleContext {
 
 
 export class ExprContext extends ParserRuleContext {
-	public simpleIdentifier(): SimpleIdentifierContext | undefined {
-		return this.tryGetRuleContext(0, SimpleIdentifierContext);
+	public definition(): DefinitionContext | undefined {
+		return this.tryGetRuleContext(0, DefinitionContext);
 	}
-	public selectStmt(): SelectStmtContext | undefined {
-		return this.tryGetRuleContext(0, SelectStmtContext);
+	public actionStmt(): ActionStmtContext | undefined {
+		return this.tryGetRuleContext(0, ActionStmtContext);
+	}
+	public transformStmt(): TransformStmtContext | undefined {
+		return this.tryGetRuleContext(0, TransformStmtContext);
 	}
 	public mlStmt(): MlStmtContext | undefined {
 		return this.tryGetRuleContext(0, MlStmtContext);
 	}
-	public layoutStmt(): LayoutStmtContext | undefined {
-		return this.tryGetRuleContext(0, LayoutStmtContext);
-	}
-	public inlineStmt(): InlineStmtContext | undefined {
-		return this.tryGetRuleContext(0, InlineStmtContext);
+	public moduleStmt(): ModuleStmtContext | undefined {
+		return this.tryGetRuleContext(0, ModuleStmtContext);
 	}
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
@@ -3538,393 +3678,28 @@ export class ExprContext extends ParserRuleContext {
 }
 
 
-export class SimpleIdentifierContext extends ParserRuleContext {
-	public qualifiedIdentifier(): QualifiedIdentifierContext {
-		return this.getRuleContext(0, QualifiedIdentifierContext);
+export class ActionStmtContext extends ParserRuleContext {
+	public selectStmt(): SelectStmtContext | undefined {
+		return this.tryGetRuleContext(0, SelectStmtContext);
+	}
+	public outputStmt(): OutputStmtContext | undefined {
+		return this.tryGetRuleContext(0, OutputStmtContext);
+	}
+	public plotStmt(): PlotStmtContext | undefined {
+		return this.tryGetRuleContext(0, PlotStmtContext);
+	}
+	public literal(): LiteralContext | undefined {
+		return this.tryGetRuleContext(0, LiteralContext);
 	}
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
 	}
 	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_simpleIdentifier; }
+	public get ruleIndex(): number { return HSQLParser.RULE_actionStmt; }
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitSimpleIdentifier) {
-			return visitor.visitSimpleIdentifier(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
-}
-
-
-export class OutputStmtContext extends ParserRuleContext {
-	public _label!: Token;
-	public OUTPUT(): TerminalNode { return this.getToken(HSQLParser.OUTPUT, 0); }
-	public IDENTIFIER(): TerminalNode { return this.getToken(HSQLParser.IDENTIFIER, 0); }
-	public outputVariant(): OutputVariantContext | undefined {
-		return this.tryGetRuleContext(0, OutputVariantContext);
-	}
-	public outputUpdateOption(): OutputUpdateOptionContext | undefined {
-		return this.tryGetRuleContext(0, OutputUpdateOptionContext);
-	}
-	public outputExpireOption(): OutputExpireOptionContext | undefined {
-		return this.tryGetRuleContext(0, OutputExpireOptionContext);
-	}
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_outputStmt; }
-	// @Override
-	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitOutputStmt) {
-			return visitor.visitOutputStmt(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
-}
-
-
-export class OutputVariantContext extends ParserRuleContext {
-	public namedOutputStatement(): NamedOutputStatementContext | undefined {
-		return this.tryGetRuleContext(0, NamedOutputStatementContext);
-	}
-	public fileOutputStatement(): FileOutputStatementContext | undefined {
-		return this.tryGetRuleContext(0, FileOutputStatementContext);
-	}
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_outputVariant; }
-	// @Override
-	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitOutputVariant) {
-			return visitor.visitOutputVariant(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
-}
-
-
-export class NamedOutputStatementContext extends ParserRuleContext {
-	public TITLE(): TerminalNode { return this.getToken(HSQLParser.TITLE, 0); }
-	public string(): StringContext {
-		return this.getRuleContext(0, StringContext);
-	}
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_namedOutputStatement; }
-	// @Override
-	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitNamedOutputStatement) {
-			return visitor.visitNamedOutputStatement(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
-}
-
-
-export class FileOutputStatementContext extends ParserRuleContext {
-	public _fileName!: StringContext;
-	public _fileType!: Token;
-	public FILE(): TerminalNode { return this.getToken(HSQLParser.FILE, 0); }
-	public string(): StringContext {
-		return this.getRuleContext(0, StringContext);
-	}
-	public IDENTIFIER(): TerminalNode { return this.getToken(HSQLParser.IDENTIFIER, 0); }
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_fileOutputStatement; }
-	// @Override
-	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitFileOutputStatement) {
-			return visitor.visitFileOutputStatement(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
-}
-
-
-export class OutputUpdateOptionContext extends ParserRuleContext {
-	public UPDATE(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.UPDATE, 0); }
-	public OVERWRITE(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.OVERWRITE, 0); }
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_outputUpdateOption; }
-	// @Override
-	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitOutputUpdateOption) {
-			return visitor.visitOutputUpdateOption(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
-}
-
-
-export class OutputExpireOptionContext extends ParserRuleContext {
-	public EXPIRE(): TerminalNode { return this.getToken(HSQLParser.EXPIRE, 0); }
-	public number(): NumberContext {
-		return this.getRuleContext(0, NumberContext);
-	}
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_outputExpireOption; }
-	// @Override
-	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitOutputExpireOption) {
-			return visitor.visitOutputExpireOption(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
-}
-
-
-export class PlotStmtContext extends ParserRuleContext {
-	public _labelIdentifier!: QualifiedIdentifierContext;
-	public _titleIdentifier!: Token;
-	public _plottype!: Token;
-	public PLOT(): TerminalNode { return this.getToken(HSQLParser.PLOT, 0); }
-	public FROM(): TerminalNode { return this.getToken(HSQLParser.FROM, 0); }
-	public TITLE(): TerminalNode { return this.getToken(HSQLParser.TITLE, 0); }
-	public qualifiedIdentifier(): QualifiedIdentifierContext {
-		return this.getRuleContext(0, QualifiedIdentifierContext);
-	}
-	public STRING(): TerminalNode { return this.getToken(HSQLParser.STRING, 0); }
-	public TYPE(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.TYPE, 0); }
-	public IDENTIFIER(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.IDENTIFIER, 0); }
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_plotStmt; }
-	// @Override
-	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitPlotStmt) {
-			return visitor.visitPlotStmt(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
-}
-
-
-export class MlStmtContext extends ParserRuleContext {
-	public train(): TrainContext | undefined {
-		return this.tryGetRuleContext(0, TrainContext);
-	}
-	public predict(): PredictContext | undefined {
-		return this.tryGetRuleContext(0, PredictContext);
-	}
-	public elementaryML(): ElementaryMLContext | undefined {
-		return this.tryGetRuleContext(0, ElementaryMLContext);
-	}
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_mlStmt; }
-	// @Override
-	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitMlStmt) {
-			return visitor.visitMlStmt(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
-}
-
-
-export class TrainContext extends ParserRuleContext {
-	public _ind!: QualifiedIdentifierContext;
-	public _dep!: QualifiedIdentifierContext;
-	public _test!: QualifiedIdentifierContext;
-	public _method!: Token;
-	public TRAIN(): TerminalNode { return this.getToken(HSQLParser.TRAIN, 0); }
-	public FROM(): TerminalNode { return this.getToken(HSQLParser.FROM, 0); }
-	public METHOD(): TerminalNode { return this.getToken(HSQLParser.METHOD, 0); }
-	public qualifiedIdentifier(): QualifiedIdentifierContext[];
-	public qualifiedIdentifier(i: number): QualifiedIdentifierContext;
-	public qualifiedIdentifier(i?: number): QualifiedIdentifierContext | QualifiedIdentifierContext[] {
-		if (i === undefined) {
-			return this.getRuleContexts(QualifiedIdentifierContext);
-		} else {
-			return this.getRuleContext(i, QualifiedIdentifierContext);
-		}
-	}
-	public IDENTIFIER(): TerminalNode { return this.getToken(HSQLParser.IDENTIFIER, 0); }
-	public OPTION(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.OPTION, 0); }
-	public trainOptions(): TrainOptionsContext | undefined {
-		return this.tryGetRuleContext(0, TrainOptionsContext);
-	}
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_train; }
-	// @Override
-	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitTrain) {
-			return visitor.visitTrain(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
-}
-
-
-export class ElementaryMLContext extends ParserRuleContext {
-	public _ind!: QualifiedIdentifierContext;
-	public _ind2!: QualifiedIdentifierContext;
-	public _method!: Token;
-	public PREDICT(): TerminalNode { return this.getToken(HSQLParser.PREDICT, 0); }
-	public FROM(): TerminalNode { return this.getToken(HSQLParser.FROM, 0); }
-	public METHOD(): TerminalNode { return this.getToken(HSQLParser.METHOD, 0); }
-	public qualifiedIdentifier(): QualifiedIdentifierContext[];
-	public qualifiedIdentifier(i: number): QualifiedIdentifierContext;
-	public qualifiedIdentifier(i?: number): QualifiedIdentifierContext | QualifiedIdentifierContext[] {
-		if (i === undefined) {
-			return this.getRuleContexts(QualifiedIdentifierContext);
-		} else {
-			return this.getRuleContext(i, QualifiedIdentifierContext);
-		}
-	}
-	public IDENTIFIER(): TerminalNode { return this.getToken(HSQLParser.IDENTIFIER, 0); }
-	public OPTION(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.OPTION, 0); }
-	public trainOptions(): TrainOptionsContext | undefined {
-		return this.tryGetRuleContext(0, TrainOptionsContext);
-	}
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_elementaryML; }
-	// @Override
-	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitElementaryML) {
-			return visitor.visitElementaryML(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
-}
-
-
-export class TrainOptionsContext extends ParserRuleContext {
-	public trainOption(): TrainOptionContext[];
-	public trainOption(i: number): TrainOptionContext;
-	public trainOption(i?: number): TrainOptionContext | TrainOptionContext[] {
-		if (i === undefined) {
-			return this.getRuleContexts(TrainOptionContext);
-		} else {
-			return this.getRuleContext(i, TrainOptionContext);
-		}
-	}
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_trainOptions; }
-	// @Override
-	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitTrainOptions) {
-			return visitor.visitTrainOptions(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
-}
-
-
-export class TrainOptionContext extends ParserRuleContext {
-	public IDENTIFIER(): TerminalNode { return this.getToken(HSQLParser.IDENTIFIER, 0); }
-	public EQ(): TerminalNode { return this.getToken(HSQLParser.EQ, 0); }
-	public trainValue(): TrainValueContext {
-		return this.getRuleContext(0, TrainValueContext);
-	}
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_trainOption; }
-	// @Override
-	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitTrainOption) {
-			return visitor.visitTrainOption(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
-}
-
-
-export class TrainValueContext extends ParserRuleContext {
-	public number(): NumberContext | undefined {
-		return this.tryGetRuleContext(0, NumberContext);
-	}
-	public string(): StringContext | undefined {
-		return this.tryGetRuleContext(0, StringContext);
-	}
-	public qualifiedIdentifier(): QualifiedIdentifierContext | undefined {
-		return this.tryGetRuleContext(0, QualifiedIdentifierContext);
-	}
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_trainValue; }
-	// @Override
-	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitTrainValue) {
-			return visitor.visitTrainValue(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
-}
-
-
-export class PredictContext extends ParserRuleContext {
-	public _model!: QualifiedIdentifierContext;
-	public _ind!: QualifiedIdentifierContext;
-	public _method!: Token;
-	public PREDICT(): TerminalNode { return this.getToken(HSQLParser.PREDICT, 0); }
-	public FROM(): TerminalNode { return this.getToken(HSQLParser.FROM, 0); }
-	public qualifiedIdentifier(): QualifiedIdentifierContext[];
-	public qualifiedIdentifier(i: number): QualifiedIdentifierContext;
-	public qualifiedIdentifier(i?: number): QualifiedIdentifierContext | QualifiedIdentifierContext[] {
-		if (i === undefined) {
-			return this.getRuleContexts(QualifiedIdentifierContext);
-		} else {
-			return this.getRuleContext(i, QualifiedIdentifierContext);
-		}
-	}
-	public METHOD(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.METHOD, 0); }
-	public IDENTIFIER(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.IDENTIFIER, 0); }
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_predict; }
-	// @Override
-	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitPredict) {
-			return visitor.visitPredict(this);
+		if (visitor.visitActionStmt) {
+			return visitor.visitActionStmt(this);
 		} else {
 			return visitor.visitChildren(this);
 		}
@@ -3934,38 +3709,34 @@ export class PredictContext extends ParserRuleContext {
 
 export class SelectStmtContext extends ParserRuleContext {
 	public _columns!: SelectColumnsContext;
-	public _fromclause!: SelectFromClauseContext;
 	public _whereclause!: SelectWhereClauseContext;
-	public _groupbyclause!: GroupByClauseContext;
 	public _orderbyclause!: OrderByClauseContext;
 	public SELECT(): TerminalNode { return this.getToken(HSQLParser.SELECT, 0); }
-	public FROM(): TerminalNode { return this.getToken(HSQLParser.FROM, 0); }
-	public selectColumns(): SelectColumnsContext {
-		return this.getRuleContext(0, SelectColumnsContext);
-	}
 	public selectFromClause(): SelectFromClauseContext {
 		return this.getRuleContext(0, SelectFromClauseContext);
 	}
+	public selectColumns(): SelectColumnsContext {
+		return this.getRuleContext(0, SelectColumnsContext);
+	}
+	public DISTINCT(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.DISTINCT, 0); }
 	public WHERE(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.WHERE, 0); }
-	public GROUP(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.GROUP, 0); }
-	public BY(): TerminalNode[];
-	public BY(i: number): TerminalNode;
-	public BY(i?: number): TerminalNode | TerminalNode[] {
-		if (i === undefined) {
-			return this.getTokens(HSQLParser.BY);
-		} else {
-			return this.getToken(HSQLParser.BY, i);
-		}
+	public selectGroupByClause(): SelectGroupByClauseContext | undefined {
+		return this.tryGetRuleContext(0, SelectGroupByClauseContext);
 	}
 	public ORDER(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.ORDER, 0); }
-	public joinClause(): JoinClauseContext | undefined {
-		return this.tryGetRuleContext(0, JoinClauseContext);
+	public BY(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.BY, 0); }
+	public HAVING(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.HAVING, 0); }
+	public selectHavingClause(): SelectHavingClauseContext | undefined {
+		return this.tryGetRuleContext(0, SelectHavingClauseContext);
+	}
+	public limitClause(): LimitClauseContext | undefined {
+		return this.tryGetRuleContext(0, LimitClauseContext);
+	}
+	public offsetClause(): OffsetClauseContext | undefined {
+		return this.tryGetRuleContext(0, OffsetClauseContext);
 	}
 	public selectWhereClause(): SelectWhereClauseContext | undefined {
 		return this.tryGetRuleContext(0, SelectWhereClauseContext);
-	}
-	public groupByClause(): GroupByClauseContext | undefined {
-		return this.tryGetRuleContext(0, GroupByClauseContext);
 	}
 	public orderByClause(): OrderByClauseContext | undefined {
 		return this.tryGetRuleContext(0, OrderByClauseContext);
@@ -3986,37 +3757,19 @@ export class SelectStmtContext extends ParserRuleContext {
 }
 
 
-export class JoinClauseContext extends ParserRuleContext {
-	public _joinidentifier!: QualifiedIdentifierContext;
-	public _leftrecset!: QualifiedIdentifierContext;
-	public _joincondition!: ComparisonOperatorContext;
-	public _rightrecset!: QualifiedIdentifierContext;
-	public JOIN(): TerminalNode { return this.getToken(HSQLParser.JOIN, 0); }
-	public ON(): TerminalNode { return this.getToken(HSQLParser.ON, 0); }
-	public qualifiedIdentifier(): QualifiedIdentifierContext[];
-	public qualifiedIdentifier(i: number): QualifiedIdentifierContext;
-	public qualifiedIdentifier(i?: number): QualifiedIdentifierContext | QualifiedIdentifierContext[] {
-		if (i === undefined) {
-			return this.getRuleContexts(QualifiedIdentifierContext);
-		} else {
-			return this.getRuleContext(i, QualifiedIdentifierContext);
-		}
-	}
-	public joinType(): JoinTypeContext | undefined {
-		return this.tryGetRuleContext(0, JoinTypeContext);
-	}
-	public comparisonOperator(): ComparisonOperatorContext | undefined {
-		return this.tryGetRuleContext(0, ComparisonOperatorContext);
+export class SelectHavingClauseContext extends ParserRuleContext {
+	public booleanExpression(): BooleanExpressionContext {
+		return this.getRuleContext(0, BooleanExpressionContext);
 	}
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
 	}
 	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_joinClause; }
+	public get ruleIndex(): number { return HSQLParser.RULE_selectHavingClause; }
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitJoinClause) {
-			return visitor.visitJoinClause(this);
+		if (visitor.visitSelectHavingClause) {
+			return visitor.visitSelectHavingClause(this);
 		} else {
 			return visitor.visitChildren(this);
 		}
@@ -4024,22 +3777,56 @@ export class JoinClauseContext extends ParserRuleContext {
 }
 
 
-export class JoinTypeContext extends ParserRuleContext {
-	public INNER(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.INNER, 0); }
-	public LEFT(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.LEFT, 0); }
-	public RIGHT(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.RIGHT, 0); }
-	public FULL(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.FULL, 0); }
-	public OUTER(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.OUTER, 0); }
-	public ONLY(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.ONLY, 0); }
+export class SelectGroupByClauseContext extends ParserRuleContext {
+	public GROUP(): TerminalNode { return this.getToken(HSQLParser.GROUP, 0); }
+	public BY(): TerminalNode { return this.getToken(HSQLParser.BY, 0); }
+	public groupByClause(): GroupByClauseContext {
+		return this.getRuleContext(0, GroupByClauseContext);
+	}
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
 	}
 	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_joinType; }
+	public get ruleIndex(): number { return HSQLParser.RULE_selectGroupByClause; }
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitJoinType) {
-			return visitor.visitJoinType(this);
+		if (visitor.visitSelectGroupByClause) {
+			return visitor.visitSelectGroupByClause(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
+export class DefinitionSetContext extends ParserRuleContext {
+	public definition(): DefinitionContext[];
+	public definition(i: number): DefinitionContext;
+	public definition(i?: number): DefinitionContext | DefinitionContext[] {
+		if (i === undefined) {
+			return this.getRuleContexts(DefinitionContext);
+		} else {
+			return this.getRuleContext(i, DefinitionContext);
+		}
+	}
+	public COMMA_(): TerminalNode[];
+	public COMMA_(i: number): TerminalNode;
+	public COMMA_(i?: number): TerminalNode | TerminalNode[] {
+		if (i === undefined) {
+			return this.getTokens(HSQLParser.COMMA_);
+		} else {
+			return this.getToken(HSQLParser.COMMA_, i);
+		}
+	}
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return HSQLParser.RULE_definitionSet; }
+	// @Override
+	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
+		if (visitor.visitDefinitionSet) {
+			return visitor.visitDefinitionSet(this);
 		} else {
 			return visitor.visitChildren(this);
 		}
@@ -4048,22 +3835,22 @@ export class JoinTypeContext extends ParserRuleContext {
 
 
 export class SelectColumnsContext extends ParserRuleContext {
-	public aggregatedSelectColumn(): AggregatedSelectColumnContext[];
-	public aggregatedSelectColumn(i: number): AggregatedSelectColumnContext;
-	public aggregatedSelectColumn(i?: number): AggregatedSelectColumnContext | AggregatedSelectColumnContext[] {
+	public selectCol(): SelectColContext[];
+	public selectCol(i: number): SelectColContext;
+	public selectCol(i?: number): SelectColContext | SelectColContext[] {
 		if (i === undefined) {
-			return this.getRuleContexts(AggregatedSelectColumnContext);
+			return this.getRuleContexts(SelectColContext);
 		} else {
-			return this.getRuleContext(i, AggregatedSelectColumnContext);
+			return this.getRuleContext(i, SelectColContext);
 		}
 	}
-	public selectColumn(): SelectColumnContext[];
-	public selectColumn(i: number): SelectColumnContext;
-	public selectColumn(i?: number): SelectColumnContext | SelectColumnContext[] {
+	public COMMA_(): TerminalNode[];
+	public COMMA_(i: number): TerminalNode;
+	public COMMA_(i?: number): TerminalNode | TerminalNode[] {
 		if (i === undefined) {
-			return this.getRuleContexts(SelectColumnContext);
+			return this.getTokens(HSQLParser.COMMA_);
 		} else {
-			return this.getRuleContext(i, SelectColumnContext);
+			return this.getToken(HSQLParser.COMMA_, i);
 		}
 	}
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
@@ -4082,21 +3869,47 @@ export class SelectColumnsContext extends ParserRuleContext {
 }
 
 
-export class AggregatedSelectColumnContext extends ParserRuleContext {
-	public _aggregate!: Token;
-	public selectColumn(): SelectColumnContext {
-		return this.getRuleContext(0, SelectColumnContext);
-	}
-	public IDENTIFIER(): TerminalNode { return this.getToken(HSQLParser.IDENTIFIER, 0); }
+export class SelectColContext extends ParserRuleContext {
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
 	}
 	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_aggregatedSelectColumn; }
+	public get ruleIndex(): number { return HSQLParser.RULE_selectCol; }
+	public copyFrom(ctx: SelectColContext): void {
+		super.copyFrom(ctx);
+	}
+}
+export class NormalColContext extends SelectColContext {
+	public _col!: ColContext;
+	public col(): ColContext {
+		return this.getRuleContext(0, ColContext);
+	}
+	public aliasingCol(): AliasingColContext | undefined {
+		return this.tryGetRuleContext(0, AliasingColContext);
+	}
+	constructor(ctx: SelectColContext) {
+		super(ctx.parent, ctx.invokingState);
+		this.copyFrom(ctx);
+	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitAggregatedSelectColumn) {
-			return visitor.visitAggregatedSelectColumn(this);
+		if (visitor.visitNormalCol) {
+			return visitor.visitNormalCol(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+export class WildAllContext extends SelectColContext {
+	public MULTIPLY(): TerminalNode { return this.getToken(HSQLParser.MULTIPLY, 0); }
+	constructor(ctx: SelectColContext) {
+		super(ctx.parent, ctx.invokingState);
+		this.copyFrom(ctx);
+	}
+	// @Override
+	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
+		if (visitor.visitWildAll) {
+			return visitor.visitWildAll(this);
 		} else {
 			return visitor.visitChildren(this);
 		}
@@ -4104,33 +3917,93 @@ export class AggregatedSelectColumnContext extends ParserRuleContext {
 }
 
 
-export class SelectColumnContext extends ParserRuleContext {
-	public _wild!: Token;
-	public _column!: Token;
-	public _type!: DataTypeContext;
-	public _alias!: Token;
-	public IDENTIFIER(): TerminalNode[];
-	public IDENTIFIER(i: number): TerminalNode;
-	public IDENTIFIER(i?: number): TerminalNode | TerminalNode[] {
-		if (i === undefined) {
-			return this.getTokens(HSQLParser.IDENTIFIER);
-		} else {
-			return this.getToken(HSQLParser.IDENTIFIER, i);
-		}
-	}
-	public AS(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.AS, 0); }
-	public dataType(): DataTypeContext | undefined {
-		return this.tryGetRuleContext(0, DataTypeContext);
-	}
+export class ColContext extends ParserRuleContext {
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
 	}
 	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_selectColumn; }
+	public get ruleIndex(): number { return HSQLParser.RULE_col; }
+	public copyFrom(ctx: ColContext): void {
+		super.copyFrom(ctx);
+	}
+}
+export class SelectAggregatedEverythingColContext extends ColContext {
+	public IDENTIFIER(): TerminalNode { return this.getToken(HSQLParser.IDENTIFIER, 0); }
+	public BSTART_(): TerminalNode { return this.getToken(HSQLParser.BSTART_, 0); }
+	public MULTIPLY(): TerminalNode { return this.getToken(HSQLParser.MULTIPLY, 0); }
+	public BEND_(): TerminalNode { return this.getToken(HSQLParser.BEND_, 0); }
+	constructor(ctx: ColContext) {
+		super(ctx.parent, ctx.invokingState);
+		this.copyFrom(ctx);
+	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitSelectColumn) {
-			return visitor.visitSelectColumn(this);
+		if (visitor.visitSelectAggregatedEverythingCol) {
+			return visitor.visitSelectAggregatedEverythingCol(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+export class SelectAggregatedOneColContext extends ColContext {
+	public _column!: DefinitionContext;
+	public IDENTIFIER(): TerminalNode { return this.getToken(HSQLParser.IDENTIFIER, 0); }
+	public BSTART_(): TerminalNode { return this.getToken(HSQLParser.BSTART_, 0); }
+	public BEND_(): TerminalNode { return this.getToken(HSQLParser.BEND_, 0); }
+	public definition(): DefinitionContext {
+		return this.getRuleContext(0, DefinitionContext);
+	}
+	constructor(ctx: ColContext) {
+		super(ctx.parent, ctx.invokingState);
+		this.copyFrom(ctx);
+	}
+	// @Override
+	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
+		if (visitor.visitSelectAggregatedOneCol) {
+			return visitor.visitSelectAggregatedOneCol(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+export class SelectOneColContext extends ColContext {
+	public _column!: DefinitionContext;
+	public definition(): DefinitionContext {
+		return this.getRuleContext(0, DefinitionContext);
+	}
+	constructor(ctx: ColContext) {
+		super(ctx.parent, ctx.invokingState);
+		this.copyFrom(ctx);
+	}
+	// @Override
+	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
+		if (visitor.visitSelectOneCol) {
+			return visitor.visitSelectOneCol(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
+export class AliasingColContext extends ParserRuleContext {
+	public ctx: ParserRuleContext;
+	public _alias!: Token;
+	public AS(): TerminalNode { return this.getToken(HSQLParser.AS, 0); }
+	public IDENTIFIER(): TerminalNode { return this.getToken(HSQLParser.IDENTIFIER, 0); }
+	public dataType(): DataTypeContext | undefined {
+		return this.tryGetRuleContext(0, DataTypeContext);
+	}
+	constructor(parent: ParserRuleContext | undefined, invokingState: number, ctx: ParserRuleContext) {
+		super(parent, invokingState);
+		this.ctx = ctx;
+	}
+	// @Override
+	public get ruleIndex(): number { return HSQLParser.RULE_aliasingCol; }
+	// @Override
+	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
+		if (visitor.visitAliasingCol) {
+			return visitor.visitAliasingCol(this);
 		} else {
 			return visitor.visitChildren(this);
 		}
@@ -4139,14 +4012,27 @@ export class SelectColumnContext extends ParserRuleContext {
 
 
 export class SelectFromClauseContext extends ParserRuleContext {
-	public nestedSelectStmt(): NestedSelectStmtContext | undefined {
-		return this.tryGetRuleContext(0, NestedSelectStmtContext);
+	public FROM(): TerminalNode { return this.getToken(HSQLParser.FROM, 0); }
+	public selectFromTableReference(): SelectFromTableReferenceContext[];
+	public selectFromTableReference(i: number): SelectFromTableReferenceContext;
+	public selectFromTableReference(i?: number): SelectFromTableReferenceContext | SelectFromTableReferenceContext[] {
+		if (i === undefined) {
+			return this.getRuleContexts(SelectFromTableReferenceContext);
+		} else {
+			return this.getRuleContext(i, SelectFromTableReferenceContext);
+		}
 	}
-	public selectTableName(): SelectTableNameContext | undefined {
-		return this.tryGetRuleContext(0, SelectTableNameContext);
+	public joinedTable(): JoinedTableContext | undefined {
+		return this.tryGetRuleContext(0, JoinedTableContext);
 	}
-	public selectDataset(): SelectDatasetContext | undefined {
-		return this.tryGetRuleContext(0, SelectDatasetContext);
+	public COMMA_(): TerminalNode[];
+	public COMMA_(i: number): TerminalNode;
+	public COMMA_(i?: number): TerminalNode | TerminalNode[] {
+		if (i === undefined) {
+			return this.getTokens(HSQLParser.COMMA_);
+		} else {
+			return this.getToken(HSQLParser.COMMA_, i);
+		}
 	}
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
@@ -4164,19 +4050,89 @@ export class SelectFromClauseContext extends ParserRuleContext {
 }
 
 
-export class NestedSelectStmtContext extends ParserRuleContext {
+export class SelectFromTableReferenceContext extends ParserRuleContext {
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return HSQLParser.RULE_selectFromTableReference; }
+	public copyFrom(ctx: SelectFromTableReferenceContext): void {
+		super.copyFrom(ctx);
+	}
+}
+export class SelectFromDerivedTableContext extends SelectFromTableReferenceContext {
+	public _selectStmt!: SelectStmtContext;
+	public BSTART_(): TerminalNode { return this.getToken(HSQLParser.BSTART_, 0); }
 	public selectStmt(): SelectStmtContext {
 		return this.getRuleContext(0, SelectStmtContext);
 	}
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
+	public BEND_(): TerminalNode { return this.getToken(HSQLParser.BEND_, 0); }
+	public selectAlias(): SelectAliasContext {
+		return this.getRuleContext(0, SelectAliasContext);
+	}
+	constructor(ctx: SelectFromTableReferenceContext) {
+		super(ctx.parent, ctx.invokingState);
+		this.copyFrom(ctx);
 	}
 	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_nestedSelectStmt; }
+	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
+		if (visitor.visitSelectFromDerivedTable) {
+			return visitor.visitSelectFromDerivedTable(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+export class SelectFromDefinitionContext extends SelectFromTableReferenceContext {
+	public _definition!: DefinitionContext;
+	public definition(): DefinitionContext {
+		return this.getRuleContext(0, DefinitionContext);
+	}
+	public selectAlias(): SelectAliasContext | undefined {
+		return this.tryGetRuleContext(0, SelectAliasContext);
+	}
+	constructor(ctx: SelectFromTableReferenceContext) {
+		super(ctx.parent, ctx.invokingState);
+		this.copyFrom(ctx);
+	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitNestedSelectStmt) {
-			return visitor.visitNestedSelectStmt(this);
+		if (visitor.visitSelectFromDefinition) {
+			return visitor.visitSelectFromDefinition(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+export class SelectBracketedFromTableContext extends SelectFromTableReferenceContext {
+	public BSTART_(): TerminalNode { return this.getToken(HSQLParser.BSTART_, 0); }
+	public selectFromTableReference(): SelectFromTableReferenceContext[];
+	public selectFromTableReference(i: number): SelectFromTableReferenceContext;
+	public selectFromTableReference(i?: number): SelectFromTableReferenceContext | SelectFromTableReferenceContext[] {
+		if (i === undefined) {
+			return this.getRuleContexts(SelectFromTableReferenceContext);
+		} else {
+			return this.getRuleContext(i, SelectFromTableReferenceContext);
+		}
+	}
+	public BEND_(): TerminalNode { return this.getToken(HSQLParser.BEND_, 0); }
+	public COMMA_(): TerminalNode[];
+	public COMMA_(i: number): TerminalNode;
+	public COMMA_(i?: number): TerminalNode | TerminalNode[] {
+		if (i === undefined) {
+			return this.getTokens(HSQLParser.COMMA_);
+		} else {
+			return this.getToken(HSQLParser.COMMA_, i);
+		}
+	}
+	constructor(ctx: SelectFromTableReferenceContext) {
+		super(ctx.parent, ctx.invokingState);
+		this.copyFrom(ctx);
+	}
+	// @Override
+	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
+		if (visitor.visitSelectBracketedFromTable) {
+			return visitor.visitSelectBracketedFromTable(this);
 		} else {
 			return visitor.visitChildren(this);
 		}
@@ -4184,44 +4140,20 @@ export class NestedSelectStmtContext extends ParserRuleContext {
 }
 
 
-export class SelectDatasetContext extends ParserRuleContext {
-	public _str!: Token;
-	public LAYOUT(): TerminalNode { return this.getToken(HSQLParser.LAYOUT, 0); }
-	public qualifiedIdentifier(): QualifiedIdentifierContext {
-		return this.getRuleContext(0, QualifiedIdentifierContext);
-	}
-	public STRING(): TerminalNode { return this.getToken(HSQLParser.STRING, 0); }
-	public TYPE(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.TYPE, 0); }
-	public selectDatasetFile(): SelectDatasetFileContext | undefined {
-		return this.tryGetRuleContext(0, SelectDatasetFileContext);
-	}
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_selectDataset; }
-	// @Override
-	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitSelectDataset) {
-			return visitor.visitSelectDataset(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
-}
-
-
-export class SelectDatasetFileContext extends ParserRuleContext {
+export class SelectAliasContext extends ParserRuleContext {
+	public ctx: ParserRuleContext;
 	public IDENTIFIER(): TerminalNode { return this.getToken(HSQLParser.IDENTIFIER, 0); }
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+	public AS(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.AS, 0); }
+	constructor(parent: ParserRuleContext | undefined, invokingState: number, ctx: ParserRuleContext) {
 		super(parent, invokingState);
+		this.ctx = ctx;
 	}
 	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_selectDatasetFile; }
+	public get ruleIndex(): number { return HSQLParser.RULE_selectAlias; }
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitSelectDatasetFile) {
-			return visitor.visitSelectDatasetFile(this);
+		if (visitor.visitSelectAlias) {
+			return visitor.visitSelectAlias(this);
 		} else {
 			return visitor.visitChildren(this);
 		}
@@ -4229,19 +4161,25 @@ export class SelectDatasetFileContext extends ParserRuleContext {
 }
 
 
-export class SelectTableNameContext extends ParserRuleContext {
-	public qualifiedIdentifier(): QualifiedIdentifierContext {
-		return this.getRuleContext(0, QualifiedIdentifierContext);
-	}
+export class Join_operatorContext extends ParserRuleContext {
+	public COMMA_(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.COMMA_, 0); }
+	public JOIN(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.JOIN, 0); }
+	public NATURAL(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.NATURAL, 0); }
+	public LEFT(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.LEFT, 0); }
+	public RIGHT(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.RIGHT, 0); }
+	public FULL(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.FULL, 0); }
+	public INNER(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.INNER, 0); }
+	public CROSS(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.CROSS, 0); }
+	public OUTER(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.OUTER, 0); }
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
 	}
 	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_selectTableName; }
+	public get ruleIndex(): number { return HSQLParser.RULE_join_operator; }
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitSelectTableName) {
-			return visitor.visitSelectTableName(this);
+		if (visitor.visitJoin_operator) {
+			return visitor.visitJoin_operator(this);
 		} else {
 			return visitor.visitChildren(this);
 		}
@@ -4269,6 +4207,110 @@ export class SelectWhereClauseContext extends ParserRuleContext {
 }
 
 
+export class JoinedTableContext extends ParserRuleContext {
+	public selectFromTableReference(): SelectFromTableReferenceContext[];
+	public selectFromTableReference(i: number): SelectFromTableReferenceContext;
+	public selectFromTableReference(i?: number): SelectFromTableReferenceContext | SelectFromTableReferenceContext[] {
+		if (i === undefined) {
+			return this.getRuleContexts(SelectFromTableReferenceContext);
+		} else {
+			return this.getRuleContext(i, SelectFromTableReferenceContext);
+		}
+	}
+	public join_operator(): Join_operatorContext[];
+	public join_operator(i: number): Join_operatorContext;
+	public join_operator(i?: number): Join_operatorContext | Join_operatorContext[] {
+		if (i === undefined) {
+			return this.getRuleContexts(Join_operatorContext);
+		} else {
+			return this.getRuleContext(i, Join_operatorContext);
+		}
+	}
+	public ON(): TerminalNode[];
+	public ON(i: number): TerminalNode;
+	public ON(i?: number): TerminalNode | TerminalNode[] {
+		if (i === undefined) {
+			return this.getTokens(HSQLParser.ON);
+		} else {
+			return this.getToken(HSQLParser.ON, i);
+		}
+	}
+	public joinSpecification(): JoinSpecificationContext[];
+	public joinSpecification(i: number): JoinSpecificationContext;
+	public joinSpecification(i?: number): JoinSpecificationContext | JoinSpecificationContext[] {
+		if (i === undefined) {
+			return this.getRuleContexts(JoinSpecificationContext);
+		} else {
+			return this.getRuleContext(i, JoinSpecificationContext);
+		}
+	}
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return HSQLParser.RULE_joinedTable; }
+	// @Override
+	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
+		if (visitor.visitJoinedTable) {
+			return visitor.visitJoinedTable(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
+export class JoinSpecificationContext extends ParserRuleContext {
+	public _leftrecset!: DefinitionContext;
+	public _rightrecset!: DefinitionContext;
+	public logicalOperator(): LogicalOperatorContext {
+		return this.getRuleContext(0, LogicalOperatorContext);
+	}
+	public definition(): DefinitionContext[];
+	public definition(i: number): DefinitionContext;
+	public definition(i?: number): DefinitionContext | DefinitionContext[] {
+		if (i === undefined) {
+			return this.getRuleContexts(DefinitionContext);
+		} else {
+			return this.getRuleContext(i, DefinitionContext);
+		}
+	}
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return HSQLParser.RULE_joinSpecification; }
+	// @Override
+	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
+		if (visitor.visitJoinSpecification) {
+			return visitor.visitJoinSpecification(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
+export class GroupByClauseContext extends ParserRuleContext {
+	public definitionSet(): DefinitionSetContext {
+		return this.getRuleContext(0, DefinitionSetContext);
+	}
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return HSQLParser.RULE_groupByClause; }
+	// @Override
+	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
+		if (visitor.visitGroupByClause) {
+			return visitor.visitGroupByClause(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
 export class OrderByClauseContext extends ParserRuleContext {
 	public sortItem(): SortItemContext[];
 	public sortItem(i: number): SortItemContext;
@@ -4277,6 +4319,15 @@ export class OrderByClauseContext extends ParserRuleContext {
 			return this.getRuleContexts(SortItemContext);
 		} else {
 			return this.getRuleContext(i, SortItemContext);
+		}
+	}
+	public COMMA_(): TerminalNode[];
+	public COMMA_(i: number): TerminalNode;
+	public COMMA_(i?: number): TerminalNode | TerminalNode[] {
+		if (i === undefined) {
+			return this.getTokens(HSQLParser.COMMA_);
+		} else {
+			return this.getToken(HSQLParser.COMMA_, i);
 		}
 	}
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
@@ -4319,8 +4370,8 @@ export class SortItemContext extends ParserRuleContext {
 
 
 export class AscSortItemContext extends ParserRuleContext {
-	public expression(): ExpressionContext {
-		return this.getRuleContext(0, ExpressionContext);
+	public definitionSet(): DefinitionSetContext {
+		return this.getRuleContext(0, DefinitionSetContext);
 	}
 	public ASC(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.ASC, 0); }
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
@@ -4340,10 +4391,10 @@ export class AscSortItemContext extends ParserRuleContext {
 
 
 export class DescSortItemContext extends ParserRuleContext {
-	public expression(): ExpressionContext {
-		return this.getRuleContext(0, ExpressionContext);
+	public definitionSet(): DefinitionSetContext {
+		return this.getRuleContext(0, DefinitionSetContext);
 	}
-	public DESC(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.DESC, 0); }
+	public DESC(): TerminalNode { return this.getToken(HSQLParser.DESC, 0); }
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
 	}
@@ -4360,19 +4411,20 @@ export class DescSortItemContext extends ParserRuleContext {
 }
 
 
-export class GroupByClauseContext extends ParserRuleContext {
-	public qualifiedIdentifier(): QualifiedIdentifierContext {
-		return this.getRuleContext(0, QualifiedIdentifierContext);
+export class LimitClauseContext extends ParserRuleContext {
+	public LIMIT(): TerminalNode { return this.getToken(HSQLParser.LIMIT, 0); }
+	public number(): NumberContext {
+		return this.getRuleContext(0, NumberContext);
 	}
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
 	}
 	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_groupByClause; }
+	public get ruleIndex(): number { return HSQLParser.RULE_limitClause; }
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitGroupByClause) {
-			return visitor.visitGroupByClause(this);
+		if (visitor.visitLimitClause) {
+			return visitor.visitLimitClause(this);
 		} else {
 			return visitor.visitChildren(this);
 		}
@@ -4380,21 +4432,20 @@ export class GroupByClauseContext extends ParserRuleContext {
 }
 
 
-export class LayoutStmtContext extends ParserRuleContext {
-	public CREATE(): TerminalNode { return this.getToken(HSQLParser.CREATE, 0); }
-	public LAYOUT(): TerminalNode { return this.getToken(HSQLParser.LAYOUT, 0); }
-	public layoutContent(): LayoutContentContext {
-		return this.getRuleContext(0, LayoutContentContext);
+export class OffsetClauseContext extends ParserRuleContext {
+	public OFFSET(): TerminalNode { return this.getToken(HSQLParser.OFFSET, 0); }
+	public number(): NumberContext {
+		return this.getRuleContext(0, NumberContext);
 	}
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
 	}
 	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_layoutStmt; }
+	public get ruleIndex(): number { return HSQLParser.RULE_offsetClause; }
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitLayoutStmt) {
-			return visitor.visitLayoutStmt(this);
+		if (visitor.visitOffsetClause) {
+			return visitor.visitOffsetClause(this);
 		} else {
 			return visitor.visitChildren(this);
 		}
@@ -4402,25 +4453,143 @@ export class LayoutStmtContext extends ParserRuleContext {
 }
 
 
-export class LayoutContentContext extends ParserRuleContext {
-	public identifierExport(): IdentifierExportContext[];
-	public identifierExport(i: number): IdentifierExportContext;
-	public identifierExport(i?: number): IdentifierExportContext | IdentifierExportContext[] {
+export class ComparisonOperatorContext extends ParserRuleContext {
+	public EQ(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.EQ, 0); }
+	public NEQ(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.NEQ, 0); }
+	public LT(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.LT, 0); }
+	public LTE(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.LTE, 0); }
+	public GT(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.GT, 0); }
+	public GTE(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.GTE, 0); }
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return HSQLParser.RULE_comparisonOperator; }
+	// @Override
+	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
+		if (visitor.visitComparisonOperator) {
+			return visitor.visitComparisonOperator(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
+export class LogicalOperatorContext extends ParserRuleContext {
+	public AND(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.AND, 0); }
+	public OR(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.OR, 0); }
+	public NOT(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.NOT, 0); }
+	public IN(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.IN, 0); }
+	public BETWEEN(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.BETWEEN, 0); }
+	public EXISTS(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.EXISTS, 0); }
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return HSQLParser.RULE_logicalOperator; }
+	// @Override
+	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
+		if (visitor.visitLogicalOperator) {
+			return visitor.visitLogicalOperator(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
+export class LiteralContext extends ParserRuleContext {
+	public number(): NumberContext | undefined {
+		return this.tryGetRuleContext(0, NumberContext);
+	}
+	public string(): StringContext | undefined {
+		return this.tryGetRuleContext(0, StringContext);
+	}
+	public booleanValue(): BooleanValueContext | undefined {
+		return this.tryGetRuleContext(0, BooleanValueContext);
+	}
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return HSQLParser.RULE_literal; }
+	// @Override
+	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
+		if (visitor.visitLiteral) {
+			return visitor.visitLiteral(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
+export class DataTypeContext extends ParserRuleContext {
+	public REAL_TYPE(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.REAL_TYPE, 0); }
+	public INTEGER_TYPE(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.INTEGER_TYPE, 0); }
+	public DECIMAL_TYPE(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.DECIMAL_TYPE, 0); }
+	public VARSTRING_TYPE(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.VARSTRING_TYPE, 0); }
+	public STRING_TYPE(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.STRING_TYPE, 0); }
+	public BOOLEAN(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.BOOLEAN, 0); }
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return HSQLParser.RULE_dataType; }
+	// @Override
+	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
+		if (visitor.visitDataType) {
+			return visitor.visitDataType(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
+export class AlterOperatorContext extends ParserRuleContext {
+	public ADD(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.ADD, 0); }
+	public DROP(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.DROP, 0); }
+	public MODIFY(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.MODIFY, 0); }
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return HSQLParser.RULE_alterOperator; }
+	// @Override
+	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
+		if (visitor.visitAlterOperator) {
+			return visitor.visitAlterOperator(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
+export class OverDefinitionContext extends ParserRuleContext {
+	public overDefinitionRoot(): OverDefinitionRootContext {
+		return this.getRuleContext(0, OverDefinitionRootContext);
+	}
+	public overDefinitionTail(): OverDefinitionTailContext[];
+	public overDefinitionTail(i: number): OverDefinitionTailContext;
+	public overDefinitionTail(i?: number): OverDefinitionTailContext | OverDefinitionTailContext[] {
 		if (i === undefined) {
-			return this.getRuleContexts(IdentifierExportContext);
+			return this.getRuleContexts(OverDefinitionTailContext);
 		} else {
-			return this.getRuleContext(i, IdentifierExportContext);
+			return this.getRuleContext(i, OverDefinitionTailContext);
 		}
 	}
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
 	}
 	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_layoutContent; }
+	public get ruleIndex(): number { return HSQLParser.RULE_overDefinition; }
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitLayoutContent) {
-			return visitor.visitLayoutContent(this);
+		if (visitor.visitOverDefinition) {
+			return visitor.visitOverDefinition(this);
 		} else {
 			return visitor.visitChildren(this);
 		}
@@ -4428,19 +4597,56 @@ export class LayoutContentContext extends ParserRuleContext {
 }
 
 
-export class InlineStmtContext extends ParserRuleContext {
-	public NCOMPILE(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.NCOMPILE, 0); }
-	public STRING(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.STRING, 0); }
-	public ECL_SNIPPETS(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.ECL_SNIPPETS, 0); }
+export class OverDefinitionRootContext extends ParserRuleContext {
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
 	}
 	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_inlineStmt; }
+	public get ruleIndex(): number { return HSQLParser.RULE_overDefinitionRoot; }
+	public copyFrom(ctx: OverDefinitionRootContext): void {
+		super.copyFrom(ctx);
+	}
+}
+export class NormalIdentifierContext extends OverDefinitionRootContext {
+	public IDENTIFIER(): TerminalNode { return this.getToken(HSQLParser.IDENTIFIER, 0); }
+	constructor(ctx: OverDefinitionRootContext) {
+		super(ctx.parent, ctx.invokingState);
+		this.copyFrom(ctx);
+	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitInlineStmt) {
-			return visitor.visitInlineStmt(this);
+		if (visitor.visitNormalIdentifier) {
+			return visitor.visitNormalIdentifier(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+export class RootIdentifierContext extends OverDefinitionRootContext {
+	public MODULO(): TerminalNode { return this.getToken(HSQLParser.MODULO, 0); }
+	constructor(ctx: OverDefinitionRootContext) {
+		super(ctx.parent, ctx.invokingState);
+		this.copyFrom(ctx);
+	}
+	// @Override
+	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
+		if (visitor.visitRootIdentifier) {
+			return visitor.visitRootIdentifier(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+export class ParentIdentifierContext extends OverDefinitionRootContext {
+	public XOR(): TerminalNode { return this.getToken(HSQLParser.XOR, 0); }
+	constructor(ctx: OverDefinitionRootContext) {
+		super(ctx.parent, ctx.invokingState);
+		this.copyFrom(ctx);
+	}
+	// @Override
+	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
+		if (visitor.visitParentIdentifier) {
+			return visitor.visitParentIdentifier(this);
 		} else {
 			return visitor.visitChildren(this);
 		}
@@ -4448,7 +4654,49 @@ export class InlineStmtContext extends ParserRuleContext {
 }
 
 
-export class QualifiedIdentifierContext extends ParserRuleContext {
+export class OverDefinitionTailContext extends ParserRuleContext {
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return HSQLParser.RULE_overDefinitionTail; }
+	public copyFrom(ctx: OverDefinitionTailContext): void {
+		super.copyFrom(ctx);
+	}
+}
+export class NormalTailIdentifierContext extends OverDefinitionTailContext {
+	public IDENTIFIER(): TerminalNode { return this.getToken(HSQLParser.IDENTIFIER, 0); }
+	constructor(ctx: OverDefinitionTailContext) {
+		super(ctx.parent, ctx.invokingState);
+		this.copyFrom(ctx);
+	}
+	// @Override
+	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
+		if (visitor.visitNormalTailIdentifier) {
+			return visitor.visitNormalTailIdentifier(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+export class ParentTailIdentifierContext extends OverDefinitionTailContext {
+	public XOR(): TerminalNode { return this.getToken(HSQLParser.XOR, 0); }
+	constructor(ctx: OverDefinitionTailContext) {
+		super(ctx.parent, ctx.invokingState);
+		this.copyFrom(ctx);
+	}
+	// @Override
+	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
+		if (visitor.visitParentTailIdentifier) {
+			return visitor.visitParentTailIdentifier(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
+export class DefinitionContext extends ParserRuleContext {
 	public IDENTIFIER(): TerminalNode[];
 	public IDENTIFIER(i: number): TerminalNode;
 	public IDENTIFIER(i?: number): TerminalNode | TerminalNode[] {
@@ -4462,33 +4710,11 @@ export class QualifiedIdentifierContext extends ParserRuleContext {
 		super(parent, invokingState);
 	}
 	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_qualifiedIdentifier; }
+	public get ruleIndex(): number { return HSQLParser.RULE_definition; }
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitQualifiedIdentifier) {
-			return visitor.visitQualifiedIdentifier(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
-}
-
-
-export class DataTypeContext extends ParserRuleContext {
-	public DECIMAL_TYPE(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.DECIMAL_TYPE, 0); }
-	public REAL_TYPE(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.REAL_TYPE, 0); }
-	public INTEGER_TYPE(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.INTEGER_TYPE, 0); }
-	public VARSTRING_TYPE(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.VARSTRING_TYPE, 0); }
-	public STRING_TYPE(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.STRING_TYPE, 0); }
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_dataType; }
-	// @Override
-	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitDataType) {
-			return visitor.visitDataType(this);
+		if (visitor.visitDefinition) {
+			return visitor.visitDefinition(this);
 		} else {
 			return visitor.visitChildren(this);
 		}
@@ -4596,16 +4822,16 @@ export class LogicalBinaryContext extends BooleanExpressionContext {
 
 
 export class PredicateContext extends ParserRuleContext {
-	public value: ParserRuleContext;
-	constructor(parent: ParserRuleContext | undefined, invokingState: number, value: ParserRuleContext) {
+	public ctx: ParserRuleContext;
+	constructor(parent: ParserRuleContext | undefined, invokingState: number, ctx: ParserRuleContext) {
 		super(parent, invokingState);
-		this.value = value;
+		this.ctx = ctx;
 	}
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_predicate; }
 	public copyFrom(ctx: PredicateContext): void {
 		super.copyFrom(ctx);
-		this.value = ctx.value;
+		this.ctx = ctx.ctx;
 	}
 }
 export class ComparisonContext extends PredicateContext {
@@ -4617,7 +4843,7 @@ export class ComparisonContext extends PredicateContext {
 		return this.getRuleContext(0, ValueExpressionContext);
 	}
 	constructor(ctx: PredicateContext) {
-		super(ctx.parent, ctx.invokingState, ctx.value);
+		super(ctx.parent, ctx.invokingState, ctx.ctx);
 		this.copyFrom(ctx);
 	}
 	// @Override
@@ -4645,7 +4871,7 @@ export class BetweenContext extends PredicateContext {
 	}
 	public NOT(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.NOT, 0); }
 	constructor(ctx: PredicateContext) {
-		super(ctx.parent, ctx.invokingState, ctx.value);
+		super(ctx.parent, ctx.invokingState, ctx.ctx);
 		this.copyFrom(ctx);
 	}
 	// @Override
@@ -4659,6 +4885,7 @@ export class BetweenContext extends PredicateContext {
 }
 export class InListContext extends PredicateContext {
 	public IN(): TerminalNode { return this.getToken(HSQLParser.IN, 0); }
+	public BSTART_(): TerminalNode { return this.getToken(HSQLParser.BSTART_, 0); }
 	public valueExpression(): ValueExpressionContext[];
 	public valueExpression(i: number): ValueExpressionContext;
 	public valueExpression(i?: number): ValueExpressionContext | ValueExpressionContext[] {
@@ -4668,9 +4895,19 @@ export class InListContext extends PredicateContext {
 			return this.getRuleContext(i, ValueExpressionContext);
 		}
 	}
+	public BEND_(): TerminalNode { return this.getToken(HSQLParser.BEND_, 0); }
 	public NOT(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.NOT, 0); }
+	public COMMA_(): TerminalNode[];
+	public COMMA_(i: number): TerminalNode;
+	public COMMA_(i?: number): TerminalNode | TerminalNode[] {
+		if (i === undefined) {
+			return this.getTokens(HSQLParser.COMMA_);
+		} else {
+			return this.getToken(HSQLParser.COMMA_, i);
+		}
+	}
 	constructor(ctx: PredicateContext) {
-		super(ctx.parent, ctx.invokingState, ctx.value);
+		super(ctx.parent, ctx.invokingState, ctx.ctx);
 		this.copyFrom(ctx);
 	}
 	// @Override
@@ -4790,9 +5027,11 @@ export class StringLiteralContext extends PrimaryExpressionContext {
 	}
 }
 export class ParenthesizedExpressionContext extends PrimaryExpressionContext {
+	public BSTART_(): TerminalNode { return this.getToken(HSQLParser.BSTART_, 0); }
 	public expression(): ExpressionContext {
 		return this.getRuleContext(0, ExpressionContext);
 	}
+	public BEND_(): TerminalNode { return this.getToken(HSQLParser.BEND_, 0); }
 	constructor(ctx: PrimaryExpressionContext) {
 		super(ctx.parent, ctx.invokingState);
 		this.copyFrom(ctx);
@@ -4928,22 +5167,471 @@ export class BooleanValueContext extends ParserRuleContext {
 }
 
 
-export class ComparisonOperatorContext extends ParserRuleContext {
-	public EQ(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.EQ, 0); }
-	public NEQ(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.NEQ, 0); }
-	public LT(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.LT, 0); }
-	public LTE(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.LTE, 0); }
-	public GT(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.GT, 0); }
-	public GTE(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.GTE, 0); }
+export class ImportStmtContext extends ParserRuleContext {
+	public IMPORT(): TerminalNode { return this.getToken(HSQLParser.IMPORT, 0); }
+	public overDefinition(): OverDefinitionContext {
+		return this.getRuleContext(0, OverDefinitionContext);
+	}
+	public AS(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.AS, 0); }
+	public IDENTIFIER(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.IDENTIFIER, 0); }
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
 	}
 	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_comparisonOperator; }
+	public get ruleIndex(): number { return HSQLParser.RULE_importStmt; }
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitComparisonOperator) {
-			return visitor.visitComparisonOperator(this);
+		if (visitor.visitImportStmt) {
+			return visitor.visitImportStmt(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
+export class OutputStmtContext extends ParserRuleContext {
+	public OUTPUT(): TerminalNode { return this.getToken(HSQLParser.OUTPUT, 0); }
+	public attribute(): AttributeContext {
+		return this.getRuleContext(0, AttributeContext);
+	}
+	public namedOutput(): NamedOutputContext | undefined {
+		return this.tryGetRuleContext(0, NamedOutputContext);
+	}
+	public toFile(): ToFileContext | undefined {
+		return this.tryGetRuleContext(0, ToFileContext);
+	}
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return HSQLParser.RULE_outputStmt; }
+	// @Override
+	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
+		if (visitor.visitOutputStmt) {
+			return visitor.visitOutputStmt(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
+export class AttributeContext extends ParserRuleContext {
+	public definition(): DefinitionContext | undefined {
+		return this.tryGetRuleContext(0, DefinitionContext);
+	}
+	public selectStmt(): SelectStmtContext | undefined {
+		return this.tryGetRuleContext(0, SelectStmtContext);
+	}
+	public literal(): LiteralContext | undefined {
+		return this.tryGetRuleContext(0, LiteralContext);
+	}
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return HSQLParser.RULE_attribute; }
+	// @Override
+	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
+		if (visitor.visitAttribute) {
+			return visitor.visitAttribute(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
+export class NamedOutputContext extends ParserRuleContext {
+	public IDENTIFIER(): TerminalNode { return this.getToken(HSQLParser.IDENTIFIER, 0); }
+	public TITLE(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.TITLE, 0); }
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return HSQLParser.RULE_namedOutput; }
+	// @Override
+	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
+		if (visitor.visitNamedOutput) {
+			return visitor.visitNamedOutput(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
+export class ToFileContext extends ParserRuleContext {
+	public STRING(): TerminalNode { return this.getToken(HSQLParser.STRING, 0); }
+	public FILE(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.FILE, 0); }
+	public OVERWRITE(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.OVERWRITE, 0); }
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return HSQLParser.RULE_toFile; }
+	// @Override
+	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
+		if (visitor.visitToFile) {
+			return visitor.visitToFile(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
+export class PlotStmtContext extends ParserRuleContext {
+	public PLOT(): TerminalNode { return this.getToken(HSQLParser.PLOT, 0); }
+	public FROM(): TerminalNode { return this.getToken(HSQLParser.FROM, 0); }
+	public definition(): DefinitionContext {
+		return this.getRuleContext(0, DefinitionContext);
+	}
+	public IDENTIFIER(): TerminalNode[];
+	public IDENTIFIER(i: number): TerminalNode;
+	public IDENTIFIER(i?: number): TerminalNode | TerminalNode[] {
+		if (i === undefined) {
+			return this.getTokens(HSQLParser.IDENTIFIER);
+		} else {
+			return this.getToken(HSQLParser.IDENTIFIER, i);
+		}
+	}
+	public TITLE(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.TITLE, 0); }
+	public TYPE(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.TYPE, 0); }
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return HSQLParser.RULE_plotStmt; }
+	// @Override
+	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
+		if (visitor.visitPlotStmt) {
+			return visitor.visitPlotStmt(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
+export class ModuleStmtContext extends ParserRuleContext {
+	public MODULE(): TerminalNode { return this.getToken(HSQLParser.MODULE, 0); }
+	public BSTART_(): TerminalNode { return this.getToken(HSQLParser.BSTART_, 0); }
+	public BEND_(): TerminalNode { return this.getToken(HSQLParser.BEND_, 0); }
+	public definitionStmt(): DefinitionStmtContext[];
+	public definitionStmt(i: number): DefinitionStmtContext;
+	public definitionStmt(i?: number): DefinitionStmtContext | DefinitionStmtContext[] {
+		if (i === undefined) {
+			return this.getRuleContexts(DefinitionStmtContext);
+		} else {
+			return this.getRuleContext(i, DefinitionStmtContext);
+		}
+	}
+	public SEMICOLON(): TerminalNode[];
+	public SEMICOLON(i: number): TerminalNode;
+	public SEMICOLON(i?: number): TerminalNode | TerminalNode[] {
+		if (i === undefined) {
+			return this.getTokens(HSQLParser.SEMICOLON);
+		} else {
+			return this.getToken(HSQLParser.SEMICOLON, i);
+		}
+	}
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return HSQLParser.RULE_moduleStmt; }
+	// @Override
+	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
+		if (visitor.visitModuleStmt) {
+			return visitor.visitModuleStmt(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
+export class TransformStmtContext extends ParserRuleContext {
+	public _colName!: Token;
+	public ALTER(): TerminalNode { return this.getToken(HSQLParser.ALTER, 0); }
+	public TABLE(): TerminalNode { return this.getToken(HSQLParser.TABLE, 0); }
+	public definition(): DefinitionContext {
+		return this.getRuleContext(0, DefinitionContext);
+	}
+	public alterOperator(): AlterOperatorContext {
+		return this.getRuleContext(0, AlterOperatorContext);
+	}
+	public IDENTIFIER(): TerminalNode[];
+	public IDENTIFIER(i: number): TerminalNode;
+	public IDENTIFIER(i?: number): TerminalNode | TerminalNode[] {
+		if (i === undefined) {
+			return this.getTokens(HSQLParser.IDENTIFIER);
+		} else {
+			return this.getToken(HSQLParser.IDENTIFIER, i);
+		}
+	}
+	public TO(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.TO, 0); }
+	public COMMA_(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.COMMA_, 0); }
+	public dataType(): DataTypeContext | undefined {
+		return this.tryGetRuleContext(0, DataTypeContext);
+	}
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return HSQLParser.RULE_transformStmt; }
+	// @Override
+	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
+		if (visitor.visitTransformStmt) {
+			return visitor.visitTransformStmt(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
+export class MlStmtContext extends ParserRuleContext {
+	public train(): TrainContext | undefined {
+		return this.tryGetRuleContext(0, TrainContext);
+	}
+	public predict(): PredictContext | undefined {
+		return this.tryGetRuleContext(0, PredictContext);
+	}
+	public elementaryML(): ElementaryMLContext | undefined {
+		return this.tryGetRuleContext(0, ElementaryMLContext);
+	}
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return HSQLParser.RULE_mlStmt; }
+	// @Override
+	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
+		if (visitor.visitMlStmt) {
+			return visitor.visitMlStmt(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
+export class TrainContext extends ParserRuleContext {
+	public _ind!: DefinitionContext;
+	public _dep!: DefinitionContext;
+	public _test!: DefinitionContext;
+	public _method!: Token;
+	public TRAIN(): TerminalNode { return this.getToken(HSQLParser.TRAIN, 0); }
+	public FROM(): TerminalNode { return this.getToken(HSQLParser.FROM, 0); }
+	public COMMA_(): TerminalNode[];
+	public COMMA_(i: number): TerminalNode;
+	public COMMA_(i?: number): TerminalNode | TerminalNode[] {
+		if (i === undefined) {
+			return this.getTokens(HSQLParser.COMMA_);
+		} else {
+			return this.getToken(HSQLParser.COMMA_, i);
+		}
+	}
+	public METHOD(): TerminalNode { return this.getToken(HSQLParser.METHOD, 0); }
+	public definition(): DefinitionContext[];
+	public definition(i: number): DefinitionContext;
+	public definition(i?: number): DefinitionContext | DefinitionContext[] {
+		if (i === undefined) {
+			return this.getRuleContexts(DefinitionContext);
+		} else {
+			return this.getRuleContext(i, DefinitionContext);
+		}
+	}
+	public IDENTIFIER(): TerminalNode { return this.getToken(HSQLParser.IDENTIFIER, 0); }
+	public OPTION(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.OPTION, 0); }
+	public trainOptions(): TrainOptionsContext | undefined {
+		return this.tryGetRuleContext(0, TrainOptionsContext);
+	}
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return HSQLParser.RULE_train; }
+	// @Override
+	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
+		if (visitor.visitTrain) {
+			return visitor.visitTrain(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
+export class ElementaryMLContext extends ParserRuleContext {
+	public _ind!: DefinitionContext;
+	public _ind2!: DefinitionContext;
+	public _method!: Token;
+	public PREDICT(): TerminalNode { return this.getToken(HSQLParser.PREDICT, 0); }
+	public FROM(): TerminalNode { return this.getToken(HSQLParser.FROM, 0); }
+	public METHOD(): TerminalNode { return this.getToken(HSQLParser.METHOD, 0); }
+	public definition(): DefinitionContext[];
+	public definition(i: number): DefinitionContext;
+	public definition(i?: number): DefinitionContext | DefinitionContext[] {
+		if (i === undefined) {
+			return this.getRuleContexts(DefinitionContext);
+		} else {
+			return this.getRuleContext(i, DefinitionContext);
+		}
+	}
+	public IDENTIFIER(): TerminalNode { return this.getToken(HSQLParser.IDENTIFIER, 0); }
+	public COMMA_(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.COMMA_, 0); }
+	public OPTION(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.OPTION, 0); }
+	public trainOptions(): TrainOptionsContext | undefined {
+		return this.tryGetRuleContext(0, TrainOptionsContext);
+	}
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return HSQLParser.RULE_elementaryML; }
+	// @Override
+	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
+		if (visitor.visitElementaryML) {
+			return visitor.visitElementaryML(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
+export class TrainOptionsContext extends ParserRuleContext {
+	public trainOption(): TrainOptionContext[];
+	public trainOption(i: number): TrainOptionContext;
+	public trainOption(i?: number): TrainOptionContext | TrainOptionContext[] {
+		if (i === undefined) {
+			return this.getRuleContexts(TrainOptionContext);
+		} else {
+			return this.getRuleContext(i, TrainOptionContext);
+		}
+	}
+	public COMMA_(): TerminalNode[];
+	public COMMA_(i: number): TerminalNode;
+	public COMMA_(i?: number): TerminalNode | TerminalNode[] {
+		if (i === undefined) {
+			return this.getTokens(HSQLParser.COMMA_);
+		} else {
+			return this.getToken(HSQLParser.COMMA_, i);
+		}
+	}
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return HSQLParser.RULE_trainOptions; }
+	// @Override
+	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
+		if (visitor.visitTrainOptions) {
+			return visitor.visitTrainOptions(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
+export class TrainOptionContext extends ParserRuleContext {
+	public IDENTIFIER(): TerminalNode { return this.getToken(HSQLParser.IDENTIFIER, 0); }
+	public EQ(): TerminalNode { return this.getToken(HSQLParser.EQ, 0); }
+	public trainValue(): TrainValueContext {
+		return this.getRuleContext(0, TrainValueContext);
+	}
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return HSQLParser.RULE_trainOption; }
+	// @Override
+	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
+		if (visitor.visitTrainOption) {
+			return visitor.visitTrainOption(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
+export class TrainValueContext extends ParserRuleContext {
+	public number(): NumberContext | undefined {
+		return this.tryGetRuleContext(0, NumberContext);
+	}
+	public string(): StringContext | undefined {
+		return this.tryGetRuleContext(0, StringContext);
+	}
+	public definition(): DefinitionContext | undefined {
+		return this.tryGetRuleContext(0, DefinitionContext);
+	}
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return HSQLParser.RULE_trainValue; }
+	// @Override
+	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
+		if (visitor.visitTrainValue) {
+			return visitor.visitTrainValue(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
+export class PredictContext extends ParserRuleContext {
+	public _model!: DefinitionContext;
+	public _ind!: DefinitionContext;
+	public _method!: Token;
+	public PREDICT(): TerminalNode { return this.getToken(HSQLParser.PREDICT, 0); }
+	public FROM(): TerminalNode { return this.getToken(HSQLParser.FROM, 0); }
+	public definition(): DefinitionContext[];
+	public definition(i: number): DefinitionContext;
+	public definition(i?: number): DefinitionContext | DefinitionContext[] {
+		if (i === undefined) {
+			return this.getRuleContexts(DefinitionContext);
+		} else {
+			return this.getRuleContext(i, DefinitionContext);
+		}
+	}
+	public METHOD(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.METHOD, 0); }
+	public IDENTIFIER(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.IDENTIFIER, 0); }
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return HSQLParser.RULE_predict; }
+	// @Override
+	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
+		if (visitor.visitPredict) {
+			return visitor.visitPredict(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
+export class ScopeContext extends ParserRuleContext {
+	public EXPORT(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.EXPORT, 0); }
+	public SHARED(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.SHARED, 0); }
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return HSQLParser.RULE_scope; }
+	// @Override
+	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
+		if (visitor.visitScope) {
+			return visitor.visitScope(this);
 		} else {
 			return visitor.visitChildren(this);
 		}

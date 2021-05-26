@@ -5,7 +5,7 @@ describe('Singular values', function () {
     const types: dtypes[] = ['BOOLEAN', 'INTEGER', 'REAL', 'DECIMAL', 'STRING', 'QSTRING'];
 
     for (const x of types) {
-        it(`for ${x}`, async () => {
+        it(`For ${x}`, async () => {
             const y = new Singular(dtype[x]);
             assert.strictEqual(y.getDataType(), x);
         });

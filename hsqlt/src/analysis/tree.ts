@@ -1,39 +1,35 @@
 import { CharStreams, CommonTokenStream } from 'antlr4ts';
+import { ErrorManager } from '../misc/error/Error';
 import { HSQLLexer } from '../misc/grammar/HSQLLexer';
 import { HSQLParser } from '../misc/grammar/HSQLParser';
-import { IReader } from '../misc/readers';
 
 /**
  * Obtain a Tree from a readable
  */
 export class HSQLTreeFactory {
-    constructor(private readable: IReader) {}
-    async getResults() {
-        //TODO ADD Error Listeners
-        const str = await this.readable.read();
-        const fn = this.readable.getSourceName();
-        const charStreams = CharStreams.fromString(str, fn);
+    constructor(protected errorManager: ErrorManager) {}
+    makeTree(str: string, fn?: string) {
+        const charStreams = fn === undefined ? CharStreams.fromString(str) : CharStreams.fromString(str, fn);
         const lexer = new HSQLLexer(charStreams);
+
+        // extract error listener for use in the scanner and parser
+        const errorListener = this.errorManager.newErrorListener();
+
+        // remove the error listener. We want to put our own
         lexer.removeErrorListeners();
-        lexer.addErrorListener({
-            syntaxError(a, b, c, d, e, g) {
-                console.log('woops lexer');
-                throw new Error();
-            },
-        });
+        lexer.addErrorListener(errorListener);
+
         const tokenStreams = new CommonTokenStream(lexer);
         const parser = new HSQLParser(tokenStreams);
+
+        // remove the error listener. We want to put our own
         parser.removeErrorListeners();
-        
-        parser.addErrorListener({
-            syntaxError(a, b, c, d, e, g) {
-                console.log('woops parser');
-            },
-        });
+        parser.addErrorListener(errorListener);
         const tree = parser.program();
 
         return {
             tree,
+            errorListener,
             tokenStreams,
             charStreams,
         };

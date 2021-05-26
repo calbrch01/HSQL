@@ -1,5 +1,7 @@
-import { IASTVisitor } from '../../analysis/ast/IASTVisitor';
-import { StmtExpression } from './Base';
+import { ParserRuleContext } from 'antlr4ts';
+import { IASTVisitor } from '../IASTVisitor';
+import { StmtExpression } from './base/StmtExpression';
+// import { StmtExpression } from './Base';
 
 export enum OutputType {
     NAMED,
@@ -7,8 +9,9 @@ export enum OutputType {
     PIPE,
 }
 
-// FIXME
+// FIXME add output support
 export class Output implements StmtExpression {
+    constructor(public node: ParserRuleContext) {}
     protected _source?: string;
     protected _type?: OutputType;
 

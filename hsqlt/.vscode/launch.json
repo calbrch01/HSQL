@@ -8,11 +8,20 @@
             "type": "antlr-debug",
             "request": "launch",
             "name": "Debug Grammar with Test Input",
-            "grammar":"${file}",
+            "grammar":"grammar/HSQL.g4",
             "input": "input.hsql",
             "startRule": "program",
             "visualParseTree": true,
             // "printParseTree": true
+        },
+        {
+            "type": "antlr-debug",
+            "request": "launch",
+            "name": "Test Rules",
+            "grammar":"grammar/HSQL.g4",
+            "input": "input.fragment",
+            "startRule": "completestmt",
+            "visualParseTree": true,
         }
     ]
 }

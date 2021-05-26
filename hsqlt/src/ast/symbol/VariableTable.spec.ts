@@ -4,18 +4,20 @@ import { assert } from 'chai';
 import { Action } from '../data/Action';
 describe('Variable Table Tests', function () {
     const varTable = new VariableTable();
+    // capture this for use -> identical to const aps = VariableTable.actionPrependString
+    const { actionPrependString: aps } = VariableTable;
 
     /**
      * Reuse this for first two tests
      */
-    const firstVarName = VariableTable.actionPrependString + '0';
-    const secVarName = VariableTable.actionPrependString + '1';
+    const firstVarName = aps + '0';
+    const secVarName = aps + '1';
 
     /**
      * Hook for running code before tests
      */
     this.beforeAll(async () => {
-        console.log('test output');
+        // console.log('test output');
     });
 
     it('Correctly claims action identifier', async () => {

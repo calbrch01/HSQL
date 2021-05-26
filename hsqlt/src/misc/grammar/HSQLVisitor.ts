@@ -3,15 +3,25 @@
 
 import { ParseTreeVisitor } from "antlr4ts/tree/ParseTreeVisitor";
 
+import { SelectAggregatedEverythingColContext } from "./HSQLParser";
+import { SelectAggregatedOneColContext } from "./HSQLParser";
+import { SelectOneColContext } from "./HSQLParser";
+import { NormalTailIdentifierContext } from "./HSQLParser";
+import { ParentTailIdentifierContext } from "./HSQLParser";
 import { ComparisonContext } from "./HSQLParser";
 import { BetweenContext } from "./HSQLParser";
 import { InListContext } from "./HSQLParser";
 import { DecimalLiteralContext } from "./HSQLParser";
 import { DoubleLiteralContext } from "./HSQLParser";
 import { IntegerLiteralContext } from "./HSQLParser";
+import { SelectFromDerivedTableContext } from "./HSQLParser";
+import { SelectFromDefinitionContext } from "./HSQLParser";
+import { SelectBracketedFromTableContext } from "./HSQLParser";
 import { ValueExpressionDefaultContext } from "./HSQLParser";
 import { BasicStringLiteralContext } from "./HSQLParser";
 import { UnicodeStringLiteralContext } from "./HSQLParser";
+import { NormalColContext } from "./HSQLParser";
+import { WildAllContext } from "./HSQLParser";
 import { IdentifierContext } from "./HSQLParser";
 import { NumericLiteralContext } from "./HSQLParser";
 import { BooleanLiteralContext } from "./HSQLParser";
@@ -20,57 +30,46 @@ import { ParenthesizedExpressionContext } from "./HSQLParser";
 import { PredicatedContext } from "./HSQLParser";
 import { LogicalNotContext } from "./HSQLParser";
 import { LogicalBinaryContext } from "./HSQLParser";
+import { NormalIdentifierContext } from "./HSQLParser";
+import { RootIdentifierContext } from "./HSQLParser";
+import { ParentIdentifierContext } from "./HSQLParser";
 import { ProgramContext } from "./HSQLParser";
 import { CompletestmtContext } from "./HSQLParser";
 import { StmtContext } from "./HSQLParser";
-import { AssignStmtContext } from "./HSQLParser";
-import { ActionStmtContext } from "./HSQLParser";
-import { TypeDefStmtContext } from "./HSQLParser";
-import { TypeDefExportContext } from "./HSQLParser";
-import { MapExportableContext } from "./HSQLParser";
-import { TableExportContext } from "./HSQLParser";
-import { LayoutExportContext } from "./HSQLParser";
-import { IdentifierExportContext } from "./HSQLParser";
-import { ImportStmtContext } from "./HSQLParser";
-import { ImplicitActionStmtContext } from "./HSQLParser";
+import { DefinitionStmtContext } from "./HSQLParser";
 import { ExprContext } from "./HSQLParser";
-import { SimpleIdentifierContext } from "./HSQLParser";
-import { OutputStmtContext } from "./HSQLParser";
-import { OutputVariantContext } from "./HSQLParser";
-import { NamedOutputStatementContext } from "./HSQLParser";
-import { FileOutputStatementContext } from "./HSQLParser";
-import { OutputUpdateOptionContext } from "./HSQLParser";
-import { OutputExpireOptionContext } from "./HSQLParser";
-import { PlotStmtContext } from "./HSQLParser";
-import { MlStmtContext } from "./HSQLParser";
-import { TrainContext } from "./HSQLParser";
-import { ElementaryMLContext } from "./HSQLParser";
-import { TrainOptionsContext } from "./HSQLParser";
-import { TrainOptionContext } from "./HSQLParser";
-import { TrainValueContext } from "./HSQLParser";
-import { PredictContext } from "./HSQLParser";
+import { ActionStmtContext } from "./HSQLParser";
 import { SelectStmtContext } from "./HSQLParser";
-import { JoinClauseContext } from "./HSQLParser";
-import { JoinTypeContext } from "./HSQLParser";
+import { SelectHavingClauseContext } from "./HSQLParser";
+import { SelectGroupByClauseContext } from "./HSQLParser";
+import { DefinitionSetContext } from "./HSQLParser";
 import { SelectColumnsContext } from "./HSQLParser";
-import { AggregatedSelectColumnContext } from "./HSQLParser";
-import { SelectColumnContext } from "./HSQLParser";
+import { SelectColContext } from "./HSQLParser";
+import { ColContext } from "./HSQLParser";
+import { AliasingColContext } from "./HSQLParser";
 import { SelectFromClauseContext } from "./HSQLParser";
-import { NestedSelectStmtContext } from "./HSQLParser";
-import { SelectDatasetContext } from "./HSQLParser";
-import { SelectDatasetFileContext } from "./HSQLParser";
-import { SelectTableNameContext } from "./HSQLParser";
+import { SelectFromTableReferenceContext } from "./HSQLParser";
+import { SelectAliasContext } from "./HSQLParser";
+import { Join_operatorContext } from "./HSQLParser";
 import { SelectWhereClauseContext } from "./HSQLParser";
+import { JoinedTableContext } from "./HSQLParser";
+import { JoinSpecificationContext } from "./HSQLParser";
+import { GroupByClauseContext } from "./HSQLParser";
 import { OrderByClauseContext } from "./HSQLParser";
 import { SortItemContext } from "./HSQLParser";
 import { AscSortItemContext } from "./HSQLParser";
 import { DescSortItemContext } from "./HSQLParser";
-import { GroupByClauseContext } from "./HSQLParser";
-import { LayoutStmtContext } from "./HSQLParser";
-import { LayoutContentContext } from "./HSQLParser";
-import { InlineStmtContext } from "./HSQLParser";
-import { QualifiedIdentifierContext } from "./HSQLParser";
+import { LimitClauseContext } from "./HSQLParser";
+import { OffsetClauseContext } from "./HSQLParser";
+import { ComparisonOperatorContext } from "./HSQLParser";
+import { LogicalOperatorContext } from "./HSQLParser";
+import { LiteralContext } from "./HSQLParser";
 import { DataTypeContext } from "./HSQLParser";
+import { AlterOperatorContext } from "./HSQLParser";
+import { OverDefinitionContext } from "./HSQLParser";
+import { OverDefinitionRootContext } from "./HSQLParser";
+import { OverDefinitionTailContext } from "./HSQLParser";
+import { DefinitionContext } from "./HSQLParser";
 import { ExpressionContext } from "./HSQLParser";
 import { BooleanExpressionContext } from "./HSQLParser";
 import { PredicateContext } from "./HSQLParser";
@@ -79,7 +78,22 @@ import { PrimaryExpressionContext } from "./HSQLParser";
 import { NumberContext } from "./HSQLParser";
 import { StringContext } from "./HSQLParser";
 import { BooleanValueContext } from "./HSQLParser";
-import { ComparisonOperatorContext } from "./HSQLParser";
+import { ImportStmtContext } from "./HSQLParser";
+import { OutputStmtContext } from "./HSQLParser";
+import { AttributeContext } from "./HSQLParser";
+import { NamedOutputContext } from "./HSQLParser";
+import { ToFileContext } from "./HSQLParser";
+import { PlotStmtContext } from "./HSQLParser";
+import { ModuleStmtContext } from "./HSQLParser";
+import { TransformStmtContext } from "./HSQLParser";
+import { MlStmtContext } from "./HSQLParser";
+import { TrainContext } from "./HSQLParser";
+import { ElementaryMLContext } from "./HSQLParser";
+import { TrainOptionsContext } from "./HSQLParser";
+import { TrainOptionContext } from "./HSQLParser";
+import { TrainValueContext } from "./HSQLParser";
+import { PredictContext } from "./HSQLParser";
+import { ScopeContext } from "./HSQLParser";
 
 
 /**
@@ -90,6 +104,46 @@ import { ComparisonOperatorContext } from "./HSQLParser";
  * operations with no return type.
  */
 export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
+	/**
+	 * Visit a parse tree produced by the `selectAggregatedEverythingCol`
+	 * labeled alternative in `HSQLParser.col`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitSelectAggregatedEverythingCol?: (ctx: SelectAggregatedEverythingColContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `selectAggregatedOneCol`
+	 * labeled alternative in `HSQLParser.col`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitSelectAggregatedOneCol?: (ctx: SelectAggregatedOneColContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `selectOneCol`
+	 * labeled alternative in `HSQLParser.col`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitSelectOneCol?: (ctx: SelectOneColContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `normalTailIdentifier`
+	 * labeled alternative in `HSQLParser.overDefinitionTail`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitNormalTailIdentifier?: (ctx: NormalTailIdentifierContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `parentTailIdentifier`
+	 * labeled alternative in `HSQLParser.overDefinitionTail`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitParentTailIdentifier?: (ctx: ParentTailIdentifierContext) => Result;
+
 	/**
 	 * Visit a parse tree produced by the `comparison`
 	 * labeled alternative in `HSQLParser.predicate`.
@@ -139,6 +193,30 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	visitIntegerLiteral?: (ctx: IntegerLiteralContext) => Result;
 
 	/**
+	 * Visit a parse tree produced by the `selectFromDerivedTable`
+	 * labeled alternative in `HSQLParser.selectFromTableReference`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitSelectFromDerivedTable?: (ctx: SelectFromDerivedTableContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `selectFromDefinition`
+	 * labeled alternative in `HSQLParser.selectFromTableReference`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitSelectFromDefinition?: (ctx: SelectFromDefinitionContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `selectBracketedFromTable`
+	 * labeled alternative in `HSQLParser.selectFromTableReference`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitSelectBracketedFromTable?: (ctx: SelectBracketedFromTableContext) => Result;
+
+	/**
 	 * Visit a parse tree produced by the `valueExpressionDefault`
 	 * labeled alternative in `HSQLParser.valueExpression`.
 	 * @param ctx the parse tree
@@ -161,6 +239,22 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitUnicodeStringLiteral?: (ctx: UnicodeStringLiteralContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `normalCol`
+	 * labeled alternative in `HSQLParser.selectCol`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitNormalCol?: (ctx: NormalColContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `wildAll`
+	 * labeled alternative in `HSQLParser.selectCol`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitWildAll?: (ctx: WildAllContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by the `identifier`
@@ -227,6 +321,30 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	visitLogicalBinary?: (ctx: LogicalBinaryContext) => Result;
 
 	/**
+	 * Visit a parse tree produced by the `normalIdentifier`
+	 * labeled alternative in `HSQLParser.overDefinitionRoot`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitNormalIdentifier?: (ctx: NormalIdentifierContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `rootIdentifier`
+	 * labeled alternative in `HSQLParser.overDefinitionRoot`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitRootIdentifier?: (ctx: RootIdentifierContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `parentIdentifier`
+	 * labeled alternative in `HSQLParser.overDefinitionRoot`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitParentIdentifier?: (ctx: ParentIdentifierContext) => Result;
+
+	/**
 	 * Visit a parse tree produced by `HSQLParser.program`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -248,74 +366,11 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	visitStmt?: (ctx: StmtContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by `HSQLParser.assignStmt`.
+	 * Visit a parse tree produced by `HSQLParser.definitionStmt`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	visitAssignStmt?: (ctx: AssignStmtContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.actionStmt`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitActionStmt?: (ctx: ActionStmtContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.typeDefStmt`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitTypeDefStmt?: (ctx: TypeDefStmtContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.typeDefExport`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitTypeDefExport?: (ctx: TypeDefExportContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.mapExportable`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitMapExportable?: (ctx: MapExportableContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.tableExport`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitTableExport?: (ctx: TableExportContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.layoutExport`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitLayoutExport?: (ctx: LayoutExportContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.identifierExport`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitIdentifierExport?: (ctx: IdentifierExportContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.importStmt`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitImportStmt?: (ctx: ImportStmtContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.implicitActionStmt`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitImplicitActionStmt?: (ctx: ImplicitActionStmtContext) => Result;
+	visitDefinitionStmt?: (ctx: DefinitionStmtContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `HSQLParser.expr`.
@@ -325,109 +380,11 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	visitExpr?: (ctx: ExprContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by `HSQLParser.simpleIdentifier`.
+	 * Visit a parse tree produced by `HSQLParser.actionStmt`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	visitSimpleIdentifier?: (ctx: SimpleIdentifierContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.outputStmt`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitOutputStmt?: (ctx: OutputStmtContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.outputVariant`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitOutputVariant?: (ctx: OutputVariantContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.namedOutputStatement`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitNamedOutputStatement?: (ctx: NamedOutputStatementContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.fileOutputStatement`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitFileOutputStatement?: (ctx: FileOutputStatementContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.outputUpdateOption`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitOutputUpdateOption?: (ctx: OutputUpdateOptionContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.outputExpireOption`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitOutputExpireOption?: (ctx: OutputExpireOptionContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.plotStmt`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitPlotStmt?: (ctx: PlotStmtContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.mlStmt`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitMlStmt?: (ctx: MlStmtContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.train`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitTrain?: (ctx: TrainContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.elementaryML`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitElementaryML?: (ctx: ElementaryMLContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.trainOptions`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitTrainOptions?: (ctx: TrainOptionsContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.trainOption`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitTrainOption?: (ctx: TrainOptionContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.trainValue`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitTrainValue?: (ctx: TrainValueContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.predict`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitPredict?: (ctx: PredictContext) => Result;
+	visitActionStmt?: (ctx: ActionStmtContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `HSQLParser.selectStmt`.
@@ -437,18 +394,25 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	visitSelectStmt?: (ctx: SelectStmtContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by `HSQLParser.joinClause`.
+	 * Visit a parse tree produced by `HSQLParser.selectHavingClause`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	visitJoinClause?: (ctx: JoinClauseContext) => Result;
+	visitSelectHavingClause?: (ctx: SelectHavingClauseContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by `HSQLParser.joinType`.
+	 * Visit a parse tree produced by `HSQLParser.selectGroupByClause`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	visitJoinType?: (ctx: JoinTypeContext) => Result;
+	visitSelectGroupByClause?: (ctx: SelectGroupByClauseContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.definitionSet`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitDefinitionSet?: (ctx: DefinitionSetContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `HSQLParser.selectColumns`.
@@ -458,18 +422,25 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	visitSelectColumns?: (ctx: SelectColumnsContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by `HSQLParser.aggregatedSelectColumn`.
+	 * Visit a parse tree produced by `HSQLParser.selectCol`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	visitAggregatedSelectColumn?: (ctx: AggregatedSelectColumnContext) => Result;
+	visitSelectCol?: (ctx: SelectColContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by `HSQLParser.selectColumn`.
+	 * Visit a parse tree produced by `HSQLParser.col`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	visitSelectColumn?: (ctx: SelectColumnContext) => Result;
+	visitCol?: (ctx: ColContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.aliasingCol`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitAliasingCol?: (ctx: AliasingColContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `HSQLParser.selectFromClause`.
@@ -479,32 +450,25 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	visitSelectFromClause?: (ctx: SelectFromClauseContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by `HSQLParser.nestedSelectStmt`.
+	 * Visit a parse tree produced by `HSQLParser.selectFromTableReference`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	visitNestedSelectStmt?: (ctx: NestedSelectStmtContext) => Result;
+	visitSelectFromTableReference?: (ctx: SelectFromTableReferenceContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by `HSQLParser.selectDataset`.
+	 * Visit a parse tree produced by `HSQLParser.selectAlias`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	visitSelectDataset?: (ctx: SelectDatasetContext) => Result;
+	visitSelectAlias?: (ctx: SelectAliasContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by `HSQLParser.selectDatasetFile`.
+	 * Visit a parse tree produced by `HSQLParser.join_operator`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	visitSelectDatasetFile?: (ctx: SelectDatasetFileContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.selectTableName`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitSelectTableName?: (ctx: SelectTableNameContext) => Result;
+	visitJoin_operator?: (ctx: Join_operatorContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `HSQLParser.selectWhereClause`.
@@ -512,6 +476,27 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitSelectWhereClause?: (ctx: SelectWhereClauseContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.joinedTable`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitJoinedTable?: (ctx: JoinedTableContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.joinSpecification`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitJoinSpecification?: (ctx: JoinSpecificationContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.groupByClause`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitGroupByClause?: (ctx: GroupByClauseContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `HSQLParser.orderByClause`.
@@ -542,39 +527,39 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	visitDescSortItem?: (ctx: DescSortItemContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by `HSQLParser.groupByClause`.
+	 * Visit a parse tree produced by `HSQLParser.limitClause`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	visitGroupByClause?: (ctx: GroupByClauseContext) => Result;
+	visitLimitClause?: (ctx: LimitClauseContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by `HSQLParser.layoutStmt`.
+	 * Visit a parse tree produced by `HSQLParser.offsetClause`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	visitLayoutStmt?: (ctx: LayoutStmtContext) => Result;
+	visitOffsetClause?: (ctx: OffsetClauseContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by `HSQLParser.layoutContent`.
+	 * Visit a parse tree produced by `HSQLParser.comparisonOperator`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	visitLayoutContent?: (ctx: LayoutContentContext) => Result;
+	visitComparisonOperator?: (ctx: ComparisonOperatorContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by `HSQLParser.inlineStmt`.
+	 * Visit a parse tree produced by `HSQLParser.logicalOperator`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	visitInlineStmt?: (ctx: InlineStmtContext) => Result;
+	visitLogicalOperator?: (ctx: LogicalOperatorContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by `HSQLParser.qualifiedIdentifier`.
+	 * Visit a parse tree produced by `HSQLParser.literal`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	visitQualifiedIdentifier?: (ctx: QualifiedIdentifierContext) => Result;
+	visitLiteral?: (ctx: LiteralContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `HSQLParser.dataType`.
@@ -582,6 +567,41 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitDataType?: (ctx: DataTypeContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.alterOperator`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitAlterOperator?: (ctx: AlterOperatorContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.overDefinition`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitOverDefinition?: (ctx: OverDefinitionContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.overDefinitionRoot`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitOverDefinitionRoot?: (ctx: OverDefinitionRootContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.overDefinitionTail`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitOverDefinitionTail?: (ctx: OverDefinitionTailContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.definition`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitDefinition?: (ctx: DefinitionContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `HSQLParser.expression`.
@@ -640,10 +660,115 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	visitBooleanValue?: (ctx: BooleanValueContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by `HSQLParser.comparisonOperator`.
+	 * Visit a parse tree produced by `HSQLParser.importStmt`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	visitComparisonOperator?: (ctx: ComparisonOperatorContext) => Result;
+	visitImportStmt?: (ctx: ImportStmtContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.outputStmt`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitOutputStmt?: (ctx: OutputStmtContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.attribute`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitAttribute?: (ctx: AttributeContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.namedOutput`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitNamedOutput?: (ctx: NamedOutputContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.toFile`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitToFile?: (ctx: ToFileContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.plotStmt`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitPlotStmt?: (ctx: PlotStmtContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.moduleStmt`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitModuleStmt?: (ctx: ModuleStmtContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.transformStmt`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitTransformStmt?: (ctx: TransformStmtContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.mlStmt`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitMlStmt?: (ctx: MlStmtContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.train`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitTrain?: (ctx: TrainContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.elementaryML`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitElementaryML?: (ctx: ElementaryMLContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.trainOptions`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitTrainOptions?: (ctx: TrainOptionsContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.trainOption`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitTrainOption?: (ctx: TrainOptionContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.trainValue`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitTrainValue?: (ctx: TrainValueContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.predict`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitPredict?: (ctx: PredictContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.scope`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitScope?: (ctx: ScopeContext) => Result;
 }
 

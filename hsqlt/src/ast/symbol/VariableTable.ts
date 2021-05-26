@@ -12,8 +12,12 @@ export type DataMetaData = {
     vis: VariableVisibility;
 };
 
+/**
+ * Variable table
+ * Stores the data
+ */
 export class VariableTable {
-    static actionPrependString = '__r_action_';
+    static actionPrependString: '__r_action_' = '__r_action_';
 
     /**
      * Generate variables

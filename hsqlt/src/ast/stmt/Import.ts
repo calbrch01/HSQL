@@ -1,13 +1,23 @@
-import { IASTVisitor } from '../../analysis/ast/IASTVisitor';
-import { StmtExpression } from './Base';
+import { ParserRuleContext } from 'antlr4ts';
+import { IASTVisitor } from '../IASTVisitor';
+import { NonValuedExpression } from './base/NonValuedExpression';
 
-export class Import implements StmtExpression {
-    symbolname: string;
-    constructor(public context: string, public alias?: string) {
-        this.symbolname = alias ?? context;
+export class Import implements NonValuedExpression {
+    public hasAlias: boolean;
+    constructor(public node: ParserRuleContext, public _moduleName: string, public alias?: string) {
+        this.hasAlias = !(alias === undefined);
     }
 
-    accept<T>(v: IASTVisitor<T>): T {
-        return v.visitImport(this);
+    /**
+     * The module name to be used
+     */
+    get moduleName() {
+        return this._moduleName;
+    }
+    getImportedName() {
+        return this.alias ?? this._moduleName;
+    }
+    accept<T>(t: IASTVisitor<T>) {
+        return t.visitImport(this);
     }
 }
