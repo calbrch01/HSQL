@@ -4,8 +4,8 @@
  */
 
 import { promises as fs } from 'fs';
-import { TranslationError } from '../misc/error/Error';
-import { iP } from '../misc/strings/misc';
+import { ContexedTranslationError, TranslationError } from './ErrorManager';
+import { iP } from '../misc/strings/formatting';
 
 /**
  * Represents an output method.
@@ -23,9 +23,9 @@ export abstract class OutputManager {
     /**
      * Report issues
      */
-    reportIssues(issues: TranslationError[]): boolean {
+    reportIssues(issues: ContexedTranslationError[]): boolean {
         for (const issue of issues) {
-            console.log(iP(issue.msg, issue.severity, issue.line, issue.charPositionInLine));
+            console.log(iP(issue.msg, issue.severity, issue.line, issue.charPositionInLine, issue.ctx));
         }
         return true;
     }

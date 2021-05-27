@@ -4,11 +4,11 @@ import { AST } from '../ast/AST';
 import { AnyModule } from '../ast/data/AnyModule';
 import { Module } from '../ast/data/Module';
 import { QualifiedIdentifier } from '../misc/ast/QualifiedIdentifier';
-import { ErrorManager, ErrorMode, ErrorSeverity, TranslationError } from '../misc/error/Error';
+import { ErrorManager, ErrorMode, ErrorSeverity, TranslationError } from './ErrorManager';
 import { ImportStmtContext } from '../misc/grammar/HSQLParser';
 import { NoOutput, OutputManager } from './OutputManagers';
 import { FILETYPE, ReadingManager } from './ReadingManager';
-import { iP } from '../misc/strings/misc';
+import { iP } from '../misc/strings/formatting';
 import rs from '../misc/strings/resultStrings.json';
 import { ECLCode } from '../code/ECLCode';
 import { ECLGen } from '../analysis/ast/ECLGen';
@@ -76,6 +76,8 @@ export class TaskManager {
             );
         }
 
+        this.errorManager.pushFile(fn);
+
         const file = this.readingMgr.readSync(fn);
 
         const { tree, charStreams, tokenStreams } = this.treeFactory.makeTree(file);
@@ -83,6 +85,8 @@ export class TaskManager {
         // get AST will read imports and call the rest of the required generate ASTS
         const ast = x.getAST();
         this.ASTMap.set(fn, ast);
+
+        this.errorManager.popFile();
         return { ast, tree, tokenStreams, asts: this.ASTMap };
     }
 

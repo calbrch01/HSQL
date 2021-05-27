@@ -1,4 +1,4 @@
-import a;
+import a;;
 p = select * from a.t1;
 output p title abc_bcd;
 q = select * from (select * from ab) as ab,bs;

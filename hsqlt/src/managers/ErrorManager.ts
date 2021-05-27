@@ -74,11 +74,38 @@ export class TranslationError {
     }
 }
 
+/**
+ * A Translation error that handles these issues
+ */
+export class ContexedTranslationError extends TranslationError {
+    /**
+     * Location of error
+     */
+    ctx: string;
+    constructor(_ctx: string, te: TranslationError) {
+        super(te.msg, te.line, te.charPositionInLine, te.severity, te.type);
+        this.ctx = _ctx;
+    }
+}
+
 export type LexerOrParserSymbol = number | Token;
 
-// TODO abort based on error type
+/**
+ * Error management system.
+ * Note that the file reporting may feel a bit messy, might have to discuss
+ */
+// TODO: Discuss the file reporting system
 export class ErrorManager {
-    protected _errors: TranslationError[];
+    protected _errors: ContexedTranslationError[];
+
+    /**
+     * Stack represents the error for the file in question.
+     *
+     * How is this used?
+     * Each file is an AST -> Pushing an popping a context as you start and stop generating an AST should be good.
+     */
+    public errorContext: string[] = [];
+
     constructor(protected errorMode: ErrorMode) {
         this._errors = [];
     }
@@ -99,8 +126,18 @@ export class ErrorManager {
         return listener;
     }
 
+    pushFile(f: string) {
+        return this.errorContext.push(f);
+    }
+    popFile() {
+        return this.errorContext.pop();
+    }
+    get contextTop() {
+        return this.errorContext[this.errorContext.length - 1];
+    }
+
     /**
-     *
+     * Static method initializing a generic file listener
      * @returns that is standard Errormanager
      */
     static get normal() {
@@ -120,13 +157,13 @@ export class ErrorManager {
      */
     halt(e?: TranslationError): never {
         if (e !== undefined) {
-            this._errors.push(e);
+            this._errors.push(new ContexedTranslationError(this.contextTop, e));
         }
         throw new HaltError();
     }
 
     push(e: TranslationError): void {
-        this._errors.push(e);
+        this._errors.push(new ContexedTranslationError(this.contextTop, e));
         if (e.type === ErrorType.HALTING) {
             this.halt();
         }

@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import { HSQLTreeFactory } from '../../analysis/tree';
-import { ErrorManager } from '../../misc/error/Error';
+import { ErrorManager } from '../../managers/ErrorManager';
 import { Import } from './Import';
 
 describe('import AST node tests', function () {

@@ -1,7 +1,7 @@
 import { ParserRuleContext } from 'antlr4ts';
 import { DataType } from '../../ast/data/base/DataType';
 import { BaseASTNode } from '../../ast/stmt/base/BaseASTNode';
-import { ErrorManager, ErrorType, TranslationError } from '../error/Error';
+import { ErrorManager, ErrorType, TranslationError } from '../../managers/ErrorManager';
 import rs from '../strings/resultStrings.json';
 /**
  * An Exchanging between AST nodes

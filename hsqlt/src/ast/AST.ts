@@ -26,6 +26,7 @@ export class AST implements BaseASTNode {
         this.variableManager = new VariableTable();
         this.stmts = [];
     }
+
     /**
      * Add import to AST
      * @param ctx

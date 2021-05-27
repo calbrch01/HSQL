@@ -5,7 +5,7 @@ import { ECLCode } from '../../code/ECLCode';
 import { Import } from '../../ast/stmt/Import';
 import ecl from '../../misc/strings/ecl.json';
 import format from 'string-template';
-import { ErrorManager } from '../../misc/error/Error';
+import { ErrorManager } from '../../managers/ErrorManager';
 import { AST } from '../../ast/AST';
 export class ECLGen extends IASTVisitor<void> {
     protected stmts: ECLCode[] = [];

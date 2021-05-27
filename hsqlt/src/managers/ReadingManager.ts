@@ -2,9 +2,9 @@ import { QualifiedIdentifier } from '../misc/ast/QualifiedIdentifier';
 import fs from 'fs';
 import path from 'path';
 import { Module } from '../ast/data/Module';
-import { ErrorManager, TranslationError } from '../misc/error/Error';
+import { ErrorManager, TranslationError } from './ErrorManager';
 import { AnyModule } from '../ast/data/AnyModule';
-import { iP } from '../misc/strings/misc';
+import { iP } from '../misc/strings/formatting';
 import rs from '../misc/strings/resultStrings.json';
 import format from 'string-template';
 

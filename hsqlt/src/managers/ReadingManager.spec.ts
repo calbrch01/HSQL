@@ -1,7 +1,7 @@
 import 'mocha';
 import { assert } from 'chai';
 import { FILETYPE, ReadingManager } from './ReadingManager';
-import { ErrorManager, HaltError } from '../misc/error/Error';
+import { ErrorManager, HaltError } from './ErrorManager';
 import path from 'path';
 // FIXME add other files
 describe('Extension tests', function () {

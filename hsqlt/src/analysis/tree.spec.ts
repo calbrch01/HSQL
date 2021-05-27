@@ -1,7 +1,7 @@
 import 'mocha';
 import { assert } from 'chai';
 import { HSQLTreeFactory } from './tree';
-import { ErrorManager, ErrorSeverity } from '../misc/error/Error';
+import { ErrorManager, ErrorSeverity } from '../managers/ErrorManager';
 
 describe('Tree generation', function () {
     it('error Reporting', async () => {

@@ -1,5 +1,5 @@
 import { CharStreams, CommonTokenStream } from 'antlr4ts';
-import { ErrorManager } from '../misc/error/Error';
+import { ErrorManager } from '../managers/ErrorManager';
 import { HSQLLexer } from '../misc/grammar/HSQLLexer';
 import { HSQLParser } from '../misc/grammar/HSQLParser';
 

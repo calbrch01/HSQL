@@ -7,7 +7,7 @@
 import yargs from 'yargs';
 import { FileOutput, OutputManager, StandardOutput } from './managers/OutputManagers';
 import { TaskManager } from './managers/TaskManager';
-import { ErrorType, HaltError, TranslationError } from './misc/error/Error';
+import { ErrorType, HaltError, TranslationError } from './managers/ErrorManager';
 import { ExecIntent, ExecCheckMode, ExecUnimplemented, ExecTreeMode, ExecMakeMode } from './misc/execModes';
 import format from 'string-template';
 import rs from './misc/strings/resultStrings.json';

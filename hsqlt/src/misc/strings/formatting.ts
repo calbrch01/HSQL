@@ -4,7 +4,7 @@
  * @module
  */
 
-import { ErrorSeverity, ErrorType } from '../error/Error';
+import { ErrorSeverity, ErrorType } from '../../managers/ErrorManager';
 
 /**
  * Assign string codes to these enums
@@ -35,9 +35,10 @@ export function issuePrepender(
     reason: string,
     issueType: ErrorSeverity = ErrorSeverity.INFO,
     num1?: number,
-    num2?: number
+    num2?: number,
+    str1?: string
 ) {
-    return `${mapIssue(issueType)}(${num1 ?? '-'}:${num2 ?? '-'}):${reason}`;
+    return `${mapIssue(issueType)}(${str1 ?? '-'}:${num1 ?? '-'}:${num2 ?? '-'}):${reason}`;
 }
 
 /**

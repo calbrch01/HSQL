@@ -12,7 +12,7 @@ import {
 } from '../../misc/grammar/HSQLParser';
 import { HSQLVisitor } from '../../misc/grammar/HSQLVisitor';
 import { ReadingManager } from '../../managers/ReadingManager';
-import { ErrorManager } from '../../misc/error/Error';
+import { ErrorManager } from '../../managers/ErrorManager';
 import { TaskManager } from '../../managers/TaskManager';
 // import { IdentifierCollector } from './IdentifierCollector';
 import { QualifiedIdentifier } from '../../misc/ast/QualifiedIdentifier';
