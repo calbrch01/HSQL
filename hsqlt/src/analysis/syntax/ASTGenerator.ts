@@ -45,7 +45,9 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
 
     visitImportStmt(ctx: ImportStmtContext) {
         const importFrom = QualifiedIdentifier.fromOverDefinition(ctx.overDefinition()); //ctx.overDefinition().accept(new IdentifierCollector());
+
         const importAs = ctx.IDENTIFIER()?.text;
+        const importAsQID = importAs === undefined ? undefined : QualifiedIdentifier.fromString(importAs);
         /*
          * Now since the identifiers list is a ts tuple
          * the spread operator applies it as arguments, to this function
@@ -54,7 +56,7 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
          * or if theres only one element
          * this.ast.addImport(identifiers[0]);
          */
-        this.ast.addImport(ctx, importFrom, importAs);
+        this.ast.addImport(ctx, importFrom, importAsQID);
         return null;
     }
 

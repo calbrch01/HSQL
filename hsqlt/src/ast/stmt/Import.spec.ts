@@ -1,6 +1,7 @@
 import { assert } from 'chai';
 import { HSQLTreeFactory } from '../../analysis/tree';
 import { ErrorManager } from '../../managers/ErrorManager';
+import { QualifiedIdentifier } from '../../misc/ast/QualifiedIdentifier';
 import { Import } from './Import';
 
 describe('import AST node tests', function () {
@@ -22,20 +23,28 @@ describe('import AST node tests', function () {
         importContexts.forEach(e => assert.exists(e));
     });
     it('no alias', async () => {
-        const a = new Import(importContexts[0]!, moduleName1);
-        assert.strictEqual(a.moduleName, moduleName1);
-        assert.strictEqual(a.getImportedName(), moduleName1);
+        const a = new Import(importContexts[0]!, QualifiedIdentifier.fromString(moduleName1));
+        assert.deepStrictEqual(a.moduleName, QualifiedIdentifier.fromString(moduleName1));
+        assert.deepStrictEqual(a.getImportedName(), QualifiedIdentifier.fromString(moduleName1));
     });
 
     it('alias is equal', async () => {
-        const a = new Import(importContexts[1]!, moduleName1, moduleName1);
-        assert.strictEqual(a.moduleName, moduleName1);
-        assert.strictEqual(a.getImportedName(), moduleName1);
+        const a = new Import(
+            importContexts[1]!,
+            QualifiedIdentifier.fromString(moduleName1),
+            QualifiedIdentifier.fromString(moduleName1)
+        );
+        assert.deepStrictEqual(a.moduleName, QualifiedIdentifier.fromString(moduleName1));
+        assert.deepStrictEqual(a.getImportedName(), QualifiedIdentifier.fromString(moduleName1));
     });
 
     it('an alias', async () => {
-        const a = new Import(importContexts[2]!, moduleName1, alias1);
-        assert.strictEqual(a.moduleName, moduleName1);
-        assert.strictEqual(a.getImportedName(), alias1);
+        const a = new Import(
+            importContexts[2]!,
+            QualifiedIdentifier.fromString(moduleName1),
+            QualifiedIdentifier.fromString(alias1)
+        );
+        assert.deepStrictEqual(a.moduleName, QualifiedIdentifier.fromString(moduleName1));
+        assert.deepStrictEqual(a.getImportedName(), QualifiedIdentifier.fromString(alias1));
     });
 });

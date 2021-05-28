@@ -33,15 +33,19 @@ export class AST implements BaseASTNode {
      * @param name
      * @param alias
      */
-    addImport(ctx: ImportStmtContext, name: QualifiedIdentifier, alias?: string) {
+    addImport(ctx: ImportStmtContext, name: QualifiedIdentifier, alias?: QualifiedIdentifier) {
         // FIXME assert that it doesnt exist already
         const nameStr = name.toString();
+        const aliasStr = alias?.toString();
+
+        //resolve this import
         const res = this.TaskMgr.resolve(name);
-        this.variableManager.add(alias ?? nameStr, {
+
+        this.variableManager.add(aliasStr ?? nameStr, {
             data: res,
             vis: VariableVisibility.DEFAULT,
         });
-        this.stmts.push(new Import(ctx, nameStr, alias));
+        this.stmts.push(new Import(ctx, name, alias));
     }
     accept<T>(visitor: IASTVisitor<T>) {
         return visitor.visitAST(this);

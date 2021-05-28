@@ -70,6 +70,6 @@ export class NoOutput extends OutputManager {
 
 export class FileOutput extends OutputManager {
     async do(fn: string, contents: string) {
-        await fs.writeFile(fn, contents);
+        return fs.writeFile(fn, contents);
     }
 }
