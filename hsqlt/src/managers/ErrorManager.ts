@@ -164,7 +164,10 @@ export class ErrorManager {
 
     push(e: TranslationError): void {
         this._errors.push(new ContexedTranslationError(this.contextTop, e));
-        if (e.type === ErrorType.HALTING) {
+        if (
+            e.type === ErrorType.HALTING ||
+            (this.errorMode === ErrorMode.PEDANTIC && e.severity >= ErrorSeverity.WARNING)
+        ) {
             this.halt();
         }
     }

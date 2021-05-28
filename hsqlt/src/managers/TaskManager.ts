@@ -80,7 +80,7 @@ export class TaskManager {
 
         const file = this.readingMgr.readSync(fn);
 
-        const { tree, charStreams, tokenStreams } = this.treeFactory.makeTree(file);
+        const { tree, tokenStreams } = this.treeFactory.makeTree(file);
         const x = new ASTGenerator(this, this._errorManager, tree);
         // get AST will read imports and call the rest of the required generate ASTS
         const ast = x.getAST();
