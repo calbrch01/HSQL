@@ -1,6 +1,5 @@
 import { IASTVisitor } from '../IASTVisitor';
 import { StmtExpression } from './base/StmtExpression';
-import { Variable } from '../symbol/Variables';
 import { ParserRuleContext } from 'antlr4ts';
 
 export class Select implements StmtExpression {

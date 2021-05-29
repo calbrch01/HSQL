@@ -50,7 +50,7 @@ export class AST implements BaseASTNode {
 
         if (x === false)
             this.TaskMgr.errorManager.push(
-                TranslationError.semanticErrorToken(format(rs.existsError, [aliasStr ?? nameStr]))
+                TranslationError.semanticErrorToken(format(rs.existsError, [aliasStr ?? nameStr]), ctx)
             );
         // this not our problem - the ast generator must do this
         //this.stmts.push(new Import(ctx, name, alias));

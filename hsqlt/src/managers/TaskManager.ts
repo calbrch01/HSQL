@@ -10,9 +10,9 @@ import { NoOutput, OutputManager } from './OutputManagers';
 import { FILETYPE, ReadingManager } from './ReadingManager';
 import { iP } from '../misc/strings/formatting';
 import rs from '../misc/strings/resultStrings.json';
-import { ECLCode } from '../code/ECLCode';
 import { ECLGen } from '../analysis/ast/ECLGen';
 import format from 'string-template';
+import { EOL } from 'os';
 
 export enum OutputMethod {
     FILES,
@@ -121,7 +121,7 @@ export class TaskManager {
             // console.log(`Result`, x);
             //get new filename
             const newFn = this.readingMgr.changeExtension(fn, FILETYPE.ECL);
-            const res = this.outputManager.do(newFn, x.toString());
+            const res = this.outputManager.do(newFn, x.join(EOL));
             work.push(res);
         }
         // Note: Promise.allSettled does not as per API throw any errors.

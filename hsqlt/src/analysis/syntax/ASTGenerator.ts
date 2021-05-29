@@ -28,7 +28,8 @@ import { RuleNode } from 'antlr4ts/tree/RuleNode';
 
 /**
  * Generate an AST.
- *
+ * Imports are added to the variable table by this.ast.addImport
+ * Definition assignments should be added during visiting
  * Note that in this ASTGenerator, the VEOs are returned as a singlet element, and if two rulenodes return a VEO, only the first is returned by a parent
  *
  */

@@ -1,6 +1,5 @@
 import { getJSDocReturnTag } from 'typescript';
 import { DataType } from '../data/base/DataType';
-import { Variable } from './Variables';
 
 export enum VariableVisibility {
     DEFAULT,
