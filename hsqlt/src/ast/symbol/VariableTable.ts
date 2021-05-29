@@ -1,4 +1,5 @@
 import { getJSDocReturnTag } from 'typescript';
+import { QualifiedIdentifier } from '../../misc/ast/QualifiedIdentifier';
 import { DataType } from '../data/base/DataType';
 
 export enum VariableVisibility {
@@ -67,5 +68,14 @@ export class VariableTable {
         }
 
         return usableStr;
+    }
+
+    /**
+     * Find data type of identifier. Similar to {@code VariableTable.get}
+     * @param q Identifier to resolve
+     */
+    resolve<T extends DataType = DataType>(q: QualifiedIdentifier): T {
+        // FIXME add qid implementing
+        throw new Error('not yet impl');
     }
 }

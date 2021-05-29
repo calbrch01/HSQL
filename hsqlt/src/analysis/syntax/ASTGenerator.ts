@@ -25,6 +25,7 @@ import { Table } from '../../ast/data/Table';
 import { NoDataType } from '../../ast/data/NoDataType';
 import { Import } from '../../ast/stmt/Import';
 import { RuleNode } from 'antlr4ts/tree/RuleNode';
+import { Definition } from '../../ast/stmt/DefinitionStmtlet';
 
 /**
  * Generate an AST.
@@ -83,6 +84,14 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
         const x = pullVEO(rhsdata, this.errorManager, ctx);
 
         return null;
+    }
+
+    // FIXME fix definitions
+    visitDefinition(ctx: DefinitionContext) {
+        // todo - resolve a variable
+        const qid = QualifiedIdentifier.fromGrammar(ctx);
+        const dt = this.ast.variableManager.resolve(qid);
+        return new VEO(dt, new Definition(ctx, qid));
     }
 
     // FIXME add actual code

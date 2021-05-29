@@ -1,5 +1,6 @@
 import { AST } from './AST';
 import { BaseASTNode } from './stmt/base/BaseASTNode';
+import { Definition } from './stmt/DefinitionStmtlet';
 import { EqualDefinition } from './stmt/EqualDefinition';
 import { Import } from './stmt/Import';
 import { Literal } from './stmt/Literal';
@@ -47,6 +48,10 @@ export abstract class IASTVisitor<T> {
     }
 
     visitImport(x: Import): T {
+        return this.visit(x);
+    }
+
+    visitDefinition(x: Definition): T {
         return this.visit(x);
     }
 }
