@@ -9,6 +9,7 @@ export enum EDataType {
     SET,
     SINGULAR,
     ACTION,
+    NOTHING,
 }
 
 type dataMap = {

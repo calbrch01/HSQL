@@ -9,7 +9,9 @@ import { TaskManager } from '../managers/TaskManager';
 import { ImportStmtContext } from '../misc/grammar/HSQLParser';
 import { IASTVisitor } from './IASTVisitor';
 import { ParserRuleContext } from 'antlr4ts';
-
+import { TranslationError } from '../managers/ErrorManager';
+import rs from '../misc/strings/resultStrings.json';
+import format from 'string-template';
 /**
  * AST root node
  */
@@ -34,18 +36,24 @@ export class AST implements BaseASTNode {
      * @param alias
      */
     addImport(ctx: ImportStmtContext, name: QualifiedIdentifier, alias?: QualifiedIdentifier) {
-        // FIXME assert that it doesnt exist already
-        const nameStr = name.toString();
+        // note that it gets imported as whatever is the tail module
+        const nameStr = name.tail;
         const aliasStr = alias?.toString();
 
         //resolve this import
         const res = this.TaskMgr.resolve(name);
 
-        this.variableManager.add(aliasStr ?? nameStr, {
+        const x = this.variableManager.add(aliasStr ?? nameStr, {
             data: res,
             vis: VariableVisibility.DEFAULT,
         });
-        this.stmts.push(new Import(ctx, name, alias));
+
+        if (x === false)
+            this.TaskMgr.errorManager.push(
+                TranslationError.semanticErrorToken(format(rs.existsError, [aliasStr ?? nameStr]))
+            );
+        // this not our problem - the ast generator must do this
+        //this.stmts.push(new Import(ctx, name, alias));
     }
     accept<T>(visitor: IASTVisitor<T>) {
         return visitor.visitAST(this);

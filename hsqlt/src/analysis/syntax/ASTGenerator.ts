@@ -22,11 +22,15 @@ import { pullVEO, VEO, VEOMaybe } from '../../misc/holders/VEO';
 import { StmtExpression } from '../../ast/stmt/base/StmtExpression';
 import { Select } from '../../ast/stmt/Select';
 import { Table } from '../../ast/data/Table';
+import { NoDataType } from '../../ast/data/NoDataType';
+import { Import } from '../../ast/stmt/Import';
+import { RuleNode } from 'antlr4ts/tree/RuleNode';
 
 /**
  * Generate an AST.
- * Note that there's two specific ways this is done
- * 1.
+ *
+ * Note that in this ASTGenerator, the VEOs are returned as a singlet element, and if two rulenodes return a VEO, only the first is returned by a parent
+ *
  */
 export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements HSQLVisitor<VEOMaybe> {
     protected ast: AST;
@@ -43,6 +47,16 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
         return null;
     }
 
+    /**
+     * Try to find a non null child
+     * @param node Node whose children are being evaluated
+     * @param curr Current aggregate state
+     * @returns whether to continue or not
+     */
+    protected shouldVisitNextChild(node: RuleNode, curr: VEOMaybe) {
+        return curr === null;
+    }
+
     visitImportStmt(ctx: ImportStmtContext) {
         const importFrom = QualifiedIdentifier.fromOverDefinition(ctx.overDefinition()); //ctx.overDefinition().accept(new IdentifierCollector());
 
@@ -57,7 +71,8 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
          * this.ast.addImport(identifiers[0]);
          */
         this.ast.addImport(ctx, importFrom, importAsQID);
-        return null;
+        // NoDataType as the import statement itself does not have a resultant data type
+        return new VEO(new NoDataType(), new Import(ctx, importFrom, importAsQID));
     }
 
     visitDefinitionStmt(ctx: DefinitionStmtContext) {
@@ -74,6 +89,24 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
         const ct = new Select(ctx, []);
         const dt = new Table();
         return new VEO(dt, ct);
+    }
+
+    // add all the nodes to the AST in that order
+    visitProgram(ctx: ProgramContext) {
+        // this.visitChildren(ctx);
+
+        // TODO Maybe find a more eloquent way of performing this operation.
+        // extract the statements
+        const visitedChildren = ctx.completestmt();
+        const visitedAnswers = visitedChildren.map(e => e.accept(this));
+        const results: VEO<DataType, BaseASTNode>[] = visitedAnswers.reduce((t, e) => {
+            if (e !== null) return t.concat(e);
+            return t;
+        }, [] as VEO[]);
+
+        // add the results of the statements
+        this.ast.stmts.push(...results.map(e => e.stmt));
+        return null;
     }
 
     getAST(): AST {
