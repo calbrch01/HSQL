@@ -10,7 +10,7 @@ export class Table extends CollectionType {
      *
      * @param cols Columns to contain
      */
-    constructor(private cols: Col[] = []) {
+    constructor(private cols: Map<string, Col> = new Map()) {
         super(EDataType.TABLE);
     }
 
@@ -18,29 +18,41 @@ export class Table extends CollectionType {
      * Duplicate a table type
      */
     cloneType() {
-        const duplicatedColumns: Col[] = this.cols.map(col => col.cloneType());
-        return new Table(duplicatedColumns);
+        const cols = this.list();
+        const duplicatedColumns: [string, Col][] = cols.map(([eName, eVar]) => [eName, eVar.cloneType()]);
+        return new Table(new Map(duplicatedColumns));
     }
     list() {
-        return this.cols;
+        return [...this.cols];
     }
-    has(C: Col) {
-        return this.cols.findIndex(e => e.equals(C)) !== -1;
+    get(c: string) {
+        return this.cols.get(c);
     }
+    // has(C: Col) {
+    //     return this.cols.has(e => e.equals(C)) !== -1;
+    // }
 
     static isTable(x: DataType): x is Table {
         return x.type === EDataType.TABLE;
     }
 
     isExactType(t: DataType) {
+        const myElems = [...this.cols];
         if (Table.isTable(t)) {
-            // must have same number of cols
-            if (t.cols.length !== this.cols.length) return false;
+            if (t.cols.size !== this.cols.size) return false;
             //cache col length
-            const colLength = t.cols.length;
-            for (let i = 0; i < colLength; ++i) {
-                // check all cols are the same
-                if (!this.cols[i].isExactType(this.cols[i])) return false;
+            // const colLength = t.cols.size;
+            // for (let i = 0; i < colLength; ++i) {
+            //     // check all cols are the same
+            //     if (!this.cols[i].isExactType(t.cols[i])) return false;
+
+            // their lengths are the same, so if every lhs = rhs, then every rhs = lhs
+            for (const [lhsName, lhsVar] of this.cols) {
+                const rhsVar = t.get(lhsName);
+                if (rhsVar === undefined) return false;
+                else {
+                    if (!lhsVar.isExactType(rhsVar)) return false;
+                }
             }
             return true;
         }

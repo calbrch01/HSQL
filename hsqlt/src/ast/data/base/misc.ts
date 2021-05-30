@@ -1,4 +1,5 @@
 import { Action } from '../Action';
+import { Any } from '../Any';
 import { AnyModule } from '../AnyModule';
 import { Layout } from '../Layout';
 import { Module } from '../Module';
@@ -13,7 +14,8 @@ export interface typeMap {
     [EDataType.MODULE]: Module;
     [EDataType.LAYOUT]: Layout;
     [EDataType.TABLE]: Table;
-
+    // FIXME introduce sets
+    [EDataType.SET]: Any;
     [EDataType.SINGULAR]: Singular;
     [EDataType.ACTION]: Action;
     [EDataType.NOTHING]: NoDataType;

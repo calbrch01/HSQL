@@ -8,23 +8,19 @@ import { Table } from './Table';
  * Table but no decidable columns
  */
 export class AnyTable extends Table {
+    get(c: string) {
+        return undefined;
+    }
+
     constructor() {
         super();
-        this.anyized = true;
+        this._anyized = true;
     }
     /**
      * return a new anytable
      */
     public cloneType() {
         return new AnyTable();
-    }
-
-    /**
-     * Will return true all the time for an anytable, as it can have any data type
-     * @param c Column
-     */
-    has(c: Col) {
-        return true;
     }
 
     isExactType(d: DataType) {

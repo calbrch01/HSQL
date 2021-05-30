@@ -23,6 +23,7 @@ import { VocabularyImpl } from "antlr4ts/VocabularyImpl";
 
 import * as Utils from "antlr4ts/misc/Utils";
 
+import { HSQLListener } from "./HSQLListener";
 import { HSQLVisitor } from "./HSQLVisitor";
 
 
@@ -3563,6 +3564,18 @@ export class ProgramContext extends ParserRuleContext {
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_program; }
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterProgram) {
+			listener.enterProgram(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitProgram) {
+			listener.exitProgram(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitProgram) {
 			return visitor.visitProgram(this);
@@ -3583,6 +3596,18 @@ export class CompletestmtContext extends ParserRuleContext {
 	}
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_completestmt; }
+	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterCompletestmt) {
+			listener.enterCompletestmt(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitCompletestmt) {
+			listener.exitCompletestmt(this);
+		}
+	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitCompletestmt) {
@@ -3610,6 +3635,18 @@ export class StmtContext extends ParserRuleContext {
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_stmt; }
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterStmt) {
+			listener.enterStmt(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitStmt) {
+			listener.exitStmt(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitStmt) {
 			return visitor.visitStmt(this);
@@ -3635,6 +3672,18 @@ export class DefinitionStmtContext extends ParserRuleContext {
 	}
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_definitionStmt; }
+	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterDefinitionStmt) {
+			listener.enterDefinitionStmt(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitDefinitionStmt) {
+			listener.exitDefinitionStmt(this);
+		}
+	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitDefinitionStmt) {
@@ -3668,6 +3717,18 @@ export class ExprContext extends ParserRuleContext {
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_expr; }
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterExpr) {
+			listener.enterExpr(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitExpr) {
+			listener.exitExpr(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitExpr) {
 			return visitor.visitExpr(this);
@@ -3696,6 +3757,18 @@ export class ActionStmtContext extends ParserRuleContext {
 	}
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_actionStmt; }
+	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterActionStmt) {
+			listener.enterActionStmt(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitActionStmt) {
+			listener.exitActionStmt(this);
+		}
+	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitActionStmt) {
@@ -3747,6 +3820,18 @@ export class SelectStmtContext extends ParserRuleContext {
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_selectStmt; }
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterSelectStmt) {
+			listener.enterSelectStmt(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitSelectStmt) {
+			listener.exitSelectStmt(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitSelectStmt) {
 			return visitor.visitSelectStmt(this);
@@ -3766,6 +3851,18 @@ export class SelectHavingClauseContext extends ParserRuleContext {
 	}
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_selectHavingClause; }
+	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterSelectHavingClause) {
+			listener.enterSelectHavingClause(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitSelectHavingClause) {
+			listener.exitSelectHavingClause(this);
+		}
+	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitSelectHavingClause) {
@@ -3788,6 +3885,18 @@ export class SelectGroupByClauseContext extends ParserRuleContext {
 	}
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_selectGroupByClause; }
+	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterSelectGroupByClause) {
+			listener.enterSelectGroupByClause(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitSelectGroupByClause) {
+			listener.exitSelectGroupByClause(this);
+		}
+	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitSelectGroupByClause) {
@@ -3824,6 +3933,18 @@ export class DefinitionSetContext extends ParserRuleContext {
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_definitionSet; }
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterDefinitionSet) {
+			listener.enterDefinitionSet(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitDefinitionSet) {
+			listener.exitDefinitionSet(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitDefinitionSet) {
 			return visitor.visitDefinitionSet(this);
@@ -3859,6 +3980,18 @@ export class SelectColumnsContext extends ParserRuleContext {
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_selectColumns; }
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterSelectColumns) {
+			listener.enterSelectColumns(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitSelectColumns) {
+			listener.exitSelectColumns(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitSelectColumns) {
 			return visitor.visitSelectColumns(this);
@@ -3892,6 +4025,18 @@ export class NormalColContext extends SelectColContext {
 		this.copyFrom(ctx);
 	}
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterNormalCol) {
+			listener.enterNormalCol(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitNormalCol) {
+			listener.exitNormalCol(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitNormalCol) {
 			return visitor.visitNormalCol(this);
@@ -3905,6 +4050,18 @@ export class WildAllContext extends SelectColContext {
 	constructor(ctx: SelectColContext) {
 		super(ctx.parent, ctx.invokingState);
 		this.copyFrom(ctx);
+	}
+	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterWildAll) {
+			listener.enterWildAll(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitWildAll) {
+			listener.exitWildAll(this);
+		}
 	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
@@ -3937,6 +4094,18 @@ export class SelectAggregatedEverythingColContext extends ColContext {
 		this.copyFrom(ctx);
 	}
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterSelectAggregatedEverythingCol) {
+			listener.enterSelectAggregatedEverythingCol(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitSelectAggregatedEverythingCol) {
+			listener.exitSelectAggregatedEverythingCol(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitSelectAggregatedEverythingCol) {
 			return visitor.visitSelectAggregatedEverythingCol(this);
@@ -3958,6 +4127,18 @@ export class SelectAggregatedOneColContext extends ColContext {
 		this.copyFrom(ctx);
 	}
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterSelectAggregatedOneCol) {
+			listener.enterSelectAggregatedOneCol(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitSelectAggregatedOneCol) {
+			listener.exitSelectAggregatedOneCol(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitSelectAggregatedOneCol) {
 			return visitor.visitSelectAggregatedOneCol(this);
@@ -3974,6 +4155,18 @@ export class SelectOneColContext extends ColContext {
 	constructor(ctx: ColContext) {
 		super(ctx.parent, ctx.invokingState);
 		this.copyFrom(ctx);
+	}
+	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterSelectOneCol) {
+			listener.enterSelectOneCol(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitSelectOneCol) {
+			listener.exitSelectOneCol(this);
+		}
 	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
@@ -4000,6 +4193,18 @@ export class AliasingColContext extends ParserRuleContext {
 	}
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_aliasingCol; }
+	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterAliasingCol) {
+			listener.enterAliasingCol(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitAliasingCol) {
+			listener.exitAliasingCol(this);
+		}
+	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitAliasingCol) {
@@ -4040,6 +4245,18 @@ export class SelectFromClauseContext extends ParserRuleContext {
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_selectFromClause; }
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterSelectFromClause) {
+			listener.enterSelectFromClause(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitSelectFromClause) {
+			listener.exitSelectFromClause(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitSelectFromClause) {
 			return visitor.visitSelectFromClause(this);
@@ -4075,6 +4292,18 @@ export class SelectFromDerivedTableContext extends SelectFromTableReferenceConte
 		this.copyFrom(ctx);
 	}
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterSelectFromDerivedTable) {
+			listener.enterSelectFromDerivedTable(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitSelectFromDerivedTable) {
+			listener.exitSelectFromDerivedTable(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitSelectFromDerivedTable) {
 			return visitor.visitSelectFromDerivedTable(this);
@@ -4094,6 +4323,18 @@ export class SelectFromDefinitionContext extends SelectFromTableReferenceContext
 	constructor(ctx: SelectFromTableReferenceContext) {
 		super(ctx.parent, ctx.invokingState);
 		this.copyFrom(ctx);
+	}
+	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterSelectFromDefinition) {
+			listener.enterSelectFromDefinition(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitSelectFromDefinition) {
+			listener.exitSelectFromDefinition(this);
+		}
 	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
@@ -4130,6 +4371,18 @@ export class SelectBracketedFromTableContext extends SelectFromTableReferenceCon
 		this.copyFrom(ctx);
 	}
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterSelectBracketedFromTable) {
+			listener.enterSelectBracketedFromTable(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitSelectBracketedFromTable) {
+			listener.exitSelectBracketedFromTable(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitSelectBracketedFromTable) {
 			return visitor.visitSelectBracketedFromTable(this);
@@ -4150,6 +4403,18 @@ export class SelectAliasContext extends ParserRuleContext {
 	}
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_selectAlias; }
+	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterSelectAlias) {
+			listener.enterSelectAlias(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitSelectAlias) {
+			listener.exitSelectAlias(this);
+		}
+	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitSelectAlias) {
@@ -4177,6 +4442,18 @@ export class Join_operatorContext extends ParserRuleContext {
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_join_operator; }
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterJoin_operator) {
+			listener.enterJoin_operator(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitJoin_operator) {
+			listener.exitJoin_operator(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitJoin_operator) {
 			return visitor.visitJoin_operator(this);
@@ -4196,6 +4473,18 @@ export class SelectWhereClauseContext extends ParserRuleContext {
 	}
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_selectWhereClause; }
+	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterSelectWhereClause) {
+			listener.enterSelectWhereClause(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitSelectWhereClause) {
+			listener.exitSelectWhereClause(this);
+		}
+	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitSelectWhereClause) {
@@ -4250,6 +4539,18 @@ export class JoinedTableContext extends ParserRuleContext {
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_joinedTable; }
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterJoinedTable) {
+			listener.enterJoinedTable(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitJoinedTable) {
+			listener.exitJoinedTable(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitJoinedTable) {
 			return visitor.visitJoinedTable(this);
@@ -4281,6 +4582,18 @@ export class JoinSpecificationContext extends ParserRuleContext {
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_joinSpecification; }
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterJoinSpecification) {
+			listener.enterJoinSpecification(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitJoinSpecification) {
+			listener.exitJoinSpecification(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitJoinSpecification) {
 			return visitor.visitJoinSpecification(this);
@@ -4300,6 +4613,18 @@ export class GroupByClauseContext extends ParserRuleContext {
 	}
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_groupByClause; }
+	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterGroupByClause) {
+			listener.enterGroupByClause(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitGroupByClause) {
+			listener.exitGroupByClause(this);
+		}
+	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitGroupByClause) {
@@ -4336,6 +4661,18 @@ export class OrderByClauseContext extends ParserRuleContext {
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_orderByClause; }
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterOrderByClause) {
+			listener.enterOrderByClause(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitOrderByClause) {
+			listener.exitOrderByClause(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitOrderByClause) {
 			return visitor.visitOrderByClause(this);
@@ -4359,6 +4696,18 @@ export class SortItemContext extends ParserRuleContext {
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_sortItem; }
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterSortItem) {
+			listener.enterSortItem(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitSortItem) {
+			listener.exitSortItem(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitSortItem) {
 			return visitor.visitSortItem(this);
@@ -4379,6 +4728,18 @@ export class AscSortItemContext extends ParserRuleContext {
 	}
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_ascSortItem; }
+	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterAscSortItem) {
+			listener.enterAscSortItem(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitAscSortItem) {
+			listener.exitAscSortItem(this);
+		}
+	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitAscSortItem) {
@@ -4401,6 +4762,18 @@ export class DescSortItemContext extends ParserRuleContext {
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_descSortItem; }
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterDescSortItem) {
+			listener.enterDescSortItem(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitDescSortItem) {
+			listener.exitDescSortItem(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitDescSortItem) {
 			return visitor.visitDescSortItem(this);
@@ -4422,6 +4795,18 @@ export class LimitClauseContext extends ParserRuleContext {
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_limitClause; }
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterLimitClause) {
+			listener.enterLimitClause(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitLimitClause) {
+			listener.exitLimitClause(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitLimitClause) {
 			return visitor.visitLimitClause(this);
@@ -4442,6 +4827,18 @@ export class OffsetClauseContext extends ParserRuleContext {
 	}
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_offsetClause; }
+	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterOffsetClause) {
+			listener.enterOffsetClause(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitOffsetClause) {
+			listener.exitOffsetClause(this);
+		}
+	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitOffsetClause) {
@@ -4466,6 +4863,18 @@ export class ComparisonOperatorContext extends ParserRuleContext {
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_comparisonOperator; }
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterComparisonOperator) {
+			listener.enterComparisonOperator(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitComparisonOperator) {
+			listener.exitComparisonOperator(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitComparisonOperator) {
 			return visitor.visitComparisonOperator(this);
@@ -4488,6 +4897,18 @@ export class LogicalOperatorContext extends ParserRuleContext {
 	}
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_logicalOperator; }
+	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterLogicalOperator) {
+			listener.enterLogicalOperator(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitLogicalOperator) {
+			listener.exitLogicalOperator(this);
+		}
+	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitLogicalOperator) {
@@ -4515,6 +4936,18 @@ export class LiteralContext extends ParserRuleContext {
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_literal; }
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterLiteral) {
+			listener.enterLiteral(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitLiteral) {
+			listener.exitLiteral(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitLiteral) {
 			return visitor.visitLiteral(this);
@@ -4538,6 +4971,18 @@ export class DataTypeContext extends ParserRuleContext {
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_dataType; }
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterDataType) {
+			listener.enterDataType(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitDataType) {
+			listener.exitDataType(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitDataType) {
 			return visitor.visitDataType(this);
@@ -4557,6 +5002,18 @@ export class AlterOperatorContext extends ParserRuleContext {
 	}
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_alterOperator; }
+	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterAlterOperator) {
+			listener.enterAlterOperator(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitAlterOperator) {
+			listener.exitAlterOperator(this);
+		}
+	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitAlterOperator) {
@@ -4587,6 +5044,18 @@ export class OverDefinitionContext extends ParserRuleContext {
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_overDefinition; }
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterOverDefinition) {
+			listener.enterOverDefinition(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitOverDefinition) {
+			listener.exitOverDefinition(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitOverDefinition) {
 			return visitor.visitOverDefinition(this);
@@ -4614,6 +5083,18 @@ export class NormalIdentifierContext extends OverDefinitionRootContext {
 		this.copyFrom(ctx);
 	}
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterNormalIdentifier) {
+			listener.enterNormalIdentifier(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitNormalIdentifier) {
+			listener.exitNormalIdentifier(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitNormalIdentifier) {
 			return visitor.visitNormalIdentifier(this);
@@ -4629,6 +5110,18 @@ export class RootIdentifierContext extends OverDefinitionRootContext {
 		this.copyFrom(ctx);
 	}
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterRootIdentifier) {
+			listener.enterRootIdentifier(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitRootIdentifier) {
+			listener.exitRootIdentifier(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitRootIdentifier) {
 			return visitor.visitRootIdentifier(this);
@@ -4642,6 +5135,18 @@ export class ParentIdentifierContext extends OverDefinitionRootContext {
 	constructor(ctx: OverDefinitionRootContext) {
 		super(ctx.parent, ctx.invokingState);
 		this.copyFrom(ctx);
+	}
+	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterParentIdentifier) {
+			listener.enterParentIdentifier(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitParentIdentifier) {
+			listener.exitParentIdentifier(this);
+		}
 	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
@@ -4671,6 +5176,18 @@ export class NormalTailIdentifierContext extends OverDefinitionTailContext {
 		this.copyFrom(ctx);
 	}
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterNormalTailIdentifier) {
+			listener.enterNormalTailIdentifier(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitNormalTailIdentifier) {
+			listener.exitNormalTailIdentifier(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitNormalTailIdentifier) {
 			return visitor.visitNormalTailIdentifier(this);
@@ -4684,6 +5201,18 @@ export class ParentTailIdentifierContext extends OverDefinitionTailContext {
 	constructor(ctx: OverDefinitionTailContext) {
 		super(ctx.parent, ctx.invokingState);
 		this.copyFrom(ctx);
+	}
+	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterParentTailIdentifier) {
+			listener.enterParentTailIdentifier(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitParentTailIdentifier) {
+			listener.exitParentTailIdentifier(this);
+		}
 	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
@@ -4712,6 +5241,18 @@ export class DefinitionContext extends ParserRuleContext {
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_definition; }
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterDefinition) {
+			listener.enterDefinition(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitDefinition) {
+			listener.exitDefinition(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitDefinition) {
 			return visitor.visitDefinition(this);
@@ -4731,6 +5272,18 @@ export class ExpressionContext extends ParserRuleContext {
 	}
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_expression; }
+	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterExpression) {
+			listener.enterExpression(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitExpression) {
+			listener.exitExpression(this);
+		}
+	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitExpression) {
@@ -4765,6 +5318,18 @@ export class PredicatedContext extends BooleanExpressionContext {
 		this.copyFrom(ctx);
 	}
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterPredicated) {
+			listener.enterPredicated(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitPredicated) {
+			listener.exitPredicated(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitPredicated) {
 			return visitor.visitPredicated(this);
@@ -4781,6 +5346,18 @@ export class LogicalNotContext extends BooleanExpressionContext {
 	constructor(ctx: BooleanExpressionContext) {
 		super(ctx.parent, ctx.invokingState);
 		this.copyFrom(ctx);
+	}
+	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterLogicalNot) {
+			listener.enterLogicalNot(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitLogicalNot) {
+			listener.exitLogicalNot(this);
+		}
 	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
@@ -4809,6 +5386,18 @@ export class LogicalBinaryContext extends BooleanExpressionContext {
 	constructor(ctx: BooleanExpressionContext) {
 		super(ctx.parent, ctx.invokingState);
 		this.copyFrom(ctx);
+	}
+	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterLogicalBinary) {
+			listener.enterLogicalBinary(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitLogicalBinary) {
+			listener.exitLogicalBinary(this);
+		}
 	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
@@ -4847,6 +5436,18 @@ export class ComparisonContext extends PredicateContext {
 		this.copyFrom(ctx);
 	}
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterComparison) {
+			listener.enterComparison(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitComparison) {
+			listener.exitComparison(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitComparison) {
 			return visitor.visitComparison(this);
@@ -4873,6 +5474,18 @@ export class BetweenContext extends PredicateContext {
 	constructor(ctx: PredicateContext) {
 		super(ctx.parent, ctx.invokingState, ctx.ctx);
 		this.copyFrom(ctx);
+	}
+	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterBetween) {
+			listener.enterBetween(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitBetween) {
+			listener.exitBetween(this);
+		}
 	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
@@ -4911,6 +5524,18 @@ export class InListContext extends PredicateContext {
 		this.copyFrom(ctx);
 	}
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterInList) {
+			listener.enterInList(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitInList) {
+			listener.exitInList(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitInList) {
 			return visitor.visitInList(this);
@@ -4940,6 +5565,18 @@ export class ValueExpressionDefaultContext extends ValueExpressionContext {
 		this.copyFrom(ctx);
 	}
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterValueExpressionDefault) {
+			listener.enterValueExpressionDefault(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitValueExpressionDefault) {
+			listener.exitValueExpressionDefault(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitValueExpressionDefault) {
 			return visitor.visitValueExpressionDefault(this);
@@ -4967,6 +5604,18 @@ export class IdentifierContext extends PrimaryExpressionContext {
 		this.copyFrom(ctx);
 	}
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterIdentifier) {
+			listener.enterIdentifier(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitIdentifier) {
+			listener.exitIdentifier(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitIdentifier) {
 			return visitor.visitIdentifier(this);
@@ -4982,6 +5631,18 @@ export class NumericLiteralContext extends PrimaryExpressionContext {
 	constructor(ctx: PrimaryExpressionContext) {
 		super(ctx.parent, ctx.invokingState);
 		this.copyFrom(ctx);
+	}
+	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterNumericLiteral) {
+			listener.enterNumericLiteral(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitNumericLiteral) {
+			listener.exitNumericLiteral(this);
+		}
 	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
@@ -5001,6 +5662,18 @@ export class BooleanLiteralContext extends PrimaryExpressionContext {
 		this.copyFrom(ctx);
 	}
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterBooleanLiteral) {
+			listener.enterBooleanLiteral(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitBooleanLiteral) {
+			listener.exitBooleanLiteral(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitBooleanLiteral) {
 			return visitor.visitBooleanLiteral(this);
@@ -5016,6 +5689,18 @@ export class StringLiteralContext extends PrimaryExpressionContext {
 	constructor(ctx: PrimaryExpressionContext) {
 		super(ctx.parent, ctx.invokingState);
 		this.copyFrom(ctx);
+	}
+	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterStringLiteral) {
+			listener.enterStringLiteral(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitStringLiteral) {
+			listener.exitStringLiteral(this);
+		}
 	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
@@ -5035,6 +5720,18 @@ export class ParenthesizedExpressionContext extends PrimaryExpressionContext {
 	constructor(ctx: PrimaryExpressionContext) {
 		super(ctx.parent, ctx.invokingState);
 		this.copyFrom(ctx);
+	}
+	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterParenthesizedExpression) {
+			listener.enterParenthesizedExpression(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitParenthesizedExpression) {
+			listener.exitParenthesizedExpression(this);
+		}
 	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
@@ -5064,6 +5761,18 @@ export class DecimalLiteralContext extends NumberContext {
 		this.copyFrom(ctx);
 	}
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterDecimalLiteral) {
+			listener.enterDecimalLiteral(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitDecimalLiteral) {
+			listener.exitDecimalLiteral(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitDecimalLiteral) {
 			return visitor.visitDecimalLiteral(this);
@@ -5079,6 +5788,18 @@ export class DoubleLiteralContext extends NumberContext {
 		this.copyFrom(ctx);
 	}
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterDoubleLiteral) {
+			listener.enterDoubleLiteral(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitDoubleLiteral) {
+			listener.exitDoubleLiteral(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitDoubleLiteral) {
 			return visitor.visitDoubleLiteral(this);
@@ -5092,6 +5813,18 @@ export class IntegerLiteralContext extends NumberContext {
 	constructor(ctx: NumberContext) {
 		super(ctx.parent, ctx.invokingState);
 		this.copyFrom(ctx);
+	}
+	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterIntegerLiteral) {
+			listener.enterIntegerLiteral(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitIntegerLiteral) {
+			listener.exitIntegerLiteral(this);
+		}
 	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
@@ -5121,6 +5854,18 @@ export class BasicStringLiteralContext extends StringContext {
 		this.copyFrom(ctx);
 	}
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterBasicStringLiteral) {
+			listener.enterBasicStringLiteral(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitBasicStringLiteral) {
+			listener.exitBasicStringLiteral(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitBasicStringLiteral) {
 			return visitor.visitBasicStringLiteral(this);
@@ -5136,6 +5881,18 @@ export class UnicodeStringLiteralContext extends StringContext {
 	constructor(ctx: StringContext) {
 		super(ctx.parent, ctx.invokingState);
 		this.copyFrom(ctx);
+	}
+	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterUnicodeStringLiteral) {
+			listener.enterUnicodeStringLiteral(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitUnicodeStringLiteral) {
+			listener.exitUnicodeStringLiteral(this);
+		}
 	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
@@ -5156,6 +5913,18 @@ export class BooleanValueContext extends ParserRuleContext {
 	}
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_booleanValue; }
+	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterBooleanValue) {
+			listener.enterBooleanValue(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitBooleanValue) {
+			listener.exitBooleanValue(this);
+		}
+	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitBooleanValue) {
@@ -5179,6 +5948,18 @@ export class ImportStmtContext extends ParserRuleContext {
 	}
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_importStmt; }
+	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterImportStmt) {
+			listener.enterImportStmt(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitImportStmt) {
+			listener.exitImportStmt(this);
+		}
+	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitImportStmt) {
@@ -5207,6 +5988,18 @@ export class OutputStmtContext extends ParserRuleContext {
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_outputStmt; }
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterOutputStmt) {
+			listener.enterOutputStmt(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitOutputStmt) {
+			listener.exitOutputStmt(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitOutputStmt) {
 			return visitor.visitOutputStmt(this);
@@ -5233,6 +6026,18 @@ export class AttributeContext extends ParserRuleContext {
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_attribute; }
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterAttribute) {
+			listener.enterAttribute(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitAttribute) {
+			listener.exitAttribute(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitAttribute) {
 			return visitor.visitAttribute(this);
@@ -5251,6 +6056,18 @@ export class NamedOutputContext extends ParserRuleContext {
 	}
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_namedOutput; }
+	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterNamedOutput) {
+			listener.enterNamedOutput(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitNamedOutput) {
+			listener.exitNamedOutput(this);
+		}
+	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitNamedOutput) {
@@ -5271,6 +6088,18 @@ export class ToFileContext extends ParserRuleContext {
 	}
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_toFile; }
+	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterToFile) {
+			listener.enterToFile(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitToFile) {
+			listener.exitToFile(this);
+		}
+	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitToFile) {
@@ -5304,6 +6133,18 @@ export class PlotStmtContext extends ParserRuleContext {
 	}
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_plotStmt; }
+	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterPlotStmt) {
+			listener.enterPlotStmt(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitPlotStmt) {
+			listener.exitPlotStmt(this);
+		}
+	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitPlotStmt) {
@@ -5342,6 +6183,18 @@ export class ModuleStmtContext extends ParserRuleContext {
 	}
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_moduleStmt; }
+	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterModuleStmt) {
+			listener.enterModuleStmt(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitModuleStmt) {
+			listener.exitModuleStmt(this);
+		}
+	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitModuleStmt) {
@@ -5383,6 +6236,18 @@ export class TransformStmtContext extends ParserRuleContext {
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_transformStmt; }
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterTransformStmt) {
+			listener.enterTransformStmt(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitTransformStmt) {
+			listener.exitTransformStmt(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitTransformStmt) {
 			return visitor.visitTransformStmt(this);
@@ -5408,6 +6273,18 @@ export class MlStmtContext extends ParserRuleContext {
 	}
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_mlStmt; }
+	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterMlStmt) {
+			listener.enterMlStmt(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitMlStmt) {
+			listener.exitMlStmt(this);
+		}
+	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitMlStmt) {
@@ -5456,6 +6333,18 @@ export class TrainContext extends ParserRuleContext {
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_train; }
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterTrain) {
+			listener.enterTrain(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitTrain) {
+			listener.exitTrain(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitTrain) {
 			return visitor.visitTrain(this);
@@ -5494,6 +6383,18 @@ export class ElementaryMLContext extends ParserRuleContext {
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_elementaryML; }
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterElementaryML) {
+			listener.enterElementaryML(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitElementaryML) {
+			listener.exitElementaryML(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitElementaryML) {
 			return visitor.visitElementaryML(this);
@@ -5529,6 +6430,18 @@ export class TrainOptionsContext extends ParserRuleContext {
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_trainOptions; }
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterTrainOptions) {
+			listener.enterTrainOptions(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitTrainOptions) {
+			listener.exitTrainOptions(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitTrainOptions) {
 			return visitor.visitTrainOptions(this);
@@ -5550,6 +6463,18 @@ export class TrainOptionContext extends ParserRuleContext {
 	}
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_trainOption; }
+	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterTrainOption) {
+			listener.enterTrainOption(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitTrainOption) {
+			listener.exitTrainOption(this);
+		}
+	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitTrainOption) {
@@ -5576,6 +6501,18 @@ export class TrainValueContext extends ParserRuleContext {
 	}
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_trainValue; }
+	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterTrainValue) {
+			listener.enterTrainValue(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitTrainValue) {
+			listener.exitTrainValue(this);
+		}
+	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitTrainValue) {
@@ -5610,6 +6547,18 @@ export class PredictContext extends ParserRuleContext {
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_predict; }
 	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterPredict) {
+			listener.enterPredict(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitPredict) {
+			listener.exitPredict(this);
+		}
+	}
+	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitPredict) {
 			return visitor.visitPredict(this);
@@ -5628,6 +6577,18 @@ export class ScopeContext extends ParserRuleContext {
 	}
 	// @Override
 	public get ruleIndex(): number { return HSQLParser.RULE_scope; }
+	// @Override
+	public enterRule(listener: HSQLListener): void {
+		if (listener.enterScope) {
+			listener.enterScope(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: HSQLListener): void {
+		if (listener.exitScope) {
+			listener.exitScope(this);
+		}
+	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
 		if (visitor.visitScope) {

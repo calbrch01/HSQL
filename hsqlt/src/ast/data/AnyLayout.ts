@@ -5,13 +5,10 @@ import { Layout } from './Layout';
 export class AnyLayout extends Layout {
     constructor() {
         super();
-        this.anyized = true;
+        this._anyized = true;
     }
     public cloneType() {
         return new AnyLayout();
-    }
-    has(c: DataType) {
-        return true;
     }
 
     isExactType(d: DataType) {

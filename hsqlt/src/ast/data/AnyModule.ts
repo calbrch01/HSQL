@@ -9,12 +9,12 @@ import { Col } from './Col';
 export class AnyModule extends Module {
     constructor() {
         super();
-        this.anyized = true;
+        this._anyized = true;
     }
     public cloneType() {
         return new AnyModule();
     }
-    has(c: DataType) {
+    has(c: string, d?: EDataType) {
         return true;
     }
 

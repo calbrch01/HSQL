@@ -1,6 +1,8 @@
 import { getJSDocReturnTag } from 'typescript';
 import { QualifiedIdentifier } from '../../misc/ast/QualifiedIdentifier';
+import { Any } from '../data/Any';
 import { DataType } from '../data/base/DataType';
+import { isCollection } from '../data/base/misc';
 
 export enum VariableVisibility {
     DEFAULT,
@@ -11,6 +13,13 @@ export type DataMetaData = {
     data: DataType;
     vis: VariableVisibility;
 };
+
+function MakeDataMetaData(data: DataType, vis: VariableVisibility): DataMetaData {
+    return {
+        data,
+        vis,
+    };
+}
 
 /**
  * Variable table
@@ -75,22 +84,52 @@ export class VariableTable {
      * Returns undefined if does not exist
      * @param q Identifier to resolve
      */
-    resolve(q: QualifiedIdentifier): DataMetaData | undefined {
+    resolve(q: QualifiedIdentifier): DataType | undefined {
+        // make a mutable copy
         // FIXME add qid implementing
         if (q.length === 1) {
             const x = this.get(q.head);
             if (x) {
-                return x;
+                return x.data;
             }
             // doesnt exist
             return undefined;
         } else {
             // TODO 30/05 get data type if internal
-            let root = this.get(q.head);
-            if (!root) return undefined;
+            let root = this.get(q.head)?.data;
+            // quick shortcut - redundant here, but helps skip all the extra work a bit later
+            if (root === undefined) return undefined;
             else {
-                //
-                return undefined;
+                q = new QualifiedIdentifier(...q.qidentifier);
+                q.qidentifier.shift();
+                let anyized = false;
+
+                // the process goes as below
+                // 1. try to expand and find the current id being searched
+                //     1.5 check if its anyizable, then shortcut and return true
+                // 2. if found, set that as root
+                // 3. any other case return undefined
+                for (const id of q.qidentifier) {
+                    if (root === undefined) return undefined;
+                    // const f = root;
+                    if (isCollection(root)) {
+                        if (root.anyized) {
+                            // no point in searching, short circuit and return an any
+                            return new Any();
+                        } else {
+                            // not anyized, we can dig deeper
+                            root = root.get(id);
+                        }
+                    } else {
+                        // we had to go
+                        return undefined;
+                    }
+                }
+                // return what became our last element after traversal
+                // which is what is the answer
+                return root;
+
+                // return undefined;
             }
         }
     }
