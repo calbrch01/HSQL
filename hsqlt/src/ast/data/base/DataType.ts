@@ -6,23 +6,19 @@ export enum EDataType {
     MODULE,
     LAYOUT,
     TABLE,
+    /** not used yet */
     SET,
     SINGULAR,
     ACTION,
     NOTHING,
 }
 
-type dataMap = {
-    [EDataType.TABLE]: Table | AnyTable;
-};
-
-type dataConv<T extends keyof dataMap> = (arg: T) => dataMap[T];
-
 /**
  * Data type
  */
 export abstract class DataType {
     protected _type: EDataType | null = null;
+    protected anyized: boolean = false;
     get type() {
         return this._type;
     }

@@ -10,6 +10,7 @@ import { Table } from './Table';
 export class AnyTable extends Table {
     constructor() {
         super();
+        this.anyized = true;
     }
     /**
      * return a new anytable

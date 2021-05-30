@@ -72,10 +72,26 @@ export class VariableTable {
 
     /**
      * Find data type of identifier. Similar to {@code VariableTable.get}
+     * Returns undefined if does not exist
      * @param q Identifier to resolve
      */
-    resolve<T extends DataType = DataType>(q: QualifiedIdentifier): T {
+    resolve(q: QualifiedIdentifier): DataMetaData | undefined {
         // FIXME add qid implementing
-        throw new Error('not yet impl');
+        if (q.length === 1) {
+            const x = this.get(q.head);
+            if (x) {
+                return x;
+            }
+            // doesnt exist
+            return undefined;
+        } else {
+            // TODO 30/05 get data type if internal
+            let root = this.get(q.head);
+            if (!root) return undefined;
+            else {
+                //
+                return undefined;
+            }
+        }
     }
 }

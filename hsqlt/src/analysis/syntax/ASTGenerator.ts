@@ -90,8 +90,9 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
     visitDefinition(ctx: DefinitionContext) {
         // todo - resolve a variable
         const qid = QualifiedIdentifier.fromGrammar(ctx);
+        // TODO 30/05
         const dt = this.ast.variableManager.resolve(qid);
-        return new VEO(dt, new Definition(ctx, qid));
+        return null; //new VEO(dt, new Definition(ctx, qid));
     }
 
     // FIXME add actual code

@@ -1,25 +1,21 @@
-import { Module } from './Module';
 import { CollectionType } from './base/CollectionType';
 import { DataType, EDataType } from './base/DataType';
-import { Col } from './Col';
+import { Layout } from './Layout';
 
-/**
- * Table but no decidable columns
- */
-export class AnyModule extends Module {
+export class AnyLayout extends Layout {
     constructor() {
         super();
         this.anyized = true;
     }
     public cloneType() {
-        return new AnyModule();
+        return new AnyLayout();
     }
     has(c: DataType) {
         return true;
     }
 
     isExactType(d: DataType) {
-        if (AnyModule.isModule(d)) {
+        if (AnyLayout.isLayout(d)) {
             return true;
         }
         return false;
