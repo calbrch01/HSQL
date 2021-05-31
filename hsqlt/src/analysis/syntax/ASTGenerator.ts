@@ -99,6 +99,9 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
         const vis = this.getScope(ctx.scope());
         // FIXME 31/05, add this beautiful variable
         const res = this.ast.variableManager.add(lhstext, { data: x.datatype, vis });
+        if (!res) {
+            this.errorManager.push(TranslationError.semanticErrorToken(format(rs.existsError, [lhstext]), ctx));
+        }
         const ed = new EqualDefinition(ctx, QualifiedIdentifier.fromString(lhstext), x.stmt);
         return new VEO(new NoDataType(), ed); //new EqualDefinition(ctx,);
     }
@@ -113,7 +116,7 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
         // but use Any throughout the process
         if (dt === undefined) {
             dt = new Any();
-            this.errorManager.push(TranslationError.semanticErrorToken(format(rs.notFound, [qid.toString()])));
+            this.errorManager.push(TranslationError.semanticErrorToken(format(rs.notFound, [qid.toString()]), ctx));
         }
         return new VEO(dt, new Definition(ctx, qid));
     }
