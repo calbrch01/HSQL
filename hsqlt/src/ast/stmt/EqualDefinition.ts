@@ -12,7 +12,7 @@ export class EqualDefinition<T extends DataType = DataType, U extends StmtExpres
 {
     lhs?: T;
     rhs?: U;
-    constructor(public node: ParserRuleContext, _lhs?: T, _rhs?: U) {
+    constructor(public node: ParserRuleContext, _lhs: T, _rhs: U) {
         this.lhs = _lhs;
         this.rhs = _rhs;
     }

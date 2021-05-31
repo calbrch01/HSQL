@@ -12,7 +12,7 @@ import {
 } from '../../misc/grammar/HSQLParser';
 import { HSQLVisitor } from '../../misc/grammar/HSQLVisitor';
 import { ReadingManager } from '../../managers/ReadingManager';
-import { ErrorManager } from '../../managers/ErrorManager';
+import { ErrorManager, TranslationError } from '../../managers/ErrorManager';
 import { TaskManager } from '../../managers/TaskManager';
 // import { IdentifierCollector } from './IdentifierCollector';
 import { QualifiedIdentifier } from '../../misc/ast/QualifiedIdentifier';
@@ -26,7 +26,10 @@ import { NoDataType } from '../../ast/data/NoDataType';
 import { Import } from '../../ast/stmt/Import';
 import { RuleNode } from 'antlr4ts/tree/RuleNode';
 import { Definition } from '../../ast/stmt/DefinitionStmtlet';
-
+import { Any } from '../../ast/data/Any';
+import rs from '../../misc/strings/resultStrings.json'
+import format from 'string-template';
+import { EqualDefinition } from '../../ast/stmt/EqualDefinition';
 /**
  * Generate an AST.
  * Imports are added to the variable table by this.ast.addImport
@@ -82,8 +85,8 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
         const rhsdata: VEOMaybe<DataType, StmtExpression> = ctx.expr().accept(this);
         //rhsdata is bound to exist
         const x = pullVEO(rhsdata, this.errorManager, ctx);
-
-        return null;
+        // console.log(rhsdata);
+        return null;//new EqualDefinition(ctx,);
     }
 
     // FIXME fix definitions
@@ -91,8 +94,12 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
         // todo - resolve a variable
         const qid = QualifiedIdentifier.fromGrammar(ctx);
         // TODO 30/05
-        const dt = this.ast.variableManager.resolve(qid);
-        return null; //new VEO(dt, new Definition(ctx, qid));
+        let dt = this.ast.variableManager.resolve(qid);
+        if (dt===undefined){
+            dt = new Any();
+            this.errorManager.push(TranslationError.semanticErrorToken(format(rs.notFound,[qid.toString()])))
+        }
+        return new VEO(dt, new Definition(ctx, qid));
     }
 
     // FIXME add actual code

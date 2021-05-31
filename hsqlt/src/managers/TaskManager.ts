@@ -110,8 +110,6 @@ export class TaskManager {
      *
      */
     async generateOutputs() {
-        // TODO: rework referencing code
-
         /** Entries needed to write */
         const work: Promise<void>[] = [];
         const fns = [...this.ASTMap.entries()];
@@ -138,8 +136,7 @@ export class TaskManager {
                 }
             });
         } catch (e) {
-            // FIXME deal with the rejection
-            this.errorManager.push(new TranslationError(format(rs.unexpectedError)));
+            this.errorManager.push(new TranslationError(format(rs.unexpectedErrorTagged,[e.cause??e.msg??e.message??rs.unexpectedError])));
         }
         // if (!res) this.errorManager.push(new TranslationError(format(rs.couldNotWrite)));
     }
