@@ -19,6 +19,6 @@ export class Literal implements StmtExpression {
         return this.val;
     }
     public accept<T>(visitor: IASTVisitor<T>) {
-        return visitor.visitLiteral(this);
+        return visitor.visitLiteral?.(this) ?? visitor.defaultResult();
     }
 }

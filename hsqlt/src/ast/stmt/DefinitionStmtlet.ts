@@ -9,6 +9,6 @@ import { StmtExpression } from './base/StmtExpression';
 export class Definition implements StmtExpression {
     constructor(public node: ParserRuleContext, public val: QualifiedIdentifier) {}
     accept<T>(visitor: IASTVisitor<T>): T {
-        return visitor.visitDefinition(this);
+        return visitor.visitDefinition?.(this) ?? visitor.defaultResult();
     }
 }

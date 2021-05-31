@@ -33,7 +33,7 @@ export class TaskManager {
     protected readingMgr: ReadingManager;
     protected _errorManager: ErrorManager;
     protected treeFactory: HSQLTreeFactory;
-    protected ASTMap: Map<string, AST>;
+    public ASTMap: Map<string, AST>;
 
     /**
      *
@@ -136,7 +136,11 @@ export class TaskManager {
                 }
             });
         } catch (e) {
-            this.errorManager.push(new TranslationError(format(rs.unexpectedErrorTagged,[e.cause??e.msg??e.message??rs.unexpectedError])));
+            this.errorManager.push(
+                new TranslationError(
+                    format(rs.unexpectedErrorTagged, [e.cause ?? e.msg ?? e.message ?? rs.unexpectedError])
+                )
+            );
         }
         // if (!res) this.errorManager.push(new TranslationError(format(rs.couldNotWrite)));
     }

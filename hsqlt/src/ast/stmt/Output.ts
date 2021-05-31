@@ -22,7 +22,7 @@ export class Output implements StmtExpression {
         return this._source;
     }
 
-    accept<T>(x: IASTVisitor<T>): T {
-        return x.visitOutput(this);
+    accept<T>(v: IASTVisitor<T>): T {
+        return v.visitOutput?.(this) ?? v.defaultResult();
     }
 }

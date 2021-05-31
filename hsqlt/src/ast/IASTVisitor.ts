@@ -7,25 +7,13 @@ import { Literal } from './stmt/Literal';
 import { Output } from './stmt/Output';
 import { Select } from './stmt/Select';
 
-/**
- * Interface for traversing an AST
- */
-export abstract class IASTVisitor<T> {
-    /**
-     * The default value for returning to start from
-     */
+export abstract class AbstractASTVisitor<T> {
     abstract defaultResult(): T;
-    /**
-     * How to join elements
-     * @param total Total so far
-     * @param current Current element
-     */
     abstract reducer(total: T, current: T): T;
 
     public visit(node: BaseASTNode): T {
         return node.accept(this);
     }
-
     visitAST(x: AST) {
         const stmts = x.stmts;
         return stmts.reduce((t, e) => {
@@ -33,25 +21,33 @@ export abstract class IASTVisitor<T> {
             return this.reducer(t, v);
         }, this.defaultResult());
     }
-    visitLiteral(x: Literal): T {
-        return this.visit(x);
-    }
-    visitSelect(x: Select): T {
-        return this.visit(x);
-    }
-    visitEqual(x: EqualDefinition): T {
-        return this.visit(x);
-    }
+}
 
-    visitOutput(x: Output): T {
-        return this.visit(x);
-    }
+/**
+ * Interface for traversing an AST
+ */
+export interface IASTVisitor<T> {
+    /**
+     * The default value for returning to start from
+     */
+    defaultResult(): T;
+    /**
+     * How to join elements
+     * @param total Total so far
+     * @param current Current element
+     */
+    reducer(total: T, current: T): T;
 
-    visitImport(x: Import): T {
-        return this.visit(x);
-    }
+    visit(node: BaseASTNode): T;
 
-    visitDefinition(x: Definition): T {
-        return this.visit(x);
-    }
+    visitAST: (x: AST) => T;
+    visitLiteral?: (x: Literal) => T;
+    visitSelect?: (x: Select) => T;
+    visitEqual?: (x: EqualDefinition) => T;
+
+    visitOutput?: (x: Output) => T;
+
+    visitImport?: (x: Import) => T;
+
+    visitDefinition?: (x: Definition) => T;
 }

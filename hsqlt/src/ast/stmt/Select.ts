@@ -6,6 +6,6 @@ export class Select implements StmtExpression {
     constructor(public node: ParserRuleContext, public sources: string[]) {}
     // TODO add data
     public accept<T>(visitor: IASTVisitor<T>) {
-        return visitor.visitSelect(this);
+        return visitor.visitSelect?.(this) ?? visitor.defaultResult();
     }
 }

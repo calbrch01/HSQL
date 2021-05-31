@@ -1,13 +1,13 @@
 import { BaseASTNode } from '../../ast/stmt/base/BaseASTNode';
 import { Literal } from '../../ast/stmt/Literal';
-import { IASTVisitor } from '../../ast/IASTVisitor';
+import { AbstractASTVisitor, IASTVisitor } from '../../ast/IASTVisitor';
 import { ECLCode } from '../../code/ECLCode';
 import { Import } from '../../ast/stmt/Import';
 import ecl from '../../misc/strings/ecl.json';
 import format from 'string-template';
 import { ErrorManager } from '../../managers/ErrorManager';
 import { AST } from '../../ast/AST';
-export class ECLGen extends IASTVisitor<void> {
+export class ECLGen extends AbstractASTVisitor<void> implements IASTVisitor<void> {
     protected stmts: ECLCode[] = [];
     constructor(protected errorManager: ErrorManager, protected rootContext: AST) {
         super();

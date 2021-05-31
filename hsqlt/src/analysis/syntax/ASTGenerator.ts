@@ -1,13 +1,14 @@
 import { AbstractParseTreeVisitor } from 'antlr4ts/tree/AbstractParseTreeVisitor';
 import { ParseTreeListener } from 'antlr4ts/tree/ParseTreeListener';
 import { AST } from '../../ast/AST';
-import { VariableTable } from '../../ast/symbol/VariableTable';
+import { VariableTable, VariableVisibility } from '../../ast/symbol/VariableTable';
 import {
     DefinitionContext,
     DefinitionStmtContext,
     ExprContext,
     ImportStmtContext,
     ProgramContext,
+    ScopeContext,
     SelectStmtContext,
 } from '../../misc/grammar/HSQLParser';
 import { HSQLVisitor } from '../../misc/grammar/HSQLVisitor';
@@ -27,7 +28,7 @@ import { Import } from '../../ast/stmt/Import';
 import { RuleNode } from 'antlr4ts/tree/RuleNode';
 import { Definition } from '../../ast/stmt/DefinitionStmtlet';
 import { Any } from '../../ast/data/Any';
-import rs from '../../misc/strings/resultStrings.json'
+import rs from '../../misc/strings/resultStrings.json';
 import format from 'string-template';
 import { EqualDefinition } from '../../ast/stmt/EqualDefinition';
 /**
@@ -79,14 +80,27 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
         // NoDataType as the import statement itself does not have a resultant data type
         return new VEO(new NoDataType(), new Import(ctx, importFrom, importAsQID));
     }
-
+    /**
+     * Get scope of a variable
+     * @param ctx
+     * @returns
+     */
+    protected getScope(ctx: ScopeContext): VariableVisibility {
+        if (ctx.EXPORT() !== undefined) return VariableVisibility.PUBLIC;
+        else if (ctx.SHARED() !== undefined) return VariableVisibility.SHARED;
+        else return VariableVisibility.DEFAULT;
+    }
     visitDefinitionStmt(ctx: DefinitionStmtContext) {
         const lhstext = ctx.IDENTIFIER().text;
         const rhsdata: VEOMaybe<DataType, StmtExpression> = ctx.expr().accept(this);
         //rhsdata is bound to exist
-        const x = pullVEO(rhsdata, this.errorManager, ctx);
+        const x: VEO<DataType, StmtExpression> = pullVEO(rhsdata, this.errorManager, ctx);
         // console.log(rhsdata);
-        return null;//new EqualDefinition(ctx,);
+        const vis = this.getScope(ctx.scope());
+        // FIXME 31/05, add this beautiful variable
+        const res = this.ast.variableManager.add(lhstext, { data: x.datatype, vis });
+        const ed = new EqualDefinition(ctx, QualifiedIdentifier.fromString(lhstext), x.stmt);
+        return new VEO(new NoDataType(), ed); //new EqualDefinition(ctx,);
     }
 
     // FIXME fix definitions
@@ -95,9 +109,11 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
         const qid = QualifiedIdentifier.fromGrammar(ctx);
         // TODO 30/05
         let dt = this.ast.variableManager.resolve(qid);
-        if (dt===undefined){
+        // throw an error saying that the definition used has been invalid
+        // but use Any throughout the process
+        if (dt === undefined) {
             dt = new Any();
-            this.errorManager.push(TranslationError.semanticErrorToken(format(rs.notFound,[qid.toString()])))
+            this.errorManager.push(TranslationError.semanticErrorToken(format(rs.notFound, [qid.toString()])));
         }
         return new VEO(dt, new Definition(ctx, qid));
     }

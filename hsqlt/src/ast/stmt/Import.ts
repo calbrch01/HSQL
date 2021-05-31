@@ -22,7 +22,7 @@ export class Import implements NonValuedExpression {
     getImportedName() {
         return this.alias === undefined ? this._moduleName : this.alias;
     }
-    accept<T>(t: IASTVisitor<T>) {
-        return t.visitImport(this);
+    accept<T>(v: IASTVisitor<T>) {
+        return v.visitImport?.(this) ?? v.defaultResult();
     }
 }
