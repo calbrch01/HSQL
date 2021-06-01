@@ -6,5 +6,6 @@
     "unexpectedErrorTagged": "Unexpected issue: {0}",
     "invalidFileExtension": "Invalid File Extension for file {0}",
     "existsError": "{0} already exists",
-    "notFound": "{0} could not be found"
+    "notFound": "{0} could not be found",
+    "emptyCode": "Empty code generation"
 }

@@ -97,7 +97,7 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
         const x: VEO<DataType, StmtExpression> = pullVEO(rhsdata, this.errorManager, ctx);
         // console.log(rhsdata);
         const vis = this.getScope(ctx.scope());
-        // FIXME 31/05, add this beautiful variable
+
         const res = this.ast.variableManager.add(lhstext, { data: x.datatype, vis });
         if (!res) {
             this.errorManager.push(TranslationError.semanticErrorToken(format(rs.existsError, [lhstext]), ctx));
@@ -110,7 +110,7 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
     visitDefinition(ctx: DefinitionContext) {
         // todo - resolve a variable
         const qid = QualifiedIdentifier.fromGrammar(ctx);
-        // TODO 30/05
+
         let dt = this.ast.variableManager.resolve(qid);
         // throw an error saying that the definition used has been invalid
         // but use Any throughout the process
@@ -132,7 +132,7 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
     visitProgram(ctx: ProgramContext) {
         // this.visitChildren(ctx);
 
-        // TODO Maybe find a more eloquent way of performing this operation.
+        // TODO 29/05 Maybe find a more elegant way of performing this operation.
         // extract the statements
         const visitedChildren = ctx.completestmt();
         const visitedAnswers = visitedChildren.map(e => e.accept(this));

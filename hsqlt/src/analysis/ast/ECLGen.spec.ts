@@ -31,7 +31,6 @@ describe('ECL Generation', function () {
             0,
             'There should have been no errors'
         );
-        // TODO file extension work
         assert.strictEqual(opm.fileMap.get('mod.ecl'), `IMPORT abc as bcd;`);
         // console.log(`opm`, opm);
     });

@@ -94,7 +94,6 @@ export type LexerOrParserSymbol = number | Token;
  * Error management system.
  * Note that the file reporting may feel a bit messy, might have to discuss
  */
-// TODO: Discuss the file reporting system
 export class ErrorManager {
     protected _errors: ContexedTranslationError[];
 

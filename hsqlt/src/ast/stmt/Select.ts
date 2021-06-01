@@ -4,7 +4,7 @@ import { ParserRuleContext } from 'antlr4ts';
 
 export class Select implements StmtExpression {
     constructor(public node: ParserRuleContext, public sources: string[]) {}
-    // TODO add data
+    // TODO 10/03 add data
     public accept<T>(visitor: IASTVisitor<T>) {
         return visitor.visitSelect?.(this) ?? visitor.defaultResult();
     }

@@ -9,7 +9,7 @@ export enum OutputType {
     PIPE,
 }
 
-// FIXME add output support
+// TODO 11/03 FIXME add output support
 export class Output implements StmtExpression {
     constructor(public node: ParserRuleContext, protected _source: string, protected _type: OutputType) {}
     // protected _source: string;
