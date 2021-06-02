@@ -1,5 +1,5 @@
-import { ASTGenerator } from '../analysis/syntax/ASTGenerator';
-import { HSQLTreeFactory } from '../analysis/tree';
+import { ASTGenerator } from '../conv/syntax/ASTGenerator';
+import { HSQLTreeFactory } from '../conv/tree';
 import { AST } from '../ast/AST';
 import { AnyModule } from '../ast/data/AnyModule';
 import { Module } from '../ast/data/Module';
@@ -10,11 +10,11 @@ import { NoOutput, OutputManager } from './OutputManagers';
 import { FILETYPE, ReadingManager } from './ReadingManager';
 import { iP } from '../misc/strings/formatting';
 import rs from '../misc/strings/resultStrings.json';
-import { ECLGen } from '../analysis/ast/ECLGen';
+import { ECLGen } from '../conv/ast/ECLGen';
 import format from 'string-template';
 import { EOL } from 'os';
 import { ICodeGenerator } from '../misc/ast/ICodeGenerator';
-import { ECLGenerator } from '../analysis/ast/ECLGenerator';
+import { ECLGenerator } from '../conv/ast/ECLGenerator';
 
 export enum OutputMethod {
     FILES,
@@ -130,6 +130,7 @@ export class TaskManager {
         // there's _ever_ any condition on which it rejects. Remove if sure.
         try {
             const results = await Promise.allSettled(work);
+            this.outputManager.done?.();
             //gather the rejected errors
             results.forEach((e, i) => {
                 if (e.status === 'rejected') {
@@ -177,17 +178,5 @@ export class TaskManager {
 
         // FIXME actually resolve, currently we just eject an anymodule
         return new AnyModule();
-    }
-
-    /**
-     * use existing fileset to generate programs
-     */
-    make(outputmethod: OutputManager) {
-        /* TODO:
-         * generate code, and deal with them
-         * note the flag where we skip deps
-         */
-
-        outputmethod.done?.();
     }
 }

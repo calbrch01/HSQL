@@ -32,7 +32,7 @@ export class Singular extends DataType {
      */
     getDataType(): dtypes {
         // return this.val.toString();
-        //TODO work
+        //TODO 10/03 work
         return dtype[this._dtype] as dtypes;
     }
 

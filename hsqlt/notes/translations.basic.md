@@ -36,7 +36,7 @@ sw;
 sm := TABLE(ap,{c:=COUNT(GROUP),s:=sum(group,personid)} );
 sm;
 
-// TODO what is count(*) and count(somecolumn) ??
+// what is count(*) and count(somecolumn) ??
 
 // select count(*) from ap;
 // select count(personid) from ap;

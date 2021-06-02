@@ -11,6 +11,7 @@ import { AST } from '../../ast/AST';
 import { EqualDefinition } from '../../ast/stmt/EqualDefinition';
 import { ParserRuleContext } from 'antlr4ts';
 import { Definition } from '../../ast/stmt/Definition';
+import { Output } from '../../ast/stmt/Output';
 
 /**
  * Array is treated as a top+rest fashion
@@ -37,6 +38,11 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
         return [new ECLCode(x.val)];
     }
 
+    visitOutput(x: Output) {
+        // TODO 02/06
+        return [];
+    }
+
     visitDefinition(x: Definition) {
         return [new ECLCode(x.val.toString())];
     }
@@ -48,7 +54,6 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
         //  note that the const is by reference, not mutability
         rhstop.coverCode(format(ecl.equal.eq, [x.lhs.toString()]), undefined, false);
 
-        // TODO 01/06 return equal
         return [...rhs, rhstop];
     }
 

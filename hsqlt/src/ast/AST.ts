@@ -21,7 +21,6 @@ export class AST implements BaseASTNode {
      */
     variableManager: VariableTable;
 
-    // TODO fix something here
     stmts: BaseASTNode[];
 
     constructor(protected TaskMgr: TaskManager, public node: ParserRuleContext) {

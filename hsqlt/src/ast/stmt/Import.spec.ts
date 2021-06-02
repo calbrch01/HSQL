@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import { HSQLTreeFactory } from '../../analysis/tree';
+import { HSQLTreeFactory } from '../../conv/tree';
 import { ErrorManager } from '../../managers/ErrorManager';
 import { QualifiedIdentifier } from '../../misc/ast/QualifiedIdentifier';
 import { Import } from './Import';

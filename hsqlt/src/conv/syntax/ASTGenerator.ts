@@ -48,7 +48,7 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
         super();
         this.ast = new AST(taskManager, rootContext);
     }
-    // TODO: may have to implement the aggregateResult also
+
     protected defaultResult() {
         return null;
     }
@@ -106,7 +106,6 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
         return new VEO(new NoDataType(), ed); //new EqualDefinition(ctx,);
     }
 
-    // FIXME fix definitions
     visitDefinition(ctx: DefinitionContext) {
         // todo - resolve a variable
         const qid = QualifiedIdentifier.fromGrammar(ctx);

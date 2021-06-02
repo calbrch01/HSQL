@@ -14,14 +14,13 @@ export interface typeMap {
     [EDataType.MODULE]: Module;
     [EDataType.LAYOUT]: Layout;
     [EDataType.TABLE]: Table;
-    // FIXME introduce sets
+    // TODO 30/05 introduce sets
     [EDataType.SET]: Any;
     [EDataType.SINGULAR]: Singular;
     [EDataType.ACTION]: Action;
     [EDataType.NOTHING]: NoDataType;
 }
 
-//TODO 30/05
 export function isDataType<T extends keyof typeMap, U extends typeMap[T]>(x: DataType, y: T): x is U {
     if (y === EDataType.ANY) {
         return true;

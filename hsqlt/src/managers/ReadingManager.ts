@@ -111,7 +111,6 @@ export class ReadingManager {
     getFileType(pathString: string, override?: FILETYPE): FILETYPE {
         const x = path.extname(pathString);
         // are switch cases really bad?
-        // TODO Discuss whether fallback should be ECL
         switch (x) {
             case '.hsql':
                 return override ?? FILETYPE.HSQL;

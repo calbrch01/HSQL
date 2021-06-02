@@ -86,7 +86,6 @@ export class VariableTable {
      */
     resolve(q: QualifiedIdentifier): DataType | undefined {
         // make a mutable copy
-        // FIXME add qid implementing
         if (q.length === 1) {
             const x = this.get(q.head);
             if (x) {
@@ -95,14 +94,13 @@ export class VariableTable {
             // doesnt exist
             return undefined;
         } else {
-            // TODO 30/05 get data type if internal
             let root = this.get(q.head)?.data;
             // quick shortcut - redundant here, but helps skip all the extra work a bit later
             if (root === undefined) return undefined;
             else {
                 q = new QualifiedIdentifier(...q.qidentifier);
                 q.qidentifier.shift();
-                let anyized = false;
+                // let anyized = false;
 
                 // the process goes as below
                 // 1. try to expand and find the current id being searched
