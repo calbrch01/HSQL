@@ -6,6 +6,7 @@ import { StmtExpression } from './base/StmtExpression';
 /**
  * A literal expression
  * Note: needs a type stored for it
+ * @deprecated
  */
 export class Literal implements StmtExpression {
     constructor(public node: ParserRuleContext, private _val: string) {}

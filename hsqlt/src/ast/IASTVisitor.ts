@@ -1,6 +1,6 @@
 import { AST } from './AST';
 import { BaseASTNode } from './stmt/base/BaseASTNode';
-import { Definition } from './stmt/DefinitionStmtlet';
+import { Definition } from './stmt/Definition';
 import { EqualDefinition } from './stmt/EqualDefinition';
 import { Import } from './stmt/Import';
 import { Literal } from './stmt/Literal';
@@ -12,14 +12,16 @@ export abstract class AbstractASTVisitor<T> {
     abstract reducer(total: T, current: T): T;
 
     public visit(node: BaseASTNode): T {
-        return node.accept(this);
+        const ac = node.accept(this);
+        return ac;
     }
     visitAST(x: AST) {
         const stmts = x.stmts;
-        return stmts.reduce((t, e) => {
+        const res = stmts.reduce((t, e) => {
             const v: T = e.accept(this);
             return this.reducer(t, v);
         }, this.defaultResult());
+        return res;
     }
 }
 

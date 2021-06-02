@@ -10,8 +10,12 @@ import { QualifiedIdentifier } from '../../misc/ast/QualifiedIdentifier';
  */
 export class EqualDefinition<U extends StmtExpression = StmtExpression> implements StmtExpression {
     rhs: U;
-    constructor(public node: ParserRuleContext, protected lhs: QualifiedIdentifier, _rhs: U) {
+    constructor(public node: ParserRuleContext, protected _lhs: QualifiedIdentifier, _rhs: U) {
         this.rhs = _rhs;
+    }
+
+    get lhs() {
+        return this._lhs;
     }
 
     accept<U>(v: IASTVisitor<U>): U {

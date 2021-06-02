@@ -26,7 +26,7 @@ import { Table } from '../../ast/data/Table';
 import { NoDataType } from '../../ast/data/NoDataType';
 import { Import } from '../../ast/stmt/Import';
 import { RuleNode } from 'antlr4ts/tree/RuleNode';
-import { Definition } from '../../ast/stmt/DefinitionStmtlet';
+import { Definition } from '../../ast/stmt/Definition';
 import { Any } from '../../ast/data/Any';
 import rs from '../../misc/strings/resultStrings.json';
 import format from 'string-template';

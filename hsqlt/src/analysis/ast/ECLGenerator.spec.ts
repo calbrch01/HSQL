@@ -34,4 +34,17 @@ describe('ECL Generation', function () {
         assert.strictEqual(opm.fileMap.get('mod.ecl'), `IMPORT abc as bcd;`);
         // console.log(`opm`, opm);
     });
+    it('generation for assignment', async () => {
+        const opm = new MapOutput();
+        const tm = new TaskManager('mod', false, new Map([['mod', 'import abc as bcd;a=bcd.t1;']]), opm);
+        const { ast } = tm.generateAST();
+        // const eclgenerator = new ECLGen(tm.errorManager);
+        await tm.generateOutputs();
+        assert.lengthOf(
+            tm.errorManager.issues.filter(e => e.severity === ErrorSeverity.ERROR),
+            0,
+            'There should have been no errors'
+        );
+        assert.strictEqual(opm.fileMap.get('mod.ecl'), `IMPORT abc as bcd;\na := bcd.t1;`);
+    });
 });

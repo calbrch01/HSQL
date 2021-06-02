@@ -14,6 +14,7 @@ import { ECLGen } from '../analysis/ast/ECLGen';
 import format from 'string-template';
 import { EOL } from 'os';
 import { ICodeGenerator } from '../misc/ast/ICodeGenerator';
+import { ECLGenerator } from '../analysis/ast/ECLGenerator';
 
 export enum OutputMethod {
     FILES,
@@ -116,7 +117,7 @@ export class TaskManager {
         const fns = [...this.ASTMap.entries()];
         for (const [fn, ast] of fns) {
             // console.debug(`File:${fn}`);
-            const generator: ICodeGenerator = new ECLGen(this.errorManager, ast);
+            const generator: ICodeGenerator = new ECLGenerator(this.errorManager, ast); //new ECLGen(this.errorManager, ast);
             const x = generator.getCode();
             // console.log(`Result`, x);
             //get new filename

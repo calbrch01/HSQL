@@ -4,7 +4,7 @@ import { IASTVisitor } from '../IASTVisitor';
 import { StmtExpression } from './base/StmtExpression';
 
 /**
- *
+ * definition
  */
 export class Definition implements StmtExpression {
     constructor(public node: ParserRuleContext, public val: QualifiedIdentifier) {}

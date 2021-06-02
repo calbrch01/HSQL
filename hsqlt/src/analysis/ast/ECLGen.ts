@@ -7,6 +7,9 @@ import ecl from '../../misc/strings/ecl.json';
 import format from 'string-template';
 import { ErrorManager } from '../../managers/ErrorManager';
 import { AST } from '../../ast/AST';
+/**
+ * @deprecated Deprecated as it is difficult to manage the stack easily
+ */
 export class ECLGen extends AbstractASTVisitor<void> implements IASTVisitor<void> {
     protected stmts: ECLCode[] = [];
     constructor(protected errorManager: ErrorManager, protected rootContext: AST) {
