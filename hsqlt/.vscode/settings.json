@@ -5,5 +5,7 @@
     },
     // only the spec files are put here, complete tests are not here for simplicity
     "mochaExplorer.files": "src/**/*.spec.ts",
-    "mochaExplorer.require": "ts-node/register"
+    "mochaExplorer.require": "ts-node/register",
+    "ecl.launchConfiguration": "localhost (hsqlt)",
+    "ecl.targetCluster": {}
 }
