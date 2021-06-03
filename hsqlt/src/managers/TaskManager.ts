@@ -15,6 +15,7 @@ import format from 'string-template';
 import { EOL } from 'os';
 import { ICodeGenerator } from '../misc/ast/ICodeGenerator';
 import { ECLGenerator } from '../conv/ast/ECLGenerator';
+import { argType } from '..';
 
 export enum OutputMethod {
     FILES,
@@ -44,6 +45,7 @@ export class TaskManager {
      * @param fileMap A fileMap. Missing files will be taken from disk
      * @param outputManager Output strategy - default is no output
      * @param baseLoc (does nothing for now) output relocation
+     * @param args Optional presence of the arguments
      */
     constructor(
         public mainFile: string,
@@ -51,7 +53,8 @@ export class TaskManager {
         public fileMap?: Map<string, string>,
         protected outputManager: OutputManager = new NoOutput(),
         public baseLoc?: string,
-        protected suppressIssues: boolean = false
+        protected suppressIssues: boolean = false,
+        public args: Partial<argType> = {} // protected args:argType
     ) {
         // choose either pedantic or normal based on the bool present
         this._errorManager = new ErrorManager(pedantic ? ErrorMode.PEDANTIC : ErrorMode.NORMAL);

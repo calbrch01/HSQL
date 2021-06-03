@@ -7,6 +7,7 @@ import {
     DefinitionStmtContext,
     ExprContext,
     ImportStmtContext,
+    OutputStmtContext,
     ProgramContext,
     ScopeContext,
     SelectStmtContext,
@@ -31,6 +32,8 @@ import { Any } from '../../ast/data/Any';
 import rs from '../../misc/strings/resultStrings.json';
 import format from 'string-template';
 import { EqualDefinition } from '../../ast/stmt/EqualDefinition';
+import { Action, ActionType } from '../../ast/data/Action';
+import { Output } from '../../ast/stmt/Output';
 /**
  * Generate an AST.
  * Imports are added to the variable table by this.ast.addImport
@@ -143,6 +146,16 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
         // add the results of the statements
         this.ast.stmts.push(...results.map(e => e.stmt));
         return null;
+    }
+
+    visitOutputStmt(x: OutputStmtContext) {
+        const dt = new Action(ActionType.OUTPUT);
+        const cctx = x.attribute();
+        const childVal: VEO<DataType, StmtExpression> = pullVEO(cctx.accept(this), this.errorManager, cctx);
+
+        const astNode = new Output(x, childVal.stmt);
+
+        return new VEO(dt, astNode); //new VEO();
     }
 
     getAST(): AST {

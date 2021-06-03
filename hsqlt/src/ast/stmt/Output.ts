@@ -5,6 +5,7 @@ import { StmtExpression } from './base/StmtExpression';
 // import { StmtExpression } from './Base';
 
 export enum OutputType {
+    DEFAULT,
     NAMED,
     FILE,
     PIPE,
@@ -13,14 +14,18 @@ export enum OutputType {
 // TODO 11/03 FIXME add output support
 
 export class Output implements StmtExpression {
-    constructor(public node: ParserRuleContext, private _source: QualifiedIdentifier, protected _type: OutputType) {}
-
-    protected get source(): QualifiedIdentifier {
+    public get source(): StmtExpression {
         return this._source;
     }
-    protected set source(value: QualifiedIdentifier) {
+    public set source(value: StmtExpression) {
         this._source = value;
     }
+    constructor(
+        public node: ParserRuleContext,
+        private _source: StmtExpression,
+        protected _type: OutputType = OutputType.DEFAULT
+    ) {}
+
     // protected _source: string;
     // protected _type: OutputType;
 

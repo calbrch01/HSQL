@@ -39,8 +39,12 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
     }
 
     visitOutput(x: Output) {
+        const rhs = this.visit(x.source);
+        const [rhstop] = this.getPopped(rhs, x.node);
+
+        rhstop.coverCode(ecl.output.outputlhs, ecl.commmon.rhs, false);
         // TODO 02/06
-        return [];
+        return [...rhs, rhstop];
     }
 
     visitDefinition(x: Definition) {

@@ -29,7 +29,9 @@ export class ExecTreeMode implements ExecIntent {
 export class ExecCheckMode implements ExecIntent {
     async do(taskmanager: TaskManager, outputmanager: OutputManager): Promise<void> {
         taskmanager.generateAST();
-        // console.debug(taskmanager.ASTMap);
+        if (taskmanager.args.g) {
+            console.debug(taskmanager.ASTMap);
+        }
     }
 }
 

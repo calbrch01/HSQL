@@ -82,6 +82,12 @@ const { argv: args } = yargs(process.argv.slice(2))
         type: 'boolean',
         default: false,
     })
+    .option('g', {
+        desc: 'Debug mode(Prints more output)',
+        alias: ['debug-output'],
+        type: 'boolean',
+        default: false,
+    })
     // all the commands that the program can run in
     .command(
         'tree <file',
@@ -149,7 +155,7 @@ export async function main(argv: argType, /*execMode: ExecMode*/ execMode: ExecI
     // initialize managers
     const writer: OutputManager = argv.o ? new StandardOutput() : new FileOutput();
     //taskmap must have no map, and no baseloc for now
-    const taskmanager = new TaskManager(argv.file, argv.p, undefined, writer, undefined, argv.k);
+    const taskmanager = new TaskManager(argv.file, argv.p, undefined, writer, undefined, argv.k, argv);
 
     try {
         execMode.do(taskmanager, writer);
