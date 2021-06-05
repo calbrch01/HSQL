@@ -12,7 +12,7 @@ import { ASTGenerator } from '../ASTGenerator';
 import format from 'string-template';
 import rs from '../../../misc/strings/resultStrings.json';
 import { EDataType } from '../../../ast/data/base/DataType';
-export class OutputVisitor extends AbstractParseTreeVisitor<VEOMaybe> implements HSQLVisitor<VEOMaybe> {
+export class OutputASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements HSQLVisitor<VEOMaybe> {
     errorManager: ErrorManager;
     constructor(protected parent: ASTGenerator) {
         super();

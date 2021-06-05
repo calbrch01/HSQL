@@ -31,7 +31,7 @@ import { EqualDefinition } from '../../ast/stmt/EqualDefinition';
 import { Action, ActionType } from '../../ast/data/Action';
 import { Output } from '../../ast/stmt/Output';
 import { isAny, isDataType } from '../../ast/data/base/misc';
-import { OutputVisitor } from './support/OutputVisitor';
+import { OutputASTGenerator } from './support/OutputASTGenerator';
 /**
  * Generate an AST.
  * Imports are added to the variable table by this.ast.addImport
@@ -149,7 +149,7 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
     }
 
     visitOutputStmt(ctx: OutputStmtContext) {
-        const outputVisitor = new OutputVisitor(this);
+        const outputVisitor = new OutputASTGenerator(this);
         return outputVisitor.visit(ctx); //new VEO();
     }
 
