@@ -4,7 +4,7 @@
     "description": "",
     "main": "build/index.js",
     "bin": {
-        "hsqlc": "build/index.js"
+        "hsqlt": "build/index.js"
     },
     "pkg": {
         "scripts": "build/**/*.js",

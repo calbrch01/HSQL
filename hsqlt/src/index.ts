@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /**
  * CLI Interface to HSQL.
  * Note that this module is called `main` and not `index` as otherwise it wipes the index
