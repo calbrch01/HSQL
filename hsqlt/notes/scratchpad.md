@@ -3,7 +3,6 @@
 ## Big To-Do
 - [ ] Resolving
 - [ ] AST generation for the other nodes
-- [ ] Respect args
 ## Errors
 1. Parser - Generate incomplete tree and attempt to:
    1. Salvage identifier list

@@ -4,14 +4,9 @@ import { IASTVisitor } from '../IASTVisitor';
 import { StmtExpression } from './base/StmtExpression';
 // import { StmtExpression } from './Base';
 
-export enum OutputType {
-    DEFAULT,
-    NAMED,
-    FILE,
-    PIPE,
-}
-
-// TODO 11/03 FIXME add output support
+export type fileOutputOptionsType =
+    | { fileName: string; overwrite: boolean }
+    | { fileName: undefined; overwrite: false };
 
 export class Output implements StmtExpression {
     public get source(): StmtExpression {
@@ -20,10 +15,20 @@ export class Output implements StmtExpression {
     public set source(value: StmtExpression) {
         this._source = value;
     }
+
+    /**
+     *
+     * @param node Base Parser node
+     * @param _source Source node
+     * @param namedOutput Whether to have a named emit
+     * @param fileOutputOptions file output options if any
+     * @param useSingular Whether to use the singular
+     */
     constructor(
         public node: ParserRuleContext,
         private _source: StmtExpression,
-        protected _type: OutputType = OutputType.DEFAULT
+        public namedOutput?: string,
+        public fileOutputOptions: fileOutputOptionsType = { fileName: undefined, overwrite: false }
     ) {}
 
     // protected _source: string;

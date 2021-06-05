@@ -5,6 +5,21 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "playground",
+            "type": "ecl",
+            "request": "launch",
+            "protocol": "http",
+            "serverAddress": "play.hpccsystems.com",
+            "port": 8010,
+            "targetCluster": "hthor",
+            "rejectUnauthorized": true,
+            "resultLimit": 100,
+            "timeoutSecs": 60,
+            "user": "vscode_user",
+            "password": ""
+        },
+
+        {
             "name": "localhost",
             "type": "ecl",
             "request": "launch",

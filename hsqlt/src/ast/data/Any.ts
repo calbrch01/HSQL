@@ -6,8 +6,7 @@ export class Any extends DataType {
         this._anyized = true;
     }
     isExactType(type: DataType): boolean {
-        // TODO Is this a good assumption to make?
-        return false;
+        return true;
     }
     cloneType(): DataType {
         return new Any();

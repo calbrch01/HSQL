@@ -21,11 +21,27 @@ export interface typeMap {
     [EDataType.NOTHING]: NoDataType;
 }
 
-export function isDataType<T extends keyof typeMap, U extends typeMap[T]>(x: DataType, y: T): x is U {
+/**
+ *
+ * @param x
+ * @param y
+ * @param ignoreDataAny Ignore data being anyized. This allows checking if data is any
+ * @returns
+ */
+export function isDataType<T extends keyof typeMap, U extends typeMap[T]>(
+    x: DataType,
+    y: T,
+    ignoreDataAny: boolean = false
+): x is U {
     if (y === EDataType.ANY) {
         return true;
     }
-    return x.type === y;
+    // if it can be anyized, it doesn't matter
+    return (!ignoreDataAny && x.anyized) || x.type === y;
+}
+
+export function isAny(x: DataType) {
+    return x.anyized;
 }
 
 export function isCollection(x: DataType): x is CollectionType {

@@ -14,7 +14,7 @@ import { Definition } from '../../ast/stmt/Definition';
 import { Output } from '../../ast/stmt/Output';
 
 /**
- * Array is treated as a top+rest fashion
+ * Semantically, Array is treated as a rest+top fashion
  */
 export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTVisitor<ECLCode[]> {
     // protected stmts: ECLCode[] = [];
@@ -34,16 +34,25 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
         return [...total, ...current];
     }
 
-    visitLiteral(x: Literal) {
-        return [new ECLCode(x.val)];
-    }
-
+    // TODO 02/06 output -> tests+features
     visitOutput(x: Output) {
         const rhs = this.visit(x.source);
         const [rhstop] = this.getPopped(rhs, x.node);
 
-        rhstop.coverCode(ecl.output.outputlhs, ecl.commmon.rhs, false);
-        // TODO 02/06
+        // this creates an extra ',' required for no record format
+        rhstop.coverCode(ecl.output.outputlhs, ecl.commmon.comma, false);
+
+        if (x.namedOutput) {
+            rhstop.coverCode('', format(ecl.commmon.comma + ecl.output.named, [x.namedOutput]), false);
+        }
+        if (x.fileOutputOptions.fileName) {
+            rhstop.coverCode('', ecl.commmon.comma + x.fileOutputOptions.fileName, false);
+            if (x.fileOutputOptions.overwrite) {
+                rhstop.coverCode('', ecl.commmon.comma + ecl.commmon.overwrite, false);
+            }
+        }
+
+        rhstop.coverCode('', ecl.commmon.rightBracket, false);
         return [...rhs, rhstop];
     }
 
@@ -68,7 +77,7 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
      * @param ctx
      * @returns
      */
-    protected getPopped(x: ECLCode[], ctx: ParserRuleContext): [ECLCode, ECLCode[]] {
+    private getPopped(x: ECLCode[], ctx: ParserRuleContext): [ECLCode, ECLCode[]] {
         const xpopped = x.pop();
         if (xpopped === undefined)
             this.errorManager.push(TranslationError.semanticErrorToken(format(rs.emptyCode), ctx));

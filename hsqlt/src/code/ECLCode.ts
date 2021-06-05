@@ -17,7 +17,7 @@ export class ECLCode {
      * @param insertSemi  whether to enable insertSemi or not
      * @returns
      */
-    coverCode(leftSide: string, rightSide: string = '', respectSemi = this.insertSemi, insertSemi = true) {
+    coverCode(leftSide: string = '', rightSide: string = '', respectSemi = this.insertSemi, insertSemi = true) {
         this.code = leftSide + this.code + (respectSemi ? ';' : '') + rightSide;
         this.insertSemi = insertSemi;
         return this;

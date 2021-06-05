@@ -10,7 +10,6 @@ import { NoOutput, OutputManager } from './OutputManagers';
 import { FILETYPE, ReadingManager } from './ReadingManager';
 import { iP } from '../misc/strings/formatting';
 import rs from '../misc/strings/resultStrings.json';
-import { ECLGen } from '../conv/ast/ECLGen';
 import format from 'string-template';
 import { EOL } from 'os';
 import { ICodeGenerator } from '../misc/ast/ICodeGenerator';
@@ -170,6 +169,9 @@ export class TaskManager {
     resolve(q: QualifiedIdentifier): Module {
         // const identifiers = q.qidentifier;
         // let joinable = '.';
+        const fsl = q.qidentifier;
+
+        this.args.g && console.log(`DIRNAME`, __dirname);
 
         // for (const segment of identifiers) {
         //     joinable = path.join(joinable, segment);
@@ -178,8 +180,8 @@ export class TaskManager {
         //     }
         // }
         // return joinable;
-
-        // FIXME actually resolve, currently we just eject an anymodule
-        return new AnyModule();
+        const res = this.readingMgr.resolveName(q);
+        // FIXME 03/06 actually resolve, currently we just eject an anymodule
+        return res;
     }
 }

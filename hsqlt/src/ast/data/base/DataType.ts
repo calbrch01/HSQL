@@ -18,10 +18,12 @@ export enum EDataType {
  */
 export abstract class DataType {
     protected _type: EDataType | null = null;
+
     protected _anyized: boolean = false;
-    get anyized() {
+    public get anyized() {
         return this._anyized;
     }
+
     get type() {
         return this._type;
     }

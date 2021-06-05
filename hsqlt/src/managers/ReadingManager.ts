@@ -7,7 +7,7 @@ import { AnyModule } from '../ast/data/AnyModule';
 import { iP } from '../misc/strings/formatting';
 import rs from '../misc/strings/resultStrings.json';
 import format from 'string-template';
-
+import { DataType } from '../ast/data/base/DataType';
 /**
  * File type enum
  */
@@ -28,11 +28,13 @@ export class ReadingManager {
      * @param errorManager Error listener
      * @param memFileMap Override for files
      * @param baseLoc Base location to read from
+     * @param backed Whether we can refer the filesystem as a fallback or not
      */
     constructor(
         protected errorManager: ErrorManager,
         protected memFileMap: Map<string, string> = new Map(),
-        protected baseLoc?: string
+        protected baseLoc?: string,
+        protected backed: boolean = false
     ) {}
 
     /**
@@ -153,5 +155,12 @@ export class ReadingManager {
         // this should be a safe way of changing extensions for files
         pathParsed.base = undefined!;
         return path.format(pathParsed);
+    }
+
+    // TODO resolve to a
+    resolveName(s: QualifiedIdentifier): Module {
+        // fallback
+
+        return new AnyModule();
     }
 }

@@ -51,7 +51,7 @@ aliasingCol[ParserRuleContext ctx]:
 /* note that from can actually have multiple sources. However, while dealing with codegen, we may
  need to split the cases for 1 table and 1+ tables
  */
-//TODO: CONSIDER ALT GRAMMAR TO DEAL WITH 1+ TABLES
+//NOTE: CONSIDER ALT GRAMMAR TO DEAL WITH 1+ TABLES
 selectFromClause:
 	FROM (
 		selectFromTableReference (
@@ -184,7 +184,7 @@ importStmt: IMPORT overDefinition (AS IDENTIFIER)?;
 /* OUTPUT STATEMENT
  */
 
-outputStmt: OUTPUT attribute ( namedOutput)? ( toFile)?;
+outputStmt: OUTPUT attribute namedOutput? toFile?;
 
 attribute: definition | selectStmt | literal;
 namedOutput: (TITLE)? IDENTIFIER;

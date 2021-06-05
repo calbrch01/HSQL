@@ -1,7 +1,8 @@
 {
     "commmon": {
-        "rhs": ")",
-        "comma": ","
+        "rightBracket": ")",
+        "comma": ",",
+        "overwrite": "OVERWRITE"
     },
     "import": {
         "regular": "IMPORT {0}",
@@ -11,6 +12,7 @@
         "eq": "{0} := "
     },
     "output": {
-        "outputlhs": "OUTPUT("
+        "outputlhs": "OUTPUT(",
+        "named": "NAMED('{0}')"
     }
 }

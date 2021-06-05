@@ -19,12 +19,13 @@ allPeople := DATASET([ {1,'Fred','Smith'},
 
 
 somePeople := allPeople;
-output(somePeople, NAMED('before'));
+// output(somePeople, NAMED('before'));
 //export
-export strange:= somePeople(PersonID>1);
+export strange3:= PARALLEL(OUTPUT(somePeople(PersonID>1)));
+
 
 
 somePeople := 5;
 //  Outputs  ---
-OUTPUT(somePeople,NAMED('after'));
-OUTPUT(strange,NAMED('abc'));
+// OUTPUT(somePeople,NAMED('after'));
+// OUTPUT(strange3,NAMED('abc'));

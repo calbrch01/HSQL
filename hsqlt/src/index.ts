@@ -12,7 +12,6 @@ import { ExecIntent, ExecCheckMode, ExecUnimplemented, ExecTreeMode, ExecMakeMod
 import format from 'string-template';
 import rs from './misc/strings/resultStrings.json';
 // 2 ignores the node call and the script name
-// TODO 25/03 add -t and -c
 // This syntax is shorthand to writing `const args = yargs(...).argv`
 const { argv: args } = yargs(process.argv.slice(2))
     // add the help option
@@ -68,7 +67,7 @@ const { argv: args } = yargs(process.argv.slice(2))
         desc: 'Cluster poRt',
         alias: ['port'],
         type: 'number',
-        default: process.env.ECL_WATCH_PORT ?? 8010,
+        default: parseInt(process.env.ECL_WATCH_PORT ?? '') == NaN ? 8010 : parseInt(process.env.ECL_WATCH_PORT ?? ''),
     })
     .option('a', {
         desc: 'Show args',

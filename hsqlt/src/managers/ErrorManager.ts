@@ -68,6 +68,15 @@ export class TranslationError {
             ErrorType.SEMANTIC
         );
     }
+    static semanticWarningToken(msg: string, cause?: ParserRuleContext) {
+        return new TranslationError(
+            msg,
+            cause?.start.line,
+            cause?.start.charPositionInLine,
+            ErrorSeverity.WARNING,
+            ErrorType.SEMANTIC
+        );
+    }
 
     static generalErrorToken(msg: string, et: ErrorType, cause?: ParserRuleContext) {
         return new TranslationError(msg, cause?.start.line, cause?.start.charPositionInLine, ErrorSeverity.ERROR, et);

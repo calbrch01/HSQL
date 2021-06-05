@@ -30,7 +30,7 @@ export class ExecCheckMode implements ExecIntent {
     async do(taskmanager: TaskManager, outputmanager: OutputManager): Promise<void> {
         taskmanager.generateAST();
         if (taskmanager.args.g) {
-            console.debug(taskmanager.ASTMap);
+            console.dir(taskmanager.ASTMap, { depth: 4 });
         }
     }
 }

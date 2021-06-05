@@ -1,11 +1,9 @@
 import { AbstractParseTreeVisitor } from 'antlr4ts/tree/AbstractParseTreeVisitor';
-import { ParseTreeListener } from 'antlr4ts/tree/ParseTreeListener';
 import { AST } from '../../ast/AST';
-import { VariableTable, VariableVisibility } from '../../ast/symbol/VariableTable';
+import { VariableVisibility } from '../../ast/symbol/VariableTable';
 import {
     DefinitionContext,
     DefinitionStmtContext,
-    ExprContext,
     ImportStmtContext,
     OutputStmtContext,
     ProgramContext,
@@ -13,12 +11,10 @@ import {
     SelectStmtContext,
 } from '../../misc/grammar/HSQLParser';
 import { HSQLVisitor } from '../../misc/grammar/HSQLVisitor';
-import { ReadingManager } from '../../managers/ReadingManager';
 import { ErrorManager, TranslationError } from '../../managers/ErrorManager';
 import { TaskManager } from '../../managers/TaskManager';
-// import { IdentifierCollector } from './IdentifierCollector';
 import { QualifiedIdentifier } from '../../misc/ast/QualifiedIdentifier';
-import { DataType } from '../../ast/data/base/DataType';
+import { DataType, EDataType } from '../../ast/data/base/DataType';
 import { BaseASTNode } from '../../ast/stmt/base/BaseASTNode';
 import { pullVEO, VEO, VEOMaybe } from '../../misc/holders/VEO';
 import { StmtExpression } from '../../ast/stmt/base/StmtExpression';
@@ -34,6 +30,8 @@ import format from 'string-template';
 import { EqualDefinition } from '../../ast/stmt/EqualDefinition';
 import { Action, ActionType } from '../../ast/data/Action';
 import { Output } from '../../ast/stmt/Output';
+import { isAny, isDataType } from '../../ast/data/base/misc';
+import { OutputVisitor } from './support/OutputVisitor';
 /**
  * Generate an AST.
  * Imports are added to the variable table by this.ast.addImport
@@ -45,13 +43,15 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
     protected ast: AST;
     constructor(
         protected taskManager: TaskManager,
-        protected errorManager: ErrorManager,
+        protected _errorManager: ErrorManager,
         protected rootContext: ProgramContext
     ) {
         super();
         this.ast = new AST(taskManager, rootContext);
     }
-
+    public get errorManager() {
+        return this._errorManager;
+    }
     protected defaultResult() {
         return null;
     }
@@ -148,14 +148,9 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
         return null;
     }
 
-    visitOutputStmt(x: OutputStmtContext) {
-        const dt = new Action(ActionType.OUTPUT);
-        const cctx = x.attribute();
-        const childVal: VEO<DataType, StmtExpression> = pullVEO(cctx.accept(this), this.errorManager, cctx);
-
-        const astNode = new Output(x, childVal.stmt);
-
-        return new VEO(dt, astNode); //new VEO();
+    visitOutputStmt(ctx: OutputStmtContext) {
+        const outputVisitor = new OutputVisitor(this);
+        return outputVisitor.visit(ctx); //new VEO();
     }
 
     getAST(): AST {

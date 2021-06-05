@@ -7,5 +7,8 @@
     "invalidFileExtension": "Invalid File Extension for file {0}",
     "existsError": "{0} already exists",
     "notFound": "{0} could not be found",
-    "emptyCode": "Empty code generation"
+    "emptyCode": "Empty code generation",
+    "cannotInfer": "Cannot infer data type used, which is required for {0}. Assuming {1}",
+    "cannotUse": "Cannot use data type {0} for {1}",
+    "output": "OUTPUT"
 }
