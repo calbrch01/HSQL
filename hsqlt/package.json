@@ -2,10 +2,13 @@
     "name": "hsqlt",
     "version": "0.1.0",
     "description": "",
-    "main": "build/index.js",
+    "main": "build/lib.js",
     "bin": {
         "hsqlt": "build/index.js"
     },
+    "files": [
+        "build"
+    ],
     "pkg": {
         "scripts": "build/**/*.js",
         "targets": [
@@ -30,7 +33,8 @@
         "clean-doc": "rimraf docs",
         "clean-ts": "rimraf build",
         "clean": "rimraf dist docs build",
-        "regen": "antlr4ts -visitor  grammar/HSQL.g4 -o src/misc/"
+        "regen": "antlr4ts -visitor  grammar/HSQL.g4 -o src/misc/",
+        "prepack": "npm run build"
     },
     "author": "",
     "license": "ISC",
