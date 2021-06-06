@@ -14,7 +14,7 @@ import format from 'string-template';
 import rs from './misc/strings/resultStrings.json';
 // 2 ignores the node call and the script name
 // This syntax is shorthand to writing `const args = yargs(...).argv`
-const { argv: args } = yargs(process.argv.slice(2))
+export const { argv: args } = yargs(process.argv.slice(2))
     // add the help option
     .help()
     // only commands/options defined will work
@@ -144,7 +144,6 @@ const { argv: args } = yargs(process.argv.slice(2))
     .demandCommand(2);
 
 export type argType = typeof args;
-
 /**
  * Entrypoint
  * @param argv arguments
