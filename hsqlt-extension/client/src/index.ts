@@ -46,12 +46,12 @@ export function activate(context: vscode.ExtensionContext) {
             const fn = vscode.window.activeTextEditor.document.fileName;
             console.log(fn);
             const x = new TaskManager(fn, false, undefined, new FileOutput());
+            // await vscode.window.showInformationMessage('Start AST generating');
             x.generateAST();
-            const {
-                [ErrorSeverity.ERROR]: errors,
-                [ErrorSeverity.WARNING]: warnings,
-            } = extractErrors(x);
+            const { [ErrorSeverity.ERROR]: errors, [ErrorSeverity.WARNING]: warnings } =
+                extractErrors(x);
             console.log(`${errors} ${warnings}`);
+            // await vscode.window.showInformationMessage('Done AST generating');
             if (errors > 0) {
                 await vscode.window.showErrorMessage('Errors in compiling');
             } else {
@@ -64,17 +64,16 @@ export function activate(context: vscode.ExtensionContext) {
                     // TODO ?? allow configuration
                     if (ans === 'Yes') {
                         await x.generateOutputs();
+                        await vscode.window.showInformationMessage('Done writing');
                     }
+                } else {
+                    await x.generateOutputs();
+                    await vscode.window.showInformationMessage('Done writing');
                 }
             }
         })
     );
-    client = new LanguageClient(
-        'HSQL',
-        'HSQL Client',
-        serverOptions,
-        clientOptions
-    );
+    client = new LanguageClient('HSQL', 'HSQL Client', serverOptions, clientOptions);
 
     client.start();
 }

@@ -1,9 +1,16 @@
-import { Position, Range, TextDocuments, URI, Diagnostic } from 'vscode-languageserver';
+import {
+    Position,
+    Range,
+    TextDocuments,
+    URI,
+    Diagnostic,
+    DiagnosticSeverity,
+} from 'vscode-languageserver';
 import { TextDocument, TextDocumentContentChangeEvent } from 'vscode-languageserver-textdocument';
 import { DocListener, FTDoc } from './TextDoc';
 import { eventChecks } from './TextUtils';
 import { fileURLToPath, pathToFileURL } from 'url';
-import { AST, ContexedTranslationError, TaskManager } from 'hsqlt';
+import { AST, ContexedTranslationError, ErrorSeverity, ErrorType, TaskManager } from 'hsqlt';
 
 // TODO someday work with non-file:// functions
 export function validator(
@@ -43,13 +50,14 @@ export function mapIssues(
         const fn = pathToFileURL(issue.ctx).toString();
         const entry = mappedIssues.get(fn) ?? [];
 
-        const startPosition = Position.create(
-            (issue.line ?? 1) - 1,
-            (issue.charPositionInLine ?? 1) - 1
-        );
+        const startPosition = Position.create((issue.line ?? 1) - 1, issue.charPositionInLine ?? 0);
 
         // FIXME use a range
-        entry.push({ message: issue.msg, range: Range.create(startPosition, startPosition) });
+        entry.push({
+            message: issue.msg,
+            range: Range.create(startPosition, startPosition),
+            severity: mapDiagnosticType(issue.severity),
+        });
         mappedIssues.set(fn, entry);
     }
 
@@ -67,4 +75,18 @@ export function getFileList(asts: Map<string, AST>): string[] {
         fileNameList.push(pathToFileURL(fileName).toString());
     }
     return fileNameList;
+}
+
+export function mapDiagnosticType(x: ErrorSeverity): DiagnosticSeverity {
+    switch (x) {
+        case ErrorSeverity.ERROR: {
+            return DiagnosticSeverity.Error;
+        }
+        case ErrorSeverity.WARNING: {
+            return DiagnosticSeverity.Warning;
+        }
+        default: {
+            return DiagnosticSeverity.Information;
+        }
+    }
 }
