@@ -21,7 +21,7 @@ const connection = createConnection(ProposedFeatures.all);
 // text documents based on string based docs
 const tdocs = new TDocs(FTDoc, [
     (d, c, v) => {
-        connection.console.log(`Incremental change on ${d.uri} ${JSON.stringify(c)}`);
+        // connection.console.log(`Incremental change on ${d.uri} ${JSON.stringify(c)}`);
 
         const needDiagnostics = true;
         if (needDiagnostics) {
@@ -50,13 +50,13 @@ const documents = new TextDocuments(tdocs);
 //     // we will have to get diagnostics here, lets try
 // });
 
-documents.onDidOpen(e => {
-    connection.console.log(`Opened ${e.document.uri} - ${e.document.languageId}`);
-});
+// documents.onDidOpen(e => {
+//     connection.console.log(`Opened ${e.document.uri} - ${e.document.languageId}`);
+// });
 
-documents.onDidClose(e => {
-    connection.console.log(`Closed ${e.document.uri} - ${e.document.languageId}`);
-});
+// documents.onDidClose(e => {
+//     connection.console.log(`Closed ${e.document.uri} - ${e.document.languageId}`);
+// });
 
 connection.onInitialize(params => {
     const workspaceDirs = params.workspaceFolders;
