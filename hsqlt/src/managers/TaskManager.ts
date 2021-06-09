@@ -91,7 +91,7 @@ export class TaskManager {
         this.ASTMap.set(fn, ast);
 
         this.errorManager.popFile();
-        return { ast, tree, tokenStreams, asts: this.ASTMap };
+        return { ast, tree, asts: this.ASTMap };
     }
 
     /**
