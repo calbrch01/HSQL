@@ -15,6 +15,7 @@ import { eventChecks } from './TextUtils';
 
 import { fileURLToPath } from 'url';
 import { getFileList, mapIssues, validator } from './Translation';
+import { TextDocument } from 'vscode-languageserver-textdocument';
 
 const connection = createConnection(ProposedFeatures.all);
 
@@ -26,33 +27,21 @@ const tdocs = new TDocs(FTDoc, [
         const needDiagnostics = true;
         if (needDiagnostics) {
             // need to generate file map
-            console.log(fileURLToPath(d.uri));
-            const { asts, issues } = validator(d, c, v, documents);
-            connection.console.log(`I>Got diagnostics :${issues.length} issues`);
-
-            const fileList = getFileList(asts);
-
-            const mappedIssues = mapIssues(issues, fileList);
-            connection.console.log(`I>Mapped the diagnostics filewise ${mappedIssues.size}`);
-            // send these over
-            // FIXME merge the asts uri map with this one
-            const issuesList = [...mappedIssues];
-            issuesList.forEach(([uri, diagnostics]) => {
-                connection.sendDiagnostics({ uri, diagnostics });
-            });
+            validate(d);
         }
     },
 ]);
-//
+
+// documents
 const documents = new TextDocuments(tdocs);
 
 // documents.onDidChangeContent((e) => {
 //     // we will have to get diagnostics here, lets try
 // });
 
-// documents.onDidOpen(e => {
-//     connection.console.log(`Opened ${e.document.uri} - ${e.document.languageId}`);
-// });
+documents.onDidOpen(e => {
+    validate(e.document);
+});
 
 // documents.onDidClose(e => {
 //     connection.console.log(`Closed ${e.document.uri} - ${e.document.languageId}`);
@@ -75,3 +64,19 @@ connection.onInitialize(params => {
 documents.listen(connection);
 // and finally, listen for some input
 connection.listen();
+
+function validate(d: TextDocument) {
+    const { asts, issues } = validator(d, documents);
+    connection.console.log(`I>Got diagnostics :${issues.length} issues`);
+
+    const fileList = getFileList(asts);
+
+    const mappedIssues = mapIssues(issues, fileList);
+    connection.console.log(`I>Mapped the diagnostics filewise ${mappedIssues.size}`);
+    // send these over
+    // FIXME merge the asts uri map with this one
+    const issuesList = [...mappedIssues];
+    issuesList.forEach(([uri, diagnostics]) => {
+        connection.sendDiagnostics({ uri, diagnostics });
+    });
+}

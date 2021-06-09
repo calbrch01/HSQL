@@ -13,13 +13,10 @@ import { fileURLToPath, pathToFileURL } from 'url';
 import { AST, ContexedTranslationError, ErrorSeverity, ErrorType, TaskManager } from 'hsqlt';
 
 // TODO someday work with non-file:// functions
-export function validator(
-    document: FTDoc,
-    changes: TextDocumentContentChangeEvent[],
-    version: number,
-    documents: TextDocuments<TextDocument>
-) {
-    const changesInc = changes.filter(eventChecks.eventIsIncremental);
+export function validator(document: TextDocument, documents: TextDocuments<TextDocument>) {
+    // changes?: TextDocumentContentChangeEvent[],
+    // version?: number,
+    // const changesInc = changes.filter(eventChecks.eventIsIncremental);
     const allDocs = documents.all();
 
     const mainFile = fileURLToPath(document.uri);
