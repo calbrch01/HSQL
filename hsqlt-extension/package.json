@@ -9,7 +9,9 @@
     "prettier": {
         "tabWidth": 4,
         "semi": true,
-        "singleQuote": true
+        "singleQuote": true,
+        "arrowParens": "avoid",
+        "printWidth": 100
     },
     "categories": [
         "Programming Languages"
