@@ -15,7 +15,16 @@
 			"outFiles": [
 				"${workspaceFolder}/dist/**/*.js"
 			],
+			"sourceMaps": true,
 			"preLaunchTask": "${defaultBuildTask}"
+		},
+		{
+			"type": "node",
+			"request": "attach",
+			"name": "Attach to Server",
+			"port": 6009,
+			"restart": true,
+			"outFiles": ["${workspaceRoot}/dist/**/*.js"]
 		},
 		{
 			"name": "Extension Tests",
@@ -29,6 +38,12 @@
 				"${workspaceFolder}/out/test/**/*.js"
 			],
 			"preLaunchTask": "${defaultBuildTask}"
+		}
+	],
+	"compounds": [
+		{
+			"name": "Debug Extension Server",
+			"configurations": ["Run Extension","Attach to Server"]
 		}
 	]
 }

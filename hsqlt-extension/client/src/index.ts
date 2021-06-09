@@ -1,19 +1,20 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import path = require("path");
-import * as vscode from "vscode";
+import path = require('path');
+import * as vscode from 'vscode';
 import {
     LanguageClient,
     LanguageClientOptions,
     ServerOptions,
     TransportKind,
-} from "vscode-languageclient";
-
+} from 'vscode-languageclient';
+import { ErrorSeverity, FileOutput, OutputManager, TaskManager } from 'hsqlt';
+import { extractErrors } from './extractErrors';
 let client: LanguageClient;
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-    const serverModule = context.asAbsolutePath(path.join("dist", "server.js"));
+    const serverModule = context.asAbsolutePath(path.join('dist', 'server.js'));
 
     const serverOptions: ServerOptions = {
         run: { transport: TransportKind.ipc, module: serverModule },
@@ -21,14 +22,14 @@ export function activate(context: vscode.ExtensionContext) {
             transport: TransportKind.ipc,
             module: serverModule,
             options: {
-                execArgv: ["--nolazy", "--inspect=6009"],
+                execArgv: ['--nolazy', '--inspect=6009'],
             },
         },
     };
     const clientOptions: LanguageClientOptions = {
-        documentSelector: [{ scheme: "file", language: "hsql" }],
+        documentSelector: [{ scheme: 'file', language: 'hsql' }],
         synchronize: {
-            fileEvents: vscode.workspace.createFileSystemWatcher("**/*.hsql"),
+            fileEvents: vscode.workspace.createFileSystemWatcher('**/*.hsql'),
         },
     };
 
@@ -40,13 +41,37 @@ export function activate(context: vscode.ExtensionContext) {
     // Now provide the implementation of the command with registerCommand
     // The commandId parameter must match the command field in package.json
     context.subscriptions.push(
-        vscode.commands.registerCommand("hsqlt.helloWorld", async () => {
-            await vscode.window.showErrorMessage(serverModule);
+        vscode.commands.registerCommand('hsqlt.compile', async () => {
+            await vscode.workspace.saveAll();
+            const fn = vscode.window.activeTextEditor.document.fileName;
+            console.log(fn);
+            const x = new TaskManager(fn, false, undefined, new FileOutput());
+            x.generateAST();
+            const {
+                [ErrorSeverity.ERROR]: errors,
+                [ErrorSeverity.WARNING]: warnings,
+            } = extractErrors(x);
+            console.log(`${errors} ${warnings}`);
+            if (errors > 0) {
+                await vscode.window.showErrorMessage('Errors in compiling');
+            } else {
+                if (warnings > 0) {
+                    const ans = await vscode.window.showWarningMessage(
+                        'Warnings in Compiling. Write to disk?',
+                        'Yes',
+                        'No'
+                    );
+                    // TODO ?? allow configuration
+                    if (ans === 'Yes') {
+                        await x.generateOutputs();
+                    }
+                }
+            }
         })
     );
     client = new LanguageClient(
-        "HSQL",
-        "HSQL Client",
+        'HSQL',
+        'HSQL Client',
         serverOptions,
         clientOptions
     );

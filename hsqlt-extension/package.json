@@ -8,21 +8,24 @@
     },
     "prettier": {
         "tabWidth": 4,
-        "semi": true
+        "semi": true,
+        "singleQuote": true
     },
     "categories": [
-        "Other"
+        "Programming Languages"
     ],
     "activationEvents": [
-        "onCommand:hsqlt-extension.helloWorld",
+        "onCommand:hsqlt.compile",
         "onLanguage:hsql"
     ],
     "main": "./dist/client.js",
     "contributes": {
         "commands": [
             {
-                "command": "hsqlt-extension.helloWorld",
-                "title": "Hello World"
+                "command": "hsqlt.compile",
+                "title": "Compile a HSQL Program",
+                "category": "HSQL",
+                "when": "editorLangId == hsql"
             }
         ],
         "grammars": [
@@ -45,7 +48,7 @@
                     ".hsql",
                     ".dhsql"
                 ],
-                "configuration": "./hsql-configuration.json"
+                "configuration": "./hsql-language-configuration.json"
             }
         ]
     },

@@ -56,5 +56,12 @@ const config = {
             },
         ],
     },
+    // currently increases code size as of right now(?)
+    // optimization:{
+    //     splitChunks:{
+    //         chunks:'all',
+    //         name:false
+    //     }
+    // }
 };
 module.exports = config;

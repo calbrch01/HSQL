@@ -1,13 +1,7 @@
-// valid
 import %.a;
-// valid
-import % as aabc ;
-
-
-
 p = a.t1;
-
 output p title hello 'hello.csv' overwrite;
+
 
 //p = b;
 //import a;
