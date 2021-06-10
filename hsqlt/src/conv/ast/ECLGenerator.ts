@@ -1,5 +1,4 @@
 import { BaseASTNode } from '../../ast/stmt/base/BaseASTNode';
-import { Literal } from '../../ast/stmt/Literal';
 import { AbstractASTVisitor, IASTVisitor } from '../../ast/IASTVisitor';
 import { ECLCode } from '../../code/ECLCode';
 import { Import } from '../../ast/stmt/Import';
@@ -12,6 +11,7 @@ import { EqualDefinition } from '../../ast/stmt/EqualDefinition';
 import { ParserRuleContext } from 'antlr4ts';
 import { Definition } from '../../ast/stmt/Definition';
 import { Output } from '../../ast/stmt/Output';
+import { StringLiteral } from '../../ast/stmt/Literal';
 
 /**
  * Semantically, Array is treated as a rest+top fashion
@@ -58,6 +58,10 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
 
     visitDefinition(x: Definition) {
         return [new ECLCode(x.val.toString())];
+    }
+
+    visitStringLiteral(ctx: StringLiteral) {
+        return [new ECLCode(ctx.val)];
     }
 
     visitEqual(x: EqualDefinition) {

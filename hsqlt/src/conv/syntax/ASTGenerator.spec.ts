@@ -19,7 +19,7 @@ describe('AST Generator Visitor', function () {
 
         //assertions
         assert.lengthOf(ast.stmts, 1, 'Expect one statement');
-        assert.strictEqual(ast.variableManager.vars.size, 1, 'expect one data only');
+        assert.strictEqual(ast.variableManager.vars[0].size, 1, 'expect one data only');
         assert.isTrue(ast.variableManager.exists('abc'));
 
         done();
@@ -38,7 +38,7 @@ describe('AST Generator Visitor', function () {
 
         //assertions
         assert.lengthOf(ast.stmts, 2, 'Expect one statement');
-        assert.strictEqual(ast.variableManager.vars.size, 2, 'expect two modules available only');
+        assert.strictEqual(ast.variableManager.vars[0].size, 2, 'expect two modules available only');
 
         assert.isTrue(ast.variableManager.exists('abc'));
         assert.isTrue(ast.variableManager.exists('cde'));

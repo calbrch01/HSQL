@@ -1,3 +1,8 @@
+/**
+ * Library exports
+ * @module
+ */
+
 //antlr types
 export * as ParserRules from './misc/grammar/HSQLParser';
 export * as HSQLVisitor from './misc/grammar/HSQLVisitor';
@@ -9,7 +14,7 @@ export { AST } from './ast/AST';
 export * from './managers/ErrorManager';
 export * from './managers/TaskManager';
 export * from './managers/OutputManagers';
-export * from './misc/holders/VEO';
+// export * from './misc/holders/VEO';
 
 //misc
 export * as ExecModes from './misc/execModes';

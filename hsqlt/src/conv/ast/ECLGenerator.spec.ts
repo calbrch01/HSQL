@@ -2,7 +2,6 @@ import { assert } from 'chai';
 import { MapOutput } from '../../managers/OutputManagers';
 import { TaskManager } from '../../managers/TaskManager';
 import { ErrorSeverity } from '../../managers/ErrorManager';
-import { ECLGen } from './ECLGen';
 
 describe('ECL Generation', function () {
     it('Simple Generation', async () => {

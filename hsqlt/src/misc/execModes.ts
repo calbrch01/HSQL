@@ -17,7 +17,7 @@ export interface ExecIntent {
  * Exec tree mode
  */
 export class ExecTreeMode implements ExecIntent {
-    async do(taskmanager: TaskManager, outputmanager: OutputManager) {
+    async do(taskmanager: TaskManager, _outputmanager: OutputManager) {
         const { strTree } = taskmanager.getStringTree();
         console.log(strTree, EOL);
     }
@@ -27,7 +27,7 @@ export class ExecTreeMode implements ExecIntent {
  * Exec Syntax check mode
  */
 export class ExecCheckMode implements ExecIntent {
-    async do(taskmanager: TaskManager, outputmanager: OutputManager): Promise<void> {
+    async do(taskmanager: TaskManager, _outputmanager: OutputManager): Promise<void> {
         taskmanager.generateAST();
         if (taskmanager.args.g) {
             console.dir(taskmanager.ASTMap, { depth: 4 });

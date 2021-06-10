@@ -32,28 +32,46 @@ export class VariableTable {
      * Generate variables
      * @param _vars Pre-existing variables to add
      */
-    constructor(protected _vars: Map<string, DataMetaData> = new Map(), protected actionCounter: number = 0) {}
+    constructor(protected _vars: Map<string, DataMetaData>[] = [new Map()], protected actionCounter: number = 0) {}
+
+    /**
+     * Avoid using this
+     */
     get vars() {
         return this._vars;
+    }
+
+    // protected
+    get overlayLength() {
+        return this._vars.length;
     }
 
     /**
      * Add a variable into the scope
      *
      * @param s location
-     * @param v
+     * @param v the data to add
+     * @param addtoOverLay whether to add to the root base(false) or to the latest overlay(true).
      */
-    add(s: string, v: DataMetaData): boolean {
+    add(s: string, v: DataMetaData, addtoOverLay: boolean = true): boolean {
+        let map: Map<string, DataMetaData> = this._vars[addtoOverLay ? this.overlayLength - 1 : 0];
         // this.vars.add(v);
-        if (this._vars.has(s)) {
+
+        if (map.has(s)) {
             return false;
         }
-        this._vars.set(s, v);
+        map.set(s, v);
         return true;
     }
 
-    get(s: string) {
-        return this._vars.get(s);
+    get(s: string): DataMetaData | undefined {
+        const l = this.overlayLength;
+        let x: DataMetaData | undefined = undefined;
+        for (let i = l - 1; i >= 0; i--) {
+            x = this._vars[i].get(s);
+            if (x !== undefined) break;
+        }
+        return x;
     }
 
     /**
@@ -61,7 +79,21 @@ export class VariableTable {
      * @param s variable name
      */
     exists(s: string) {
-        return this._vars.has(s);
+        const l = this.overlayLength;
+        // let x: boolean = false;
+        for (let i = l - 1; i >= 0; i--) {
+            const x = this._vars[i].has(s);
+            if (x) return true;
+        }
+        return false;
+        // return this._vars.has(s);
+    }
+
+    pushOverlay(overlay: Map<string, DataMetaData> = new Map()) {
+        return this._vars.push(overlay);
+    }
+    popOverlay() {
+        return this._vars.pop();
     }
 
     /**

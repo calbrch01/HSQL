@@ -2,6 +2,8 @@ import { AbstractParseTreeVisitor } from 'antlr4ts/tree/AbstractParseTreeVisitor
 import { AST } from '../../ast/AST';
 import { VariableVisibility } from '../../ast/symbol/VariableTable';
 import {
+    ActionStmtContext,
+    BasicStringLiteralContext,
     DefinitionContext,
     DefinitionStmtContext,
     ImportStmtContext,
@@ -9,6 +11,7 @@ import {
     ProgramContext,
     ScopeContext,
     SelectStmtContext,
+    StringContext,
 } from '../../misc/grammar/HSQLParser';
 import { HSQLVisitor } from '../../misc/grammar/HSQLVisitor';
 import { ErrorManager, TranslationError } from '../../managers/ErrorManager';
@@ -32,6 +35,10 @@ import { Action, ActionType } from '../../ast/data/Action';
 import { Output } from '../../ast/stmt/Output';
 import { isAny, isDataType } from '../../ast/data/base/misc';
 import { OutputASTGenerator } from './support/OutputASTGenerator';
+import { SelectASTGenerator } from './support/SelectASTGenerator';
+import { createTextChangeRange } from 'typescript';
+import { dtype, Singular } from '../../ast/data/Singular';
+import { StringLiteral } from '../../ast/stmt/Literal';
 /**
  * Generate an AST.
  * Imports are added to the variable table by this.ast.addImport
@@ -124,11 +131,11 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
     }
 
     // FIXME add actual code
-    visitSelectStmt(ctx: SelectStmtContext) {
-        const ct = new Select(ctx, []);
-        const dt = new Table();
-        return new VEO(dt, ct);
-    }
+    // visitSelectStmt(ctx: SelectStmtContext) {
+    //     const ct = new Select(ctx, []);
+    //     const dt = new Table();
+    //     return new VEO(dt, ct);
+    // }
 
     // add all the nodes to the AST in that order
     visitProgram(ctx: ProgramContext) {
@@ -151,6 +158,24 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
     visitOutputStmt(ctx: OutputStmtContext) {
         const outputVisitor = new OutputASTGenerator(this);
         return outputVisitor.visit(ctx); //new VEO();
+    }
+
+    visitSelectStmt(ctx: SelectStmtContext) {
+        const selectVisitor = new SelectASTGenerator(this);
+        return selectVisitor.visit(ctx);
+    }
+
+    visitActionStmt(ctx: ActionStmtContext) {
+        const res = this.visitChildren(ctx);
+        // console.debug('G', res);
+        return res;
+    }
+
+    visitBasicStringLiteral(ctx: BasicStringLiteralContext) {
+        // console.debug('I was called');
+        const dt = new Singular(dtype.STRING);
+        const node = new StringLiteral(ctx, ctx.text);
+        return new VEO(dt, node);
     }
 
     getAST(): AST {

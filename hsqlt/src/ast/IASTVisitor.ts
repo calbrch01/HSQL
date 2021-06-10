@@ -3,7 +3,7 @@ import { BaseASTNode } from './stmt/base/BaseASTNode';
 import { Definition } from './stmt/Definition';
 import { EqualDefinition } from './stmt/EqualDefinition';
 import { Import } from './stmt/Import';
-import { Literal } from './stmt/Literal';
+import { StringLiteral } from './stmt/Literal';
 import { Output } from './stmt/Output';
 import { Select } from './stmt/Select';
 
@@ -43,7 +43,7 @@ export interface IASTVisitor<T> {
     visit(node: BaseASTNode): T;
 
     visitAST: (x: AST) => T;
-    visitLiteral?: (x: Literal) => T;
+    // visitLiteral?: (x: Literal) => T;
     visitSelect?: (x: Select) => T;
     visitEqual?: (x: EqualDefinition) => T;
 
@@ -52,4 +52,6 @@ export interface IASTVisitor<T> {
     visitImport?: (x: Import) => T;
 
     visitDefinition?: (x: Definition) => T;
+
+    visitStringLiteral?: (x: StringLiteral) => T;
 }

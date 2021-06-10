@@ -171,6 +171,7 @@ number:
 string:
 	STRING								# basicStringLiteral
 	| UNICODE_STRING (UESCAPE STRING)?	# unicodeStringLiteral;
+// not sure what to do with unicode yet
 
 booleanValue: TRUE | FALSE;
 

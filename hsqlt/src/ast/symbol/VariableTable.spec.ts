@@ -1,7 +1,9 @@
 // import { assert } from 'console';
-import { VariableTable, VariableVisibility } from './VariableTable';
+import { DataMetaData, VariableTable, VariableVisibility } from './VariableTable';
 import { assert } from 'chai';
 import { Action } from '../data/Action';
+import { Singular } from '../data/Singular';
+import { Layout } from '../data/Layout';
 describe('Variable Table Tests', function () {
     const varTable = new VariableTable();
     // capture this for use -> identical to const aps = VariableTable.actionPrependString
@@ -38,5 +40,21 @@ describe('Variable Table Tests', function () {
     it('Can claim another action variable, which is now the next one', async () => {
         const aname2 = varTable.claimActionIdentifier();
         assert.strictEqual(aname2, secVarName);
+    });
+
+    it('contexts', async () => {
+        // const x = varTable.get(secVarName);
+        // assert.instanceOf(x?.data, Action); // exists and is instance of at one go
+
+        //push a new map, shadowing the old variable -> although note that ECL does not do this often. This will be prevented by the add() function preventing dupes
+        varTable.pushOverlay();
+        assert.isFalse(varTable.exists('hello'), 'should not exist before');
+        const layoutObj = new Layout();
+        varTable.add('hello', { data: layoutObj, vis: VariableVisibility.DEFAULT });
+        assert.isTrue(varTable.exists('hello'), 'should exist during');
+        const x = varTable.get('hello');
+        assert.strictEqual(x?.data, layoutObj, 'should be the same instance');
+        varTable.popOverlay();
+        assert.isFalse(varTable.exists('hello'), 'should not exist after pop');
     });
 });
