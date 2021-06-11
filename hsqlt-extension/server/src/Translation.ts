@@ -48,11 +48,14 @@ export function mapIssues(
         const entry = mappedIssues.get(fn) ?? [];
 
         const startPosition = Position.create((issue.line ?? 1) - 1, issue.charPositionInLine ?? 0);
-
+        const endPosition = Position.create(
+            (issue.lineEnd ?? issue.line ?? 1) - 1,
+            issue.charPositionInLineEnd ?? issue.charPositionInLine ?? 0
+        );
         // FIXME use a range
         entry.push({
             message: issue.msg,
-            range: Range.create(startPosition, startPosition),
+            range: Range.create(startPosition, endPosition),
             severity: mapDiagnosticType(issue.severity),
         });
         mappedIssues.set(fn, entry);

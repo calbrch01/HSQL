@@ -42,7 +42,7 @@ export class VariableTable {
     }
 
     // protected
-    get overlayLength() {
+    get scopeLength() {
         return this._vars.length;
     }
 
@@ -54,7 +54,7 @@ export class VariableTable {
      * @param addtoOverLay whether to add to the root base(false) or to the latest overlay(true).
      */
     add(s: string, v: DataMetaData, addtoOverLay: boolean = true): boolean {
-        let map: Map<string, DataMetaData> = this._vars[addtoOverLay ? this.overlayLength - 1 : 0];
+        let map: Map<string, DataMetaData> = this._vars[addtoOverLay ? this.scopeLength - 1 : 0];
         // this.vars.add(v);
 
         if (map.has(s)) {
@@ -65,7 +65,7 @@ export class VariableTable {
     }
 
     get(s: string): DataMetaData | undefined {
-        const l = this.overlayLength;
+        const l = this.scopeLength;
         let x: DataMetaData | undefined = undefined;
         for (let i = l - 1; i >= 0; i--) {
             x = this._vars[i].get(s);
@@ -79,7 +79,7 @@ export class VariableTable {
      * @param s variable name
      */
     exists(s: string) {
-        const l = this.overlayLength;
+        const l = this.scopeLength;
         // let x: boolean = false;
         for (let i = l - 1; i >= 0; i--) {
             const x = this._vars[i].has(s);
@@ -89,11 +89,21 @@ export class VariableTable {
         // return this._vars.has(s);
     }
 
-    pushOverlay(overlay: Map<string, DataMetaData> = new Map()) {
+    pushScope(overlay: Map<string, DataMetaData> = new Map()) {
         return this._vars.push(overlay);
     }
-    popOverlay() {
+    popScope() {
         return this._vars.pop();
+    }
+
+    /**
+     * Helper function to automatically push an overlay
+     * @param callbackFn
+     */
+    withNewScope(callbackFn: () => void) {
+        this.pushScope();
+        callbackFn();
+        this.popScope();
     }
 
     /**

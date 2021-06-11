@@ -1,4 +1,3 @@
-// import { assert } from 'console';
 import { DataMetaData, VariableTable, VariableVisibility } from './VariableTable';
 import { assert } from 'chai';
 import { Action } from '../data/Action';
@@ -14,13 +13,6 @@ describe('Variable Table Tests', function () {
      */
     const firstVarName = aps + '0';
     const secVarName = aps + '1';
-
-    /**
-     * Hook for running code before tests
-     */
-    this.beforeAll(async () => {
-        // console.log('test output');
-    });
 
     it('Correctly claims action identifier', async () => {
         const aname1 = varTable.claimActionIdentifier();
@@ -47,14 +39,14 @@ describe('Variable Table Tests', function () {
         // assert.instanceOf(x?.data, Action); // exists and is instance of at one go
 
         //push a new map, shadowing the old variable -> although note that ECL does not do this often. This will be prevented by the add() function preventing dupes
-        varTable.pushOverlay();
+        varTable.pushScope();
         assert.isFalse(varTable.exists('hello'), 'should not exist before');
         const layoutObj = new Layout();
         varTable.add('hello', { data: layoutObj, vis: VariableVisibility.DEFAULT });
         assert.isTrue(varTable.exists('hello'), 'should exist during');
         const x = varTable.get('hello');
         assert.strictEqual(x?.data, layoutObj, 'should be the same instance');
-        varTable.popOverlay();
+        varTable.popScope();
         assert.isFalse(varTable.exists('hello'), 'should not exist after pop');
     });
 });

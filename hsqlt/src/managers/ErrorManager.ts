@@ -53,7 +53,9 @@ export class TranslationError {
         public line?: number,
         public charPositionInLine?: number,
         public severity: ErrorSeverity = ErrorSeverity.ERROR,
-        public type: ErrorType = ErrorType.SYNTAX
+        public type: ErrorType = ErrorType.SYNTAX,
+        public lineEnd?: number,
+        public charPositionInLineEnd?: number
     ) {}
 
     static semanticError(msg: string, line?: number, charPositionInLine?: number) {
@@ -65,7 +67,9 @@ export class TranslationError {
             cause?.start.line,
             cause?.start.charPositionInLine,
             ErrorSeverity.ERROR,
-            ErrorType.SEMANTIC
+            ErrorType.SEMANTIC,
+            cause?._stop?.line,
+            cause?._stop?.charPositionInLine
         );
     }
     static semanticWarningToken(msg: string, cause?: ParserRuleContext) {
@@ -74,12 +78,22 @@ export class TranslationError {
             cause?.start.line,
             cause?.start.charPositionInLine,
             ErrorSeverity.WARNING,
-            ErrorType.SEMANTIC
+            ErrorType.SEMANTIC,
+            cause?._stop?.line,
+            cause?._stop?.charPositionInLine
         );
     }
 
     static generalErrorToken(msg: string, et: ErrorType, cause?: ParserRuleContext) {
-        return new TranslationError(msg, cause?.start.line, cause?.start.charPositionInLine, ErrorSeverity.ERROR, et);
+        return new TranslationError(
+            msg,
+            cause?.start.line,
+            cause?.start.charPositionInLine,
+            ErrorSeverity.ERROR,
+            et,
+            cause?._stop?.line,
+            cause?._stop?.charPositionInLine
+        );
     }
 }
 

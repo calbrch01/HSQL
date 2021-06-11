@@ -6,7 +6,6 @@ import { ASTGenerator } from './ASTGenerator';
 import { TaskManager } from '../../managers/TaskManager';
 
 describe('AST Generator Visitor', function () {
-    // this.timeout('100s');
     it('Simple Import statement', done => {
         const tm = new TaskManager('mod', false, new Map([['mod', 'import abc;']]));
         const { ast } = tm.generateAST();
