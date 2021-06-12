@@ -52,28 +52,6 @@ HSQL
 
     `p1 := DATASET('~scoped::file',l1,csv(...))(y>5)`
 
-### Insert
-
->Note: Use `+`
-
-1. **Insert into the same table (mutates the table)**
-
-    `INSERT INTO t1 values(1,2,'a'),(3,4,'b');`
-
-2. Add into table -> create new table with added information
-
-    `t2 = INSERT INTO t1 values (1,2,'a'),(3,4,'b')`
-
-
-
-### Delete
-
-`filter`
-
-### Update
-
-`transform`
-
 
 ## Extended Syntax
 ### Plot
