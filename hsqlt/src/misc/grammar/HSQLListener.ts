@@ -53,6 +53,7 @@ import { SelectAliasContext } from "./HSQLParser";
 import { Join_operatorContext } from "./HSQLParser";
 import { SelectWhereClauseContext } from "./HSQLParser";
 import { JoinedTableContext } from "./HSQLParser";
+import { JoinConstraintContext } from "./HSQLParser";
 import { JoinSpecificationContext } from "./HSQLParser";
 import { GroupByClauseContext } from "./HSQLParser";
 import { OrderByClauseContext } from "./HSQLParser";
@@ -710,6 +711,17 @@ export interface HSQLListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	exitJoinedTable?: (ctx: JoinedTableContext) => void;
+
+	/**
+	 * Enter a parse tree produced by `HSQLParser.joinConstraint`.
+	 * @param ctx the parse tree
+	 */
+	enterJoinConstraint?: (ctx: JoinConstraintContext) => void;
+	/**
+	 * Exit a parse tree produced by `HSQLParser.joinConstraint`.
+	 * @param ctx the parse tree
+	 */
+	exitJoinConstraint?: (ctx: JoinConstraintContext) => void;
 
 	/**
 	 * Enter a parse tree produced by `HSQLParser.joinSpecification`.

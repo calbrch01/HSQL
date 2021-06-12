@@ -1,9 +1,9 @@
 //import a;
-
+import bc;
 //p = a.t1;
 //p = a.t2;
 
-a = select * from ab,bc;
-b = select * from ab,bc,cd;
-c = select * from (select * from abc) as bcd,cd;
+-- a = select * from ab,bc;
+-- b = select * from ab,bc,cd;
+-- c = select * from (select * from abc) as bcd,cd;
 d = select * from bc join cd on bc.xy=cd.yz;

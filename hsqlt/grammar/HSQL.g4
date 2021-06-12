@@ -88,10 +88,12 @@ selectWhereClause: booleanExpression;
 //we limit it to qualifiedidentifiers only
 joinedTable:
 	selectFromTableReference (
-		join_operator selectFromTableReference ON joinSpecification
+		join_operator selectFromTableReference joinConstraint?
+			//if no constraint, assume TRUE (can use that to throw an error)
 	)*;
 //colRef: USING BSTART_ IDENTIFIER (COMMA_ IDENTIFIER)* BEND_ 
 
+joinConstraint: ON joinSpecification;
 //the clause is allowed to be an entire join condition *but*
 joinSpecification:
 	leftrecset = definition comparisonOperator rightrecset = definition;

@@ -53,6 +53,7 @@ import { SelectAliasContext } from "./HSQLParser";
 import { Join_operatorContext } from "./HSQLParser";
 import { SelectWhereClauseContext } from "./HSQLParser";
 import { JoinedTableContext } from "./HSQLParser";
+import { JoinConstraintContext } from "./HSQLParser";
 import { JoinSpecificationContext } from "./HSQLParser";
 import { GroupByClauseContext } from "./HSQLParser";
 import { OrderByClauseContext } from "./HSQLParser";
@@ -483,6 +484,13 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitJoinedTable?: (ctx: JoinedTableContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.joinConstraint`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitJoinConstraint?: (ctx: JoinConstraintContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `HSQLParser.joinSpecification`.

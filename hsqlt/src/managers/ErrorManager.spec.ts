@@ -22,28 +22,30 @@ describe('Error manager tests', function () {
             assert.instanceOf(e, HaltError);
         }
     });
-    it('Errors in pedantic mode should always halt', async () => {
-        const em = ErrorManager.pedantic;
-        em.pushFile('test context');
-        try {
-            em.push(new TranslationError('foo'));
-            // we should never reach this part of code optimistically
-            assert.fail('Theoretically unreachable code reached');
-        } catch (e) {
-            assert.instanceOf(e, HaltError);
-        }
-    });
-    it('Warning in pedantic mode should always halt', async () => {
-        const em = ErrorManager.pedantic;
-        em.pushFile('test context');
-        try {
-            em.push(new TranslationError('foo', undefined, undefined, ErrorSeverity.WARNING));
-            // we should never reach this part of code optimistically
-            assert.fail('Theoretically unreachable code reached');
-        } catch (e) {
-            assert.instanceOf(e, HaltError);
-        }
-    });
+
+    // removed these as pedantic mode only stops output
+    // it('Errors in pedantic mode should always halt', async () => {
+    //     const em = ErrorManager.pedantic;
+    //     em.pushFile('test context');
+    //     try {
+    //         em.push(new TranslationError('foo'));
+    //         // we should never reach this part of code optimistically
+    //         assert.fail('Theoretically unreachable code reached');
+    //     } catch (e) {
+    //         assert.instanceOf(e, HaltError);
+    //     }
+    // });
+    // it('Warning in pedantic mode should always halt', async () => {
+    //     const em = ErrorManager.pedantic;
+    //     em.pushFile('test context');
+    //     try {
+    //         em.push(new TranslationError('foo', undefined, undefined, ErrorSeverity.WARNING));
+    //         // we should never reach this part of code optimistically
+    //         assert.fail('Theoretically unreachable code reached');
+    //     } catch (e) {
+    //         assert.instanceOf(e, HaltError);
+    //     }
+    // });
     it('Info in pedantic mode should not halt', async () => {
         const em = ErrorManager.pedantic;
         em.pushFile('test context');
