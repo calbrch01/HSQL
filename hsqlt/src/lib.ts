@@ -1,5 +1,6 @@
 /**
- * Library exports
+ * Library exports for hsql.
+ * Refer to package.json for specific information.
  * @module
  */
 
@@ -17,5 +18,6 @@ export * from './managers/OutputManagers';
 // export * from './misc/holders/VEO';
 
 //misc
+export * from './ast/symbol/VariableTable';
 export * as ExecModes from './misc/execModes';
 export * from './misc/ast/QualifiedIdentifier';

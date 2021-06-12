@@ -63,7 +63,7 @@
     },
     "typedocOptions": {
         "entryPoints": [
-            "src","src/lib.ts"
+            "src"
         ],
         "out": "docs",
         "exclude": [

@@ -55,6 +55,16 @@ export enum ErrorMode {
  * The static methods are commonly used invocations that simplify the creation of errors.
  */
 export class TranslationError {
+    /**
+     * Creating an error. Prefer using {@link TranslationError.createIssue} or ither such static methods if there is a parser node to help.
+     * @param msg Message
+     * @param line Line of origin of error (starting)
+     * @param charPositionInLine character position of error (starting)
+     * @param severity Severity of error
+     * @param type Type of error
+     * @param lineEnd Line of origin of error (end)
+     * @param charPositionInLineEnd character position of error (end)
+     */
     constructor(
         public msg: string,
         public line?: number,
