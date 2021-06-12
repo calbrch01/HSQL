@@ -8,7 +8,7 @@ After that, all assumptions made (can be tracked with `FIXME`) should be worked 
 
 ### Todo list
 - [ ] Typedef
-- [ ] Having syntax
+- [X] Having syntax
 
 ### Goals
 

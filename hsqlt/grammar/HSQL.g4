@@ -94,7 +94,7 @@ joinedTable:
 
 //the clause is allowed to be an entire join condition *but*
 joinSpecification:
-	leftrecset = definition logicalOperator rightrecset = definition;
+	leftrecset = definition comparisonOperator rightrecset = definition;
 //joinSpecification: ON booleanExpression;
 
 groupByClause: definitionSet;

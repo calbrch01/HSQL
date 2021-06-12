@@ -1344,7 +1344,7 @@ export class HSQLParser extends Parser {
 			this.state = 306;
 			_localctx._leftrecset = this.definition();
 			this.state = 307;
-			this.logicalOperator();
+			this.comparisonOperator();
 			this.state = 308;
 			_localctx._rightrecset = this.definition();
 			}
@@ -3402,7 +3402,7 @@ export class HSQLParser extends Parser {
 		"\u0130\x03\x02\x02\x02\u012F\u012A\x03\x02\x02\x02\u0130\u0133\x03\x02" +
 		"\x02\x02\u0131\u012F\x03\x02\x02\x02\u0131\u0132\x03\x02\x02\x02\u0132" +
 		")\x03\x02\x02\x02\u0133\u0131\x03\x02\x02\x02\u0134\u0135\x05J&\x02\u0135" +
-		"\u0136\x05<\x1F\x02\u0136\u0137\x05J&\x02\u0137+\x03\x02\x02\x02\u0138" +
+		"\u0136\x05:\x1E\x02\u0136\u0137\x05J&\x02\u0137+\x03\x02\x02\x02\u0138" +
 		"\u0139\x05\x14\v\x02\u0139-\x03\x02\x02\x02\u013A\u013F\x050\x19\x02\u013B" +
 		"\u013C\x07`\x02\x02\u013C\u013E\x050\x19\x02\u013D\u013B\x03\x02\x02\x02" +
 		"\u013E\u0141\x03\x02\x02\x02\u013F\u013D\x03\x02\x02\x02\u013F\u0140\x03" +
@@ -4564,8 +4564,8 @@ export class JoinedTableContext extends ParserRuleContext {
 export class JoinSpecificationContext extends ParserRuleContext {
 	public _leftrecset!: DefinitionContext;
 	public _rightrecset!: DefinitionContext;
-	public logicalOperator(): LogicalOperatorContext {
-		return this.getRuleContext(0, LogicalOperatorContext);
+	public comparisonOperator(): ComparisonOperatorContext {
+		return this.getRuleContext(0, ComparisonOperatorContext);
 	}
 	public definition(): DefinitionContext[];
 	public definition(i: number): DefinitionContext;
