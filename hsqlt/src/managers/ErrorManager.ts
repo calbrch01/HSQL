@@ -36,17 +36,24 @@ export enum ErrorType {
     HALTING,
 }
 
+/**
+ * Error management strategy
+ */
 export enum ErrorMode {
     /**
-     * Stop with errors
+     * Errors are bad
      */
     NORMAL,
     /**
-     * Stop with warnings
+     * Warnings are bad too
      */
     PEDANTIC,
 }
 
+/**
+ * An Error with respect to translation.
+ * The static methods are commonly used invocations that simplify the creation of errors.
+ */
 export class TranslationError {
     constructor(
         public msg: string,
@@ -58,9 +65,12 @@ export class TranslationError {
         public charPositionInLineEnd?: number
     ) {}
 
-    static semanticError(msg: string, line?: number, charPositionInLine?: number) {
-        return new TranslationError(msg, line, charPositionInLine, ErrorSeverity.ERROR, ErrorType.SEMANTIC);
-    }
+    /**
+     * Create a semantic error
+     * @param msg Message
+     * @param cause Cause of the error
+     * @returns
+     */
     static semanticErrorToken(msg: string, cause?: ParserRuleContext) {
         return new TranslationError(
             msg,
@@ -68,8 +78,8 @@ export class TranslationError {
             cause?.start.charPositionInLine,
             ErrorSeverity.ERROR,
             ErrorType.SEMANTIC,
-            cause?._stop?.line,
-            cause?._stop?.charPositionInLine
+            cause?.stop?.line,
+            cause?.stop?.charPositionInLine
         );
     }
     static semanticWarningToken(msg: string, cause?: ParserRuleContext) {
@@ -83,7 +93,17 @@ export class TranslationError {
             cause?._stop?.charPositionInLine
         );
     }
-
+    static createIssue(msg: string, et: ErrorType, es: ErrorSeverity, cause?: ParserRuleContext) {
+        return new TranslationError(
+            msg,
+            cause?.start.line,
+            cause?.start.charPositionInLine,
+            es,
+            et,
+            cause?._stop?.line,
+            cause?._stop?.charPositionInLine
+        );
+    }
     static generalErrorToken(msg: string, et: ErrorType, cause?: ParserRuleContext) {
         return new TranslationError(
             msg,
@@ -186,10 +206,7 @@ export class ErrorManager {
 
     push(e: TranslationError): void {
         this._errors.push(new ContexedTranslationError(this.contextTop, e));
-        if (
-            e.type === ErrorType.HALTING ||
-            (this.errorMode === ErrorMode.PEDANTIC && e.severity >= ErrorSeverity.WARNING)
-        ) {
+        if (e.type === ErrorType.HALTING) {
             this.halt();
         }
     }

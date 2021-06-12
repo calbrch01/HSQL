@@ -22,6 +22,7 @@ export abstract class OutputManager {
 
     /**
      * Report issues
+     * @returns if successful
      */
     reportIssues(issues: ContexedTranslationError[]): boolean {
         for (const issue of issues) {
@@ -63,7 +64,7 @@ export class MapOutput extends OutputManager {
 }
 
 export class NoOutput extends OutputManager {
-    async do(fn: string, contents: string) {
+    async do() {
         // no need to do anything, our output is wrapped in a Promise automatically :)
     }
 }

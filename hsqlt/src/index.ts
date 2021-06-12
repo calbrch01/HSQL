@@ -157,7 +157,7 @@ export async function main(argv: argType, /*execMode: ExecMode*/ execMode: ExecI
     const taskmanager = new TaskManager(argv.file, argv.p, undefined, writer, undefined, argv.k, argv);
 
     try {
-        execMode.do(taskmanager, writer);
+        await execMode.do(taskmanager, writer);
     } catch (e) {
         // if e is an instance, that means we have already added it, and it is a error that was used to halt the process.
         // if it is not, we should report.

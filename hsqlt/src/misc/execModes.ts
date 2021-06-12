@@ -28,17 +28,39 @@ export class ExecTreeMode implements ExecIntent {
  */
 export class ExecCheckMode implements ExecIntent {
     async do(taskmanager: TaskManager, _outputmanager: OutputManager): Promise<void> {
+        // generate the ast
         taskmanager.generateAST();
-        if (taskmanager.args.g) {
-            console.dir(taskmanager.ASTMap, { depth: 4 });
-        }
+
+        //print out if required
+        taskmanager.args.g && console.dir(taskmanager.ASTMap, { depth: 4 });
     }
 }
 
 export class ExecMakeMode implements ExecIntent {
     async do(taskmanager: TaskManager, outputmanager: OutputManager): Promise<void> {
-        taskmanager.generateAST();
-        await taskmanager.generateOutputs();
+        //check syntax
+        await new ExecCheckMode().do(taskmanager, outputmanager);
+        // const { issues, suppressed } = taskmanager.getIssues();
+
+        //getting the error count
+        const {
+            counts: [ecount, wcount],
+            suppressed,
+        } = taskmanager.issueStats();
+        // print out some stats
+        taskmanager.args.g && console.debug(`Statistics W:${wcount},E:${ecount}`);
+
+        // if pedantic, true if warnings or errors exist, else check if errors exist
+        const skipOutput = (taskmanager.pedantic && wcount + ecount > 0) || (!taskmanager.pedantic && ecount > 0);
+
+        console.debug(`E${skipOutput}`);
+        if (skipOutput) {
+            taskmanager.errorManager.push(
+                TranslationError.createIssue(rs.didNotOutput, ErrorType.IO, ErrorSeverity.INFO)
+            );
+        } else {
+            await taskmanager.generateOutputs();
+        }
     }
 }
 

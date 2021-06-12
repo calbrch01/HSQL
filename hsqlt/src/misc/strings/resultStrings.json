@@ -10,5 +10,6 @@
     "emptyCode": "Empty code generation",
     "cannotInfer": "Cannot infer data type used, which is required for {0}. Assuming {1}",
     "cannotUse": "Cannot use data type {0} for {1}",
-    "output": "OUTPUT"
+    "output": "OUTPUT",
+    "didNotOutput": "Did not make outputs because of issues"
 }

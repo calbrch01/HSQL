@@ -162,6 +162,44 @@ export class TaskManager {
     }
 
     /**
+     * Get list of issues
+     */
+    getIssues() {
+        return {
+            suppressed: this.suppressIssues,
+            issues: this._errorManager.issues,
+        };
+    }
+
+    /**
+     * Counts of issues
+     * @returns
+     */
+    issueStats() {
+        const { suppressed, issues } = this.getIssues();
+        let ecount = 0,
+            wcount = 0,
+            icount = 0;
+        for (const issue of issues) {
+            switch (issue.severity) {
+                case ErrorSeverity.ERROR:
+                    ecount++;
+                    break;
+                case ErrorSeverity.WARNING:
+                    wcount++;
+                    break;
+                case ErrorSeverity.INFO:
+                    icount++;
+                    break;
+            }
+        }
+        return {
+            suppressed,
+            counts: [ecount, wcount, icount] as [number, number, number],
+        };
+    }
+
+    /**
      * resolve a file
      * @param q resolve this qualified identifier into face
      * @returns the module that was resolved

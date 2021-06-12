@@ -9,7 +9,6 @@ import {
     TransportKind,
 } from 'vscode-languageclient';
 import { ErrorSeverity, FileOutput, OutputManager, TaskManager } from 'hsqlt';
-import { extractErrors } from './extractErrors';
 let client: LanguageClient;
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -48,9 +47,10 @@ export function activate(context: vscode.ExtensionContext) {
             const x = new TaskManager(fn, false, undefined, new FileOutput());
             // await vscode.window.showInformationMessage('Start AST generating');
             x.generateAST();
-            const { [ErrorSeverity.ERROR]: errors, [ErrorSeverity.WARNING]: warnings } =
-                extractErrors(x);
-            console.log(`${errors} ${warnings}`);
+            const {
+                counts: [errors, warnings],
+            } = x.issueStats();
+
             // await vscode.window.showInformationMessage('Done AST generating');
             if (errors > 0) {
                 await vscode.window.showErrorMessage('Errors in compiling');

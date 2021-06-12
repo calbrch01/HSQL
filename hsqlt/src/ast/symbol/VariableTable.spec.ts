@@ -15,7 +15,7 @@ describe('Variable Table Tests', function () {
     const secVarName = aps + '1';
 
     it('Correctly claims action identifier', async () => {
-        const aname1 = varTable.claimActionIdentifier();
+        const aname1 = varTable.nextClaimableActionIdentifier();
         assert.strictEqual(aname1, firstVarName);
     });
 
@@ -30,7 +30,7 @@ describe('Variable Table Tests', function () {
     });
 
     it('Can claim another action variable, which is now the next one', async () => {
-        const aname2 = varTable.claimActionIdentifier();
+        const aname2 = varTable.nextClaimableActionIdentifier();
         assert.strictEqual(aname2, secVarName);
     });
 

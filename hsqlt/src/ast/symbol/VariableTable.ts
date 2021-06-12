@@ -109,8 +109,9 @@ export class VariableTable {
     /**
      * Get a new variable name for a action.
      * Note that this does not claim it
+     * This function merely indicates which is the next action variable that can be claimed
      */
-    claimActionIdentifier(): string {
+    nextClaimableActionIdentifier(): string {
         let usableStr = VariableTable.actionPrependString + this.actionCounter;
         while (this.exists(usableStr)) {
             // console.log(`Claimed ${this.actionCounter}`);
@@ -122,12 +123,12 @@ export class VariableTable {
     }
 
     /**
-     * Find data type of identifier. Similar to {@code VariableTable.get}
+     * Find data type of identifier. Similar to {@link VariableTable.get}, but within the identifier
      * Returns undefined if does not exist
      * @param q Identifier to resolve
      */
     resolve(q: QualifiedIdentifier): DataType | undefined {
-        // make a mutable copy
+        // if its one deep, this is a trivial case of the get method
         if (q.length === 1) {
             const x = this.get(q.head);
             if (x) {
@@ -136,6 +137,7 @@ export class VariableTable {
             // doesnt exist
             return undefined;
         } else {
+            // Getting the data to traverse with
             let root = this.get(q.head)?.data;
             // quick shortcut - redundant here, but helps skip all the extra work a bit later
             if (root === undefined) return undefined;
