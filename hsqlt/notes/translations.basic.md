@@ -68,3 +68,21 @@ slt;
 
 
 ```
+### select functions
+```sql
+select * from ((select *,trim(firstname) from allPeople) as someAlias);
+```
+
+
+```ecl
+__action_1 := function
+// look at sources 
+  someAlias:= function 
+  // look at sources
+    __action_2 := table(allPeople,{allPeople,trim(firstname)});
+    return  __action_2;
+  end;
+  __action3 := table(someAlias,{someAlias});
+  return __action3;
+end;
+```
