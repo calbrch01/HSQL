@@ -60,7 +60,7 @@ import { OrderByClauseContext } from "./HSQLParser";
 import { SortItemContext } from "./HSQLParser";
 import { AscSortItemContext } from "./HSQLParser";
 import { DescSortItemContext } from "./HSQLParser";
-import { LimitClauseContext } from "./HSQLParser";
+import { LimitOffsetClauseContext } from "./HSQLParser";
 import { OffsetClauseContext } from "./HSQLParser";
 import { ComparisonOperatorContext } from "./HSQLParser";
 import { LogicalOperatorContext } from "./HSQLParser";
@@ -790,15 +790,15 @@ export interface HSQLListener extends ParseTreeListener {
 	exitDescSortItem?: (ctx: DescSortItemContext) => void;
 
 	/**
-	 * Enter a parse tree produced by `HSQLParser.limitClause`.
+	 * Enter a parse tree produced by `HSQLParser.limitOffsetClause`.
 	 * @param ctx the parse tree
 	 */
-	enterLimitClause?: (ctx: LimitClauseContext) => void;
+	enterLimitOffsetClause?: (ctx: LimitOffsetClauseContext) => void;
 	/**
-	 * Exit a parse tree produced by `HSQLParser.limitClause`.
+	 * Exit a parse tree produced by `HSQLParser.limitOffsetClause`.
 	 * @param ctx the parse tree
 	 */
-	exitLimitClause?: (ctx: LimitClauseContext) => void;
+	exitLimitOffsetClause?: (ctx: LimitOffsetClauseContext) => void;
 
 	/**
 	 * Enter a parse tree produced by `HSQLParser.offsetClause`.

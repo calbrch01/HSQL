@@ -17,13 +17,13 @@ expr:
 
 actionStmt: selectStmt | outputStmt | plotStmt | literal;
 
-// SELECT STATEMENT
+// SELECT STATEMENT skipping the having for later
 selectStmt:
 	SELECT DISTINCT? columns = selectColumns selectFromClause (
 		WHERE whereclause = selectWhereClause
 	)? selectGroupByClause? (
 		ORDER BY orderbyclause = orderByClause
-	)? (HAVING selectHavingClause)? limitClause? offsetClause?;
+	)? /* (HAVING selectHavingClause)? */ limitOffsetClause?;
 
 selectHavingClause: booleanExpression;
 selectGroupByClause: GROUP BY groupByClause;
@@ -89,7 +89,7 @@ selectWhereClause: booleanExpression;
 joinedTable:
 	selectFromTableReference (
 		join_operator selectFromTableReference joinConstraint?
-			//if no constraint, assume TRUE (can use that to throw an error)
+		//if no constraint, assume TRUE (can use that to throw an error)
 	)*;
 //colRef: USING BSTART_ IDENTIFIER (COMMA_ IDENTIFIER)* BEND_ 
 
@@ -110,7 +110,7 @@ descSortItem: definitionSet DESC;
 // joinType: INNER? # innerJoin | (specifier = (LEFT | RIGHT | FULL) OUTER?) # outerJoin |
 // (specifier = FULL OUTER) # fullOuterJoin;
 
-limitClause: LIMIT number;
+limitOffsetClause: LIMIT number offsetClause?;
 offsetClause: OFFSET number;
 
 // operators: comparisonOperator | arithmeticOPERATOR | logicalOperator;
