@@ -9,13 +9,10 @@ export enum SelectJobDesc {
     /** Sort some objects */
     SORT,
 
-    /** Group keys */
-    GROUP,
+    /** Group keys and filter out columns*/
+    GROUPANDCOLFILT,
 
     //having is skipped
-
-    /** Filter out columns */
-    COLFILTER,
 
     /** for limit and offset */
     LIMITOFFSET,
@@ -28,7 +25,8 @@ export enum SortType {
 }
 
 export type SelectJob =
-    | { type: SelectJobDesc.FROM }
+    | { type: SelectJobDesc.FROM } // from sets the contexts in the select part itself
+    | { type: SelectJobDesc.FILTER; expr: string } // TODO 14/06 filter the set according to an expression
     | {
           type: SelectJobDesc.SORT;
           fields: [SortType, QualifiedIdentifier][];

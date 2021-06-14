@@ -35,6 +35,19 @@ import { AnyTable } from '../../../ast/data/AnyTable';
  * 8. distinct
  */
 
+/*
+ * Simplifying for ECL, the whole process becomes
+ * 1. FROM
+ *     a. Enumerate aliases
+ *     b. Enumerate joins
+ *     c. Store the table
+ * 2. where
+ * 3. sort
+ * 4. groupandColfit
+ * 5. LIMITOFFSET
+ * 6. distinct
+ */
+
 export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements HSQLVisitor<VEOMaybe> {
     errorManager: ErrorManager;
     /**

@@ -231,6 +231,7 @@ trainOptions: (trainOption) ( COMMA_ trainOption)*;
 
 trainOption: IDENTIFIER EQ trainValue;
 
+// TAG put expr
 trainValue: number | string | definition;
 
 predict:

@@ -136,7 +136,7 @@ export class ReadingManager {
         if (typeof newExtension === 'string') {
             pathParsed.ext = newExtension;
         } else {
-            // TODO Extensions are hardcoded - Fix them later?
+            // FUTURE Extensions are hardcoded - Fix them later?
             switch (newExtension) {
                 case FILETYPE.HSQL:
                     pathParsed.ext = '.hsql';
