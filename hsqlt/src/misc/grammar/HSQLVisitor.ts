@@ -84,16 +84,6 @@ import { OutputStmtContext } from "./HSQLParser";
 import { AttributeContext } from "./HSQLParser";
 import { NamedOutputContext } from "./HSQLParser";
 import { ToFileContext } from "./HSQLParser";
-import { PlotStmtContext } from "./HSQLParser";
-import { ModuleStmtContext } from "./HSQLParser";
-import { TransformStmtContext } from "./HSQLParser";
-import { MlStmtContext } from "./HSQLParser";
-import { TrainContext } from "./HSQLParser";
-import { ElementaryMLContext } from "./HSQLParser";
-import { TrainOptionsContext } from "./HSQLParser";
-import { TrainOptionContext } from "./HSQLParser";
-import { TrainValueContext } from "./HSQLParser";
-import { PredictContext } from "./HSQLParser";
 import { ScopeContext } from "./HSQLParser";
 
 
@@ -701,76 +691,6 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitToFile?: (ctx: ToFileContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.plotStmt`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitPlotStmt?: (ctx: PlotStmtContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.moduleStmt`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitModuleStmt?: (ctx: ModuleStmtContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.transformStmt`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitTransformStmt?: (ctx: TransformStmtContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.mlStmt`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitMlStmt?: (ctx: MlStmtContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.train`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitTrain?: (ctx: TrainContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.elementaryML`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitElementaryML?: (ctx: ElementaryMLContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.trainOptions`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitTrainOptions?: (ctx: TrainOptionsContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.trainOption`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitTrainOption?: (ctx: TrainOptionContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.trainValue`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitTrainValue?: (ctx: TrainValueContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.predict`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitPredict?: (ctx: PredictContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `HSQLParser.scope`.

@@ -8,14 +8,10 @@ stmt: definitionStmt | actionStmt | importStmt;
 
 definitionStmt: scope label = IDENTIFIER EQ expr;
 
-expr:
-	definition
-	| actionStmt
-	| transformStmt
-	| mlStmt
-	| moduleStmt;
-
-actionStmt: selectStmt | outputStmt | plotStmt | literal;
+expr: definition | actionStmt;
+// | transformStmt | mlStmt | moduleStmt;
+actionStmt: selectStmt | outputStmt |
+/* plotStmt |*/ literal;
 
 // SELECT STATEMENT skipping the having for later
 selectStmt:
@@ -65,13 +61,13 @@ selectFromClause:
 
 // the selectfromtablereference needs a big change due to this
 selectFromTableReference:
-	BSTART_ selectStmt BEND_ selectAlias[$selectStmt.ctx]	# selectFromDerivedTable
-	| definition selectAlias[$definition.ctx]?				# selectFromDefinition
+	BSTART_ selectStmt BEND_ selectAlias	# selectFromDerivedTable
+	| definition selectAlias?				# selectFromDefinition
 	| BSTART_ selectFromTableReference (
 		COMMA_ selectFromTableReference
 	)* BEND_ # selectBracketedFromTable;
 
-selectAlias[ParserRuleContext ctx]: AS? IDENTIFIER;
+selectAlias: AS? IDENTIFIER;
 
 join_operator:
 	COMMA_
@@ -132,7 +128,7 @@ dataType:
 alterOperator: ADD | DROP | MODIFY;
 
 // use % instead of $ -> that operator is used in ECL SNIPPETS for now
-overDefinition: overDefinitionRoot ( '.' overDefinitionTail)*;
+overDefinition: overDefinitionRoot ('.' overDefinitionTail)*;
 overDefinitionRoot:
 	IDENTIFIER	# normalIdentifier
 	| MODULO	# rootIdentifier
@@ -195,49 +191,33 @@ toFile: (FILE)? STRING (OVERWRITE)?;
 
 /* PLOT STATEMENT
  */
-plotStmt:
-	PLOT FROM definition (TITLE)? IDENTIFIER ((TYPE)? IDENTIFIER)?;
+// plotStmt: PLOT FROM definition (TITLE)? IDENTIFIER ((TYPE)? IDENTIFIER)?;
 
-/* MODULE STATEMENT
- */
+// /* MODULE STATEMENT */
 
-moduleStmt: MODULE BSTART_ (definitionStmt SEMICOLON)* BEND_;
+// moduleStmt: MODULE BSTART_ (definitionStmt SEMICOLON)* BEND_;
 
-/* TRANSFORM STATEMENT
- */
+// /* TRANSFORM STATEMENT */
 
-transformStmt:
-	ALTER TABLE definition (TO IDENTIFIER)? alterOperator colName = IDENTIFIER (
-		COMMA_ dataType
-	)?;
+// transformStmt: ALTER TABLE definition (TO IDENTIFIER)? alterOperator colName = IDENTIFIER (
+// COMMA_ dataType )?;
 
-/* ML STATEMENT SAME AS v0
- */
-mlStmt: train | predict | elementaryML;
+// /* ML STATEMENT SAME AS v0 */ mlStmt: train | predict | elementaryML;
 
-// This is a standard get model operation
-train:
-	TRAIN FROM ind = definition COMMA_ dep = definition (
-		COMMA_ test = definition
-	)? METHOD method = IDENTIFIER (OPTION trainOptions)?;
+// // This is a standard get model operation train: TRAIN FROM ind = definition COMMA_ dep =
+// definition ( COMMA_ test = definition )? METHOD method = IDENTIFIER (OPTION trainOptions)?;
 
-// This variant of ML is useful in DBScan where a separate model isnt trained
-elementaryML:
-	PREDICT FROM ind = definition (COMMA_ ind2 = definition)? METHOD method = IDENTIFIER (
-		OPTION trainOptions
-	)?;
+// // This variant of ML is useful in DBScan where a separate model isnt trained elementaryML:
+// PREDICT FROM ind = definition (COMMA_ ind2 = definition)? METHOD method = IDENTIFIER ( OPTION
+// trainOptions )?;
 
-trainOptions: (trainOption) ( COMMA_ trainOption)*;
+// trainOptions: (trainOption) ( COMMA_ trainOption)*;
 
-trainOption: IDENTIFIER EQ trainValue;
+// trainOption: IDENTIFIER EQ trainValue;
 
-// TAG put expr
-trainValue: number | string | definition;
+// // TAG put expr trainValue: number | string | definition;
 
-predict:
-	PREDICT model = definition FROM ind = definition (
-		METHOD method = IDENTIFIER
-	)?;
+// predict: PREDICT model = definition FROM ind = definition ( METHOD method = IDENTIFIER )?;
 
 scope: EXPORT | SHARED |;
 

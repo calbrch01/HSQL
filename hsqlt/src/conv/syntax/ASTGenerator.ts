@@ -1,6 +1,6 @@
 import { AbstractParseTreeVisitor } from 'antlr4ts/tree/AbstractParseTreeVisitor';
 import { AST } from '../../ast/AST';
-import { VariableVisibility } from '../../ast/symbol/VariableTable';
+import { VariableTable, VariableVisibility } from '../../ast/symbol/VariableTable';
 import {
     ActionStmtContext,
     BasicStringLiteralContext,
@@ -48,6 +48,7 @@ import { StringLiteral } from '../../ast/stmt/Literal';
  */
 export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements HSQLVisitor<VEOMaybe> {
     protected ast: AST;
+    public variableManager: VariableTable;
     constructor(
         protected taskManager: TaskManager,
         protected _errorManager: ErrorManager,
@@ -55,6 +56,7 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
     ) {
         super();
         this.ast = new AST(taskManager, rootContext);
+        this.variableManager = this.ast.variableManager;
     }
     public get errorManager() {
         return this._errorManager;
@@ -120,7 +122,7 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
         // todo - resolve a variable
         const qid = QualifiedIdentifier.fromGrammar(ctx);
 
-        let dt = this.ast.variableManager.resolve(qid);
+        let dt = this.variableManager.resolve(qid);
         // throw an error saying that the definition used has been invalid
         // but use Any throughout the process
         if (dt === undefined) {

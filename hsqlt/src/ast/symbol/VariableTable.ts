@@ -51,10 +51,10 @@ export class VariableTable {
      *
      * @param s location
      * @param v the data to add
-     * @param addtoOverLay whether to add to the root base(false) or to the latest overlay(true).
+     * @param addtoOverLay whether to add to the root base(false) or to the latest overlay(true). (true)
      */
     add(s: string, v: DataMetaData, addtoOverLay: boolean = true): boolean {
-        let map: Map<string, DataMetaData> = this._vars[addtoOverLay ? this.scopeLength - 1 : 0];
+        const map: Map<string, DataMetaData> = this._vars[addtoOverLay ? this.scopeLength - 1 : 0];
         // this.vars.add(v);
 
         if (map.has(s)) {

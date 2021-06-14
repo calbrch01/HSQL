@@ -51,7 +51,7 @@ export class OutputASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
                 )
             );
         }
-        if (isDataType(attributeResultDataType, EDataType.SINGULAR, true)) {
+        if (!isDataType(attributeResultDataType, EDataType.TABLE)) {
             const typeInQuestion = attributeResultDataType.type ?? EDataType.ANY;
             this.errorManager.push(
                 TranslationError.semanticErrorToken(format(rs.cannotUse, [EDataType[typeInQuestion], rs.output]))

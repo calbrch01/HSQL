@@ -84,16 +84,6 @@ import { OutputStmtContext } from "./HSQLParser";
 import { AttributeContext } from "./HSQLParser";
 import { NamedOutputContext } from "./HSQLParser";
 import { ToFileContext } from "./HSQLParser";
-import { PlotStmtContext } from "./HSQLParser";
-import { ModuleStmtContext } from "./HSQLParser";
-import { TransformStmtContext } from "./HSQLParser";
-import { MlStmtContext } from "./HSQLParser";
-import { TrainContext } from "./HSQLParser";
-import { ElementaryMLContext } from "./HSQLParser";
-import { TrainOptionsContext } from "./HSQLParser";
-import { TrainOptionContext } from "./HSQLParser";
-import { TrainValueContext } from "./HSQLParser";
-import { PredictContext } from "./HSQLParser";
 import { ScopeContext } from "./HSQLParser";
 
 
@@ -1052,116 +1042,6 @@ export interface HSQLListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	exitToFile?: (ctx: ToFileContext) => void;
-
-	/**
-	 * Enter a parse tree produced by `HSQLParser.plotStmt`.
-	 * @param ctx the parse tree
-	 */
-	enterPlotStmt?: (ctx: PlotStmtContext) => void;
-	/**
-	 * Exit a parse tree produced by `HSQLParser.plotStmt`.
-	 * @param ctx the parse tree
-	 */
-	exitPlotStmt?: (ctx: PlotStmtContext) => void;
-
-	/**
-	 * Enter a parse tree produced by `HSQLParser.moduleStmt`.
-	 * @param ctx the parse tree
-	 */
-	enterModuleStmt?: (ctx: ModuleStmtContext) => void;
-	/**
-	 * Exit a parse tree produced by `HSQLParser.moduleStmt`.
-	 * @param ctx the parse tree
-	 */
-	exitModuleStmt?: (ctx: ModuleStmtContext) => void;
-
-	/**
-	 * Enter a parse tree produced by `HSQLParser.transformStmt`.
-	 * @param ctx the parse tree
-	 */
-	enterTransformStmt?: (ctx: TransformStmtContext) => void;
-	/**
-	 * Exit a parse tree produced by `HSQLParser.transformStmt`.
-	 * @param ctx the parse tree
-	 */
-	exitTransformStmt?: (ctx: TransformStmtContext) => void;
-
-	/**
-	 * Enter a parse tree produced by `HSQLParser.mlStmt`.
-	 * @param ctx the parse tree
-	 */
-	enterMlStmt?: (ctx: MlStmtContext) => void;
-	/**
-	 * Exit a parse tree produced by `HSQLParser.mlStmt`.
-	 * @param ctx the parse tree
-	 */
-	exitMlStmt?: (ctx: MlStmtContext) => void;
-
-	/**
-	 * Enter a parse tree produced by `HSQLParser.train`.
-	 * @param ctx the parse tree
-	 */
-	enterTrain?: (ctx: TrainContext) => void;
-	/**
-	 * Exit a parse tree produced by `HSQLParser.train`.
-	 * @param ctx the parse tree
-	 */
-	exitTrain?: (ctx: TrainContext) => void;
-
-	/**
-	 * Enter a parse tree produced by `HSQLParser.elementaryML`.
-	 * @param ctx the parse tree
-	 */
-	enterElementaryML?: (ctx: ElementaryMLContext) => void;
-	/**
-	 * Exit a parse tree produced by `HSQLParser.elementaryML`.
-	 * @param ctx the parse tree
-	 */
-	exitElementaryML?: (ctx: ElementaryMLContext) => void;
-
-	/**
-	 * Enter a parse tree produced by `HSQLParser.trainOptions`.
-	 * @param ctx the parse tree
-	 */
-	enterTrainOptions?: (ctx: TrainOptionsContext) => void;
-	/**
-	 * Exit a parse tree produced by `HSQLParser.trainOptions`.
-	 * @param ctx the parse tree
-	 */
-	exitTrainOptions?: (ctx: TrainOptionsContext) => void;
-
-	/**
-	 * Enter a parse tree produced by `HSQLParser.trainOption`.
-	 * @param ctx the parse tree
-	 */
-	enterTrainOption?: (ctx: TrainOptionContext) => void;
-	/**
-	 * Exit a parse tree produced by `HSQLParser.trainOption`.
-	 * @param ctx the parse tree
-	 */
-	exitTrainOption?: (ctx: TrainOptionContext) => void;
-
-	/**
-	 * Enter a parse tree produced by `HSQLParser.trainValue`.
-	 * @param ctx the parse tree
-	 */
-	enterTrainValue?: (ctx: TrainValueContext) => void;
-	/**
-	 * Exit a parse tree produced by `HSQLParser.trainValue`.
-	 * @param ctx the parse tree
-	 */
-	exitTrainValue?: (ctx: TrainValueContext) => void;
-
-	/**
-	 * Enter a parse tree produced by `HSQLParser.predict`.
-	 * @param ctx the parse tree
-	 */
-	enterPredict?: (ctx: PredictContext) => void;
-	/**
-	 * Exit a parse tree produced by `HSQLParser.predict`.
-	 * @param ctx the parse tree
-	 */
-	exitPredict?: (ctx: PredictContext) => void;
 
 	/**
 	 * Enter a parse tree produced by `HSQLParser.scope`.

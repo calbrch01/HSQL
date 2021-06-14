@@ -1,6 +1,17 @@
+import { CollectionType } from './base/CollectionType';
 import { DataType, EDataType } from './base/DataType';
 
-export class Any extends DataType {
+/**
+ * Pseudo data type to represent anything.
+ *
+ */
+export class Any extends CollectionType {
+    get(c: string): DataType | undefined {
+        return undefined;
+    }
+    list(): [string, DataType][] {
+        return [];
+    }
     constructor() {
         super(EDataType.ANY);
         this._anyized = true;
@@ -8,7 +19,7 @@ export class Any extends DataType {
     isExactType(type: DataType): boolean {
         return true;
     }
-    cloneType(): DataType {
+    cloneType(): CollectionType {
         return new Any();
     }
 }

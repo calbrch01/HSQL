@@ -53,7 +53,7 @@ export class ExecMakeMode implements ExecIntent {
         // if pedantic, true if warnings or errors exist, else check if errors exist
         const skipOutput = (taskmanager.pedantic && wcount + ecount > 0) || (!taskmanager.pedantic && ecount > 0);
 
-        console.debug(`E${skipOutput}`);
+        // console.debug(`E${skipOutput}`);
         if (skipOutput) {
             taskmanager.errorManager.push(
                 TranslationError.createIssue(rs.didNotOutput, ErrorType.IO, ErrorSeverity.INFO)

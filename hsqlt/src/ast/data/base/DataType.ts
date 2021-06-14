@@ -17,7 +17,7 @@ export enum EDataType {
  * Data type
  */
 export abstract class DataType {
-    protected _type: EDataType | null = null;
+    // protected abstract _type: EDataType;
 
     protected _anyized: boolean = false;
     public get anyized() {
@@ -27,7 +27,7 @@ export abstract class DataType {
     get type() {
         return this._type;
     }
-    constructor(type: EDataType) {}
+    constructor(protected _type: EDataType) {}
     /**
      * Is of similar type (Does not use nesting)
      * @param type

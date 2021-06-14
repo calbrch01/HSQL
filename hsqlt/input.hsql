@@ -6,4 +6,7 @@ import bc;
 -- a = select * from ab,bc;
 -- b = select * from ab,bc,cd;
 -- c = select * from (select * from abc) as bcd,cd;
-d = select * from bc join cd on bc.xy=cd.yz;
+//d = select * from bc join cd on bc.xy=cd.yz;
+//p = select * from (select * from a) as ab;
+
+output bc.t1;

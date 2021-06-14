@@ -37,13 +37,16 @@ export function isDataType<T extends keyof typeMap, U extends typeMap[T]>(
         return true;
     }
     // if it can be anyized, it doesn't matter
-    return (!ignoreDataAny && x.anyized) || x.type === y;
+    return (!ignoreDataAny && x instanceof Any) || x.type === y;
 }
 
 export function isAny(x: DataType) {
+    if (x instanceof CollectionType) {
+        return x instanceof Any;
+    }
     return x.anyized;
 }
 
-export function isCollection(x: DataType): x is CollectionType {
+export function isCollection(x: DataType | null | undefined): x is CollectionType {
     return x instanceof CollectionType;
 }
