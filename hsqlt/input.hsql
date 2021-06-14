@@ -1,5 +1,5 @@
-//import a;
-import bc;
+import a;
+//import bc;
 //p = a.t1;
 //p = a.t2;
 
@@ -7,6 +7,10 @@ import bc;
 -- b = select * from ab,bc,cd;
 -- c = select * from (select * from abc) as bcd,cd;
 //d = select * from bc join cd on bc.xy=cd.yz;
-//p = select * from (select * from a) as ab;
 
-output bc.t1;
+
+select * from a as b;
+
+
+
+//output bc.t1;

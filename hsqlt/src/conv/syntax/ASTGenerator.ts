@@ -50,7 +50,7 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
     protected ast: AST;
     public variableManager: VariableTable;
     constructor(
-        protected taskManager: TaskManager,
+        public taskManager: TaskManager,
         protected _errorManager: ErrorManager,
         protected rootContext: ProgramContext
     ) {

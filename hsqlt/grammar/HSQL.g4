@@ -50,46 +50,35 @@ aliasingCol[ParserRuleContext ctx]:
 //NOTE: CONSIDER ALT GRAMMAR TO DEAL WITH 1+ TABLES
 selectFromClause:
 	FROM (
-		selectFromTableReference (
-			COMMA_ selectFromTableReference
-		)*
-		| joinedTable
+		selectFromRef (COMMA_ selectFromRef)*
+		// | joinedTable
 	);
 
 // here's a big issue -> antlr does not like mutually left recursive grammar. However, direct left
 // recursion works.
 
 // the selectfromtablereference needs a big change due to this
-selectFromTableReference:
-	BSTART_ selectStmt BEND_ selectAlias	# selectFromDerivedTable
-	| definition selectAlias?				# selectFromDefinition
-	| BSTART_ selectFromTableReference (
-		COMMA_ selectFromTableReference
-	)* BEND_ # selectBracketedFromTable;
-
+selectFromRef:
+	BSTART_ selectStmt BEND_ selectAlias									# selectFromDerivedTable
+	| definition selectAlias?												# selectFromDefinition
+	| BSTART_ selectFromRef (COMMA_ selectFromRef)* BEND_					# selectBracketedFromTable
+	| selectFromRef joinOperator selectFromRef joinConstraint selectAlias?	# selectJoinedTable;
+// joinconstraint is mandatory or else the selectAlias will never come up, the selectFromRef will consume it
 selectAlias: AS? IDENTIFIER;
 
-join_operator:
-	COMMA_
-	| NATURAL? (
-		LEFT OUTER?
-		| RIGHT OUTER?
-		| FULL OUTER?
-		| INNER
-		| CROSS
-	)? JOIN;
+// join_operator: COMMA_ | (LEFT OUTER? | RIGHT OUTER? | FULL OUTER? | INNER | CROSS)? JOIN;
+joinOperator:
+	(LEFT OUTER? | RIGHT OUTER? | FULL OUTER? | INNER | CROSS)? JOIN;
 // nestedSelectStmt: BSTART_ selectStmt BEND_;
 selectWhereClause: booleanExpression;
 
-//we limit it to qualifiedidentifiers only
-joinedTable:
-	selectFromTableReference (
-		join_operator selectFromTableReference joinConstraint?
-		//if no constraint, assume TRUE (can use that to throw an error)
-	)*;
-//colRef: USING BSTART_ IDENTIFIER (COMMA_ IDENTIFIER)* BEND_ 
-
 joinConstraint: ON joinSpecification;
+//we limit it to qualifiedidentifiers only
+
+// joinedTable: selectFromTableReference ( join_operator selectFromTableReference joinConstraint?
+// //if no constraint, assume TRUE (can use that to throw an error) )*; colRef: USING BSTART_
+// IDENTIFIER (COMMA_ IDENTIFIER)* BEND_
+
 //the clause is allowed to be an entire join condition *but*
 joinSpecification:
 	leftrecset = definition comparisonOperator rightrecset = definition;

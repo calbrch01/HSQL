@@ -1,21 +1,32 @@
 import { AbstractParseTreeVisitor } from 'antlr4ts/tree';
-import { DataType } from '../../../ast/data/base/DataType';
+import { DataType, EDataType } from '../../../ast/data/base/DataType';
 import { BaseASTNode } from '../../../ast/stmt/base/BaseASTNode';
 import { Select } from '../../../ast/stmt/Select';
-import { ErrorManager } from '../../../managers/ErrorManager';
+import { ErrorManager, ErrorSeverity, ErrorType, TranslationError } from '../../../managers/ErrorManager';
 import { QualifiedIdentifier } from '../../../misc/ast/QualifiedIdentifier';
 import {
+    DefinitionContext,
     SelectBracketedFromTableContext,
     SelectFromDefinitionContext,
+    SelectFromDerivedTableContext,
+    SelectJoinedTableContext,
     SelectStmtContext,
 } from '../../../misc/grammar/HSQLParser';
 import { HSQLVisitor } from '../../../misc/grammar/HSQLVisitor';
 
-import { VEO, VEOMaybe } from '../../../misc/holders/VEO';
+import { pullVEO, VEO, VEOMaybe } from '../../../misc/holders/VEO';
 import { ASTGenerator } from '../ASTGenerator';
 import { SelectJob, SelectJobDesc } from '../../../misc/ast/SelectJobDesc';
 import { AnyTable } from '../../../ast/data/AnyTable';
-
+import { StmtExpression } from '../../../ast/stmt/base/StmtExpression';
+import { CollectionType } from '../../../ast/data/base/CollectionType';
+import { isCollection, isDataType } from '../../../ast/data/base/misc';
+import rs from '../../../misc/strings/resultStrings.json';
+import { VariableVisibility } from '../../../ast/symbol/VariableTable';
+import format from 'string-template';
+import { Any } from '../../../ast/data/Any';
+import { Table } from '../../../ast/data/Table';
+import { debug } from 'console';
 /*
  * Let's talk about select. its really big.
  * We will have sources, cols and jobs.
@@ -54,7 +65,7 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
      * The table sources that can be used for the rest of the select statement.
      * For these, the columns are looked up.
      */
-    protected _changedSources: Map<string, BaseASTNode>;
+    protected _changedSources: Map<string, VEO<CollectionType, StmtExpression>>;
 
     /**
      *
@@ -69,10 +80,12 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
     constructor(protected parent: ASTGenerator) {
         super();
         this.errorManager = parent.errorManager;
+        // this.taskManager = parent.
         this._changedSources = new Map();
         this._jobs = [];
         this._colSelect = new Map();
     }
+
     protected get jobs(): SelectJob[] {
         return this._jobs;
     }
@@ -83,23 +96,87 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
     visitSelectStmt(ctx: SelectStmtContext) {
         const isDistinct = ctx.DISTINCT() !== undefined;
 
+        this.visit(ctx.selectFromClause());
         // push dedup if required
         isDistinct && this._jobs.push({ type: SelectJobDesc.DISTINCT });
 
         // create node
         const node = new Select(ctx, isDistinct, [], this._jobs);
 
+        // debug args
+        this.parent.taskManager.args.g && console.debug('G>node', this._changedSources);
         //change this data type
         const dt = new AnyTable();
         return new VEO(dt, node);
     }
 
-    visitSelectFromDefinition(ctx: SelectFromDefinitionContext) {
-        // this._sources.push();
-        this.visitChildren(ctx);
+    visitSelectFromDerivedTable(ctx: SelectFromDerivedTableContext) {
+        const idName = ctx.selectAlias().IDENTIFIER().text;
+        const resMaybe = ctx.selectStmt().accept(this.parent);
+
+        // a table cannot ever even return a non-table, if it does, question reality
+        if (isCollection(resMaybe?.datatype)) {
+            this.errorManager.halt(
+                TranslationError.createIssue(
+                    format(rs.unexpectedErrorTagged, [rs.notCollection]),
+                    ErrorType.HALTING,
+                    ErrorSeverity.ERROR,
+                    ctx.selectStmt()
+                )
+            );
+        }
+
+        // weird cast, but we can roll with it as we ensure it with the check above
+        const res = pullVEO<CollectionType, StmtExpression>(
+            resMaybe as VEOMaybe<CollectionType, StmtExpression>,
+            this.errorManager,
+            ctx
+        );
+
+        // do two things, add to sources, and add to local varmanager.
+        this._changedSources.set(idName, res);
+        this.parent.variableManager.add(idName, { data: res.datatype, vis: VariableVisibility.PUBLIC });
+
         return null;
     }
+
+    visitDefinition(ctx: DefinitionContext) {
+        return this.parent.visit(ctx);
+    }
+
+    visitSelectFromDefinition(ctx: SelectFromDefinitionContext) {
+        const selectFromAlias = ctx.selectAlias();
+        const childCtx = ctx.definition();
+        const childRes = this.visit(childCtx);
+        const x = pullVEO(childRes, this.errorManager, childCtx);
+        let dt: Table | Any;
+        if (isDataType(x.datatype, EDataType.TABLE)) {
+            dt = x.datatype;
+        } else {
+            dt = new Any();
+            this.errorManager.push(
+                TranslationError.createIssue(
+                    format(rs.cannotUse, EDataType[x.datatype.type], EDataType[EDataType.TABLE]),
+                    ErrorType.SEMANTIC,
+                    ErrorSeverity.ERROR,
+                    childCtx
+                )
+            );
+        }
+        // const dt = isDataType(x.datatype,EDataType.TABLE)?x.datatype:new Any();
+        if (selectFromAlias) {
+            const idName = selectFromAlias.IDENTIFIER().text;
+            this._changedSources.set(idName, new VEO(dt, x.stmt));
+        }
+        return this.parent.visit(ctx);
+    }
+
+    // this one can be ignored, as we just call the children and that is the default action anyways
     // visitSelectBracketedFromTable(ctx: SelectBracketedFromTableContext) {
     //     return this.visit(ctx);
     // }
+    visitSelectJoinedTable(ctx: SelectJoinedTableContext) {
+        // TODO 15/06 implement joins
+        return null;
+    }
 }
