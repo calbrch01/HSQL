@@ -1,6 +1,6 @@
 import { CollectionType } from './base/CollectionType';
 import { DataType, EDataType } from './base/DataType';
-import { isDataType } from './base/misc';
+import { isDataType } from './base/typechecks/isDataType';
 
 export class Module extends CollectionType {
     get(c: string) {

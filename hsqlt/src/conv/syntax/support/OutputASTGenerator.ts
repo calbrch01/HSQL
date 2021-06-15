@@ -2,7 +2,8 @@ import { AbstractParseTreeVisitor } from 'antlr4ts/tree/AbstractParseTreeVisitor
 import format from 'string-template';
 import { Action, ActionType } from '../../../ast/data/Action';
 import { EDataType } from '../../../ast/data/base/DataType';
-import { isAny, isDataType } from '../../../ast/data/base/misc';
+import { isDataType } from '../../../ast/data/base/typechecks/isDataType';
+import { isAny } from '../../../ast/data/base/typechecks/isAny';
 import { fileOutputOptionsType, Output } from '../../../ast/stmt/Output';
 import { ErrorManager, TranslationIssue } from '../../../managers/ErrorManager';
 import { OutputStmtContext } from '../../../misc/grammar/HSQLParser';

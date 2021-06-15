@@ -1,6 +1,6 @@
 import { assert } from 'chai';
-import { Table } from '../Table';
-import { isCollection } from './misc';
+import { Table } from '../../Table';
+import { isCollection } from './isCollection';
 
 describe('Miscellaneous type tests', function () {
     it('isCollection', async () => {

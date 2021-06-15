@@ -5,7 +5,7 @@ import { QualifiedIdentifier } from '../../misc/ast/QualifiedIdentifier';
 import { Any } from '../data/Any';
 import { CollectionType } from '../data/base/CollectionType';
 import { DataType } from '../data/base/DataType';
-import { isCollection } from '../data/base/misc';
+import { isCollection } from '../data/base/typechecks/isCollection';
 
 export enum VariableVisibility {
     DEFAULT,

@@ -3,7 +3,7 @@ import format from 'string-template';
 import { Any } from '../../../ast/data/Any';
 import { CollectionType } from '../../../ast/data/base/CollectionType';
 import { DataType, EDataType } from '../../../ast/data/base/DataType';
-import { isDataType } from '../../../ast/data/base/misc';
+import { isDataType } from '../../../ast/data/base/typechecks/isDataType';
 import { Table, AnyTable } from '../../../ast/data/Table';
 import { BaseASTNode } from '../../../ast/stmt/base/BaseASTNode';
 import { StmtExpression } from '../../../ast/stmt/base/StmtExpression';
