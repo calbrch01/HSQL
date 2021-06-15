@@ -1,4 +1,4 @@
-import somedata;
+import %.a;
 
 // somedata.table -> data
 // somedata.layout -> record

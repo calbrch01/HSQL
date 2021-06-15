@@ -10,6 +10,7 @@ import { ErrorManager, TranslationIssue } from './ErrorManager';
  * File type enum
  */
 export enum FILETYPE {
+    DIR,
     OTHER,
     ECL,
     DHSQL,
@@ -145,6 +146,9 @@ export class ReadingManager {
                 case FILETYPE.DHSQL:
                     pathParsed.ext = '.dhsql';
                     break;
+                case FILETYPE.DIR:
+                    pathParsed.ext = '';
+                    break;
                 default:
                     this.errorManager.halt(new TranslationIssue(format(rs.invalidFileExtension, [pathString])));
             }
@@ -159,7 +163,14 @@ export class ReadingManager {
     resolveName(s: QualifiedIdentifier): Module {
         // fallback
         const qed = this.idToPathMap(s);
-        console.debug(qed);
+        console.debug('importing', qed);
+        const pathJoined = path.join(...qed);
+        const stats = [FILETYPE.HSQL, FILETYPE.ECL, FILETYPE.DIR].map(e => [
+            FILETYPE[e],
+            fs.existsSync(this.changeExtension(pathJoined, e)),
+        ]);
+
+        console.debug(stats);
         return new AnyModule();
     }
 
