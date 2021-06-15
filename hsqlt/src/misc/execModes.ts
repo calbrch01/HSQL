@@ -1,9 +1,9 @@
 import { OutputManager } from '../managers/OutputManagers';
 import { TaskManager } from '../managers/TaskManager';
 import { EOL } from 'os';
-import { iP } from './strings/formatting';
 import rs from './strings/resultStrings.json';
 import { ErrorSeverity, ErrorType, TranslationError } from '../managers/ErrorManager';
+// import { iP } from './strings/formatting';
 
 /**
  * Execution intent.

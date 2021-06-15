@@ -160,7 +160,19 @@ export class ReadingManager {
     // TODO resolve to a
     resolveName(s: QualifiedIdentifier): Module {
         // fallback
-
+        const qed = this.idToPathMap(s);
+        console.debug(qed);
         return new AnyModule();
+    }
+
+    /**
+     *
+     */
+    protected idToPathMap(s: QualifiedIdentifier): string[] {
+        return s.qidentifier.map(e => {
+            if (e === '$') return '.';
+            if (e === '^') return '..';
+            return e;
+        });
     }
 }

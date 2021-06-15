@@ -29,10 +29,11 @@ export interface typeMap {
  * @returns
  */
 export function isDataType<T extends keyof typeMap, U extends typeMap[T]>(
-    x: DataType,
+    x: DataType | null | undefined,
     y: T,
     ignoreDataAny: boolean = false
 ): x is U {
+    if (x === null || x === undefined) return false;
     if (y === EDataType.ANY) {
         return true;
     }

@@ -105,14 +105,14 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
     }
 
     visitSelectStmt(ctx: SelectStmtContext) {
-        const isDistinct = ctx.DISTINCT() !== undefined;
-
         this.visit(ctx.selectFromClause());
-        // push dedup if required
-        isDistinct && this._jobs.push({ type: SelectJobDesc.DISTINCT });
 
         // create node
-        const node = new Select(ctx, isDistinct, [], this._jobs);
+        const node = new Select(ctx, [], this._jobs);
+
+        // push dedup if required
+        const isDistinct = ctx.DISTINCT() !== undefined;
+        isDistinct && this._jobs.push({ type: SelectJobDesc.DISTINCT });
 
         // debug args
         this.parent.taskManager.args.g && console.debug('G>node', this._changedSources);
@@ -122,17 +122,38 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
     }
 
     visitSelectFromClause(ctx: SelectFromClauseContext) {
-        const from = ctx.selectFromRef().map(e => e.accept(this));
+        const from: VEO<DataType, Definition>[] = ctx.selectFromRef().map((e, i) => {
+            const result = e.accept(this);
+            const resultDefinite = pullVEO(result, this.errorManager, ctx);
+            if (resultDefinite.stmt instanceof Definition) {
+                resultDefinite.stmt;
+                return resultDefinite as VEO<DataType, Definition>;
+            } else {
+                this.errorManager.halt(
+                    TranslationError.createIssue(
+                        format(rs.unexpectedErrorTagged, [rs.notCollection]),
+                        ErrorType.HALTING,
+                        ErrorSeverity.ERROR,
+                        ctx.selectFromRef(i)
+                    )
+                );
+            }
+        });
         this.parent.taskManager.args.g && console.debug('from', from);
+
+        this.fromTable = from.map(e => e.stmt.val);
+
+        this.parent.taskManager.args.g && console.debug('fromTable', this.fromTable);
         return null;
     }
 
     visitSelectFromDerivedTable(ctx: SelectFromDerivedTableContext) {
-        const idName = ctx.selectAlias().IDENTIFIER().text;
+        const aliasCtx = ctx.selectAlias();
+        const idName = aliasCtx.IDENTIFIER().text;
         const resMaybe = ctx.selectStmt().accept(this.parent);
 
         // a table cannot ever even return a non-table, if it does, question reality
-        if (isCollection(resMaybe?.datatype)) {
+        if (!isDataType(resMaybe?.datatype, EDataType.TABLE)) {
             this.errorManager.halt(
                 TranslationError.createIssue(
                     format(rs.unexpectedErrorTagged, [rs.notCollection]),
@@ -154,7 +175,7 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
         this._changedSources.set(idName, res);
         this.parent.variableManager.add(idName, { data: res.datatype, vis: VariableVisibility.PUBLIC });
 
-        return null;
+        return new VEO(res.datatype, new Definition(aliasCtx, new QualifiedIdentifier(idName)));
     }
 
     visitDefinition(ctx: DefinitionContext) {
