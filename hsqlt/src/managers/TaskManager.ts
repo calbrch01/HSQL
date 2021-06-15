@@ -1,20 +1,19 @@
+import { EOL } from 'os';
+import format from 'string-template';
+import { argType } from '..';
+import { AST } from '../ast/AST';
+import { Module } from '../ast/data/Module';
+import { ECLGenerator } from '../conv/ast/ECLGenerator';
 import { ASTGenerator } from '../conv/syntax/ASTGenerator';
 import { HSQLTreeFactory } from '../conv/tree';
-import { AST } from '../ast/AST';
-import { AnyModule } from '../ast/data/AnyModule';
-import { Module } from '../ast/data/Module';
+import { ICodeGenerator } from '../misc/ast/ICodeGenerator';
 import { QualifiedIdentifier } from '../misc/ast/QualifiedIdentifier';
-import { ErrorManager, ErrorMode, ErrorSeverity, TranslationError } from './ErrorManager';
 import { ImportStmtContext } from '../misc/grammar/HSQLParser';
+import { iP } from '../misc/strings/formatting';
+import rs from '../misc/strings/resultStrings';
+import { ErrorManager, ErrorMode, ErrorSeverity, TranslationIssue } from './ErrorManager';
 import { NoOutput, OutputManager } from './OutputManagers';
 import { FILETYPE, ReadingManager } from './ReadingManager';
-import { iP } from '../misc/strings/formatting';
-import rs from '../misc/strings/resultStrings.json';
-import format from 'string-template';
-import { EOL } from 'os';
-import { ICodeGenerator } from '../misc/ast/ICodeGenerator';
-import { ECLGenerator } from '../conv/ast/ECLGenerator';
-import { argType } from '..';
 
 export enum OutputMethod {
     FILES,
@@ -76,7 +75,7 @@ export class TaskManager {
     generateAST(fn: string = this.mainFile, includes: string[] = [], cause?: ImportStmtContext) {
         if (includes.includes(fn)) {
             this._errorManager.push(
-                TranslationError.semanticErrorToken('Import cycle detected. Please remove redundant import', cause)
+                TranslationIssue.semanticErrorToken('Import cycle detected. Please remove redundant import', cause)
             );
         }
 
@@ -138,12 +137,12 @@ export class TaskManager {
                 if (e.status === 'rejected') {
                     // equivalent to writing `const fn = fns[i][0]`
                     const [fn] = fns[i];
-                    this.errorManager.push(new TranslationError(format(rs.couldNotWrite, [fn])));
+                    this.errorManager.push(new TranslationIssue(format(rs.couldNotWrite, [fn])));
                 }
             });
         } catch (e) {
             this.errorManager.push(
-                new TranslationError(
+                new TranslationIssue(
                     format(rs.unexpectedErrorTagged, [e.cause ?? e.msg ?? e.message ?? rs.unexpectedError])
                 )
             );

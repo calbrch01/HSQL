@@ -1,12 +1,21 @@
 import { AbstractParseTreeVisitor } from 'antlr4ts/tree';
+import format from 'string-template';
+import { Any } from '../../../ast/data/Any';
+import { AnyTable } from '../../../ast/data/AnyTable';
+import { CollectionType } from '../../../ast/data/base/CollectionType';
 import { DataType, EDataType } from '../../../ast/data/base/DataType';
+import { isDataType } from '../../../ast/data/base/misc';
+import { Table } from '../../../ast/data/Table';
 import { BaseASTNode } from '../../../ast/stmt/base/BaseASTNode';
+import { StmtExpression } from '../../../ast/stmt/base/StmtExpression';
+import { Definition } from '../../../ast/stmt/Definition';
 import { Select } from '../../../ast/stmt/Select';
-import { ErrorManager, ErrorSeverity, ErrorType, TranslationError } from '../../../managers/ErrorManager';
+import { VariableVisibility } from '../../../ast/symbol/VariableTable';
+import { ErrorManager, ErrorSeverity, ErrorType, TranslationIssue } from '../../../managers/ErrorManager';
 import { QualifiedIdentifier } from '../../../misc/ast/QualifiedIdentifier';
+import { SelectJob, SelectJobDesc } from '../../../misc/ast/SelectJobDesc';
 import {
     DefinitionContext,
-    SelectBracketedFromTableContext,
     SelectFromClauseContext,
     SelectFromDefinitionContext,
     SelectFromDerivedTableContext,
@@ -14,22 +23,10 @@ import {
     SelectStmtContext,
 } from '../../../misc/grammar/HSQLParser';
 import { HSQLVisitor } from '../../../misc/grammar/HSQLVisitor';
-
 import { pullVEO, VEO, VEOMaybe } from '../../../misc/holders/VEO';
+import rs from '../../../misc/strings/resultStrings';
 import { ASTGenerator } from '../ASTGenerator';
-import { SelectJob, SelectJobDesc } from '../../../misc/ast/SelectJobDesc';
-import { AnyTable } from '../../../ast/data/AnyTable';
-import { StmtExpression } from '../../../ast/stmt/base/StmtExpression';
-import { CollectionType } from '../../../ast/data/base/CollectionType';
-import { isCollection, isDataType } from '../../../ast/data/base/misc';
-import rs from '../../../misc/strings/resultStrings.json';
-import { VariableVisibility } from '../../../ast/symbol/VariableTable';
-import format from 'string-template';
-import { Any } from '../../../ast/data/Any';
-import { Table } from '../../../ast/data/Table';
-import { debug } from 'console';
-import { Definition } from '../../../ast/stmt/Definition';
-import { args } from '../../..';
+
 /*
  * Let's talk about select. its really big.
  * We will have sources, cols and jobs.
@@ -87,6 +84,11 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
      */
     protected fromTable: QualifiedIdentifier[];
 
+    /**
+     * The total table set - Without any column filters
+     */
+    protected totalDt: Table;
+
     constructor(protected parent: ASTGenerator) {
         super();
         this.errorManager = parent.errorManager;
@@ -95,6 +97,7 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
         this._jobs = [];
         this._colSelect = new Map();
         this.fromTable = [];
+        this.totalDt = new AnyTable();
     }
 
     protected get jobs(): SelectJob[] {
@@ -115,10 +118,12 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
         isDistinct && this._jobs.push({ type: SelectJobDesc.DISTINCT });
 
         // debug args
-        this.parent.taskManager.args.g && console.debug('G>node', this._changedSources);
-        //change this data type
-        const dt = new AnyTable();
-        return new VEO(dt, node);
+        this.parent.taskManager.args.g && console.debug('G> this._changedSources', this._changedSources);
+
+        //get the data type that we had set from visitSelectFromClause ->
+        // TODO FILTER DATATYPES
+
+        return new VEO(this.totalDt, node);
     }
 
     visitSelectFromClause(ctx: SelectFromClauseContext) {
@@ -130,7 +135,7 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
                 return resultDefinite as VEO<DataType, Definition>;
             } else {
                 this.errorManager.halt(
-                    TranslationError.createIssue(
+                    TranslationIssue.createIssue(
                         format(rs.unexpectedErrorTagged, [rs.notCollection]),
                         ErrorType.HALTING,
                         ErrorSeverity.ERROR,
@@ -144,6 +149,14 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
         this.fromTable = from.map(e => e.stmt.val);
 
         this.parent.taskManager.args.g && console.debug('fromTable', this.fromTable);
+
+        // The Table|Any can be provably correct as they would have been resolved in earlier steps
+        this.totalDt = Table.combine(
+            this.errorManager,
+            ctx,
+            ...(this.fromTable.map(e => this.parent.variableManager.resolve(e) ?? new Any()) as (Table | Any)[])
+        );
+
         return null;
     }
 
@@ -155,7 +168,7 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
         // a table cannot ever even return a non-table, if it does, question reality
         if (!isDataType(resMaybe?.datatype, EDataType.TABLE)) {
             this.errorManager.halt(
-                TranslationError.createIssue(
+                TranslationIssue.createIssue(
                     format(rs.unexpectedErrorTagged, [rs.notCollection]),
                     ErrorType.HALTING,
                     ErrorSeverity.ERROR,
@@ -198,7 +211,7 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
         } else {
             dt = new Any();
             this.errorManager.push(
-                TranslationError.createIssue(
+                TranslationIssue.createIssue(
                     format(rs.cannotUse, EDataType[resultingVariable.datatype.type], EDataType[EDataType.TABLE]),
                     ErrorType.SEMANTIC,
                     ErrorSeverity.ERROR,
@@ -216,7 +229,7 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
             // this should never theoretically run but acts as a guard
             if (!(resultingVariable.stmt instanceof Definition)) {
                 this.errorManager.halt(
-                    TranslationError.semanticErrorToken(format(rs.notTagged, [Definition.name]), childCtx)
+                    TranslationIssue.semanticErrorToken(format(rs.notTagged, [Definition.name]), childCtx)
                 );
             }
 

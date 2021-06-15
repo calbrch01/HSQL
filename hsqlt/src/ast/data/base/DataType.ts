@@ -1,6 +1,3 @@
-import { AnyTable } from '../AnyTable';
-import { Table } from '../Table';
-
 export enum EDataType {
     ANY,
     MODULE,

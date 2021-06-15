@@ -1,17 +1,16 @@
-import { BaseASTNode } from '../../ast/stmt/base/BaseASTNode';
-import { AbstractASTVisitor, IASTVisitor } from '../../ast/IASTVisitor';
-import { ECLCode } from '../../code/ECLCode';
-import { Import } from '../../ast/stmt/Import';
-import ecl from '../../misc/strings/ecl.json';
-import rs from '../../misc/strings/resultStrings.json';
-import format from 'string-template';
-import { ErrorManager, TranslationError } from '../../managers/ErrorManager';
-import { AST } from '../../ast/AST';
-import { EqualDefinition } from '../../ast/stmt/EqualDefinition';
 import { ParserRuleContext } from 'antlr4ts';
+import format from 'string-template';
+import { AST } from '../../ast/AST';
+import { AbstractASTVisitor, IASTVisitor } from '../../ast/IASTVisitor';
 import { Definition } from '../../ast/stmt/Definition';
-import { Output } from '../../ast/stmt/Output';
+import { EqualDefinition } from '../../ast/stmt/EqualDefinition';
+import { Import } from '../../ast/stmt/Import';
 import { StringLiteral } from '../../ast/stmt/Literal';
+import { Output } from '../../ast/stmt/Output';
+import { ECLCode } from '../../code/ECLCode';
+import { ErrorManager, TranslationIssue } from '../../managers/ErrorManager';
+import ecl from '../../misc/strings/ecl';
+import rs from '../../misc/strings/resultStrings';
 
 /**
  * Semantically, Array is treated as a rest+top fashion
@@ -84,7 +83,7 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
     private getPopped(x: ECLCode[], ctx: ParserRuleContext): [ECLCode, ECLCode[]] {
         const xpopped = x.pop();
         if (xpopped === undefined)
-            this.errorManager.push(TranslationError.semanticErrorToken(format(rs.emptyCode), ctx));
+            this.errorManager.push(TranslationIssue.semanticErrorToken(format(rs.emptyCode), ctx));
         return [xpopped ?? new ECLCode(''), x];
     }
 

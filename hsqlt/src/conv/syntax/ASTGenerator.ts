@@ -1,6 +1,21 @@
 import { AbstractParseTreeVisitor } from 'antlr4ts/tree/AbstractParseTreeVisitor';
+import { RuleNode } from 'antlr4ts/tree/RuleNode';
+import format from 'string-template';
 import { AST } from '../../ast/AST';
+import { Any } from '../../ast/data/Any';
+import { DataType } from '../../ast/data/base/DataType';
+import { NoDataType } from '../../ast/data/NoDataType';
+import { dtype, Singular } from '../../ast/data/Singular';
+import { BaseASTNode } from '../../ast/stmt/base/BaseASTNode';
+import { StmtExpression } from '../../ast/stmt/base/StmtExpression';
+import { Definition } from '../../ast/stmt/Definition';
+import { EqualDefinition } from '../../ast/stmt/EqualDefinition';
+import { Import } from '../../ast/stmt/Import';
+import { StringLiteral } from '../../ast/stmt/Literal';
 import { VariableTable, VariableVisibility } from '../../ast/symbol/VariableTable';
+import { ErrorManager, TranslationIssue } from '../../managers/ErrorManager';
+import { TaskManager } from '../../managers/TaskManager';
+import { QualifiedIdentifier } from '../../misc/ast/QualifiedIdentifier';
 import {
     ActionStmtContext,
     BasicStringLiteralContext,
@@ -11,34 +26,12 @@ import {
     ProgramContext,
     ScopeContext,
     SelectStmtContext,
-    StringContext,
 } from '../../misc/grammar/HSQLParser';
 import { HSQLVisitor } from '../../misc/grammar/HSQLVisitor';
-import { ErrorManager, TranslationError } from '../../managers/ErrorManager';
-import { TaskManager } from '../../managers/TaskManager';
-import { QualifiedIdentifier } from '../../misc/ast/QualifiedIdentifier';
-import { DataType, EDataType } from '../../ast/data/base/DataType';
-import { BaseASTNode } from '../../ast/stmt/base/BaseASTNode';
 import { pullVEO, VEO, VEOMaybe } from '../../misc/holders/VEO';
-import { StmtExpression } from '../../ast/stmt/base/StmtExpression';
-import { Select } from '../../ast/stmt/Select';
-import { Table } from '../../ast/data/Table';
-import { NoDataType } from '../../ast/data/NoDataType';
-import { Import } from '../../ast/stmt/Import';
-import { RuleNode } from 'antlr4ts/tree/RuleNode';
-import { Definition } from '../../ast/stmt/Definition';
-import { Any } from '../../ast/data/Any';
-import rs from '../../misc/strings/resultStrings.json';
-import format from 'string-template';
-import { EqualDefinition } from '../../ast/stmt/EqualDefinition';
-import { Action, ActionType } from '../../ast/data/Action';
-import { Output } from '../../ast/stmt/Output';
-import { isAny, isDataType } from '../../ast/data/base/misc';
+import rs from '../../misc/strings/resultStrings';
 import { OutputASTGenerator } from './support/OutputASTGenerator';
 import { SelectASTGenerator } from './support/SelectASTGenerator';
-import { createTextChangeRange } from 'typescript';
-import { dtype, Singular } from '../../ast/data/Singular';
-import { StringLiteral } from '../../ast/stmt/Literal';
 /**
  * Generate an AST.
  * Imports are added to the variable table by this.ast.addImport
@@ -112,7 +105,7 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
 
         const res = this.ast.variableManager.add(lhstext, { data: x.datatype, vis });
         if (!res) {
-            this.errorManager.push(TranslationError.semanticErrorToken(format(rs.existsError, [lhstext]), ctx));
+            this.errorManager.push(TranslationIssue.semanticErrorToken(format(rs.existsError, [lhstext]), ctx));
         }
         const ed = new EqualDefinition(ctx, QualifiedIdentifier.fromString(lhstext), x.stmt);
         return new VEO(new NoDataType(), ed); //new EqualDefinition(ctx,);
@@ -127,7 +120,7 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
         // but use Any throughout the process
         if (dt === undefined) {
             dt = new Any();
-            this.errorManager.push(TranslationError.semanticErrorToken(format(rs.notFound, [qid.toString()]), ctx));
+            this.errorManager.push(TranslationIssue.semanticErrorToken(format(rs.notFound, [qid.toString()]), ctx));
         }
         return new VEO(dt, new Definition(ctx, qid));
     }

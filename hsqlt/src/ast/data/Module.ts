@@ -1,4 +1,3 @@
-import { SelectFromClauseContext } from '../../misc/grammar/HSQLParser';
 import { CollectionType } from './base/CollectionType';
 import { DataType, EDataType } from './base/DataType';
 import { isDataType } from './base/misc';

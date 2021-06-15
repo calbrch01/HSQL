@@ -54,4 +54,6 @@ describe('Extension tests', function () {
             assert.instanceOf(e, HaltError);
         }
     });
+    it('should resolve hsql');
+    it('should resolve ecl');
 });

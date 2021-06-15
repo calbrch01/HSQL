@@ -1,11 +1,9 @@
-import { AnyModule } from './AnyModule';
-import { CollectionType } from './base/CollectionType';
-import { DataType, EDataType } from './base/DataType';
-import { Col } from './Col';
+import { DataType } from './base/DataType';
 import { Table } from './Table';
 
 /**
  * Table but no decidable columns
+ * eg. the result of a select query whose types are undecidable
  */
 export class AnyTable extends Table {
     get(c: string) {

@@ -1,8 +1,8 @@
 import { OutputManager } from '../managers/OutputManagers';
 import { TaskManager } from '../managers/TaskManager';
 import { EOL } from 'os';
-import rs from './strings/resultStrings.json';
-import { ErrorSeverity, ErrorType, TranslationError } from '../managers/ErrorManager';
+import rs from './strings/resultStrings';
+import { ErrorSeverity, ErrorType, TranslationIssue } from '../managers/ErrorManager';
 // import { iP } from './strings/formatting';
 
 /**
@@ -56,7 +56,7 @@ export class ExecMakeMode implements ExecIntent {
         // console.debug(`E${skipOutput}`);
         if (skipOutput) {
             taskmanager.errorManager.push(
-                TranslationError.createIssue(rs.didNotOutput, ErrorType.IO, ErrorSeverity.INFO)
+                TranslationIssue.createIssue(rs.didNotOutput, ErrorType.IO, ErrorSeverity.INFO)
             );
         } else {
             await taskmanager.generateOutputs();
@@ -71,7 +71,7 @@ export class ExecUnimplemented implements ExecIntent {
     async do(taskmanager: TaskManager, outputmanager: OutputManager): Promise<void> {
         // note that passing undefined implies that default values will be assumed
         taskmanager.errorManager.push(
-            new TranslationError(rs.notImplemented, undefined, undefined, undefined, ErrorType.SETUP)
+            new TranslationIssue(rs.notImplemented, undefined, undefined, undefined, ErrorType.SETUP)
         );
         // the below is another way of doing it, but its not as errors are pushed out at the end
         // console.error(iP(resultStrings.notImplemented, ErrorSeverity.ERROR));

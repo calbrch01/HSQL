@@ -1,14 +1,13 @@
 import { AbstractParseTreeVisitor } from 'antlr4ts/tree/AbstractParseTreeVisitor';
 import {
-    NormalIdentifierContext,
+    DefinitionContext,
     DefinitionContext as QualifiedIdentifierContext,
-    OverDefinitionContext,
+    NormalIdentifierContext,
     NormalTailIdentifierContext,
+    OverDefinitionContext,
+    ParentIdentifierContext,
     ParentTailIdentifierContext,
     RootIdentifierContext,
-    ParentIdentifierContext,
-    DefinitionContext,
-    IdentifierContext,
 } from '../grammar/HSQLParser';
 import { HSQLVisitor } from '../grammar/HSQLVisitor';
 

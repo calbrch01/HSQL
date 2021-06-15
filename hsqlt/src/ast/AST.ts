@@ -9,8 +9,8 @@ import { TaskManager } from '../managers/TaskManager';
 import { ImportStmtContext } from '../misc/grammar/HSQLParser';
 import { IASTVisitor } from './IASTVisitor';
 import { ParserRuleContext } from 'antlr4ts';
-import { TranslationError } from '../managers/ErrorManager';
-import rs from '../misc/strings/resultStrings.json';
+import { TranslationIssue } from '../managers/ErrorManager';
+import rs from '../misc/strings/resultStrings';
 import format from 'string-template';
 /**
  * AST root node
@@ -49,7 +49,7 @@ export class AST implements BaseASTNode {
 
         if (x === false)
             this.TaskMgr.errorManager.push(
-                TranslationError.semanticErrorToken(format(rs.existsError, [aliasStr ?? nameStr]), ctx)
+                TranslationIssue.semanticErrorToken(format(rs.existsError, [aliasStr ?? nameStr]), ctx)
             );
         // this not our problem - the ast generator must do this
         //this.stmts.push(new Import(ctx, name, alias));

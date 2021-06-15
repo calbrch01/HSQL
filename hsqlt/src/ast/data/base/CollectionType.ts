@@ -1,5 +1,3 @@
-import { Collection } from 'typescript';
-import { Col } from '../Col';
 import { DataType, EDataType } from './DataType';
 import { isDataType } from './misc';
 

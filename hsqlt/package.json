@@ -20,6 +20,7 @@
     },
     "scripts": {
         "test": "find ./src -name '*.spec.ts' | xargs ts-mocha src/test/*.ts",
+        "node-test": "find ./build -name '*.spec.js' | xargs mocha build/test/*.js",
         "start": "ts-node src",
         "check": "tsc --watch --noEmit",
         "doc": "typedoc ",

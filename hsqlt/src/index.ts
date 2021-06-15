@@ -5,13 +5,13 @@
  * @module main
  */
 
+import format from 'string-template';
 import yargs from 'yargs';
+import { ErrorType, HaltError, TranslationIssue } from './managers/ErrorManager';
 import { FileOutput, OutputManager, StandardOutput } from './managers/OutputManagers';
 import { TaskManager } from './managers/TaskManager';
-import { ErrorType, HaltError, TranslationError } from './managers/ErrorManager';
-import { ExecIntent, ExecCheckMode, ExecUnimplemented, ExecTreeMode, ExecMakeMode } from './misc/execModes';
-import format from 'string-template';
-import rs from './misc/strings/resultStrings.json';
+import { ExecCheckMode, ExecIntent, ExecMakeMode, ExecTreeMode, ExecUnimplemented } from './misc/execModes';
+import rs from './misc/strings/resultStrings';
 // 2 ignores the node call and the script name
 // This syntax is shorthand to writing `const args = yargs(...).argv`
 export const { argv: args } = yargs(process.argv.slice(2))
@@ -164,7 +164,7 @@ export async function main(argv: argType, /*execMode: ExecMode*/ execMode: ExecI
         if (!(e instanceof HaltError)) {
             // throw this error into the error manager
             taskmanager.errorManager.push(
-                TranslationError.generalErrorToken(
+                TranslationIssue.generalErrorToken(
                     format(rs.unexpectedErrorTagged, [e.msg ?? e.message ?? 'Unexpected Error']),
                     ErrorType.OTHER
                 )

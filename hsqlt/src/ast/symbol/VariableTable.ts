@@ -1,6 +1,9 @@
+import { ParserRuleContext } from 'antlr4ts';
 import { getJSDocReturnTag } from 'typescript';
+import { ErrorManager } from '../../managers/ErrorManager';
 import { QualifiedIdentifier } from '../../misc/ast/QualifiedIdentifier';
 import { Any } from '../data/Any';
+import { CollectionType } from '../data/base/CollectionType';
 import { DataType } from '../data/base/DataType';
 import { isCollection } from '../data/base/misc';
 

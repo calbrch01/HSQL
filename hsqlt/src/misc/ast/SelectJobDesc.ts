@@ -1,4 +1,3 @@
-import { StmtExpression } from '../../ast/stmt/base/StmtExpression';
 import { QualifiedIdentifier } from './QualifiedIdentifier';
 
 export enum SelectJobDesc {

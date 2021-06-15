@@ -3,15 +3,7 @@
  * @module
  */
 
-import {
-    ANTLRErrorListener,
-    BailErrorStrategy,
-    Parser,
-    ParserRuleContext,
-    RecognitionException,
-    Recognizer,
-    Token,
-} from 'antlr4ts';
+import { ANTLRErrorListener, ParserRuleContext, Token } from 'antlr4ts';
 
 /**
  * Severity of errors
@@ -54,7 +46,7 @@ export enum ErrorMode {
  * An Error with respect to translation.
  * The static methods are commonly used invocations that simplify the creation of errors.
  */
-export class TranslationError {
+export class TranslationIssue {
     /**
      * Creating an error. Prefer using {@link TranslationError.createIssue} or ither such static methods if there is a parser node to help.
      * @param msg Message
@@ -82,7 +74,7 @@ export class TranslationError {
      * @returns
      */
     static semanticErrorToken(msg: string, cause?: ParserRuleContext) {
-        return new TranslationError(
+        return new TranslationIssue(
             msg,
             cause?.start.line,
             cause?.start.charPositionInLine,
@@ -93,7 +85,7 @@ export class TranslationError {
         );
     }
     static semanticWarningToken(msg: string, cause?: ParserRuleContext) {
-        return new TranslationError(
+        return new TranslationIssue(
             msg,
             cause?.start.line,
             cause?.start.charPositionInLine,
@@ -103,8 +95,19 @@ export class TranslationError {
             cause?._stop?.charPositionInLine
         );
     }
+    static semanticInfoToken(msg: string, cause?: ParserRuleContext) {
+        return new TranslationIssue(
+            msg,
+            cause?.start.line,
+            cause?.start.charPositionInLine,
+            ErrorSeverity.INFO,
+            ErrorType.SEMANTIC,
+            cause?._stop?.line,
+            cause?._stop?.charPositionInLine
+        );
+    }
     static createIssue(msg: string, et: ErrorType, es: ErrorSeverity, cause?: ParserRuleContext) {
-        return new TranslationError(
+        return new TranslationIssue(
             msg,
             cause?.start.line,
             cause?.start.charPositionInLine,
@@ -115,7 +118,7 @@ export class TranslationError {
         );
     }
     static generalErrorToken(msg: string, et: ErrorType, cause?: ParserRuleContext) {
-        return new TranslationError(
+        return new TranslationIssue(
             msg,
             cause?.start.line,
             cause?.start.charPositionInLine,
@@ -130,12 +133,12 @@ export class TranslationError {
 /**
  * A Translation error that handles these issues
  */
-export class ContexedTranslationError extends TranslationError {
+export class ContexedTranslationError extends TranslationIssue {
     /**
      * Location of error
      */
     ctx: string;
-    constructor(_ctx: string, te: TranslationError) {
+    constructor(_ctx: string, te: TranslationIssue) {
         super(te.msg, te.line, te.charPositionInLine, te.severity, te.type);
         this.ctx = _ctx;
     }
@@ -172,7 +175,7 @@ export class ErrorManager {
         const errors = this;
         const listener: ANTLRErrorListener<LexerOrParserSymbol> = {
             syntaxError(rec, offendingSymbol, line, charPositionInLine, msg, e) {
-                errors.push(new TranslationError(msg, line, charPositionInLine));
+                errors.push(new TranslationIssue(msg, line, charPositionInLine));
             },
         };
         return listener;
@@ -207,14 +210,14 @@ export class ErrorManager {
      * Halt with given error
      * @param e
      */
-    halt(e?: TranslationError): never {
+    halt(e?: TranslationIssue): never {
         if (e !== undefined) {
             this._errors.push(new ContexedTranslationError(this.contextTop, e));
         }
         throw new HaltError();
     }
 
-    push(e: TranslationError): void {
+    push(e: TranslationIssue): void {
         this._errors.push(new ContexedTranslationError(this.contextTop, e));
         if (e.type === ErrorType.HALTING) {
             this.halt();

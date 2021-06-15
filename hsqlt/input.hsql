@@ -1,4 +1,9 @@
-import a;
+import somedata;
+
+// somedata.table -> data
+// somedata.layout -> record
+
+
 //import bc;
 //p = a.t1;
 //p = a.t2;
@@ -9,8 +14,8 @@ import a;
 //d = select * from bc join cd on bc.xy=cd.yz;
 
 
-select * from a.t1 as b/*,(select * from a.t2) ab*/;
-
+p = select * from a.t1 as b,a.t2 as c;
+//q = select count(*) from p;
 
 
 //output bc.t1;

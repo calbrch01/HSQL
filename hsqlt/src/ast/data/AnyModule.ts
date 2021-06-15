@@ -1,7 +1,5 @@
-import { Module } from './Module';
-import { CollectionType } from './base/CollectionType';
 import { DataType, EDataType } from './base/DataType';
-import { Col } from './Col';
+import { Module } from './Module';
 
 /**
  * Table but no decidable columns

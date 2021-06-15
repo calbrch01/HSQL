@@ -4,7 +4,7 @@
  * @module
  */
 
-import { ErrorSeverity, ErrorType } from '../../managers/ErrorManager';
+import { ErrorSeverity } from '../../managers/ErrorManager';
 
 /**
  * Assign string codes to these enums

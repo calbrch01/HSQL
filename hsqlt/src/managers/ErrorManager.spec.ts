@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import 'mocha';
-import { ErrorManager, ErrorSeverity, HaltError, TranslationError } from './ErrorManager';
+import { ErrorManager, ErrorSeverity, HaltError, TranslationIssue } from './ErrorManager';
 
 describe('Error manager tests', function () {
     it('context should world', async () => {
@@ -50,7 +50,7 @@ describe('Error manager tests', function () {
         const em = ErrorManager.pedantic;
         em.pushFile('test context');
         try {
-            em.push(new TranslationError('foo', undefined, undefined, ErrorSeverity.INFO));
+            em.push(new TranslationIssue('foo', undefined, undefined, ErrorSeverity.INFO));
             // we should never reach this part of code optimistically
         } catch (e) {
             assert.fail('Should not halt');

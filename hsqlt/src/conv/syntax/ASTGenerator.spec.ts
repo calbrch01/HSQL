@@ -1,8 +1,4 @@
 import { assert } from 'chai';
-import { ErrorManager } from '../../managers/ErrorManager';
-import { ReadingManager } from '../../managers/ReadingManager';
-import { HSQLTreeFactory } from '../tree';
-import { ASTGenerator } from './ASTGenerator';
 import { TaskManager } from '../../managers/TaskManager';
 
 describe('AST Generator Visitor', function () {

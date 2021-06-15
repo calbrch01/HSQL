@@ -1,17 +1,16 @@
 import { AbstractParseTreeVisitor } from 'antlr4ts/tree/AbstractParseTreeVisitor';
+import format from 'string-template';
 import { Action, ActionType } from '../../../ast/data/Action';
+import { EDataType } from '../../../ast/data/base/DataType';
 import { isAny, isDataType } from '../../../ast/data/base/misc';
-
-import { IASTVisitor } from '../../../ast/IASTVisitor';
 import { fileOutputOptionsType, Output } from '../../../ast/stmt/Output';
-import { ErrorManager, TranslationError } from '../../../managers/ErrorManager';
+import { ErrorManager, TranslationIssue } from '../../../managers/ErrorManager';
 import { OutputStmtContext } from '../../../misc/grammar/HSQLParser';
 import { HSQLVisitor } from '../../../misc/grammar/HSQLVisitor';
 import { pullVEO, VEO, VEOMaybe } from '../../../misc/holders/VEO';
+import rs from '../../../misc/strings/resultStrings';
 import { ASTGenerator } from '../ASTGenerator';
-import format from 'string-template';
-import rs from '../../../misc/strings/resultStrings.json';
-import { EDataType } from '../../../ast/data/base/DataType';
+
 export class OutputASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements HSQLVisitor<VEOMaybe> {
     errorManager: ErrorManager;
     constructor(protected parent: ASTGenerator) {
@@ -45,7 +44,7 @@ export class OutputASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
 
         if (isAny(attributeResultDataType)) {
             this.errorManager.push(
-                TranslationError.semanticWarningToken(
+                TranslationIssue.semanticWarningToken(
                     format(rs.cannotInfer, [rs.output, EDataType[EDataType.TABLE]]),
                     attributeContext
                 )
@@ -54,7 +53,7 @@ export class OutputASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
         if (!isDataType(attributeResultDataType, EDataType.TABLE)) {
             const typeInQuestion = attributeResultDataType.type ?? EDataType.ANY;
             this.errorManager.push(
-                TranslationError.semanticErrorToken(format(rs.cannotUse, [EDataType[typeInQuestion], rs.output]))
+                TranslationIssue.semanticErrorToken(format(rs.cannotUse, [EDataType[typeInQuestion], rs.output]))
             );
         }
         const astNode = new Output(ctx, attributeResult.stmt, namedOutputLocation, outputFileOptions);

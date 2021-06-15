@@ -1,13 +1,11 @@
-import { QualifiedIdentifier } from '../misc/ast/QualifiedIdentifier';
 import fs from 'fs';
 import path from 'path';
-import { Module } from '../ast/data/Module';
-import { ErrorManager, TranslationError } from './ErrorManager';
-import { AnyModule } from '../ast/data/AnyModule';
-import { iP } from '../misc/strings/formatting';
-import rs from '../misc/strings/resultStrings.json';
 import format from 'string-template';
-import { DataType } from '../ast/data/base/DataType';
+import { AnyModule } from '../ast/data/AnyModule';
+import { Module } from '../ast/data/Module';
+import { QualifiedIdentifier } from '../misc/ast/QualifiedIdentifier';
+import rs from '../misc/strings/resultStrings';
+import { ErrorManager, TranslationIssue } from './ErrorManager';
 /**
  * File type enum
  */
@@ -148,7 +146,7 @@ export class ReadingManager {
                     pathParsed.ext = '.dhsql';
                     break;
                 default:
-                    this.errorManager.halt(new TranslationError(format(rs.invalidFileExtension, [pathString])));
+                    this.errorManager.halt(new TranslationIssue(format(rs.invalidFileExtension, [pathString])));
             }
         }
         // as per the docs, setting it to undefined leads it to use the other properties

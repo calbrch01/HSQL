@@ -1,6 +1,5 @@
 import { Action } from '../Action';
 import { Any } from '../Any';
-import { AnyModule } from '../AnyModule';
 import { Layout } from '../Layout';
 import { Module } from '../Module';
 import { NoDataType } from '../NoDataType';
@@ -48,6 +47,11 @@ export function isAny(x: DataType) {
     return x.anyized;
 }
 
+/**
+ *
+ * @param x
+ * @returns
+ */
 export function isCollection(x: DataType | null | undefined): x is CollectionType {
     return x instanceof CollectionType;
 }

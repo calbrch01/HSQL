@@ -1,3 +1,9 @@
+import { ParserRuleContext } from 'antlr4ts';
+import format from 'string-template';
+import { ErrorManager, TranslationIssue } from '../../managers/ErrorManager';
+import rs from '../../misc/strings/resultStrings';
+import { Any } from './Any';
+import { AnyTable } from './AnyTable';
 import { CollectionType } from './base/CollectionType';
 import { DataType, EDataType } from './base/DataType';
 import { Col } from './Col';
@@ -34,6 +40,35 @@ export class Table extends CollectionType {
 
     static isTable(x: DataType): x is Table {
         return x.type === EDataType.TABLE;
+    }
+
+    /**
+     * Combine multiple table expressions
+     * @param collectionTypes
+     * @param y
+     */
+    static combine(err: ErrorManager, ctx: ParserRuleContext, ...collectionTypes: (Table | Any)[]): Table {
+        const result: Map<string, Col> = new Map();
+        for (const collectionType of collectionTypes) {
+            // if anyized, return this special version and short circuit
+            if (collectionType.anyized) {
+                err.push(TranslationIssue.semanticWarningToken(format(rs.tableSelectionHasAnyWarning), ctx));
+                return new AnyTable();
+            }
+            const list = collectionType.list();
+            // add these items to the list
+            for (const [name, data] of list) {
+                // TODO raise warning
+                if (result.has(name)) {
+                    err.push(
+                        TranslationIssue.semanticWarningToken(format(rs.existsError, [rs.column + ' ' + name]), ctx)
+                    );
+                }
+                // this is safe, as Any will be empty
+                result.set(name, data as Col);
+            }
+        }
+        return new Table(result);
     }
 
     isExactType(t: DataType) {

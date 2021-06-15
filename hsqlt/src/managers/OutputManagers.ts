@@ -4,8 +4,8 @@
  */
 
 import { promises as fs } from 'fs';
-import { ContexedTranslationError, TranslationError } from './ErrorManager';
 import { iP } from '../misc/strings/formatting';
+import { ContexedTranslationError } from './ErrorManager';
 
 /**
  * Represents an output method.

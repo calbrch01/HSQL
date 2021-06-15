@@ -1,5 +1,4 @@
-import { CollectionType } from './base/CollectionType';
-import { DataType, EDataType } from './base/DataType';
+import { DataType } from './base/DataType';
 import { Layout } from './Layout';
 
 export class AnyLayout extends Layout {
