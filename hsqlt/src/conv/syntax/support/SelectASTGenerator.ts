@@ -7,6 +7,7 @@ import { QualifiedIdentifier } from '../../../misc/ast/QualifiedIdentifier';
 import {
     DefinitionContext,
     SelectBracketedFromTableContext,
+    SelectFromClauseContext,
     SelectFromDefinitionContext,
     SelectFromDerivedTableContext,
     SelectJoinedTableContext,
@@ -27,6 +28,8 @@ import format from 'string-template';
 import { Any } from '../../../ast/data/Any';
 import { Table } from '../../../ast/data/Table';
 import { debug } from 'console';
+import { Definition } from '../../../ast/stmt/Definition';
+import { args } from '../../..';
 /*
  * Let's talk about select. its really big.
  * We will have sources, cols and jobs.
@@ -64,6 +67,8 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
     /**
      * The table sources that can be used for the rest of the select statement.
      * For these, the columns are looked up.
+     * This is the definition for all those in the {@link SelectASTGenerator.fromTable} that are not directly in scope,
+     * but are essentially aliases or derived queries.
      */
     protected _changedSources: Map<string, VEO<CollectionType, StmtExpression>>;
 
@@ -77,6 +82,11 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
      */
     private _jobs: SelectJob[];
 
+    /**
+     * A set of identifiers that will recognize the from part of the query.
+     */
+    protected fromTable: QualifiedIdentifier[];
+
     constructor(protected parent: ASTGenerator) {
         super();
         this.errorManager = parent.errorManager;
@@ -84,6 +94,7 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
         this._changedSources = new Map();
         this._jobs = [];
         this._colSelect = new Map();
+        this.fromTable = [];
     }
 
     protected get jobs(): SelectJob[] {
@@ -108,6 +119,12 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
         //change this data type
         const dt = new AnyTable();
         return new VEO(dt, node);
+    }
+
+    visitSelectFromClause(ctx: SelectFromClauseContext) {
+        const from = ctx.selectFromRef().map(e => e.accept(this));
+        this.parent.taskManager.args.g && console.debug('from', from);
+        return null;
     }
 
     visitSelectFromDerivedTable(ctx: SelectFromDerivedTableContext) {
@@ -148,27 +165,47 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
         const selectFromAlias = ctx.selectAlias();
         const childCtx = ctx.definition();
         const childRes = this.visit(childCtx);
-        const x = pullVEO(childRes, this.errorManager, childCtx);
+
+        // this is the data about the variable
+        let resultingVariable = pullVEO(childRes, this.errorManager, childCtx);
+
         let dt: Table | Any;
-        if (isDataType(x.datatype, EDataType.TABLE)) {
-            dt = x.datatype;
+
+        // narrow down and error on tables
+        if (isDataType(resultingVariable.datatype, EDataType.TABLE)) {
+            dt = resultingVariable.datatype;
         } else {
             dt = new Any();
             this.errorManager.push(
                 TranslationError.createIssue(
-                    format(rs.cannotUse, EDataType[x.datatype.type], EDataType[EDataType.TABLE]),
+                    format(rs.cannotUse, EDataType[resultingVariable.datatype.type], EDataType[EDataType.TABLE]),
                     ErrorType.SEMANTIC,
                     ErrorSeverity.ERROR,
                     childCtx
                 )
             );
         }
+
         // const dt = isDataType(x.datatype,EDataType.TABLE)?x.datatype:new Any();
+        //
         if (selectFromAlias) {
             const idName = selectFromAlias.IDENTIFIER().text;
-            this._changedSources.set(idName, new VEO(dt, x.stmt));
+            this._changedSources.set(idName, new VEO(dt, resultingVariable.stmt));
+
+            // this should never theoretically run but acts as a guard
+            if (!(resultingVariable.stmt instanceof Definition)) {
+                this.errorManager.halt(
+                    TranslationError.semanticErrorToken(format(rs.notTagged, [Definition.name]), childCtx)
+                );
+            }
+
+            resultingVariable = new VEO(
+                dt,
+                new Definition(ctx, new QualifiedIdentifier(selectFromAlias.IDENTIFIER().text))
+            );
         }
-        return this.parent.visit(ctx);
+
+        return resultingVariable; //new VEO(dt,);
     }
 
     // this one can be ignored, as we just call the children and that is the default action anyways

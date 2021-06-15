@@ -1,3 +1,4 @@
+import { StmtExpression } from '../../ast/stmt/base/StmtExpression';
 import { QualifiedIdentifier } from './QualifiedIdentifier';
 
 export enum SelectJobDesc {
@@ -25,7 +26,7 @@ export enum SortType {
 }
 
 export type SelectJob =
-    | { type: SelectJobDesc.FROM } // from sets the contexts in the select part itself
+    | { type: SelectJobDesc.FROM; from: QualifiedIdentifier[] } // from sets the contexts in the select part itself
     | { type: SelectJobDesc.FILTER; expr: string } // TODO 14/06 filter the set according to an expression
     | {
           type: SelectJobDesc.SORT;

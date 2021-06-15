@@ -68,7 +68,7 @@ export const { argv: args } = yargs(process.argv.slice(2))
         desc: 'Cluster poRt',
         alias: ['port'],
         type: 'number',
-        default: parseInt(process.env.ECL_WATCH_PORT ?? '') == NaN ? 8010 : parseInt(process.env.ECL_WATCH_PORT ?? ''),
+        default: isNaN(parseInt(process.env.ECL_WATCH_PORT ?? '')) ? 8010 : parseInt(process.env.ECL_WATCH_PORT ?? ''),
     })
     .option('a', {
         desc: 'Show args',
