@@ -20,7 +20,6 @@
     },
     "scripts": {
         "test": "find ./src -name '*.spec.ts' | xargs ts-mocha src/test/*.ts",
-        "testing-help": "ts-node src --help",
         "start": "ts-node src",
         "check": "tsc --watch --noEmit",
         "doc": "typedoc ",
@@ -33,8 +32,9 @@
         "clean-doc": "rimraf docs",
         "clean-ts": "rimraf build",
         "clean": "rimraf dist docs build",
-        "regen": "antlr4ts -visitor  grammar/HSQL.g4 -o src/misc/",
-        "prepack": "npm run build"
+        "regen": "antlr4ts -visitor -no-listener grammar/HSQL.g4 -o src/misc/",
+        "prepack": "npm run build",
+        "testing-help": "ts-node src --help"
     },
     "author": "",
     "license": "ISC",

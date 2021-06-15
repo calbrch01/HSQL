@@ -11,7 +11,7 @@ import os from 'os';
 import { Readable } from 'stream';
 describe('Grammar generation tests', function () {
     //this test takes a bit of time
-    this.timeout(5000);
+    this.timeout(10000);
 
     /**
      * Path for grammar
