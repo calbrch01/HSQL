@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import format from 'string-template';
-import { AnyModule } from '../ast/data/AnyModule';
+import { AnyModule } from '../ast/data/Module';
 import { Module } from '../ast/data/Module';
 import { QualifiedIdentifier } from '../misc/ast/QualifiedIdentifier';
 import rs from '../misc/strings/resultStrings';

@@ -3,7 +3,6 @@ import format from 'string-template';
 import { ErrorManager, TranslationIssue } from '../../managers/ErrorManager';
 import rs from '../../misc/strings/resultStrings';
 import { Any } from './Any';
-import { AnyTable } from './AnyTable';
 import { CollectionType } from './base/CollectionType';
 import { DataType, EDataType } from './base/DataType';
 import { Col } from './Col';
@@ -92,5 +91,43 @@ export class Table extends CollectionType {
             return true;
         }
         return false;
+    }
+}
+
+/**
+ * Table but no decidable columns
+ * eg. the result of a select query whose types are undecidable
+ */
+export class AnyTable extends Table {
+    get(c: string) {
+        return undefined;
+    }
+
+    constructor() {
+        super();
+        this._anyized = true;
+    }
+    /**
+     * return a new anytable
+     */
+    public cloneType() {
+        return new AnyTable();
+    }
+
+    isExactType(d: DataType) {
+        // check self type first
+        if (AnyTable.isTable(d)) {
+            // its an AnyTable, we do not care about contents.
+            return true;
+        }
+        //not equal, drop
+        return false;
+    }
+
+    /**
+     * Method returns an empty list as there is no understandable list of columns
+     */
+    list() {
+        return [];
     }
 }
