@@ -7,20 +7,20 @@
 import { ErrorSeverity } from '../../managers/ErrorManager';
 
 /**
+ * Mapping of the issue severity
+ */
+const issueSeverityMap = {
+    [ErrorSeverity.INFO]: 'I' as 'I',
+    [ErrorSeverity.WARNING]: 'W' as 'W',
+    [ErrorSeverity.ERROR]: 'E' as 'E',
+};
+
+/**
  * Assign string codes to these enums
  * @param issueType
  */
-function mapIssue(issueType: ErrorSeverity) {
-    switch (issueType) {
-        case ErrorSeverity.INFO:
-            return 'I';
-        case ErrorSeverity.WARNING:
-            return 'W';
-        case ErrorSeverity.ERROR:
-            return 'E';
-        default:
-            return '?';
-    }
+export function mapIssue(issueType: ErrorSeverity) {
+    return issueSeverityMap[issueType] ?? '?';
 }
 
 /**

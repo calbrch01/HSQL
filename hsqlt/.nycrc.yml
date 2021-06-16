@@ -1,9 +1,10 @@
 all: true
 include:
-    - '**/*.ts'
+    - 'src/**/*.ts'
 exclude:
-    - '**/*.spec.ts'
+    - 'src/**/*.spec.ts'
     - src/test/**/*.ts
+    - src/misc/grammar/*.ts # this is grammar files, we can be pretty confident these are good
 reporter:
     - text
     - text-summary
