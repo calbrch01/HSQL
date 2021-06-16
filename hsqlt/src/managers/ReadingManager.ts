@@ -130,14 +130,14 @@ export class ReadingManager {
     resolveName(s: QualifiedIdentifier): Module {
         // fallback
         const qed = this.idToPathMap(s);
-        console.debug('importing', qed);
+        // console.debug('importing', qed);
         const pathJoined = path.join(...qed);
-        const stats = [FileType.HSQL, FileType.ECL, FileType.DIR].map(e => [
-            FileType[e],
-            fs.existsSync(this.fh.changeExtension(pathJoined, e)),
-        ]);
+        // const stats = [FileType.HSQL, FileType.ECL, FileType.DIR].map(e => [
+        //     FileType[e],
+        //     fs.existsSync(this.fh.changeExtension(pathJoined, e)),
+        // ]);
 
-        console.debug(stats);
+        // console.debug(stats);
 
         // very messed up override
 
