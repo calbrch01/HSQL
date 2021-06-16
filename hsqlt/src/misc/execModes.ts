@@ -32,7 +32,7 @@ export class ExecCheckMode implements ExecIntent {
         taskmanager.generateAST();
 
         //print out if required
-        taskmanager.args.g && console.dir(taskmanager.ASTMap, { depth: 4 });
+        // taskmanager.args.g && console.dir(taskmanager.ASTMap, { depth: 4 });
     }
 }
 

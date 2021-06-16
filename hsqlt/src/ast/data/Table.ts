@@ -46,7 +46,7 @@ export class Table extends CollectionType {
      * @param collectionTypes
      * @param y
      */
-    static combine(err: ErrorManager, ctx: ParserRuleContext, ...collectionTypes: (Table | Any)[]): Table {
+    static combine(err: ErrorManager, ctx?: ParserRuleContext, ...collectionTypes: (Table | Any)[]): Table {
         const result: Map<string, Col> = new Map();
         for (const collectionType of collectionTypes) {
             // if anyized, return this special version and short circuit
@@ -122,6 +122,13 @@ export class AnyTable extends Table {
         }
         //not equal, drop
         return false;
+    }
+    /**
+     * It always has any asked element
+     * @returns
+     */
+    has() {
+        return true;
     }
 
     /**

@@ -39,7 +39,7 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
         const [rhstop] = this.getPopped(rhs, x.node);
 
         // this creates an extra ',' required for no record format
-        rhstop.coverCode(ecl.output.outputlhs, ecl.commmon.comma, false);
+        rhstop.coverCode(ecl.output.outputlhs(), ecl.commmon.comma, false);
 
         if (x.namedOutput) {
             rhstop.coverCode('', format(ecl.commmon.comma + ecl.output.named, [x.namedOutput]), false);
@@ -68,7 +68,7 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
         const [rhstop] = this.getPopped(rhs, x.node);
 
         //  note that the const is by reference, not mutability
-        rhstop.coverCode(format(ecl.equal.eq, [x.lhs.toString()]), undefined, false);
+        rhstop.coverCode(ecl.equal.eq(x.lhs.toString()), undefined, false);
 
         return [...rhs, rhstop];
     }
@@ -89,6 +89,6 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
 
     visitImport(x: Import) {
         const str = x.hasAlias ? ecl.import.aliased : ecl.import.regular;
-        return [new ECLCode(format(str, [x.moduleName, x.alias]))];
+        return [new ECLCode(str(x.moduleName, x.alias))];
     }
 }

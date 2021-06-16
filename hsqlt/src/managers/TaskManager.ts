@@ -9,11 +9,12 @@ import { HSQLTreeFactory } from '../conv/tree';
 import { ICodeGenerator } from '../misc/ast/ICodeGenerator';
 import { QualifiedIdentifier } from '../misc/ast/QualifiedIdentifier';
 import { ImportStmtContext } from '../misc/grammar/HSQLParser';
-import { iP } from '../misc/strings/formatting';
+import { iP } from '../misc/lib/formatting';
 import rs from '../misc/strings/resultStrings';
 import { ErrorManager, ErrorMode, ErrorSeverity, TranslationIssue } from './ErrorManager';
 import { NoOutput, OutputManager } from './OutputManagers';
-import { FILETYPE, ReadingManager } from './ReadingManager';
+import { ReadingManager } from './ReadingManager';
+import { FileType } from '../misc/file/FileType';
 
 export enum OutputMethod {
     FILES,
@@ -43,6 +44,7 @@ export class TaskManager {
      * @param fileMap A fileMap. Missing files will be taken from disk
      * @param outputManager Output strategy - default is no output
      * @param baseLoc (does nothing for now) output relocation
+     * @param fsBacked Whether we can fall back to disk if fileMap cannot provide file (Useful in IDEs where fileMap acts as an overlay)
      * @param args Optional presence of the arguments
      */
     constructor(
@@ -51,12 +53,13 @@ export class TaskManager {
         public fileMap?: Map<string, string>,
         protected outputManager: OutputManager = new NoOutput(),
         public baseLoc?: string,
+        protected fsBacked: boolean = false,
         protected suppressIssues: boolean = false,
         public args: Partial<argType> = {} // protected args:argType
     ) {
         // choose either pedantic or normal based on the bool present
         this._errorManager = new ErrorManager(pedantic ? ErrorMode.PEDANTIC : ErrorMode.NORMAL);
-        this.readingMgr = new ReadingManager(this._errorManager, fileMap, baseLoc);
+        this.readingMgr = new ReadingManager(this._errorManager, fileMap, fsBacked, baseLoc);
         this.ASTMap = new Map<string, AST>();
         this.treeFactory = new HSQLTreeFactory(this._errorManager);
     }
@@ -122,7 +125,7 @@ export class TaskManager {
             const x = generator.getCode();
             // console.log(`Result`, x);
             //get new filename
-            const newFn = this.readingMgr.changeExtension(fn, FILETYPE.ECL);
+            const newFn = this.readingMgr.fh.changeExtension(fn, FileType.ECL);
             const res = this.outputManager.do(newFn, x.join(EOL));
             work.push(res);
         }

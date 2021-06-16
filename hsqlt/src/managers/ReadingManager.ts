@@ -4,24 +4,23 @@ import format from 'string-template';
 import { AnyModule } from '../ast/data/Module';
 import { Module } from '../ast/data/Module';
 import { QualifiedIdentifier } from '../misc/ast/QualifiedIdentifier';
+import { FileHandler } from '../misc/file/FileHandler';
 import rs from '../misc/strings/resultStrings';
-import { ErrorManager, TranslationIssue } from './ErrorManager';
-/**
- * File type enum
- */
-export enum FILETYPE {
-    DIR,
-    OTHER,
-    ECL,
-    DHSQL,
-    HSQL,
-}
-
+import { ErrorManager, ErrorSeverity, ErrorType, TranslationIssue } from './ErrorManager';
+import { FileType } from '../misc/file/FileType';
+import resultStrings from '../misc/strings/resultStrings';
+import { Table } from '../ast/data/Table';
+import { Col } from '../ast/data/Col';
+import { dtype } from '../ast/data/Singular';
 /**
  * Read and resolve types for files
  * Additionally manages extensions.
  */
 export class ReadingManager {
+    /**
+     * FileHandling Methods. Use this for some file/path specific methods
+     */
+    public fh: FileHandler;
     /**
      *
      * @param errorManager Error listener
@@ -32,9 +31,11 @@ export class ReadingManager {
     constructor(
         protected errorManager: ErrorManager,
         protected memFileMap: Map<string, string> = new Map(),
-        protected baseLoc?: string,
-        protected backed: boolean = false
-    ) {}
+        protected backed: boolean = false,
+        protected baseLoc?: string
+    ) {
+        this.fh = new FileHandler(errorManager);
+    }
 
     /**
      * remove file map
@@ -87,7 +88,18 @@ export class ReadingManager {
      */
     readSync(fileName: string) {
         if (this.memFileMap.has(fileName)) return this.memFileMap.get(fileName) as string;
-        return fs.readFileSync(fileName).toString();
+        if (this.backed) {
+            return fs.readFileSync(fileName).toString();
+        } else {
+            // there's no other file storages we can refer to
+            this.errorManager.halt(
+                TranslationIssue.createIssue(
+                    format(resultStrings.couldNotFindFileError, [fileName]),
+                    ErrorType.IO,
+                    ErrorSeverity.ERROR
+                )
+            );
+        }
     }
 
     /**
@@ -100,82 +112,63 @@ export class ReadingManager {
         const file = await fs.promises.readFile(fileName);
         return file.toString();
     }
+
     // FIXME add
+    /**
+     * Discover the file type given the qid
+     * @deprecated NOT YET READY
+     * @param q
+     */
     discoverFileType(q: QualifiedIdentifier) {}
 
+    // TODO resolve to a module
     /**
-     * Get the file type
-     * @param pathString
-     * @param override
+     * Resolve a qid to a module being imported
+     * @param s The identifier being imported
      * @returns
      */
-    getFileType(pathString: string, override?: FILETYPE): FILETYPE {
-        const x = path.extname(pathString);
-        // are switch cases really bad?
-        switch (x) {
-            case '.hsql':
-                return override ?? FILETYPE.HSQL;
-            case '.dhsql':
-                return override ?? FILETYPE.DHSQL;
-            case '.ecl':
-                return override ?? FILETYPE.ECL;
-            default:
-                return override ?? FILETYPE.OTHER;
-        }
-    }
-
-    /**
-     * Change extension of a file
-     * @param pathString path of the file
-     * @param newExtension either the extension or the string
-     * @returns
-     */
-    changeExtension(pathString: string, newExtension: FILETYPE | string): string {
-        const pathParsed = path.parse(pathString);
-        if (typeof newExtension === 'string') {
-            pathParsed.ext = newExtension;
-        } else {
-            // FUTURE Extensions are hardcoded - Fix them later?
-            switch (newExtension) {
-                case FILETYPE.HSQL:
-                    pathParsed.ext = '.hsql';
-                    break;
-                case FILETYPE.ECL:
-                    pathParsed.ext = '.ecl';
-                    break;
-                case FILETYPE.DHSQL:
-                    pathParsed.ext = '.dhsql';
-                    break;
-                case FILETYPE.DIR:
-                    pathParsed.ext = '';
-                    break;
-                default:
-                    this.errorManager.halt(new TranslationIssue(format(rs.invalidFileExtension, [pathString])));
-            }
-        }
-        // as per the docs, setting it to undefined leads it to use the other properties
-        // this should be a safe way of changing extensions for files
-        pathParsed.base = undefined!;
-        return path.format(pathParsed);
-    }
-
-    // TODO resolve to a
     resolveName(s: QualifiedIdentifier): Module {
         // fallback
         const qed = this.idToPathMap(s);
         console.debug('importing', qed);
         const pathJoined = path.join(...qed);
-        const stats = [FILETYPE.HSQL, FILETYPE.ECL, FILETYPE.DIR].map(e => [
-            FILETYPE[e],
-            fs.existsSync(this.changeExtension(pathJoined, e)),
+        const stats = [FileType.HSQL, FileType.ECL, FileType.DIR].map(e => [
+            FileType[e],
+            fs.existsSync(this.fh.changeExtension(pathJoined, e)),
         ]);
 
         console.debug(stats);
+
+        // very messed up override
+
+        return new Module(
+            new Map([
+                [
+                    't1',
+                    new Table(
+                        new Map([
+                            ['c1', new Col(dtype.DECIMAL)],
+                            ['c2', new Col(dtype.DECIMAL)],
+                        ])
+                    ),
+                ],
+                [
+                    't2',
+                    new Table(
+                        new Map([
+                            ['c4', new Col(dtype.DECIMAL)],
+                            ['c3', new Col(dtype.DECIMAL)],
+                        ])
+                    ),
+                ],
+            ])
+        );
+
         return new AnyModule();
     }
 
     /**
-     *
+     * Convert a id path to that
      */
     protected idToPathMap(s: QualifiedIdentifier): string[] {
         return s.qidentifier.map(e => {

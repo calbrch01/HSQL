@@ -4,7 +4,7 @@
  */
 
 import { promises as fs } from 'fs';
-import { iP } from '../misc/strings/formatting';
+import { iP } from '../misc/lib/formatting';
 import { ContexedTranslationError } from './ErrorManager';
 
 /**

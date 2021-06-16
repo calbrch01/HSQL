@@ -12,6 +12,9 @@ export class Any extends CollectionType {
     list(): [string, DataType][] {
         return [];
     }
+    has() {
+        return true;
+    }
     constructor() {
         super(EDataType.ANY);
         this._anyized = true;

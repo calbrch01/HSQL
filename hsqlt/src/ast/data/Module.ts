@@ -72,7 +72,7 @@ export class AnyModule extends Module {
     public cloneType() {
         return new AnyModule();
     }
-    has(c: string, d?: EDataType) {
+    has() {
         return true;
     }
 

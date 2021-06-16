@@ -154,7 +154,7 @@ export async function main(argv: argType, /*execMode: ExecMode*/ execMode: ExecI
     // initialize managers
     const writer: OutputManager = argv.o ? new StandardOutput() : new FileOutput();
     //taskmap must have no map, and no baseloc for now
-    const taskmanager = new TaskManager(argv.file, argv.p, undefined, writer, undefined, argv.k, argv);
+    const taskmanager = new TaskManager(argv.file, argv.p, undefined, writer, undefined, true, argv.k, argv);
 
     try {
         await execMode.do(taskmanager, writer);

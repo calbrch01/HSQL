@@ -14,8 +14,11 @@ import %.a;
 //d = select * from bc join cd on bc.xy=cd.yz;
 
 
-p = select * from a.t1 as b,a.t2 as c;
-//q = select count(*) from p;
+//p = select c1 from a.t1 ab,a.t2;
+
+p = select *,count(c1) from a.t1;
+
+//q = select s(a) from p join x on x=y;
 
 
 //output bc.t1;

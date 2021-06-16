@@ -10,10 +10,10 @@ import { ErrorSeverity } from '../../managers/ErrorManager';
  * Mapping of the issue severity
  */
 const issueSeverityMap = {
-    [ErrorSeverity.INFO]: 'I' as 'I',
-    [ErrorSeverity.WARNING]: 'W' as 'W',
-    [ErrorSeverity.ERROR]: 'E' as 'E',
-};
+    [ErrorSeverity.INFO]: 'I',
+    [ErrorSeverity.WARNING]: 'W',
+    [ErrorSeverity.ERROR]: 'E',
+} as const;
 
 /**
  * Assign string codes to these enums
