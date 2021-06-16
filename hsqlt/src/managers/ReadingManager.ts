@@ -141,28 +141,28 @@ export class ReadingManager {
 
         // very messed up override
 
-        return new Module(
-            new Map([
-                [
-                    't1',
-                    new Table(
-                        new Map([
-                            ['c1', new Col(dtype.DECIMAL)],
-                            ['c2', new Col(dtype.DECIMAL)],
-                        ])
-                    ),
-                ],
-                [
-                    't2',
-                    new Table(
-                        new Map([
-                            ['c4', new Col(dtype.DECIMAL)],
-                            ['c3', new Col(dtype.DECIMAL)],
-                        ])
-                    ),
-                ],
-            ])
-        );
+        // return new Module(
+        //     new Map([
+        //         [
+        //             't1',
+        //             new Table(
+        //                 new Map([
+        //                     ['c1', new Col(dtype.DECIMAL)],
+        //                     ['c2', new Col(dtype.DECIMAL)],
+        //                 ])
+        //             ),
+        //         ],
+        //         [
+        //             't2',
+        //             new Table(
+        //                 new Map([
+        //                     ['c4', new Col(dtype.DECIMAL)],
+        //                     ['c3', new Col(dtype.DECIMAL)],
+        //                 ])
+        //             ),
+        //         ],
+        //     ])
+        // );
 
         return new AnyModule();
     }
