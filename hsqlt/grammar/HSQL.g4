@@ -93,8 +93,8 @@ descSortItem: definitionSet DESC;
 // joinType: INNER? # innerJoin | (specifier = (LEFT | RIGHT | FULL) OUTER?) # outerJoin |
 // (specifier = FULL OUTER) # fullOuterJoin;
 
-limitOffsetClause: LIMIT number offsetClause?;
-offsetClause: OFFSET number;
+limitOffsetClause: LIMIT INTEGER_VALUE offsetClause?;
+offsetClause: OFFSET INTEGER_VALUE;
 
 // operators: comparisonOperator | arithmeticOPERATOR | logicalOperator;
 

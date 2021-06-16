@@ -25,6 +25,7 @@ import {
 } from '../../../misc/ast/SelectHelpers';
 import {
     DefinitionContext,
+    LimitOffsetClauseContext,
     SelectAggregatedEverythingColContext,
     SelectAggregatedOneColContext,
     SelectColumnsContext,
@@ -152,7 +153,8 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
         this.visit(ctx.selectColumns());
         // groups
 
-        // limitOffset
+        // limitOffset = visit if exists
+        ctx.limitOffsetClause()?.accept(this);
 
         // push dedup if required
         const distinctCtx = ctx.distinctClause();
@@ -163,6 +165,8 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
         // this.parent.taskManager.args.g && console.debug('G> this._cols', this._colSelect);
 
         //get the data type that we had set from visitSelectFromClause ->
+
+        this.parent.taskManager.args.g && console.debug('this._jobs', this._jobs);
 
         // create node
         const node = new Select(
@@ -177,6 +181,14 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
 
         // TODO FILTER DATATYPES
         return new VEO(this.finalDt, node);
+    }
+
+    visitLimitOffsetClause(ctx: LimitOffsetClauseContext) {
+        const offsetText = ctx.offsetClause()?.INTEGER_VALUE().text;
+        const limit = parseInt(ctx.INTEGER_VALUE().text);
+        const offset = offsetText !== undefined ? parseInt(offsetText) : undefined;
+        this._jobs.push({ type: SelectJobDesc.LIMITOFFSET, ctx, limit, offset });
+        return null;
     }
 
     visitSelectColumns(ctx: SelectColumnsContext) {

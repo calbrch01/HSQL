@@ -16,7 +16,7 @@ import %.a;
 
 //p = select c1 from a.t1 ab,a.t2;
 
-p = select *,count(c1) from a.t1;
+p = select distinct *,count(c1) from a.t1 limit 5 ;
 
 //q = select s(a) from p join x on x=y;
 
