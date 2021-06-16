@@ -15,39 +15,37 @@ actionStmt: selectStmt | outputStmt |
 
 // SELECT STATEMENT skipping the having for later
 selectStmt:
-	SELECT DISTINCT? columns = selectColumns selectFromClause (
+	SELECT distinctClause? selectColumns selectFromClause (
 		WHERE whereclause = selectWhereClause
 	)? selectGroupByClause? (
 		ORDER BY orderbyclause = orderByClause
 	)? /* (HAVING selectHavingClause)? */ limitOffsetClause?;
 
-selectHavingClause: booleanExpression;
+distinctClause: DISTINCT;
+// selectHavingClause: booleanExpression;
 selectGroupByClause: GROUP BY groupByClause;
 
 definitionSet: definition ( COMMA_ definition)*;
 
 selectColumns: selectCol ( COMMA_ selectCol)*;
 
-selectCol:
-	col aliasingCol[$col.ctx]?	# normalCol
-	| MULTIPLY					# wildAll;
+selectCol: col;
 
 // columns `can` be definitions. This is very helpful in resolving cases of multi-table selects
 col:
-	IDENTIFIER BSTART_ MULTIPLY BEND_				# selectAggregatedEverythingCol
-	| IDENTIFIER BSTART_ column = definition BEND_	# selectAggregatedOneCol
-	| column = definition							# selectOneCol;
+	IDENTIFIER BSTART_ MULTIPLY BEND_ aliasingCol?				# selectAggregatedEverythingCol
+	| IDENTIFIER BSTART_ column = IDENTIFIER BEND_ aliasingCol?	# selectAggregatedOneCol
+	| IDENTIFIER aliasingCol?									# selectOneCol
+	| MULTIPLY													# wildAll;
 /*
  * Allow access to the column it was applied to. this should be helpful while generating the
  * AST/code
  */
-aliasingCol[ParserRuleContext ctx]:
-	AS (dataType)? alias = IDENTIFIER;
+aliasingCol: AS alias = IDENTIFIER;
 
 /* note that from can actually have multiple sources. However, while dealing with codegen, we may
  need to split the cases for 1 table and 1+ tables
  */
-//NOTE: CONSIDER ALT GRAMMAR TO DEAL WITH 1+ TABLES
 selectFromClause:
 	FROM (
 		selectFromRef (COMMA_ selectFromRef)*

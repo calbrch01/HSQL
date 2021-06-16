@@ -6,6 +6,7 @@ import { ParseTreeVisitor } from "antlr4ts/tree/ParseTreeVisitor";
 import { SelectAggregatedEverythingColContext } from "./HSQLParser";
 import { SelectAggregatedOneColContext } from "./HSQLParser";
 import { SelectOneColContext } from "./HSQLParser";
+import { WildAllContext } from "./HSQLParser";
 import { NormalTailIdentifierContext } from "./HSQLParser";
 import { ParentTailIdentifierContext } from "./HSQLParser";
 import { ComparisonContext } from "./HSQLParser";
@@ -17,8 +18,6 @@ import { IntegerLiteralContext } from "./HSQLParser";
 import { ValueExpressionDefaultContext } from "./HSQLParser";
 import { BasicStringLiteralContext } from "./HSQLParser";
 import { UnicodeStringLiteralContext } from "./HSQLParser";
-import { NormalColContext } from "./HSQLParser";
-import { WildAllContext } from "./HSQLParser";
 import { SelectFromDerivedTableContext } from "./HSQLParser";
 import { SelectFromDefinitionContext } from "./HSQLParser";
 import { SelectBracketedFromTableContext } from "./HSQLParser";
@@ -41,7 +40,7 @@ import { DefinitionStmtContext } from "./HSQLParser";
 import { ExprContext } from "./HSQLParser";
 import { ActionStmtContext } from "./HSQLParser";
 import { SelectStmtContext } from "./HSQLParser";
-import { SelectHavingClauseContext } from "./HSQLParser";
+import { DistinctClauseContext } from "./HSQLParser";
 import { SelectGroupByClauseContext } from "./HSQLParser";
 import { DefinitionSetContext } from "./HSQLParser";
 import { SelectColumnsContext } from "./HSQLParser";
@@ -118,6 +117,14 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitSelectOneCol?: (ctx: SelectOneColContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `wildAll`
+	 * labeled alternative in `HSQLParser.col`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitWildAll?: (ctx: WildAllContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by the `normalTailIdentifier`
@@ -206,22 +213,6 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitUnicodeStringLiteral?: (ctx: UnicodeStringLiteralContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by the `normalCol`
-	 * labeled alternative in `HSQLParser.selectCol`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitNormalCol?: (ctx: NormalColContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by the `wildAll`
-	 * labeled alternative in `HSQLParser.selectCol`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitWildAll?: (ctx: WildAllContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by the `selectFromDerivedTable`
@@ -393,11 +384,11 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	visitSelectStmt?: (ctx: SelectStmtContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by `HSQLParser.selectHavingClause`.
+	 * Visit a parse tree produced by `HSQLParser.distinctClause`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	visitSelectHavingClause?: (ctx: SelectHavingClauseContext) => Result;
+	visitDistinctClause?: (ctx: DistinctClauseContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `HSQLParser.selectGroupByClause`.
