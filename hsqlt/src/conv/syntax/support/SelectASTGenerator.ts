@@ -20,12 +20,14 @@ import {
     SelectAggregationType,
     SelectColumn,
     SelectColumnType,
-    PartialSelectJob,
-    SelectJobDesc,
     limitOffsetType,
+    SortField,
+    SortType,
 } from '../../../misc/ast/SelectHelpers';
 import {
+    AscSortItemContext,
     DefinitionContext,
+    DescSortItemContext,
     DistinctClauseContext,
     GroupByClauseContext,
     LimitOffsetClauseContext,
@@ -96,11 +98,6 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
     protected _changedSources: Map<string, VEO<CollectionType, StmtExpression>>;
 
     /**
-     * Columns selected
-     */
-    protected _colSelect: SelectColumn[];
-
-    /**
      * What to do in the select -> treat as a stack of work
      */
     // private _jobs: PartialSelectJob[];
@@ -114,11 +111,18 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
      * The total table set - Without any column filters
      */
     protected totalDt: Table;
+
+    protected _sortFields: SortField[];
+
+    /**
+     * Columns selected
+     */
+    protected _colSelect: SelectColumn[];
     protected _groupBy: string[];
 
-    protected distinct: boolean;
-
     protected limitOffset?: limitOffsetType;
+
+    protected distinct: boolean;
     /**
      * The table set after column filters
      */
@@ -137,6 +141,7 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
         this.finalDt = new AnyTable();
         this._groupBy = [];
         this.distinct = false;
+        this._sortFields = [];
     }
 
     protected defaultResult(): VEOMaybe<DataType, BaseASTNode> {
@@ -154,9 +159,11 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
 
         // where
         // sort
+        ctx.orderByClause()?.accept(this);
 
         // then, the cols -> this._colSelect
-        this.visit(ctx.selectColumns());
+        ctx.selectColumns().accept(this);
+
         // groups
         ctx.selectGroupByClause()?.accept(this);
 
@@ -183,6 +190,7 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
             this._changedSources,
             this.fromTable,
             this.totalDt,
+            this._sortFields,
             this._groupBy,
             this._colSelect,
             this.limitOffset,
@@ -192,6 +200,26 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
         this.parent.taskManager.args.g && console.debug('Select', node);
 
         return new VEO(this.finalDt, node);
+    }
+
+    visitAscSortItem(ctx: AscSortItemContext) {
+        const col = ctx.IDENTIFIER().text;
+        if (this.totalDt.has(col)) {
+            this._sortFields.push({ type: SortType.ASC, col });
+        } else {
+            this.errorManager.push(TranslationIssue.semanticErrorToken(format(rs.colDoesNotExistError, [col]), ctx));
+        }
+        return null;
+    }
+
+    visitDescSortItem(ctx: DescSortItemContext) {
+        const col = ctx.IDENTIFIER().text;
+        if (this.totalDt.has(col)) {
+            this._sortFields.push({ type: SortType.DESC, col });
+        } else {
+            this.errorManager.push(TranslationIssue.semanticErrorToken(format(rs.colDoesNotExistError, [col]), ctx));
+        }
+        return null;
     }
 
     visitDistinctClause(ctx: DistinctClauseContext) {

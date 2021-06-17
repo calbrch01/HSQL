@@ -13,7 +13,7 @@ import { DataMetaData, VariableVisibility } from '../../ast/symbol/VariableTable
 import { ECLCode } from '../../code/ECLCode';
 import { ErrorManager, TranslationIssue } from '../../managers/ErrorManager';
 import { QualifiedIdentifier } from '../../misc/ast/QualifiedIdentifier';
-import { SelectColumnType } from '../../misc/ast/SelectHelpers';
+import { SelectColumnType, SortType } from '../../misc/ast/SelectHelpers';
 import ecl from '../../misc/strings/ecl';
 import rs from '../../misc/strings/resultStrings';
 
@@ -128,6 +128,9 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
         // then, eval the changed sources list
         this.selectProcessFromClause(x, varStack, stmtStack);
 
+        //sort clause
+        this.selectProcessSortClause(x, varStack, stmtStack);
+
         // get the table value ready
         this.selectProcessColFiltersAndGroups(x, varStack, stmtStack);
 
@@ -143,6 +146,32 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
         //push return code
         stmtStack.push(returnCode, new ECLCode(ecl.commmon.end), new ECLCode(varName));
         return stmtStack;
+    }
+    selectProcessSortClause(x: Select, varStack: string[], stmtStack: ECLCode[]) {
+        // exit if no sort fields
+        if (x.sortFields.length === 0) return;
+
+        const tableVar = this.rootContext.variableManager.nextClaimableActionIdentifier();
+        this.rootContext.variableManager.add(tableVar, DataMetaData(x.finalDt, VariableVisibility.DEFAULT, true));
+
+        const sortByText = x.sortFields
+            .map(e => {
+                if (e.type === SortType.ASC) {
+                    return e.col;
+                } else {
+                    return ecl.table.negSort(e.col);
+                }
+            })
+            .join(ecl.commmon.comma);
+        const stmt = new ECLCode(ecl.table.sort, false)
+            .coverCode(undefined, varStack[varStack.length - 1], false, false)
+            .coverCode(undefined, ecl.commmon.comma, false, false)
+            .coverCode(undefined, sortByText, false, false)
+            .coverCode(undefined, ecl.commmon.rightBracket, false, false)
+            .coverCode(ecl.equal.eq(tableVar));
+
+        varStack.push(tableVar);
+        stmtStack.push(stmt);
     }
     selectProcessDistinct(x: Select, varStack: string[], stmtStack: ECLCode[]) {
         if (x.distict) {

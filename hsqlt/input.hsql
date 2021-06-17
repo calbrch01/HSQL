@@ -1,25 +1,7 @@
 import %.a;
 
-// somedata.table -> data
-// somedata.layout -> record
-
-
-//import bc;
-//p = a.t1;
-//p = a.t2;
-
--- a = select * from ab,bc;
--- b = select * from ab,bc,cd;
--- c = select * from (select * from abc) as bcd,cd;
-//d = select * from bc join cd on bc.xy=cd.yz;
-
-
-//p = select c1 from a.t1 ab,a.t2;
-
 //p = select distinct *,count(c1) from a.t1 as b,a.t2 as aa group by c1 limit 5 ;
-p = select distinct * from a.t2;
+
+p = select * from (select * from a.t2) as t1 order by c3;
 output p;
-//q = select s(a) from p join x on x=y;
 
-
-//output bc.t1;

@@ -31,6 +31,8 @@ export default {
         colList: compile('{ {0} }'),
         dedup: compile('DEDUP({0},ALL)'),
         choosen: 'CHOOSEN(',
+        sort: 'SORT(',
+        negSort: compile('-({0})'),
         aggr: templateCompiler({
             [SelectAggregationType.AVG]: 'AVE(GROUP,{0})',
             [SelectAggregationType.COUNT]: 'COUNT(GROUP)',

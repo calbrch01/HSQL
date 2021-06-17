@@ -36,6 +36,7 @@ export type SelectColumn = { ctx: ParserRuleContext } & (
       }
 );
 
+/** @deprecated */
 export enum SelectJobDesc {
     /** The big from */
     FROM,
@@ -55,24 +56,17 @@ export enum SelectJobDesc {
     /** Do a dedup */
     DISTINCT,
 }
+
+export type SortField = {
+    type: SortType;
+    col: string;
+};
 export enum SortType {
     ASC,
     DESC,
 }
 
 export type limitOffsetType = { limit: number; offset?: number };
-
-/**
- * Some of the select jobs that may be done at the end
- * @deprecated
- */
-export type PartialSelectJob = { ctx: ParserRuleContext } & (
-    | { type: SelectJobDesc.FILTER; expr: string } // TODO 14/06 filter the set according to an expression
-    | { type: SelectJobDesc.LIMITOFFSET; limit: number; offset?: number }
-    | {
-          type: SelectJobDesc.DISTINCT;
-      }
-);
 
 /**
  * Map a string to an aggregation Task
