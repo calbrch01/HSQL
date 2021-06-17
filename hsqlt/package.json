@@ -21,8 +21,7 @@
     "scripts": {
         "start": "ts-node src",
         "check": "tsc --watch --noEmit",
-        "precheck-cicular": "npm run build",
-        "check-circular": "madge -c build",
+        "check-circular": "madge -c src",
         "build": "tsc -p tsconfig.build.json",
         "build-dev": "tsc",
         "test": "find ./src -name '*.spec.ts' | xargs ts-mocha src/test/*.ts",

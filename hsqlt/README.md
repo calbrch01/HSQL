@@ -72,30 +72,42 @@ Module-specific file are present side-by-side as `*.spec.ts`
 
 ### NPM scripts
 
+NPM scripts are defined here to help you do some quick actions on this repository.
+
 Usage: `npm run <script-name>`
 
-| Script Name | Explanation                                   | Default Output location |
-| ----------- | --------------------------------------------- | ----------------------- |
-| check       | Checks source code for errors                 | -                       |
-| dev         | Runs nodemon to run the project in watch mode | -                       |
-| doc         | Generate TypeDoc documentation                | `docs/`                 |
-| build       | Build the project into JS                     | `build/`                |
-| regen       | Regenerate ANTLR grammar                      | `src/misc/grammar/`     |
-| pkg         | Compile and package application               | `dist/`                 |
-| test        | Runs all tests                                | -                       |
+| Script Name    | Explanation                                  | Default Output location |
+| -------------- | -------------------------------------------- | ----------------------- |
+| check          | Checks source code for errors                | -                       |
+| check-circular | Checks source code for cyclic dependencies   | -                       |
+| build          | Build the project into JS                    | `build/`                |
+| build-dev      | Build the project & tests into JS            | `build/`                |
+| test           | Runs all tests (TS)                          | -                       |
+| regen          | Regenerate ANTLR grammar                     | `src/misc/grammar/`     |
+| doc            | Generate TypeDoc documentation               | `docs/`                 |
+| pkg            | Compile and package application              | `dist/`                 |
+| cov            | Code Coverage                                | -                       |
+| clean          | Remove build artifacts (`build`,`doc`,`pkg`) | -                       |
 
 ### Typedoc
 
-Typedoc is a document generator and most types requiring explanation have been documented.
+Typedoc is a documentation generator and most types requiring explanation have been documented.
 To generate the documentation:
 
-```bash
+```sh
 npm run doc
 ```
 
 This will place the documentation under `docs/`.
 Note that the result will be a html project. The easiest way to view it, is to use a document server like `serve` that creates a local webserver for you to use:
 
-```bash
+```sh
 npx serve docs/
 ```
+### Madge
+
+The JS emit is based on CommonJS, and care has to be taken to *not* include circular dependencies. Due to how includes are done at runtime in CommonJS modules, certain imports may not work correctly (Although it is deterministic and you can certainly get it to work if circular dependencies are required). Hence, the best way to deal with circular dependencies, is to not have them at all. 
+```sh
+npm run check-circular
+```
+This should give a good idea as to where circular dependencies are present.

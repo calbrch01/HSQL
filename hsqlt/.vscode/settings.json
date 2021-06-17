@@ -4,7 +4,8 @@
         // "source.organizeImports": true
     },
     "files.exclude": {
-        "**/node_modules": true
+        "**/node_modules": true,
+        "**/.nyc_output":true
     },
     // only the spec files are put here, complete tests are not here for simplicity
     "mochaExplorer.files": ["src/test/*.ts","src/**/*.spec.ts"],
