@@ -20,10 +20,13 @@ export class Select implements StmtExpression {
     public get distict(): boolean {
         return this._distict;
     }
+    public get fromTable(): QualifiedIdentifier[] {
+        return this._fromTable;
+    }
     constructor(
         public node: ParserRuleContext,
         private _changedSources: Map<string, VEO<CollectionType, StmtExpression>>,
-        public fromTable: QualifiedIdentifier[],
+        private _fromTable: QualifiedIdentifier[],
         private _totalDt: Table,
         private _groupBy: string[],
         private _colSelect: SelectColumn[],
