@@ -60,13 +60,14 @@ export enum SortType {
     DESC,
 }
 
-export type SelectJob = { ctx: ParserRuleContext } & (
-    | { type: SelectJobDesc.FROM; from: QualifiedIdentifier[] } // from sets the contexts in the select part itself
+export type limitOffsetType = { limit: number; offset?: number };
+
+/**
+ * Some of the select jobs that may be done at the end
+ * @deprecated
+ */
+export type PartialSelectJob = { ctx: ParserRuleContext } & (
     | { type: SelectJobDesc.FILTER; expr: string } // TODO 14/06 filter the set according to an expression
-    | {
-          type: SelectJobDesc.SORT;
-          fields: [SortType, QualifiedIdentifier][];
-      }
     | { type: SelectJobDesc.LIMITOFFSET; limit: number; offset?: number }
     | {
           type: SelectJobDesc.DISTINCT;

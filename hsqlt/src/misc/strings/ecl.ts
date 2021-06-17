@@ -29,6 +29,8 @@ export default {
         joiner: compile('JOIN({0},{1},true,all)'),
         // the space is required to not accidentally escape the template
         colList: compile('{ {0} }'),
+        dedup: compile('DEDUP({0},ALL)'),
+        choosen: 'CHOOSEN(',
         aggr: templateCompiler({
             [SelectAggregationType.AVG]: 'AVE(GROUP,{0})',
             [SelectAggregationType.COUNT]: 'COUNT(GROUP)',
@@ -38,4 +40,4 @@ export default {
             [SelectAggregationType.TRIM]: 'TRIM({0})',
         }),
     },
-};
+} as const;

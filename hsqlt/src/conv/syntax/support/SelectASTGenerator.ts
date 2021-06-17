@@ -20,11 +20,13 @@ import {
     SelectAggregationType,
     SelectColumn,
     SelectColumnType,
-    SelectJob,
+    PartialSelectJob,
     SelectJobDesc,
+    limitOffsetType,
 } from '../../../misc/ast/SelectHelpers';
 import {
     DefinitionContext,
+    DistinctClauseContext,
     GroupByClauseContext,
     LimitOffsetClauseContext,
     SelectAggregatedEverythingColContext,
@@ -101,7 +103,7 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
     /**
      * What to do in the select -> treat as a stack of work
      */
-    private _jobs: SelectJob[];
+    // private _jobs: PartialSelectJob[];
 
     /**
      * A set of identifiers that will recognize the from part of the query.
@@ -114,6 +116,9 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
     protected totalDt: Table;
     protected _groupBy: string[];
 
+    protected distinct: boolean;
+
+    protected limitOffset?: limitOffsetType;
     /**
      * The table set after column filters
      */
@@ -125,17 +130,15 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
         this.incCounter = new IncrementingCounter();
         // this.taskManager = parent.
         this._changedSources = new Map();
-        this._jobs = [];
+        // this._jobs = [];
         this._colSelect = [];
         this.fromTable = [];
         this.totalDt = new AnyTable();
         this.finalDt = new AnyTable();
         this._groupBy = [];
+        this.distinct = false;
     }
 
-    protected get jobs(): SelectJob[] {
-        return this._jobs;
-    }
     protected defaultResult(): VEOMaybe<DataType, BaseASTNode> {
         return null;
     }
@@ -155,14 +158,16 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
         // then, the cols -> this._colSelect
         this.visit(ctx.selectColumns());
         // groups
+        ctx.selectGroupByClause()?.accept(this);
 
         // limitOffset = visit if exists
         ctx.limitOffsetClause()?.accept(this);
-        ctx.selectGroupByClause()?.accept(this);
 
         // push dedup if required
-        const distinctCtx = ctx.distinctClause();
-        distinctCtx !== undefined && this._jobs.push({ type: SelectJobDesc.DISTINCT, ctx: distinctCtx });
+        // const distinctCtx = ctx.distinctClause();
+        ctx.distinctClause()?.accept(this);
+
+        // distinctCtx !== undefined && this._jobs.push({ type: SelectJobDesc.DISTINCT, ctx: distinctCtx });
 
         // debug args
         // this.parent.taskManager.args.g && console.debug('G> this._changedSources', this._changedSources);
@@ -180,7 +185,8 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
             this.totalDt,
             this._groupBy,
             this._colSelect,
-            this._jobs,
+            this.limitOffset,
+            this.distinct,
             this.finalDt
         );
         this.parent.taskManager.args.g && console.debug('Select', node);
@@ -188,11 +194,16 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
         return new VEO(this.finalDt, node);
     }
 
+    visitDistinctClause(ctx: DistinctClauseContext) {
+        this.distinct = true;
+        return null;
+    }
+
     visitLimitOffsetClause(ctx: LimitOffsetClauseContext) {
         const offsetText = ctx.offsetClause()?.INTEGER_VALUE().text;
         const limit = parseInt(ctx.INTEGER_VALUE().text);
         const offset = offsetText !== undefined ? parseInt(offsetText) : undefined;
-        this._jobs.push({ type: SelectJobDesc.LIMITOFFSET, ctx, limit, offset });
+        this.limitOffset = { limit, offset };
         return null;
     }
 

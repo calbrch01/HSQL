@@ -131,6 +131,9 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
         // get the table value ready
         this.selectProcessColFiltersAndGroups(x, varStack, stmtStack);
 
+        this.selectProcessLimitOffset(x, varStack, stmtStack);
+
+        this.selectProcessDistinct(x, varStack, stmtStack);
         // table preps done, let's move onto next step
         // add the function assignment header
         stmtStack.unshift(fnasn);
@@ -140,6 +143,40 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
         //push return code
         stmtStack.push(returnCode, new ECLCode(ecl.commmon.end), new ECLCode(varName));
         return stmtStack;
+    }
+    selectProcessDistinct(x: Select, varStack: string[], stmtStack: ECLCode[]) {
+        if (x.distict) {
+            const tableVar = this.rootContext.variableManager.nextClaimableActionIdentifier();
+            this.rootContext.variableManager.add(tableVar, DataMetaData(x.finalDt, VariableVisibility.DEFAULT, true));
+            const stmt = new ECLCode(ecl.table.dedup(varStack[varStack.length - 1]), false).coverCode(
+                ecl.equal.eq(tableVar)
+            );
+            varStack.push(tableVar);
+            stmtStack.push(stmt);
+        }
+    }
+
+    selectProcessLimitOffset(x: Select, varStack: string[], stmtStack: ECLCode[]) {
+        if (x.limitOffset !== undefined) {
+            const tableVar = this.rootContext.variableManager.nextClaimableActionIdentifier();
+            this.rootContext.variableManager.add(tableVar, DataMetaData(x.finalDt, VariableVisibility.DEFAULT, true));
+            const stmt = new ECLCode(varStack[varStack.length - 1], false) // start with the variable
+                .coverCode(undefined, ecl.commmon.comma, false)
+                .coverCode(undefined, x.limitOffset.limit.toString(), false); // put the limitClause
+            if (x.limitOffset.offset !== undefined) {
+                stmt.coverCode(undefined, ecl.commmon.comma, false).coverCode(
+                    undefined,
+                    x.limitOffset.offset.toString(),
+                    false
+                );
+            }
+            stmt.coverCode(ecl.table.choosen, ecl.commmon.rightBracket, false, false) // add choosen
+                .coverCode(ecl.equal.eq(tableVar)); //add the assignment
+
+            varStack.push(tableVar);
+            stmtStack.push(stmt);
+            // .coverCode(format(ecl.equal.eq()));
+        }
     }
 
     /**
