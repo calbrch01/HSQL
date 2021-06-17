@@ -12,15 +12,24 @@ export enum VariableVisibility {
     SHARED,
     PUBLIC,
 }
-export type DataMetaData = {
+export type DataMetaDataType = {
     data: DataType;
     vis: VariableVisibility;
+    internal: boolean;
 };
 
-function MakeDataMetaData(data: DataType, vis: VariableVisibility): DataMetaData {
+/**
+ * Wrap the data in its metadata
+ * @param data
+ * @param vis
+ * @param internal
+ * @returns
+ */
+export function DataMetaData(data: DataType, vis: VariableVisibility, internal: boolean = false): DataMetaDataType {
     return {
         data,
         vis,
+        internal,
     };
 }
 
@@ -29,13 +38,13 @@ function MakeDataMetaData(data: DataType, vis: VariableVisibility): DataMetaData
  * Stores the data
  */
 export class VariableTable {
-    static actionPrependString: '__r_action_' = '__r_action_';
+    static actionPrependString = '__r_action_' as const;
 
     /**
      * Generate variables
      * @param _vars Pre-existing variables to add
      */
-    constructor(protected _vars: Map<string, DataMetaData>[] = [new Map()], protected actionCounter: number = 0) {}
+    constructor(protected _vars: Map<string, DataMetaDataType>[] = [new Map()], protected actionCounter: number = 0) {}
 
     /**
      * Avoid using this
@@ -56,8 +65,8 @@ export class VariableTable {
      * @param v the data to add
      * @param addtoOverLay whether to add to the root base(false) or to the latest overlay(true). (true)
      */
-    add(s: string, v: DataMetaData, addtoOverLay: boolean = true): boolean {
-        const map: Map<string, DataMetaData> = this._vars[addtoOverLay ? this.scopeLength - 1 : 0];
+    add(s: string, v: DataMetaDataType, addtoOverLay: boolean = true): boolean {
+        const map: Map<string, DataMetaDataType> = this._vars[addtoOverLay ? this.scopeLength - 1 : 0];
         // this.vars.add(v);
 
         if (map.has(s)) {
@@ -67,9 +76,9 @@ export class VariableTable {
         return true;
     }
 
-    get(s: string): DataMetaData | undefined {
+    get(s: string): DataMetaDataType | undefined {
         const l = this.scopeLength;
-        let x: DataMetaData | undefined = undefined;
+        let x: DataMetaDataType | undefined = undefined;
         for (let i = l - 1; i >= 0; i--) {
             x = this._vars[i].get(s);
             if (x !== undefined) break;
@@ -92,7 +101,7 @@ export class VariableTable {
         // return this._vars.has(s);
     }
 
-    pushScope(overlay: Map<string, DataMetaData> = new Map()) {
+    pushScope(overlay: Map<string, DataMetaDataType> = new Map()) {
         return this._vars.push(overlay);
     }
     popScope() {

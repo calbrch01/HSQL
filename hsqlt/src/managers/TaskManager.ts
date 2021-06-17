@@ -122,7 +122,12 @@ export class TaskManager {
         for (const [fn, ast] of fns) {
             // console.debug(`File:${fn}`);
             const generator: ICodeGenerator = new ECLGenerator(this.errorManager, ast); //new ECLGen(this.errorManager, ast);
+            //push error file context
+            this.errorManager.pushFile(fn);
+            //do the codegen
             const x = generator.getCode();
+            //pop error file context
+            this.errorManager.popFile();
             // console.log(`Result`, x);
             //get new filename
             const newFn = this.readingMgr.fh.changeExtension(fn, FileType.ECL);
@@ -140,7 +145,13 @@ export class TaskManager {
                 if (e.status === 'rejected') {
                     // equivalent to writing `const fn = fns[i][0]`
                     const [fn] = fns[i];
+
+                    //push error file context
+                    this.errorManager.pushFile(fn);
+
                     this.errorManager.push(new TranslationIssue(format(rs.couldNotWrite, [fn])));
+                    //pop error file context
+                    this.errorManager.popFile();
                 }
             });
         } catch (e) {
@@ -197,7 +208,7 @@ export class TaskManager {
         }
         return {
             suppressed,
-            counts: [ecount, wcount, icount] as [number, number, number],
+            counts: [ecount, wcount, icount] as const,
         };
     }
 

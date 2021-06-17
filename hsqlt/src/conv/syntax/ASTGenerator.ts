@@ -12,7 +12,7 @@ import { Definition } from '../../ast/stmt/Definition';
 import { EqualDefinition } from '../../ast/stmt/EqualDefinition';
 import { Import } from '../../ast/stmt/Import';
 import { StringLiteral } from '../../ast/stmt/Literal';
-import { VariableTable, VariableVisibility } from '../../ast/symbol/VariableTable';
+import { DataMetaData, VariableTable, VariableVisibility } from '../../ast/symbol/VariableTable';
 import { ErrorManager, TranslationIssue } from '../../managers/ErrorManager';
 import { TaskManager } from '../../managers/TaskManager';
 import { QualifiedIdentifier } from '../../misc/ast/QualifiedIdentifier';
@@ -103,7 +103,7 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
         // console.log(rhsdata);
         const vis = this.getScope(ctx.scope());
 
-        const res = this.ast.variableManager.add(lhstext, { data: x.datatype, vis });
+        const res = this.ast.variableManager.add(lhstext, DataMetaData(x.datatype, vis));
         if (!res) {
             this.errorManager.push(TranslationIssue.semanticErrorToken(format(rs.existsError, [lhstext]), ctx));
         }

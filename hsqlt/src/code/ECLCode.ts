@@ -13,8 +13,8 @@ export class ECLCode {
      * Enclose code in more code
      * @param leftSide left part of code
      * @param rightSide right part of code
-     * @param respectSemi whether to place the semicolon inside
-     * @param insertSemi  whether to enable insertSemi or not
+     * @param respectSemi whether to place the semicolon inside (defaults to this.insertSemi old)
+     * @param insertSemi  whether to enable insertSemi or not after this operation (true)
      * @returns
      */
     coverCode(leftSide: string = '', rightSide: string = '', respectSemi = this.insertSemi, insertSemi = true) {

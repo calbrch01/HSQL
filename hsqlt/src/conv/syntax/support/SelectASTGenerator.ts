@@ -11,7 +11,7 @@ import { BaseASTNode } from '../../../ast/stmt/base/BaseASTNode';
 import { StmtExpression } from '../../../ast/stmt/base/StmtExpression';
 import { Definition } from '../../../ast/stmt/Definition';
 import { Select } from '../../../ast/stmt/Select';
-import { VariableVisibility } from '../../../ast/symbol/VariableTable';
+import { DataMetaData, VariableVisibility } from '../../../ast/symbol/VariableTable';
 import { ErrorManager, ErrorSeverity, ErrorType, TranslationIssue } from '../../../managers/ErrorManager';
 import { QualifiedIdentifier } from '../../../misc/ast/QualifiedIdentifier';
 import {
@@ -166,7 +166,7 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
 
         //get the data type that we had set from visitSelectFromClause ->
 
-        this.parent.taskManager.args.g && console.debug('this._jobs', this._jobs);
+        // this.parent.taskManager.args.g && console.debug('this._jobs', this._jobs);
 
         // create node
         const node = new Select(
@@ -178,6 +178,7 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
             this._jobs,
             this.finalDt
         );
+        this.parent.taskManager.args.g && console.debug('Select', node);
 
         // TODO FILTER DATATYPES
         return new VEO(this.finalDt, node);
@@ -287,7 +288,7 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
             this.finalDt = new Table(colMap);
         }
         // nothing for else, it is already anytable()
-        this.parent.taskManager.args.g && console.debug('finalDt', this.finalDt);
+        // this.parent.taskManager.args.g && console.debug('finalDt', this.finalDt);
 
         return null;
     }
@@ -402,11 +403,11 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
             }
         }, new Array<VEO<DataType, Definition>>());
 
-        this.parent.taskManager.args.g && console.debug('from', from);
+        // this.parent.taskManager.args.g && console.debug('from', from);
 
         this.fromTable = from.map(e => e.stmt.val);
 
-        this.parent.taskManager.args.g && console.debug('fromTable', this.fromTable);
+        // this.parent.taskManager.args.g && console.debug('fromTable', this.fromTable);
 
         // The Table|Any can be provably correct as they would have been resolved in earlier steps
         this.totalDt = Table.combine(
@@ -455,7 +456,7 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
 
         // do two things, add to sources, and add to local varmanager.
         this._changedSources.set(idName, res);
-        this.parent.variableManager.add(idName, { data: res.datatype, vis: VariableVisibility.PUBLIC });
+        this.parent.variableManager.add(idName, DataMetaData(res.datatype, VariableVisibility.PUBLIC));
 
         return new VEO(res.datatype, new Definition(aliasCtx, new QualifiedIdentifier(idName)));
     }
@@ -513,10 +514,10 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
             }
             // if(this.parent.variableManager.ge)
             //push the variable to the the variable table
-            this.parent.variableManager.add(idName, {
-                data: resultingVariable.datatype,
-                vis: VariableVisibility.PUBLIC,
-            });
+            this.parent.variableManager.add(
+                idName,
+                DataMetaData(resultingVariable.datatype, VariableVisibility.PUBLIC)
+            );
             this._changedSources.set(idName, new VEO(dt, resultingVariable.stmt));
 
             // this should never theoretically run but acts as a guard

@@ -1,4 +1,4 @@
-import { DataMetaData, VariableTable, VariableVisibility } from './VariableTable';
+import { DataMetaData, DataMetaDataType, VariableTable, VariableVisibility } from './VariableTable';
 import { assert } from 'chai';
 import { Action } from '../data/Action';
 import { Singular } from '../data/Singular';
@@ -24,7 +24,7 @@ describe('Variable Table Tests', function () {
     });
 
     it('Can add a action-like variable', async () => {
-        const ret = varTable.add(firstVarName, { data: new Action(), vis: VariableVisibility.DEFAULT });
+        const ret = varTable.add(firstVarName, DataMetaData(new Action(), VariableVisibility.DEFAULT));
         assert.isTrue(ret);
         assert.isTrue(varTable.exists(firstVarName));
     });
@@ -42,7 +42,7 @@ describe('Variable Table Tests', function () {
         varTable.pushScope();
         assert.isFalse(varTable.exists('hello'), 'should not exist before');
         const layoutObj = new Layout();
-        varTable.add('hello', { data: layoutObj, vis: VariableVisibility.DEFAULT });
+        varTable.add('hello', DataMetaData(layoutObj, VariableVisibility.DEFAULT));
         assert.isTrue(varTable.exists('hello'), 'should exist during');
         const x = varTable.get('hello');
         assert.strictEqual(x?.data, layoutObj, 'should be the same instance');
