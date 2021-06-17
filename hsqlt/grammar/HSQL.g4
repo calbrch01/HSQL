@@ -84,8 +84,8 @@ joinSpecification:
 groupByClause: idSet;
 orderByClause: sortItem (COMMA_ sortItem)*;
 sortItem: ascSortItem | descSortItem;
-ascSortItem: idSet (ASC)?;
-descSortItem: idSet DESC;
+ascSortItem: IDENTIFIER (ASC)?;
+descSortItem: IDENTIFIER DESC;
 // joinClause: joinType JOIN joinidentifier = definition ON ( leftrecset = definition joincondition
 // = logicalOperator rightrecset = definition );
 

@@ -655,29 +655,27 @@ export class HSQLParser extends Parser {
 	public idSet(): IdSetContext {
 		let _localctx: IdSetContext = new IdSetContext(this._ctx, this.state);
 		this.enterRule(_localctx, 18, HSQLParser.RULE_idSet);
+		let _la: number;
 		try {
-			let _alt: number;
 			this.enterOuterAlt(_localctx, 1);
 			{
 			this.state = 159;
 			this.match(HSQLParser.IDENTIFIER);
 			this.state = 164;
 			this._errHandler.sync(this);
-			_alt = this.interpreter.adaptivePredict(this._input, 9, this._ctx);
-			while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
-				if (_alt === 1) {
-					{
-					{
-					this.state = 160;
-					this.match(HSQLParser.COMMA_);
-					this.state = 161;
-					this.match(HSQLParser.IDENTIFIER);
-					}
-					}
+			_la = this._input.LA(1);
+			while (_la === HSQLParser.COMMA_) {
+				{
+				{
+				this.state = 160;
+				this.match(HSQLParser.COMMA_);
+				this.state = 161;
+				this.match(HSQLParser.IDENTIFIER);
+				}
 				}
 				this.state = 166;
 				this._errHandler.sync(this);
-				_alt = this.interpreter.adaptivePredict(this._input, 9, this._ctx);
+				_la = this._input.LA(1);
 			}
 			}
 		}
@@ -1410,7 +1408,7 @@ export class HSQLParser extends Parser {
 			this.enterOuterAlt(_localctx, 1);
 			{
 			this.state = 291;
-			this.idSet();
+			this.match(HSQLParser.IDENTIFIER);
 			this.state = 293;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
@@ -1445,7 +1443,7 @@ export class HSQLParser extends Parser {
 			this.enterOuterAlt(_localctx, 1);
 			{
 			this.state = 295;
-			this.idSet();
+			this.match(HSQLParser.IDENTIFIER);
 			this.state = 296;
 			this.match(HSQLParser.DESC);
 			}
@@ -2838,9 +2836,9 @@ export class HSQLParser extends Parser {
 		"\u0120\x03\x02\x02\x02\u011E\u011C\x03\x02\x02\x02\u011E\u011F\x03\x02" +
 		"\x02\x02\u011F/\x03\x02\x02\x02\u0120\u011E\x03\x02\x02\x02\u0121\u0124" +
 		"\x052\x1A\x02\u0122\u0124\x054\x1B\x02\u0123\u0121\x03\x02\x02\x02\u0123" +
-		"\u0122\x03\x02\x02\x02\u01241\x03\x02\x02\x02\u0125\u0127\x05\x14\v\x02" +
+		"\u0122\x03\x02\x02\x02\u01241\x03\x02\x02\x02\u0125\u0127\x07_\x02\x02" +
 		"\u0126\u0128\x07\x14\x02\x02\u0127\u0126\x03\x02\x02\x02\u0127\u0128\x03" +
-		"\x02\x02\x02\u01283\x03\x02\x02\x02\u0129\u012A\x05\x14\v\x02\u012A\u012B" +
+		"\x02\x02\x02\u01283\x03\x02\x02\x02\u0129\u012A\x07_\x02\x02\u012A\u012B" +
 		"\x07\x15\x02\x02\u012B5\x03\x02\x02\x02\u012C\u012D\x07A\x02\x02\u012D" +
 		"\u012F\x07\\\x02\x02\u012E\u0130\x058\x1D\x02\u012F\u012E\x03\x02\x02" +
 		"\x02\u012F\u0130\x03\x02\x02\x02\u01307\x03\x02\x02\x02\u0131\u0132\x07" +
@@ -3715,9 +3713,7 @@ export class SortItemContext extends ParserRuleContext {
 
 
 export class AscSortItemContext extends ParserRuleContext {
-	public idSet(): IdSetContext {
-		return this.getRuleContext(0, IdSetContext);
-	}
+	public IDENTIFIER(): TerminalNode { return this.getToken(HSQLParser.IDENTIFIER, 0); }
 	public ASC(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.ASC, 0); }
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
@@ -3736,9 +3732,7 @@ export class AscSortItemContext extends ParserRuleContext {
 
 
 export class DescSortItemContext extends ParserRuleContext {
-	public idSet(): IdSetContext {
-		return this.getRuleContext(0, IdSetContext);
-	}
+	public IDENTIFIER(): TerminalNode { return this.getToken(HSQLParser.IDENTIFIER, 0); }
 	public DESC(): TerminalNode { return this.getToken(HSQLParser.DESC, 0); }
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
