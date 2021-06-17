@@ -13,6 +13,7 @@ import { DataMetaData, VariableVisibility } from '../../ast/symbol/VariableTable
 import { ECLCode } from '../../code/ECLCode';
 import { ErrorManager, TranslationIssue } from '../../managers/ErrorManager';
 import { QualifiedIdentifier } from '../../misc/ast/QualifiedIdentifier';
+import { SelectColumnType } from '../../misc/ast/SelectHelpers';
 import ecl from '../../misc/strings/ecl';
 import rs from '../../misc/strings/resultStrings';
 
@@ -125,6 +126,29 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
         );
 
         // then, eval the changed sources list
+        this.selectProcessFromClause(x, varStack, stmtStack);
+
+        // get the table value ready
+        this.selectProcessColFiltersAndGroups(x, varStack, stmtStack);
+
+        // table preps done, let's move onto next step
+        // add the function assignment header
+        stmtStack.unshift(fnasn);
+        //construct return statement
+        const retVar = varStack[varStack.length - 1] ?? '';
+        const returnCode = new ECLCode(ecl.functions.return).coverCode(undefined, retVar, false, true);
+        //push return code
+        stmtStack.push(returnCode, new ECLCode(ecl.commmon.end), new ECLCode(varName));
+        return stmtStack;
+    }
+
+    /**
+     *
+     * @param x the AST node
+     * @param varStack variable stack
+     * @param stmtStack stmt stack/list
+     */
+    private selectProcessFromClause(x: Select, varStack: string[], stmtStack: ECLCode[]) {
         const changedSourcesList = [...x.changedSources];
         changedSourcesList.forEach(([name, node]) => {
             const eq = new EqualDefinition(x.node, new QualifiedIdentifier(name), node.stmt);
@@ -133,7 +157,6 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
         });
 
         // console.debug(`csl`, stmtStack);
-
         // let's join and create the resultant table now, we can do filters on this
         varStack.push(x.fromTable[0].toString());
         const fromTableLength = x.fromTable.length;
@@ -154,18 +177,66 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
 
             varStack.push(intermediateVar);
         }
+    }
 
-        // get the table value ready
-        // const tableVar = this.rootContext.variableManager.nextClaimableActionIdentifier();
-        // this.rootContext.variableManager.add(tableVar, DataMetaData(x.finalDt, VariableVisibility.DEFAULT, true));
+    /**
+     * Process Column filters and group bys, for SELECT
+     * @param x the AST Node
+     * @param varStack Current variable name stack
+     * @param stmtStack Current statement list/stack
+     */
+    private selectProcessColFiltersAndGroups(x: Select, varStack: string[], stmtStack: ECLCode[]) {
+        /** name of the TABLE -> used in colfilters+groups */
+        const tableVar = this.rootContext.variableManager.nextClaimableActionIdentifier();
+        this.rootContext.variableManager.add(tableVar, DataMetaData(x.finalDt, VariableVisibility.DEFAULT, true));
+        /** List of columns to put while filtering */
+        const colList: ECLCode[] = [];
+        x.colSelect.forEach(e => {
+            switch (e.type) {
+                case SelectColumnType.ALL:
+                    colList.push(new ECLCode(varStack[varStack.length - 1], false));
+                    break;
+                case SelectColumnType.COL:
+                    if (e.alias) {
+                        colList.push(
+                            new ECLCode(ecl.equal.eq(e.alias), false).coverCode(undefined, e.col, false, false)
+                        );
+                    } else {
+                        colList.push(new ECLCode(e.col, false));
+                    }
+                    break;
+                case SelectColumnType.AGGR:
+                    // if its count, the other argument will be automatically ignored
+                    colList.push(
+                        new ECLCode(ecl.equal.eq(e.alias), false).coverCode(
+                            undefined,
+                            ecl.table.aggr[e.aggr](e.col),
+                            false,
+                            false
+                        )
+                    );
+                    break;
+            }
+        });
+        const colListString = colList.map(e => e.toString()).join(ecl.commmon.comma);
+        const groupListCode = x.groupBy.join(ecl.commmon.comma);
 
-        // add the function assignment header
-        stmtStack.unshift(fnasn);
-        //construct return statement
-        const retVar = varStack[varStack.length - 1] ?? '';
-        const returnCode = new ECLCode(ecl.functions.return).coverCode(undefined, retVar, false, true);
-        //push return code
-        stmtStack.push(returnCode, new ECLCode(ecl.commmon.end), new ECLCode(varName));
-        return stmtStack;
+        const tableCode = new ECLCode(ecl.table.tableTerm, false)
+            .coverCode(ecl.equal.eq(tableVar), varStack[varStack.length - 1], false, false) // add the x:= <TABLE(> var
+            .coverCode(undefined, ecl.commmon.comma, false, false) // add the comma to the right
+            .coverCode(undefined, ecl.table.colList(colListString), false, false); // add the colList
+        // .coverCode(undefined, ecl.commmon.rightBracket, false, true);
+        const numberOfGroups = x.groupBy.length;
+
+        // add the groups in as required
+        if (numberOfGroups > 0) {
+            tableCode
+                .coverCode(undefined, ecl.commmon.comma, false, false)
+                .coverCode(undefined, groupListCode, false, false);
+        }
+        tableCode.coverCode(undefined, ecl.commmon.rightBracket, false, true);
+
+        stmtStack.push(tableCode);
+        varStack.push(tableVar);
     }
 }

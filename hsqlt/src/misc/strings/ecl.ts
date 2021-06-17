@@ -1,5 +1,6 @@
 import { templateCompiler } from '../lib/templateCompiler';
 import compile from 'string-template/compile';
+import { SelectAggregationType } from '../ast/SelectHelpers';
 // this is compiled as there can be multiple outputs
 export default {
     commmon: {
@@ -26,5 +27,15 @@ export default {
     table: {
         tableTerm: 'TABLE(',
         joiner: compile('JOIN({0},{1},true,all)'),
+        // the space is required to not accidentally escape the template
+        colList: compile('{ {0} }'),
+        aggr: templateCompiler({
+            [SelectAggregationType.AVG]: 'AVE(GROUP,{0})',
+            [SelectAggregationType.COUNT]: 'COUNT(GROUP)',
+            [SelectAggregationType.MAX]: 'MAX(GROUP,{0})',
+            [SelectAggregationType.MIN]: 'MIN(GROUP,{0})',
+            [SelectAggregationType.SUM]: 'SUM(GROUP,{0})',
+            [SelectAggregationType.TRIM]: 'TRIM({0})',
+        }),
     },
 };

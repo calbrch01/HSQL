@@ -11,6 +11,7 @@ import { Table } from '../data/Table';
  * The Select AST Nodes
  * It does contain a lot of internal AST nodes, particularly changedSources
  * It also contains the datatype, which may be useful
+ * Refer to SelectASTGenerator for information arguments and getters
  */
 export class Select implements StmtExpression {
     constructor(
@@ -18,6 +19,7 @@ export class Select implements StmtExpression {
         private _changedSources: Map<string, VEO<CollectionType, StmtExpression>>,
         public fromTable: QualifiedIdentifier[],
         private _totalDt: Table,
+        private _groupBy: string[],
         private _colSelect: SelectColumn[],
         private _jobs: SelectJob[],
         private _finalDt: Table
@@ -39,5 +41,8 @@ export class Select implements StmtExpression {
     }
     public get changedSources(): Map<string, VEO<CollectionType, StmtExpression>> {
         return this._changedSources;
+    }
+    public get groupBy(): string[] {
+        return this._groupBy;
     }
 }

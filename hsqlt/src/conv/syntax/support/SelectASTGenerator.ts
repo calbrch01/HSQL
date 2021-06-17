@@ -25,6 +25,7 @@ import {
 } from '../../../misc/ast/SelectHelpers';
 import {
     DefinitionContext,
+    GroupByClauseContext,
     LimitOffsetClauseContext,
     SelectAggregatedEverythingColContext,
     SelectAggregatedOneColContext,
@@ -111,6 +112,7 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
      * The total table set - Without any column filters
      */
     protected totalDt: Table;
+    protected _groupBy: string[];
 
     /**
      * The table set after column filters
@@ -128,6 +130,7 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
         this.fromTable = [];
         this.totalDt = new AnyTable();
         this.finalDt = new AnyTable();
+        this._groupBy = [];
     }
 
     protected get jobs(): SelectJob[] {
@@ -155,6 +158,7 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
 
         // limitOffset = visit if exists
         ctx.limitOffsetClause()?.accept(this);
+        ctx.selectGroupByClause()?.accept(this);
 
         // push dedup if required
         const distinctCtx = ctx.distinctClause();
@@ -174,13 +178,13 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
             this._changedSources,
             this.fromTable,
             this.totalDt,
+            this._groupBy,
             this._colSelect,
             this._jobs,
             this.finalDt
         );
         this.parent.taskManager.args.g && console.debug('Select', node);
 
-        // TODO FILTER DATATYPES
         return new VEO(this.finalDt, node);
     }
 
@@ -189,6 +193,24 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
         const limit = parseInt(ctx.INTEGER_VALUE().text);
         const offset = offsetText !== undefined ? parseInt(offsetText) : undefined;
         this._jobs.push({ type: SelectJobDesc.LIMITOFFSET, ctx, limit, offset });
+        return null;
+    }
+
+    visitGroupByClause(ctx: GroupByClauseContext) {
+        // const groups = ctx.idSet().IDENTIFIER().map(e=>e.text);
+        this._groupBy;
+        ctx.idSet()
+            .IDENTIFIER()
+            .forEach(e => {
+                const { text } = e;
+                if (this.totalDt.has(text)) {
+                    this._groupBy.push(text);
+                } else {
+                    this.errorManager.push(
+                        TranslationIssue.semanticErrorToken(format(rs.colDoesNotExistError, [text]), ctx)
+                    );
+                }
+            });
         return null;
     }
 

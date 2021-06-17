@@ -80,7 +80,7 @@ export type SelectJob = { ctx: ParserRuleContext } & (
  * @returns
  */
 export function mapAggregation(task: string): SelectAggregationType | undefined {
-    const taskUpper = task.toUpperCase() as SelectAggregationType | string;
+    const taskUpper = task.toUpperCase();
     // FUTURE When a better way exists, we should check
     switch (taskUpper) {
         case SelectAggregationType[SelectAggregationType.COUNT]:

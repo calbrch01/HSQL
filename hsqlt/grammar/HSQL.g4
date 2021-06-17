@@ -25,8 +25,7 @@ distinctClause: DISTINCT;
 // selectHavingClause: booleanExpression;
 selectGroupByClause: GROUP BY groupByClause;
 
-definitionSet: definition ( COMMA_ definition)*;
-
+idSet: IDENTIFIER ( COMMA_ IDENTIFIER)*;
 selectColumns: selectCol ( COMMA_ selectCol)*;
 
 selectCol: col;
@@ -82,11 +81,11 @@ joinSpecification:
 	leftrecset = definition comparisonOperator rightrecset = definition;
 //joinSpecification: ON booleanExpression;
 
-groupByClause: definitionSet;
+groupByClause: idSet;
 orderByClause: sortItem (COMMA_ sortItem)*;
 sortItem: ascSortItem | descSortItem;
-ascSortItem: definitionSet (ASC)?;
-descSortItem: definitionSet DESC;
+ascSortItem: idSet (ASC)?;
+descSortItem: idSet DESC;
 // joinClause: joinType JOIN joinidentifier = definition ON ( leftrecset = definition joincondition
 // = logicalOperator rightrecset = definition );
 

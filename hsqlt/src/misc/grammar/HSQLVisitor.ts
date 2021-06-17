@@ -42,7 +42,7 @@ import { ActionStmtContext } from "./HSQLParser";
 import { SelectStmtContext } from "./HSQLParser";
 import { DistinctClauseContext } from "./HSQLParser";
 import { SelectGroupByClauseContext } from "./HSQLParser";
-import { DefinitionSetContext } from "./HSQLParser";
+import { IdSetContext } from "./HSQLParser";
 import { SelectColumnsContext } from "./HSQLParser";
 import { SelectColContext } from "./HSQLParser";
 import { ColContext } from "./HSQLParser";
@@ -398,11 +398,11 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	visitSelectGroupByClause?: (ctx: SelectGroupByClauseContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by `HSQLParser.definitionSet`.
+	 * Visit a parse tree produced by `HSQLParser.idSet`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	visitDefinitionSet?: (ctx: DefinitionSetContext) => Result;
+	visitIdSet?: (ctx: IdSetContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `HSQLParser.selectColumns`.
