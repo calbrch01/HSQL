@@ -76,23 +76,25 @@ export type limitOffsetType = { limit: number; offset?: number };
  */
 export function mapAggregation(task: string): SelectAggregationType | undefined {
     const taskUpper = task.toUpperCase();
-    // FUTURE When a better way exists, we should check
-    switch (taskUpper) {
-        case SelectAggregationType[SelectAggregationType.COUNT]:
-            return SelectAggregationType.COUNT;
-        case SelectAggregationType[SelectAggregationType.MIN]:
-            return SelectAggregationType.MIN;
-        case SelectAggregationType[SelectAggregationType.MAX]:
-            return SelectAggregationType.MAX;
-        case SelectAggregationType[SelectAggregationType.AVG]:
-            return SelectAggregationType.AVG;
-        case SelectAggregationType[SelectAggregationType.SUM]:
-            return SelectAggregationType.SUM;
-        case SelectAggregationType[SelectAggregationType.TRIM]:
-            return SelectAggregationType.TRIM;
-        default:
-            return undefined;
-    }
+    // dangerous cast, but this depends on tsc's implementation of the enum.
+    return (SelectAggregationType as any)[taskUpper];
+    // this is a fallback if the above method stops working
+    // switch (taskUpper) {
+    //     case SelectAggregationType[SelectAggregationType.COUNT]:
+    //         return SelectAggregationType.COUNT;
+    //     case SelectAggregationType[SelectAggregationType.MIN]:
+    //         return SelectAggregationType.MIN;
+    //     case SelectAggregationType[SelectAggregationType.MAX]:
+    //         return SelectAggregationType.MAX;
+    //     case SelectAggregationType[SelectAggregationType.AVG]:
+    //         return SelectAggregationType.AVG;
+    //     case SelectAggregationType[SelectAggregationType.SUM]:
+    //         return SelectAggregationType.SUM;
+    //     case SelectAggregationType[SelectAggregationType.TRIM]:
+    //         return SelectAggregationType.TRIM;
+    //     default:
+    //         return undefined;
+    // }
 }
 
 /**

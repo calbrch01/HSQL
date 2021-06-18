@@ -1,3 +1,7 @@
+/**
+ * Results/Issue strings
+ * @module
+ */
 import { templateCompiler } from '../lib/templateCompiler';
 
 export default {
@@ -29,4 +33,4 @@ export default {
 
     didNotOutput: 'Did not make outputs because of issues',
     emptyCode: 'Empty code generation',
-};
+} as const;

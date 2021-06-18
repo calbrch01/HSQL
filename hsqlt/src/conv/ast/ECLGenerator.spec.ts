@@ -46,4 +46,8 @@ describe('ECL Generation', function () {
         );
         assert.strictEqual(opm.fileMap.get('mod.ecl'), `IMPORT abc as bcd;\na := bcd.t1;`);
     });
+    describe('generation for select', function () {
+        it('basic selects');
+        it('query in query');
+    });
 });

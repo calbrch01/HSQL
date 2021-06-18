@@ -68,7 +68,7 @@
         "out": "docs",
         "exclude": [
             "**/*.spec.ts",
-            "test/*.ts",
+            "src/test/**/*.ts",
             "out/*"
         ]
     }

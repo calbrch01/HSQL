@@ -1,3 +1,8 @@
+/**
+ * This module contains a lot of information on ECL Code snippets.
+ * @module
+ */
+
 import { templateCompiler } from '../lib/templateCompiler';
 import compile from 'string-template/compile';
 import { SelectAggregationType } from '../ast/SelectHelpers';
