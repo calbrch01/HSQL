@@ -13,6 +13,13 @@
 				"isDefault": true
 			},
 			"label": "tsc: watch - tsconfig.build.json"
+		},
+		{
+			"type": "npm",
+			"script": "check",
+			"problemMatcher": ["$tsc-watch"],
+			"label": "npm: check",
+			"detail": "tsc --watch --noEmit"
 		}
 	]
 }

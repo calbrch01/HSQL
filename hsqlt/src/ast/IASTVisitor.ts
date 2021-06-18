@@ -6,6 +6,7 @@ import { Import } from './stmt/Import';
 import { StringLiteral } from './stmt/Literal';
 import { Output } from './stmt/Output';
 import { Select } from './stmt/Select';
+import { SelectJoin } from './stmt/SelectJoin';
 
 export abstract class AbstractASTVisitor<T> {
     abstract defaultResult(): T;
@@ -54,4 +55,6 @@ export interface IASTVisitor<T> {
     visitDefinition?: (x: Definition) => T;
 
     visitStringLiteral?: (x: StringLiteral) => T;
+
+    visitSelectJoin?: (x: SelectJoin) => T;
 }

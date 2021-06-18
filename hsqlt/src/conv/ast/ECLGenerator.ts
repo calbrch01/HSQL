@@ -9,11 +9,12 @@ import { Import } from '../../ast/stmt/Import';
 import { StringLiteral } from '../../ast/stmt/Literal';
 import { Output } from '../../ast/stmt/Output';
 import { Select } from '../../ast/stmt/Select';
+import { SelectJoin } from '../../ast/stmt/SelectJoin';
 import { DataMetaData, VariableVisibility } from '../../ast/symbol/VariableTable';
 import { ECLCode } from '../../code/ECLCode';
 import { ErrorManager, TranslationIssue } from '../../managers/ErrorManager';
 import { QualifiedIdentifier } from '../../misc/ast/QualifiedIdentifier';
-import { SelectColumnType, SortType } from '../../misc/ast/SelectHelpers';
+import { SelectColumnType, SelectJoinType, SortType } from '../../misc/ast/SelectHelpers';
 import ecl from '../../misc/strings/ecl';
 import rs from '../../misc/strings/resultStrings';
 
@@ -98,6 +99,21 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
     visitImport(x: Import) {
         const str = x.hasAlias ? ecl.import.aliased : ecl.import.regular;
         return [new ECLCode(str(x.moduleName, x.alias))];
+    }
+
+    visitSelectJoin(x: SelectJoin) {
+        // this is a zombie statement, select will always do this right now, no need to visit
+        // const res = x.lhs.stmt.accept(this);
+        const code = new ECLCode(
+            ecl.table.join[x.joinType](
+                x.leftBitName,
+                x.rightBitName,
+                x.leftCmpName,
+                x.comparisonOperator,
+                x.rightCmpName
+            )
+        );
+        return [code];
     }
 
     /**

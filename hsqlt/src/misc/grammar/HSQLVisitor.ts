@@ -1,6 +1,11 @@
 // Generated from grammar/HSQL.g4 by ANTLR 4.9.0-SNAPSHOT
 
 
+// for the join clause type
+import {SelectJoinType} from '../ast/SelectHelpers';
+
+
+
 import { ParseTreeVisitor } from "antlr4ts/tree/ParseTreeVisitor";
 
 import { SelectAggregatedEverythingColContext } from "./HSQLParser";

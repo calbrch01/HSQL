@@ -1,8 +1,12 @@
 import { DataMetaData, DataMetaDataType, VariableTable, VariableVisibility } from './VariableTable';
 import { assert } from 'chai';
 import { Action } from '../data/Action';
-import { Singular } from '../data/Singular';
+import { dtype, Singular } from '../data/Singular';
 import { Layout } from '../data/Layout';
+import { Col } from '../data/Col';
+import { Table } from '../data/Table';
+import { Module } from '../data/Module';
+import { QualifiedIdentifier } from '../../misc/ast/QualifiedIdentifier';
 describe('Variable Table Tests', function () {
     const varTable = new VariableTable();
     // capture this for use -> identical to const aps = VariableTable.actionPrependString
@@ -32,6 +36,18 @@ describe('Variable Table Tests', function () {
     it('Can claim another action variable, which is now the next one', async () => {
         const aname2 = varTable.nextClaimableActionIdentifier();
         assert.strictEqual(aname2, secVarName);
+    });
+
+    it('module-table resolves', async () => {
+        const col = new Col(dtype.DECIMAL);
+        const table = new Table(new Map([['c1', col]]));
+        const module = new Module(new Map([['t1', table]]));
+        const x = new VariableTable([new Map([['m1', DataMetaData(module, VariableVisibility.DEFAULT)]])]);
+        const res = x.resolve(new QualifiedIdentifier('m1', 't1', 'c1'));
+        assert.strictEqual(col, res);
+
+        const res2 = x.resolve(new QualifiedIdentifier('m1', 't2', 'c1'));
+        assert.isUndefined(res2);
     });
 
     it('contexts', async () => {

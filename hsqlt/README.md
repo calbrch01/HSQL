@@ -89,6 +89,9 @@ Usage: `npm run <script-name>`
 | cov            | Code Coverage                                | -                       |
 | clean          | Remove build artifacts (`build`,`doc`,`pkg`) | -                       |
 
+### ANTLR
+
+The grammar is ~~action-free~~ mostly action-free; actions are used where data can be more easily obtained from the parsing stage. It can be refactored away if required, but it shouldn't be a huge concern.
 ### Typedoc
 
 Typedoc is a documentation generator and most types requiring explanation have been documented.

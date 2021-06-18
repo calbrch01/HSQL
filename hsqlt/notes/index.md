@@ -2,13 +2,14 @@
 
 ### Starting with work
 
-The current objective is to get code generation working.
-After that, all assumptions made (can be tracked with `FIXME`) should be worked on.
+The current objective is to ~~get code generation working~~ add essential HSQL features.
+After that, all assumptions made (can be tracked with comments having `FIXME` and `FUTURE` ) should be worked on.
+
+
 
 
 ### Todo list
 - [ ] Typedef
-- [X] Having syntax
 
 ### Goals
 

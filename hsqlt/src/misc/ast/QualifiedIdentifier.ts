@@ -45,6 +45,19 @@ export class QualifiedIdentifier {
         return new QualifiedIdentifierGenerator().visit(ctx);
     }
 
+    static equals(q1: QualifiedIdentifier, q2: QualifiedIdentifier): boolean {
+        if (q1.length !== q2.length) {
+            return false;
+        }
+        const arrayLen = q1.length;
+        for (let i = 0; i < arrayLen; i++) {
+            if (q1._qidentifier[i] !== q2._qidentifier[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public get qidentifier(): string[] {
         return this._qidentifier;
     }
@@ -63,6 +76,19 @@ export class QualifiedIdentifier {
      */
     get head() {
         return this._qidentifier[0];
+    }
+
+    /**
+     * Leaving the tail
+     */
+    get first() {
+        const x = [...this._qidentifier];
+        x.pop();
+        return x;
+    }
+
+    firstIdentifier() {
+        return new QualifiedIdentifier(...this.first);
     }
 
     /**

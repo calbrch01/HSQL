@@ -5,7 +5,7 @@
 
 import { templateCompiler } from '../lib/templateCompiler';
 import compile from 'string-template/compile';
-import { SelectAggregationType } from '../ast/SelectHelpers';
+import { SelectAggregationType, SelectJoinType } from '../ast/SelectHelpers';
 // this is compiled as there can be multiple outputs
 export default {
     commmon: {
@@ -45,6 +45,12 @@ export default {
             [SelectAggregationType.MIN]: 'MIN(GROUP,{0})',
             [SelectAggregationType.SUM]: 'SUM(GROUP,{0})',
             [SelectAggregationType.TRIM]: 'TRIM({0})',
+        }),
+        join: templateCompiler({
+            [SelectJoinType.INNER]: 'JOIN({0},{1},LEFT.{2} {3} RIGHT.{4})',
+            [SelectJoinType.OUTER]: 'JOIN({0},{1},LEFT.{2} {3} RIGHT.{4},FULL OUTER)',
+            [SelectJoinType.LEFT]: 'JOIN({0},{1},LEFT.{2} {3} RIGHT.{4},LEFT OUTER)',
+            [SelectJoinType.RIGHT]: 'JOIN({0},{1},LEFT.{2} {3} RIGHT.{4},RIGHT OUTER)',
         }),
     },
 } as const;

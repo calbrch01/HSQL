@@ -1,4 +1,5 @@
 import { AbstractParseTreeVisitor } from 'antlr4ts/tree';
+import { statSync } from 'fs';
 import format from 'string-template';
 import { Any } from '../../../ast/data/Any';
 import { CollectionType } from '../../../ast/data/base/CollectionType';
@@ -11,6 +12,7 @@ import { BaseASTNode } from '../../../ast/stmt/base/BaseASTNode';
 import { StmtExpression } from '../../../ast/stmt/base/StmtExpression';
 import { Definition } from '../../../ast/stmt/Definition';
 import { Select } from '../../../ast/stmt/Select';
+import { SelectJoin } from '../../../ast/stmt/SelectJoin';
 import { DataMetaData, VariableVisibility } from '../../../ast/symbol/VariableTable';
 import { ErrorManager, ErrorSeverity, ErrorType, TranslationIssue } from '../../../managers/ErrorManager';
 import { QualifiedIdentifier } from '../../../misc/ast/QualifiedIdentifier';
@@ -89,6 +91,7 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
     errorManager: ErrorManager;
     incCounter: IncrementingCounter;
     static colPrefix = '__default_col_' as const;
+
     /**
      * The table sources that can be used for the rest of the select statement.
      * For these, the columns are looked up.
@@ -197,7 +200,7 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
             this.distinct,
             this.finalDt
         );
-        this.parent.taskManager.args.g && console.debug('Select', node);
+        // this.parent.taskManager.args.g && console.debug('Select', node);
 
         return new VEO(this.finalDt, node);
     }
@@ -394,7 +397,7 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
             const c = this.incCounter.getAndIncrement();
             alias = SelectASTGenerator.colPrefix + c;
             this.errorManager.push(
-                TranslationIssue.semanticInfoToken(format(rs.noAliasUsingFallbackInfo, [alias]), ctx)
+                TranslationIssue.semanticInfoToken(format(rs.column, rs.noAliasUsingFallbackInfo, [alias]), ctx)
             );
         }
         if (task === miscHSQL.count) {
@@ -422,7 +425,7 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
             const c = this.incCounter.getAndIncrement();
             alias = SelectASTGenerator.colPrefix + c;
             this.errorManager.push(
-                TranslationIssue.semanticInfoToken(format(rs.noAliasUsingFallbackInfo, [alias]), ctx)
+                TranslationIssue.semanticInfoToken(format(rs.column, rs.noAliasUsingFallbackInfo, [alias]), ctx)
             );
         }
         const aggr = mapAggregation(task);
@@ -473,6 +476,7 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
         // The Table|Any can be provably correct as they would have been resolved in earlier steps
         this.totalDt = Table.combine(
             this.errorManager,
+            false,
             ctx,
             ...(this.fromTable.map(e => this.parent.variableManager.resolve(e) ?? new Any()) as (Table | Any)[])
         );
@@ -597,9 +601,134 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
         return resultingVariable; //new VEO(dt,);
     }
 
-    // FIXME 16/06
+    /*
+     * Time to talk about joins.
+     * There are many such joins that are supported, let's take a look at each of them.
+     * Outer clause is optional, and is just for verbosity
+     * Note that
+     * NATURAL Joins are just not supported ;_;
+     * LEFT OUTER?  - X-Y
+     * RIGHT OUTER? - Y-X
+     * FULL OUTER?  - XvY
+     * INNER        - The standard
+     * CROSS        - JOIN(X,Y,true,all) -> Cross product
+     */
+
+    /**
+     *
+     * @param ctx
+     * @returns
+     */
     visitSelectJoinedTable(ctx: SelectJoinedTableContext) {
-        // TODO 15/06 implement joins
-        return null;
+        // this grammar based processing skips us a lot of pain, we can just expect the parser to do this simple tagging job for us.
+        const { joinType: type } = ctx.joinOperator();
+        //this is where the select alias becomes important; we need to refer it
+        const [lhs, rhs] = ctx
+            .selectFromRef()
+            .map(e => e.accept(this))
+            .map(e => pullVEO(e, this.errorManager, ctx));
+        this.parent.taskManager.args.g && console.debug(`lhs`, lhs);
+        // this.parent.taskManager.args.g && console.debug(`rhs`, rhs);
+        let dt: Table | Any;
+        // due to the way things have worked up above, we can be sure lhs and rhs will _always_ return a Definition.
+        // this should never theoretically run but acts as a guard
+        if (!(rhs.stmt instanceof Definition && lhs.stmt instanceof Definition)) {
+            this.errorManager.halt(TranslationIssue.semanticErrorToken(format(rs.notTagged, [Definition.name]), ctx));
+        }
+
+        if (!(isDataType(lhs.datatype, EDataType.TABLE) && isDataType(rhs.datatype, EDataType.TABLE))) {
+            // FIXME find issued issue cause
+            const problemDt = rhs.datatype.type !== EDataType.TABLE ? rhs.datatype.type : lhs.datatype.type;
+            this.errorManager.push(
+                TranslationIssue.semanticErrorToken(
+                    format(rs.cannotUse, EDataType[problemDt], EDataType[EDataType.TABLE]),
+                    ctx
+                )
+            );
+
+            dt = new Any();
+        } else {
+            dt = Table.combine(this.errorManager, true, ctx, lhs.datatype, rhs.datatype);
+        }
+        // lhs and rhs
+        const leftBitOriginal = lhs.stmt.val;
+        const rightBitOriginal = rhs.stmt.val;
+
+        // expression values
+        const joinspecCtx = ctx.joinConstraint().joinSpecification();
+        const comparisonOperator = joinspecCtx.comparisonOperator().text;
+        const leftbitCtx = joinspecCtx._leftrecset;
+        const rightbitCtx = joinspecCtx._rightrecset;
+        // convert the expr to qualifiedIdentifiers
+        const leftBit = QualifiedIdentifier.fromGrammar(leftbitCtx);
+        const rightBit = QualifiedIdentifier.fromGrammar(rightbitCtx);
+
+        // let's make sure they actually exist
+        if (this.parent.variableManager.resolve(leftBit) === undefined) {
+            this.errorManager.push(
+                TranslationIssue.semanticErrorToken(format(rs.colDoesNotExistError, [leftBit.toString()]), leftbitCtx)
+            );
+        }
+
+        if (this.parent.variableManager.resolve(rightBit) === undefined) {
+            this.errorManager.push(
+                TranslationIssue.semanticErrorToken(format(rs.colDoesNotExistError, [rightBit.toString()]), rightbitCtx)
+            );
+        }
+
+        // FUTURE THIS IS A HACK. But its required to provide SQL-like interface.
+        // IDEA - for x1 join y1 on x2.c1 = y2.c2, find out if x1=x2 and y1=y2
+        const leftBitFirst = leftBit.firstIdentifier();
+        const rightBitFirst = rightBit.firstIdentifier();
+        // find out the order intended
+        let leftBitCmpText: string, rightBitCmpText: string;
+        if (
+            QualifiedIdentifier.equals(leftBitFirst, leftBitOriginal) &&
+            QualifiedIdentifier.equals(rightBitFirst, rightBitOriginal)
+        ) {
+            leftBitCmpText = leftBit.tail;
+            rightBitCmpText = rightBit.tail;
+        } else if (
+            QualifiedIdentifier.equals(rightBitFirst, leftBitOriginal) &&
+            QualifiedIdentifier.equals(leftBitFirst, rightBitOriginal)
+        ) {
+            leftBitCmpText = rightBit.tail;
+            rightBitCmpText = leftBit.tail;
+        } else {
+            this.errorManager.push(TranslationIssue.semanticErrorToken(rs.couldNotFindJoinOrderError, ctx));
+            //fallback to LTR behavious
+            leftBitCmpText = leftBit.tail;
+            rightBitCmpText = rightBit.tail;
+        }
+        const stmt = new SelectJoin(
+            ctx,
+            lhs,
+            rhs,
+            type,
+            leftBitOriginal,
+            rightBitOriginal,
+            leftBitCmpText,
+            rightBitCmpText,
+            comparisonOperator
+        );
+
+        const alias = ctx.selectAlias()?.IDENTIFIER().text;
+        let name: string;
+        //if no id, give it one
+        if (alias == undefined) {
+            const usableName = this.parent.variableManager.nextClaimableActionIdentifier();
+            name = usableName;
+            this.errorManager.push(
+                TranslationIssue.semanticInfoToken(format(rs.noAliasUsingFallbackInfo, [rs.table, usableName]), ctx)
+            );
+        } else {
+            // if alias is there, why worry
+            name = alias;
+        }
+        // now to register
+        //add to varmanager, set to changedsrcs, add to fromTable
+        this.parent.variableManager.add(name, DataMetaData(dt, VariableVisibility.DEFAULT, true));
+        this._changedSources.set(name, new VEO(dt, stmt));
+        return new VEO(dt, new Definition(ctx, new QualifiedIdentifier(name)));
     }
 }

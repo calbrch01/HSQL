@@ -1,6 +1,11 @@
 // Generated from grammar/HSQL.g4 by ANTLR 4.9.0-SNAPSHOT
 
 
+// for the join clause type
+import {SelectJoinType} from '../ast/SelectHelpers';
+
+
+
 import { ATN } from "antlr4ts/atn/ATN";
 import { ATNDeserializer } from "antlr4ts/atn/ATNDeserializer";
 import { CharStream } from "antlr4ts/CharStream";

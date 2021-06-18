@@ -7,11 +7,13 @@ import { templateCompiler } from '../lib/templateCompiler';
 export default {
     output: 'OUTPUT',
     column: 'COLUMN',
-
+    table: 'TABLE',
     notCollection: 'Not a collection type',
     colDoesNotExistError: 'Column {0} does not exist',
     colAlreadyExistsError: 'Column {0} does already exists',
-    noAliasUsingFallbackInfo: 'No column alias provided, using {0}',
+    couldNotFindJoinOrderError: 'Join order could not be found. Using standard left to right.',
+    noAliasUsingFallbackInfo: 'No {0} alias provided, using {1}',
+
     tableSelectionHasAnyWarning: 'Any-ish tables used as sources. Result will be any-ish',
 
     couldNotFindFileError: 'File {0} could not be found',

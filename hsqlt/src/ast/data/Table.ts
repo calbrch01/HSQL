@@ -46,7 +46,12 @@ export class Table extends CollectionType {
      * @param collectionTypes
      * @param y
      */
-    static combine(err: ErrorManager, ctx?: ParserRuleContext, ...collectionTypes: (Table | Any)[]): Table {
+    static combine(
+        err: ErrorManager,
+        forJoins: boolean = false,
+        ctx?: ParserRuleContext,
+        ...collectionTypes: (Table | Any)[]
+    ): Table {
         const result: Map<string, Col> = new Map();
         for (const collectionType of collectionTypes) {
             // if anyized, return this special version and short circuit
@@ -58,7 +63,7 @@ export class Table extends CollectionType {
             // add these items to the list
             for (const [name, data] of list) {
                 // TODO raise warning
-                if (result.has(name)) {
+                if (result.has(name) && !forJoins) {
                     err.push(
                         TranslationIssue.semanticWarningToken(format(rs.existsError, [rs.column + ' ' + name]), ctx)
                     );

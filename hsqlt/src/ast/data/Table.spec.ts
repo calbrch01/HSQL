@@ -12,7 +12,7 @@ describe('Tables', function () {
             const t1 = new Table(new Map([['c1', new Col(dtype.DECIMAL)]]));
             const t2 = new Table(new Map([['c2', new Col(dtype.DECIMAL)]]));
 
-            const t3 = Table.combine(em, undefined, t1, t2);
+            const t3 = Table.combine(em, undefined, undefined, t1, t2);
             assert.isTrue(t3.has('c1'));
             assert.isTrue(t3.has('c2'));
             assert.isFalse(t3.has('c3'));
@@ -24,7 +24,7 @@ describe('Tables', function () {
             const t1 = new Table(new Map([['c1', new Col(dtype.DECIMAL)]]));
             const t2 = new AnyTable();
 
-            const t3 = Table.combine(em, undefined, t1, t2);
+            const t3 = Table.combine(em, undefined, undefined, t1, t2);
 
             assert.isTrue(t3.anyized);
         });

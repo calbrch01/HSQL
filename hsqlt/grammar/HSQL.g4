@@ -1,5 +1,10 @@
 grammar HSQL;
 
+@header {
+// for the join clause type
+import {SelectJoinType} from '../ast/SelectHelpers';
+
+}
 program: (completestmt)* EOF;
 
 completestmt: stmt SEMICOLON;
@@ -64,8 +69,15 @@ selectFromRef:
 selectAlias: AS? IDENTIFIER;
 
 // join_operator: COMMA_ | (LEFT OUTER? | RIGHT OUTER? | FULL OUTER? | INNER | CROSS)? JOIN;
-joinOperator:
-	(LEFT OUTER? | RIGHT OUTER? | FULL OUTER? | INNER | CROSS)? JOIN;
+joinOperator
+	locals[ joinType:SelectJoinType=SelectJoinType.INNER]:
+	(
+		LEFT OUTER? {$joinType=SelectJoinType.LEFT;}
+		| RIGHT OUTER? {$joinType=SelectJoinType.RIGHT;}
+		| FULL OUTER? {$joinType=SelectJoinType.OUTER;}
+		| INNER
+		/* | CROSS {$joinType=SelectJoinType.CROSS;} */
+	)? JOIN;
 // nestedSelectStmt: BSTART_ selectStmt BEND_;
 selectWhereClause: booleanExpression;
 

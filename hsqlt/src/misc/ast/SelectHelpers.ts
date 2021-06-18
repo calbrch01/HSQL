@@ -16,6 +16,19 @@ export enum SelectAggregationType {
     TRIM,
 }
 
+/**
+ * Type of join used.
+ *
+ * @warn WARNING: This is used in the grammar. Please refer when refactoring.
+ */
+export enum SelectJoinType {
+    INNER,
+    OUTER,
+    /* CROSS, */
+    LEFT,
+    RIGHT,
+}
+
 export type SelectColumn = { ctx: ParserRuleContext } & (
     | {
           type: SelectColumnType.ALL;
