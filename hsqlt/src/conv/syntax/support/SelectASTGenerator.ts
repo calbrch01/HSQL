@@ -218,10 +218,9 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
     }
 
     visitSelectWhereClause(ctx: SelectWhereClauseContext) {
-        const { text } = ctx;
-        this._where = text;
-        new ExpressionChecker(this.parent, this.totalDt).visit(ctx.booleanExpression());
-        // console.debug('where', text);
+        // const { text } = ctx;
+        const res = new ExpressionChecker(this.parent, this.totalDt).visit(ctx.booleanExpression());
+        this._where = res;
         return null;
     }
 

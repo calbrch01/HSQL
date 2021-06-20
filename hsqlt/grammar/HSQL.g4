@@ -149,8 +149,9 @@ booleanExpression:
 predicate[ParserRuleContext ctx]:
 	comparisonOperator right = valueExpression							# comparison
 	| NOT? BETWEEN lower = valueExpression AND upper = valueExpression	# between
-	| NOT? IN BSTART_ valueExpression (COMMA_ valueExpression)* BEND_	# inList;
+	| NOT? IN BSTART_ valueExpressionList BEND_							# inList;
 
+valueExpressionList: valueExpression (COMMA_ valueExpression)*;
 valueExpression: primaryExpression # valueExpressionDefault;
 
 // to use later - expression

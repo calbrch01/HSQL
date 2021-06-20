@@ -78,6 +78,7 @@ import { DefinitionContext } from "./HSQLParser";
 import { ExpressionContext } from "./HSQLParser";
 import { BooleanExpressionContext } from "./HSQLParser";
 import { PredicateContext } from "./HSQLParser";
+import { ValueExpressionListContext } from "./HSQLParser";
 import { ValueExpressionContext } from "./HSQLParser";
 import { PrimaryExpressionContext } from "./HSQLParser";
 import { NumberContext } from "./HSQLParser";
@@ -618,6 +619,13 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitPredicate?: (ctx: PredicateContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.valueExpressionList`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitValueExpressionList?: (ctx: ValueExpressionListContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `HSQLParser.valueExpression`.

@@ -3,7 +3,7 @@ import %.a;
 //p = select distinct *,count(c1) from a.t1 as b,a.t2 as aa group by c1 limit 5 ;
 
 //p = select * from (select * from a.t2) as t1 order by c3;
-p = select * from (select * from a.t1) as t21 join a.t2 on a.t2.c3=t21.c1 where c1>1;
+p = select * from (select * from a.t1) as t21 join a.t2 on a.t2.c3=t21.c1 where c1>1 and c3>75 and c4 in ('no','bye');
 
 output p;
 
