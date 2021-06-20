@@ -144,6 +144,9 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
         // then, eval the changed sources list
         this.selectProcessFromClause(x, varStack, stmtStack);
 
+        // where clause
+        this.selectProcessWhereClause(x, varStack, stmtStack);
+
         //sort clause
         this.selectProcessSortClause(x, varStack, stmtStack);
 
@@ -163,7 +166,20 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
         stmtStack.push(returnCode, new ECLCode(ecl.commmon.end), new ECLCode(varName));
         return stmtStack;
     }
-    selectProcessSortClause(x: Select, varStack: string[], stmtStack: ECLCode[]) {
+    selectProcessWhereClause(x: Select, varStack: string[], stmtStack: ECLCode[]): void {
+        if (x.where === undefined) return;
+        const tableVar = this.rootContext.variableManager.nextClaimableActionIdentifier();
+        this.rootContext.variableManager.add(tableVar, DataMetaData(x.totalDt, VariableVisibility.DEFAULT, true));
+
+        const { where: text } = x;
+        const stmt = new ECLCode(varStack[varStack.length - 1], false)
+            .coverCode(undefined, ecl.commmon.leftBracket, false, false)
+            .coverCode(undefined, text, false, false)
+            .coverCode(ecl.equal.eq(tableVar), ecl.commmon.rightBracket);
+        varStack.push(tableVar);
+        stmtStack.push(stmt);
+    }
+    selectProcessSortClause(x: Select, varStack: string[], stmtStack: ECLCode[]): void {
         // exit if no sort fields
         if (x.sortFields.length === 0) return;
 
@@ -189,7 +205,7 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
         varStack.push(tableVar);
         stmtStack.push(stmt);
     }
-    selectProcessDistinct(x: Select, varStack: string[], stmtStack: ECLCode[]) {
+    selectProcessDistinct(x: Select, varStack: string[], stmtStack: ECLCode[]): void {
         if (x.distict) {
             const tableVar = this.rootContext.variableManager.nextClaimableActionIdentifier();
             this.rootContext.variableManager.add(tableVar, DataMetaData(x.finalDt, VariableVisibility.DEFAULT, true));
@@ -201,7 +217,7 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
         }
     }
 
-    selectProcessLimitOffset(x: Select, varStack: string[], stmtStack: ECLCode[]) {
+    selectProcessLimitOffset(x: Select, varStack: string[], stmtStack: ECLCode[]): void {
         if (x.limitOffset !== undefined) {
             const tableVar = this.rootContext.variableManager.nextClaimableActionIdentifier();
             this.rootContext.variableManager.add(tableVar, DataMetaData(x.finalDt, VariableVisibility.DEFAULT, true));
@@ -230,7 +246,7 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
      * @param varStack variable stack
      * @param stmtStack stmt stack/list
      */
-    private selectProcessFromClause(x: Select, varStack: string[], stmtStack: ECLCode[]) {
+    private selectProcessFromClause(x: Select, varStack: string[], stmtStack: ECLCode[]): void {
         const changedSourcesList = [...x.changedSources];
         changedSourcesList.forEach(([name, node]) => {
             const eq = new EqualDefinition(x.node, new QualifiedIdentifier(name), node.stmt);
@@ -267,7 +283,7 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
      * @param varStack Current variable name stack
      * @param stmtStack Current statement list/stack
      */
-    private selectProcessColFiltersAndGroups(x: Select, varStack: string[], stmtStack: ECLCode[]) {
+    private selectProcessColFiltersAndGroups(x: Select, varStack: string[], stmtStack: ECLCode[]): void {
         /** name of the TABLE -> used in colfilters+groups */
         const tableVar = this.rootContext.variableManager.nextClaimableActionIdentifier();
         this.rootContext.variableManager.add(tableVar, DataMetaData(x.finalDt, VariableVisibility.DEFAULT, true));

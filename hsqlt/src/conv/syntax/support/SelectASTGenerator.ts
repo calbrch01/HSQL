@@ -42,6 +42,7 @@ import {
     SelectJoinedTableContext,
     SelectOneColContext,
     SelectStmtContext,
+    SelectWhereClauseContext,
     WildAllContext,
 } from '../../../misc/grammar/HSQLParser';
 import { HSQLVisitor } from '../../../misc/grammar/HSQLVisitor';
@@ -49,6 +50,7 @@ import { pullVEO, VEO, VEOMaybe } from '../../../misc/holders/VEO';
 import miscHSQL from '../../../misc/strings/miscHSQL';
 import rs from '../../../misc/strings/resultStrings';
 import { ASTGenerator } from '../ASTGenerator';
+import { ExpressionChecker } from './ExpressionChecker';
 
 /*
  * Let's talk about select. its really big.
@@ -118,6 +120,12 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
     protected _sortFields: SortField[];
 
     /**
+     * where
+     * // TODO make this an expression
+     */
+    protected _where?: string;
+
+    /**
      * Columns selected
      */
     protected _colSelect: SelectColumn[];
@@ -126,6 +134,7 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
     protected _limitOffset?: limitOffsetType;
 
     protected _distinct: boolean;
+
     /**
      * The table set after column filters
      */
@@ -158,7 +167,9 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
      */
     visitSelectStmt(ctx: SelectStmtContext) {
         // parse and process the from clause
-        this.visit(ctx.selectFromClause());
+        ctx.selectFromClause().accept(this);
+
+        ctx.selectWhereClause()?.accept(this);
 
         // where
         // sort
@@ -193,6 +204,7 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
             this._changedSources,
             this.fromTable,
             this.totalDt,
+            this._where,
             this._sortFields,
             this._groupBy,
             this._colSelect,
@@ -203,6 +215,14 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
         // this.parent.taskManager.args.g && console.debug('Select', node);
 
         return new VEO(this.finalDt, node);
+    }
+
+    visitSelectWhereClause(ctx: SelectWhereClauseContext) {
+        const { text } = ctx;
+        this._where = text;
+        new ExpressionChecker(this.parent, this.totalDt).visit(ctx.booleanExpression());
+        // console.debug('where', text);
+        return null;
     }
 
     visitAscSortItem(ctx: AscSortItemContext) {

@@ -21,10 +21,9 @@ actionStmt: selectStmt | outputStmt |
 // SELECT STATEMENT skipping the having for later
 selectStmt:
 	SELECT distinctClause? selectColumns selectFromClause (
-		WHERE whereclause = selectWhereClause
-	)? selectGroupByClause? (
-		ORDER BY orderbyclause = orderByClause
-	)? /* (HAVING selectHavingClause)? */ limitOffsetClause?;
+		WHERE selectWhereClause
+	)? selectGroupByClause? (ORDER BY orderByClause)? /* (HAVING selectHavingClause)? */
+		limitOffsetClause?;
 
 distinctClause: DISTINCT;
 // selectHavingClause: booleanExpression;
@@ -161,7 +160,7 @@ valueExpression: primaryExpression # valueExpressionDefault;
  */
 
 primaryExpression:
-	IDENTIFIER					# identifier
+	IDENTIFIER					# identifierLiteral
 	| number					# numericLiteral
 	| booleanValue				# booleanLiteral
 	| string					# stringLiteral

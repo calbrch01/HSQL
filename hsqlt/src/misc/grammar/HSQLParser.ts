@@ -548,7 +548,7 @@ export class HSQLParser extends Parser {
 				this.state = 138;
 				this.match(HSQLParser.WHERE);
 				this.state = 139;
-				_localctx._whereclause = this.selectWhereClause();
+				this.selectWhereClause();
 				}
 			}
 
@@ -572,7 +572,7 @@ export class HSQLParser extends Parser {
 				this.state = 146;
 				this.match(HSQLParser.BY);
 				this.state = 147;
-				_localctx._orderbyclause = this.orderByClause();
+				this.orderByClause();
 				}
 			}
 
@@ -2195,7 +2195,7 @@ export class HSQLParser extends Parser {
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
 			case HSQLParser.IDENTIFIER:
-				_localctx = new IdentifierContext(_localctx);
+				_localctx = new IdentifierLiteralContext(_localctx);
 				this.enterOuterAlt(_localctx, 1);
 				{
 				this.state = 398;
@@ -3078,8 +3078,6 @@ export class ActionStmtContext extends ParserRuleContext {
 
 
 export class SelectStmtContext extends ParserRuleContext {
-	public _whereclause!: SelectWhereClauseContext;
-	public _orderbyclause!: OrderByClauseContext;
 	public SELECT(): TerminalNode { return this.getToken(HSQLParser.SELECT, 0); }
 	public selectColumns(): SelectColumnsContext {
 		return this.getRuleContext(0, SelectColumnsContext);
@@ -3091,19 +3089,19 @@ export class SelectStmtContext extends ParserRuleContext {
 		return this.tryGetRuleContext(0, DistinctClauseContext);
 	}
 	public WHERE(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.WHERE, 0); }
+	public selectWhereClause(): SelectWhereClauseContext | undefined {
+		return this.tryGetRuleContext(0, SelectWhereClauseContext);
+	}
 	public selectGroupByClause(): SelectGroupByClauseContext | undefined {
 		return this.tryGetRuleContext(0, SelectGroupByClauseContext);
 	}
 	public ORDER(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.ORDER, 0); }
 	public BY(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.BY, 0); }
-	public limitOffsetClause(): LimitOffsetClauseContext | undefined {
-		return this.tryGetRuleContext(0, LimitOffsetClauseContext);
-	}
-	public selectWhereClause(): SelectWhereClauseContext | undefined {
-		return this.tryGetRuleContext(0, SelectWhereClauseContext);
-	}
 	public orderByClause(): OrderByClauseContext | undefined {
 		return this.tryGetRuleContext(0, OrderByClauseContext);
+	}
+	public limitOffsetClause(): LimitOffsetClauseContext | undefined {
+		return this.tryGetRuleContext(0, LimitOffsetClauseContext);
 	}
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
@@ -4301,7 +4299,7 @@ export class PrimaryExpressionContext extends ParserRuleContext {
 		super.copyFrom(ctx);
 	}
 }
-export class IdentifierContext extends PrimaryExpressionContext {
+export class IdentifierLiteralContext extends PrimaryExpressionContext {
 	public IDENTIFIER(): TerminalNode { return this.getToken(HSQLParser.IDENTIFIER, 0); }
 	constructor(ctx: PrimaryExpressionContext) {
 		super(ctx.parent, ctx.invokingState);
@@ -4309,8 +4307,8 @@ export class IdentifierContext extends PrimaryExpressionContext {
 	}
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitIdentifier) {
-			return visitor.visitIdentifier(this);
+		if (visitor.visitIdentifierLiteral) {
+			return visitor.visitIdentifierLiteral(this);
 		} else {
 			return visitor.visitChildren(this);
 		}

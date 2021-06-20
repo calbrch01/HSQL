@@ -9,6 +9,7 @@ import { SelectAggregationType, SelectJoinType } from '../ast/SelectHelpers';
 // this is compiled as there can be multiple outputs
 export default {
     commmon: {
+        leftBracket: '(',
         rightBracket: ')',
         comma: ',',
         overwrite: 'OVERWRITE',

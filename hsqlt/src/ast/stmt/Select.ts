@@ -14,23 +14,12 @@ import { Table } from '../data/Table';
  * Refer to SelectASTGenerator for information arguments and getters
  */
 export class Select implements StmtExpression {
-    public get sortFields(): SortField[] {
-        return this._sortFields;
-    }
-    public get limitOffset(): limitOffsetType | undefined {
-        return this._limitOffset;
-    }
-    public get distict(): boolean {
-        return this._distict;
-    }
-    public get fromTable(): QualifiedIdentifier[] {
-        return this._fromTable;
-    }
     constructor(
         public node: ParserRuleContext,
         private _changedSources: Map<string, VEO<CollectionType, StmtExpression>>,
         private _fromTable: QualifiedIdentifier[],
         private _totalDt: Table,
+        private _where: string | undefined,
         private _sortFields: SortField[],
         private _groupBy: string[],
         private _colSelect: SelectColumn[],
@@ -55,5 +44,20 @@ export class Select implements StmtExpression {
     }
     public get groupBy(): string[] {
         return this._groupBy;
+    }
+    public get where(): string | undefined {
+        return this._where;
+    }
+    public get sortFields(): SortField[] {
+        return this._sortFields;
+    }
+    public get limitOffset(): limitOffsetType | undefined {
+        return this._limitOffset;
+    }
+    public get distict(): boolean {
+        return this._distict;
+    }
+    public get fromTable(): QualifiedIdentifier[] {
+        return this._fromTable;
     }
 }
