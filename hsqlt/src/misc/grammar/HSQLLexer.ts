@@ -645,8 +645,8 @@ export class HSQLLexer extends Lexer {
 		"\x02\x02\x02\u0380\u0383\x03\x02\x02\x02\u0381\u0382\x03\x02\x02\x02\u0381" +
 		"\u037F\x03\x02\x02\x02\u0382\u0384\x03\x02\x02\x02\u0383\u0381\x03\x02" +
 		"\x02\x02\u0384\u0385\x07,\x02\x02\u0385\u0386\x071\x02\x02\u0386\u0387" +
-		"\x03\x02\x02\x02\u0387\u0388\bg\x02\x02\u0388\xCE\x03\x02\x02\x02\u0389" +
-		"\u038A\t\x06\x02\x02\u038A\u038B\x03\x02\x02\x02\u038B\u038C\bh\x03\x02" +
+		"\x03\x02\x02\x02\u0387\u0388\bg\x03\x02\u0388\xCE\x03\x02\x02\x02\u0389" +
+		"\u038A\t\x06\x02\x02\u038A\u038B\x03\x02\x02\x02\u038B\u038C\bh\x04\x02" +
 		"\u038C\xD0\x03\x02\x02\x02\u038D\u038E\t\x07\x02\x02\u038E\xD2\x03\x02" +
 		"\x02\x02\u038F\u0390\t\b\x02\x02\u0390\xD4\x03\x02\x02\x02\u0391\u0393" +
 		"\x05\xDFp\x02\u0392\u0394\t\t\x02\x02\u0393\u0392\x03\x02\x02\x02\u0393" +
@@ -674,7 +674,7 @@ export class HSQLLexer extends Lexer {
 		"\x02\x02\x02\u03CC\u03CD\t#\x02\x02\u03CD\u010A\x03\x02\x02\x02\x1F\x02" +
 		"\u02AD\u02E8\u02EA\u02F6\u02F8\u0303\u030B\u0310\u0316\u031D\u031F\u0324" +
 		"\u032A\u032D\u0335\u0339\u033F\u0341\u0354\u035F\u0363\u0366\u0370\u0374" +
-		"\u0377\u0381\u0393\u0398\x04\x02\x03\x02\b\x02\x02";
+		"\u0377\u0381\u0393\u0398\x05\x02\x04\x02\x02\x03\x02\b\x02\x02";
 	public static readonly _serializedATN: string = Utils.join(
 		[
 			HSQLLexer._serializedATNSegment0,

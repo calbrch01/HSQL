@@ -651,17 +651,17 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
             dt = Table.combine(this.errorManager, true, ctx, lhs.datatype, rhs.datatype);
         }
         // lhs and rhs
-        const leftBitOriginal = lhs.stmt.val;
-        const rightBitOriginal = rhs.stmt.val;
+        const leftBitOriginal = lhs.stmt.val,
+            rightBitOriginal = rhs.stmt.val;
 
         // expression values
         const joinspecCtx = ctx.joinConstraint().joinSpecification();
         const comparisonOperator = joinspecCtx.comparisonOperator().text;
-        const leftbitCtx = joinspecCtx._leftrecset;
-        const rightbitCtx = joinspecCtx._rightrecset;
+        const leftbitCtx = joinspecCtx._leftrecset,
+            rightbitCtx = joinspecCtx._rightrecset;
         // convert the expr to qualifiedIdentifiers
-        const leftBit = QualifiedIdentifier.fromGrammar(leftbitCtx);
-        const rightBit = QualifiedIdentifier.fromGrammar(rightbitCtx);
+        const leftBit = QualifiedIdentifier.fromGrammar(leftbitCtx),
+            rightBit = QualifiedIdentifier.fromGrammar(rightbitCtx);
 
         // let's make sure they actually exist
         if (this.parent.variableManager.resolve(leftBit) === undefined) {
@@ -678,8 +678,8 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
 
         // FUTURE THIS IS A HACK. But its required to provide SQL-like interface.
         // IDEA - for x1 join y1 on x2.c1 = y2.c2, find out if x1=x2 and y1=y2
-        const leftBitFirst = leftBit.firstIdentifier();
-        const rightBitFirst = rightBit.firstIdentifier();
+        const leftBitFirst = leftBit.firstIdentifier(),
+            rightBitFirst = rightBit.firstIdentifier();
         // find out the order intended
         let leftBitCmpText: string, rightBitCmpText: string;
         if (

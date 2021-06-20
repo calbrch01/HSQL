@@ -12,6 +12,18 @@ import resultStrings from '../misc/strings/resultStrings';
 import { Table } from '../ast/data/Table';
 import { Col } from '../ast/data/Col';
 import { dtype } from '../ast/data/Singular';
+
+export type pathResult =
+    | {
+          type: Exclude<FileType, FileType.OTHER>;
+          found: true;
+          path: string;
+      }
+    | {
+          type: FileType.OTHER;
+          found: false;
+      };
+
 /**
  * Read and resolve types for files
  * Additionally manages extensions.
@@ -108,6 +120,7 @@ export class ReadingManager {
      * @returns
      */
     async read(fileName: string): Promise<string> {
+        // ! signifies that it exists for sure, of course it does because we check
         if (this.memFileMap.has(fileName)) return this.memFileMap.get(fileName)!;
         const file = await fs.promises.readFile(fileName);
         return file.toString();
@@ -129,17 +142,19 @@ export class ReadingManager {
      */
     resolveName(s: QualifiedIdentifier): Module {
         // fallback
-        const qed = this.idToPathMap(s);
-        // console.debug('importing', qed);
-        const pathJoined = path.join(...qed);
-        // const stats = [FileType.HSQL, FileType.ECL, FileType.DIR].map(e => [
-        //     FileType[e],
-        //     fs.existsSync(this.fh.changeExtension(pathJoined, e)),
-        // ]);
+        // const qed = this.idToPathMap(s);
+        // // console.debug('importing', qed);
+        // const pathJoined = path.join(...qed);
+        // const stats = [FileType.HSQL, FileType.ECL, FileType.DIR].map(e => {
+        //     const fpath = this.fh.changeExtension(pathJoined, e);
+        //     // if the path exists, and if its a directory, if the directory exists
+        //     const exists = fs.existsSync(fpath) && e === FileType.DIR && fs.statSync(fpath).isDirectory;
+        //     return [e, FileType[e], exists];
+        // });
 
         // console.debug(stats);
 
-        // very messed up override
+        // // very messed up override
 
         // return new Module(
         //     new Map([
@@ -176,5 +191,17 @@ export class ReadingManager {
             if (e === '^') return '..';
             return e;
         });
+    }
+
+    /**
+     * Given a path fragment (without extension, find out if it exists or not, and what it got classified as
+     * @param x
+     */
+    protected pathScan(x: string): pathResult {
+        return {
+            type: FileType.OTHER,
+            found: false,
+        };
+        throw new Error('not impl');
     }
 }

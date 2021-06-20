@@ -221,6 +221,8 @@ scope: EXPORT | SHARED |;
 
 //****************************************Lexer Rules******************************************/
 
+// comments -> channel 2, ws -> channel 1 main -> channel 0
+
 ///Data Types  ******* Further 
 REAL_TYPE: R E A L;
 INTEGER_TYPE: I N T E G E R;
@@ -367,10 +369,10 @@ CURLY_BSTART_: '{';
 CURLY_BEND_: '}';
 
 ECL_SNIPPETS: '_$' ~[$]* '$';
-SIMPLE_COMMENT: '--' ~[\r\n]* '\r'? '\n'? -> channel(HIDDEN);
+SIMPLE_COMMENT: '--' ~[\r\n]* '\r'? '\n'? -> channel(2);
 //?
 
-SIMPLE_C_COMMENT: '//' ~[\r\n]* '\r'? '\n'? -> channel(HIDDEN);
+SIMPLE_C_COMMENT: '//' ~[\r\n]* '\r'? '\n'? -> channel(2);
 
 BRACKETED_COMMENT: '/*' .*? '*/' -> channel(HIDDEN);
 
