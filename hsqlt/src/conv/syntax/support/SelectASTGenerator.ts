@@ -123,9 +123,9 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
     protected _colSelect: SelectColumn[];
     protected _groupBy: string[];
 
-    protected limitOffset?: limitOffsetType;
+    protected _limitOffset?: limitOffsetType;
 
-    protected distinct: boolean;
+    protected _distinct: boolean;
     /**
      * The table set after column filters
      */
@@ -143,7 +143,7 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
         this.totalDt = new AnyTable();
         this.finalDt = new AnyTable();
         this._groupBy = [];
-        this.distinct = false;
+        this._distinct = false;
         this._sortFields = [];
     }
 
@@ -196,8 +196,8 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
             this._sortFields,
             this._groupBy,
             this._colSelect,
-            this.limitOffset,
-            this.distinct,
+            this._limitOffset,
+            this._distinct,
             this.finalDt
         );
         // this.parent.taskManager.args.g && console.debug('Select', node);
@@ -226,7 +226,7 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
     }
 
     visitDistinctClause(ctx: DistinctClauseContext) {
-        this.distinct = true;
+        this._distinct = true;
         return null;
     }
 
@@ -234,7 +234,7 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
         const offsetText = ctx.offsetClause()?.INTEGER_VALUE().text;
         const limit = parseInt(ctx.INTEGER_VALUE().text);
         const offset = offsetText !== undefined ? parseInt(offsetText) : undefined;
-        this.limitOffset = { limit, offset };
+        this._limitOffset = { limit, offset };
         return null;
     }
 
