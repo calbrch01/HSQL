@@ -2,8 +2,10 @@
 .vscode-test/**
 node_modules/**
 
-client/**
-server/**
+# all code
+client
+server
+
 webpack.config.js
 .gitignore
 .yarnrc
