@@ -127,10 +127,12 @@ alterOperator: ADD | DROP | MODIFY;
 
 // use % instead of $ -> that operator is used in ECL SNIPPETS for now
 overDefinition: overDefinitionRoot ('.' overDefinitionTail)*;
+
 overDefinitionRoot:
 	IDENTIFIER	# normalIdentifier
 	| MODULO	# rootIdentifier
 	| XOR		# parentIdentifier;
+
 overDefinitionTail:
 	IDENTIFIER	# normalTailIdentifier
 	| XOR		# parentTailIdentifier;
@@ -152,6 +154,12 @@ predicate[ParserRuleContext ctx]:
 
 valueExpression: primaryExpression # valueExpressionDefault;
 
+// to use later - expression
+/* derivedExpressions: IDENTIFIER BSTART_ fargs BEND_ ; //function args
+ * 
+ * fargs: expression (COMMA_ expression)* |;
+ */
+
 primaryExpression:
 	IDENTIFIER					# identifier
 	| number					# numericLiteral
@@ -165,9 +173,9 @@ number:
 	| INTEGER_VALUE	# integerLiteral;
 
 string:
-	STRING								# basicStringLiteral
-	| UNICODE_STRING (UESCAPE STRING)?	# unicodeStringLiteral;
-// not sure what to do with unicode yet
+	STRING # basicStringLiteral
+	// not sure what to do with unicode yet
+	| UNICODE_STRING (UESCAPE STRING)? # unicodeStringLiteral;
 
 booleanValue: TRUE | FALSE;
 
