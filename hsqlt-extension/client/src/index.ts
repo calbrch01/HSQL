@@ -44,12 +44,19 @@ export function activate(context: vscode.ExtensionContext) {
             await vscode.workspace.saveAll();
             const fn = vscode.window.activeTextEditor.document.fileName;
             console.log(fn);
-            const x = new TaskManager(fn, false, undefined, new FileOutput());
+            const x = new TaskManager(fn, false, undefined, new FileOutput(), undefined, true);
             // await vscode.window.showInformationMessage('Start AST generating');
-            x.generateAST();
+            try {
+                x.generateAST();
+            } catch (e) {
+                await vscode.window.showInformationMessage('Errors in AST generating');
+            }
+            // await vscode.window.showInformationMessage('Done AST generating');
+
             const {
                 counts: [errors, warnings],
             } = x.issueStats();
+            // await vscode.window.showInformationMessage('Got statistics');
 
             // await vscode.window.showInformationMessage('Done AST generating');
             if (errors > 0) {
