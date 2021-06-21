@@ -2,7 +2,7 @@
     "name": "hsqlt-extension",
     "displayName": "hsqlt-extension",
     "description": "",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "publisher": "Testing",
     "engines": {
         "vscode": "^1.56.0"
@@ -57,7 +57,8 @@
     },
     "scripts": {
         "postinstall": "npm i --prefix client && npm i --prefix server",
-        "package": "npm run compile-prod && npm unlink hsqlt && vsce package",
+        "prepackage": "npm run compile-prod",
+        "package": "npm unlink hsqlt && vsce package",
         "postpackage": "npm link hsqlt",
         "compile-prod": "webpack --mode production --devtool hidden-source-map",
         "compile": "webpack",

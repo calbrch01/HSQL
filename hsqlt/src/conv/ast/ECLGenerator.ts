@@ -50,7 +50,7 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
         rhstop.coverCode(ecl.output.outputlhs(), ecl.commmon.comma, false);
 
         if (x.namedOutput) {
-            rhstop.coverCode('', format(ecl.commmon.comma + ecl.output.named, [x.namedOutput]), false);
+            rhstop.coverCode('', ecl.commmon.comma + ecl.output.named(x.namedOutput), false);
         }
         if (x.fileOutputOptions.fileName) {
             rhstop.coverCode('', ecl.commmon.comma + x.fileOutputOptions.fileName, false);
