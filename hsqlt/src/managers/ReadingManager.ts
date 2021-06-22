@@ -142,9 +142,10 @@ export class ReadingManager {
      */
     resolveName(s: QualifiedIdentifier): Module {
         // fallback
-        // const qed = this.idToPathMap(s);
-        // // console.debug('importing', qed);
-        // const pathJoined = path.join(...qed);
+        const qed = this.idToPathMap(s);
+
+        const pathJoined = path.join(...qed);
+        console.debug('importing', pathJoined);
         // const stats = [FileType.HSQL, FileType.ECL, FileType.DIR].map(e => {
         //     const fpath = this.fh.changeExtension(pathJoined, e);
         //     // if the path exists, and if its a directory, if the directory exists
@@ -197,11 +198,19 @@ export class ReadingManager {
      * Given a path fragment (without extension, find out if it exists or not, and what it got classified as
      * @param x
      */
-    protected pathScan(x: string): pathResult {
+    public pathScan(x: string): pathResult {
+        for (const [name] of this.memFileMap) {
+            const pathParsed = path.parse(name);
+        }
         return {
             type: FileType.OTHER,
             found: false,
         };
         throw new Error('not impl');
     }
+    /**
+     *
+     * @param x Path
+     */
+    private pathScanFallback(x: string) {}
 }

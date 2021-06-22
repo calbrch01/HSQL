@@ -4,6 +4,7 @@ import { ReadingManager } from './ReadingManager';
 import { FileType } from '../misc/file/FileType';
 import { ErrorManager, HaltError } from './ErrorManager';
 import path from 'path';
+import { QualifiedIdentifier } from '../misc/ast/QualifiedIdentifier';
 // FIXME add other files
 describe('Extension tests', function () {
     const { DHSQL, OTHER, ECL, HSQL } = FileType;
@@ -75,6 +76,18 @@ describe('Extension tests', function () {
         assert.typeOf(x, 'string');
     });
 
+    it('resolve basics', async () => {
+        const em = ErrorManager.normal;
+        const rm = new ReadingManager(
+            em,
+            new Map([
+                ['fs/ide.ecl', 'abcd'],
+                ['ab.ecl', 'abc'],
+            ])
+        );
+        rm.resolveName(QualifiedIdentifier.fromString('fs.ide'));
+        // output should be module{ide.ecl}
+    });
     it('should resolve hsql');
     it('should resolve ecl');
 });
