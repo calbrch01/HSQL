@@ -14,7 +14,12 @@ export class ECLCCInterface {
         const { returnCode, stdout } = await execAndGetCode(eclcc.syntax);
         if (returnCode === 0) {
             const res = dotenv.parse(stdout);
-            return { eclLibPath: (res['ECLCC_ECLLIBRARY_PATH'] ?? '').split(':') };
+            return {
+                eclLibPath: [
+                    ...(res['ECLCC_ECLBUNDLE_PATH'] ?? '').split(':'),
+                    ...(res['ECLCC_ECLLIBRARY_PATH'] ?? '').split(':'),
+                ],
+            };
             // TranslationIssue.
         } else if (returnCode === 127) {
             this.err.push(
@@ -30,5 +35,9 @@ export class ECLCCInterface {
             );
         }
         return { eclLibPath: [] };
+    }
+    async getImportPath(): Promise<string | undefined> {
+        const x = await this.getImports();
+        return x.eclLibPath[0];
     }
 }
