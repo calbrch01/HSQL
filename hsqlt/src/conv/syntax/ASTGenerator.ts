@@ -54,7 +54,7 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
     public get errorManager() {
         return this._errorManager;
     }
-    protected defaultResult() {
+    protected override defaultResult() {
         return null;
     }
 
@@ -64,7 +64,7 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
      * @param curr Current aggregate state
      * @returns whether to continue or not
      */
-    protected shouldVisitNextChild(node: RuleNode, curr: VEOMaybe) {
+    protected override shouldVisitNextChild(node: RuleNode, curr: VEOMaybe) {
         return curr === null;
     }
 

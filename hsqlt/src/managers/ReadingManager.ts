@@ -12,17 +12,7 @@ import resultStrings from '../misc/strings/resultStrings';
 import { Table } from '../ast/data/Table';
 import { Col } from '../ast/data/Col';
 import { dtype } from '../ast/data/Singular';
-
-export type pathResult =
-    | {
-          type: Exclude<FileType, FileType.OTHER>;
-          found: true;
-          path: string;
-      }
-    | {
-          type: FileType.OTHER;
-          found: false;
-      };
+import { pathResult } from '../misc/file/FileProvider';
 
 /**
  * Read and resolve types for files
@@ -142,10 +132,12 @@ export class ReadingManager {
      */
     resolveName(s: QualifiedIdentifier): Module {
         // fallback
-        const qed = this.idToPathMap(s);
+        // const qed = this.idToPathMap(s);
 
-        const pathJoined = path.join(...qed);
-        console.debug('importing', pathJoined);
+        // const pathJoined = path.join(...qed);
+        // console.debug('importing', pathJoined);
+        // const ret = this.pathScan(pathJoined);
+        // console.log({ ...ret, type: FileType[ret.type] });
         // const stats = [FileType.HSQL, FileType.ECL, FileType.DIR].map(e => {
         //     const fpath = this.fh.changeExtension(pathJoined, e);
         //     // if the path exists, and if its a directory, if the directory exists
@@ -186,31 +178,11 @@ export class ReadingManager {
     /**
      * Convert a id path to that
      */
-    protected idToPathMap(s: QualifiedIdentifier): string[] {
-        return s.qidentifier.map(e => {
-            if (e === '$') return '.';
-            if (e === '^') return '..';
-            return e;
-        });
-    }
-
-    /**
-     * Given a path fragment (without extension, find out if it exists or not, and what it got classified as
-     * @param x
-     */
-    public pathScan(x: string): pathResult {
-        for (const [name] of this.memFileMap) {
-            const pathParsed = path.parse(name);
-        }
-        return {
-            type: FileType.OTHER,
-            found: false,
-        };
-        throw new Error('not impl');
-    }
-    /**
-     *
-     * @param x Path
-     */
-    private pathScanFallback(x: string) {}
+    // protected idToPathMap(s: QualifiedIdentifier): string[] {
+    //     return s.qidentifier.map(e => {
+    //         if (e === '$') return '.';
+    //         if (e === '^') return '..';
+    //         return e;
+    //     });
+    // }
 }
