@@ -8,7 +8,11 @@ describe('File Provider', function () {
         mfp.add('ab/bc/cd.ecl', FileType.ECL, 'hi');
         mfp.add('ab/abf.ecl', FileType.ECL, 'hi');
         // mfp.add('../ab', FileType.ECL, 'hi');
-        throw 'pending';
+        // throw 'pending';
+        assert.isTrue(mfp.stat('AB/BC/CD.ecl').found);
+        assert.isTrue(mfp.stat('ab/abf.ecl').found);
+        //nonexistest cannot be found
+        assert.isFalse(mfp.stat('cd/abf.ecl').found);
     });
     it('fsfileprovider', async () => {
         const ffp = new FSFileProvider();
