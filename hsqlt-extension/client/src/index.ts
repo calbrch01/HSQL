@@ -9,6 +9,7 @@ import {
     TransportKind,
 } from 'vscode-languageclient';
 import { ErrorSeverity, FileOutput, OutputManager, TaskManager } from 'hsqlt';
+import { FSFileProvider } from '../../../hsqlt/build/misc/file/FileProvider';
 let client: LanguageClient;
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -44,8 +45,9 @@ export function activate(context: vscode.ExtensionContext) {
             await vscode.workspace.saveAll();
             const fn = vscode.window.activeTextEditor.document.fileName;
             console.log(fn);
-            const x = new TaskManager(fn, false, undefined, new FileOutput(), undefined, true);
+            const x = new TaskManager(fn, false, new FileOutput(), undefined, true);
             // await vscode.window.showInformationMessage('Start AST generating');
+            x.addFileProviders(new FSFileProvider());
             try {
                 x.generateAST();
             } catch (e) {

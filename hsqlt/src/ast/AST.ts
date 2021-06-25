@@ -1,9 +1,5 @@
 import { QualifiedIdentifier } from '../misc/ast/QualifiedIdentifier';
-import { ReadingManager } from '../managers/ReadingManager';
-import { DataType } from './data/base/DataType';
 import { BaseASTNode } from './stmt/base/BaseASTNode';
-import { StmtExpression } from './stmt/base/StmtExpression';
-import { Import } from './stmt/Import';
 import { DataMetaData, VariableTable, VariableVisibility } from './symbol/VariableTable';
 import { TaskManager } from '../managers/TaskManager';
 import { ImportStmtContext } from '../misc/grammar/HSQLParser';

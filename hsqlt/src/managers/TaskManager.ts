@@ -13,7 +13,6 @@ import { iP } from '../misc/lib/formatting';
 import rs from '../misc/strings/resultStrings';
 import { ErrorManager, ErrorMode, ErrorSeverity, ErrorType, TranslationIssue } from './ErrorManager';
 import { NoOutput, OutputManager } from './OutputManagers';
-import { ReadingManager } from './ReadingManager';
 import { FileType } from '../misc/file/FileType';
 import { FileHandler } from '../misc/file/FileHandler';
 import { FileProvider } from '../misc/file/FileProvider';

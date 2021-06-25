@@ -11,6 +11,9 @@ import { DocListener, FTDoc } from './TextDoc';
 import { eventChecks } from './TextUtils';
 import { fileURLToPath, pathToFileURL } from 'url';
 import { AST, ContexedTranslationError, ErrorSeverity, ErrorType, TaskManager } from 'hsqlt';
+import { FileType } from '../../../hsqlt/build/misc/file/FileType';
+import { MemFileMap } from '../../../hsqlt/build/misc/file/FileProvider';
+import { relative, resolve } from 'path';
 
 // TODO someday work with non-file:// functions
 export function validator(document: TextDocument, documents: TextDocuments<TextDocument>) {
@@ -21,10 +24,18 @@ export function validator(document: TextDocument, documents: TextDocuments<TextD
 
     const mainFile = fileURLToPath(document.uri);
 
-    const disposable: [string, string][] = allDocs.map(e => [fileURLToPath(e.uri), e.getText()]);
+    const disposable = allDocs.map(
+        e =>
+            [
+                relative('', fileURLToPath(e.uri)),
+                { content: e.getText(), type: FileType.HSQL },
+            ] as const
+    );
+    // const x = relative;
     const fileMap = new Map(disposable);
 
-    const tm = new TaskManager(mainFile, false, fileMap);
+    const tm = new TaskManager(relative('', mainFile), false);
+    tm.addFileProviders(new MemFileMap(fileMap, true));
     const results = tm.generateAST();
     return {
         ...results,
@@ -69,7 +80,15 @@ export function mapIssues(
  * @param asts List of ASTs
  * @returns
  */
-export function getFileList(asts: Map<string, AST>): string[] {
+export function getFileList(
+    asts: Map<
+        string,
+        {
+            fileType: FileType.DHSQL | FileType.HSQL;
+            ast: AST;
+        }
+    >
+): string[] {
     const fileNameList: string[] = [];
     for (const [fileName] of asts.entries()) {
         fileNameList.push(pathToFileURL(fileName).toString());
