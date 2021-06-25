@@ -18,7 +18,7 @@ export class FileHandler {
      * @param newExtension either the extension or the string
      * @returns
      */
-    changeExtension(pathString: string, newExtension: FileType | string): string {
+    static changeExtension(pathString: string, newExtension: Exclude<FileType, FileType.OTHER>): string {
         const pathParsed = path.parse(pathString);
         if (typeof newExtension === 'string') {
             pathParsed.ext = newExtension;
@@ -35,10 +35,9 @@ export class FileHandler {
                     pathParsed.ext = '.dhsql';
                     break;
                 case FileType.DIR:
+                default:
                     pathParsed.ext = '';
                     break;
-                default:
-                    this.errorManager.halt(new TranslationIssue(format(rs.invalidFileExtension, [pathString])));
             }
         }
         // as per the docs, setting it to undefined leads it to use the other properties
@@ -49,22 +48,34 @@ export class FileHandler {
 
     /**
      * Get the file type
+     * @deprecated
      * @param pathString
      * @param override
      * @returns
      */
-    getFileType(pathString: string, override?: FileType): FileType {
-        const x = path.extname(pathString);
-        // are switch cases really bad?
-        switch (x) {
-            case '.hsql':
-                return override ?? FileType.HSQL;
-            case '.dhsql':
-                return override ?? FileType.DHSQL;
-            case '.ecl':
-                return override ?? FileType.ECL;
-            default:
-                return override ?? FileType.OTHER;
-        }
+    // static getFileType(pathString: string, override?: FileType): FileType {
+    //     const x = path.extname(pathString);
+    //     // are switch cases really bad?
+    //     switch (x) {
+    //         case '.hsql':
+    //             return override ?? FileType.HSQL;
+    //         case '.dhsql':
+    //             return override ?? FileType.DHSQL;
+    //         case '.ecl':
+    //             return override ?? FileType.ECL;
+    //         default:
+    //             return override ?? FileType.OTHER;
+    //     }
+    // }
+
+    /**
+     * Convert a id path to that
+     */
+    static idToPathMap(s: QualifiedIdentifier): string[] {
+        return s.qidentifier.map(e => {
+            if (e === '$') return '.';
+            if (e === '^') return '..';
+            return e;
+        });
     }
 }

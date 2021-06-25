@@ -8,9 +8,11 @@
 import format from 'string-template';
 import yargs from 'yargs';
 import { ErrorType, HaltError, TranslationIssue } from './managers/ErrorManager';
+import { FSManager } from './managers/FSManager';
 import { FileOutput, OutputManager, StandardOutput } from './managers/OutputManagers';
 import { TaskManager } from './managers/TaskManager';
 import { ExecCheckMode, ExecIntent, ExecMakeMode, ExecTreeMode, ExecUnimplemented } from './misc/execModes';
+import { FSFileProvider } from './misc/file/FileProvider';
 import rs from './misc/strings/resultStrings';
 // 2 ignores the node call and the script name
 // This syntax is shorthand to writing `const args = yargs(...).argv`
@@ -153,9 +155,15 @@ export async function main(argv: argType, /*execMode: ExecMode*/ execMode: ExecI
     argv.a && console.log('<args>:', argv);
     // initialize managers
     const writer: OutputManager = argv.o ? new StandardOutput() : new FileOutput();
-    //taskmap must have no map, and no baseloc for now
-    const taskmanager = new TaskManager(argv.file, argv.p, undefined, writer, undefined, true, argv.k, argv);
 
+    //taskmap must have no map, and no baseloc for now
+    const taskmanager = new TaskManager(argv.file, argv.p, writer, undefined, argv.k, argv);
+    //add the standard libraries and the main files
+    taskmanager.addFileProviders(
+        ...(await FSManager.DefaultsProvidersFactory(taskmanager.errorManager)),
+        new FSFileProvider()
+    );
+    // taskmanager.addFileProviders(new FSFileProvider());
     try {
         await execMode.do(taskmanager, writer);
     } catch (e) {

@@ -17,6 +17,7 @@ import { pathResult } from '../misc/file/FileProvider';
 /**
  * Read and resolve types for files
  * Additionally manages extensions.
+ * @deprecated
  */
 export class ReadingManager {
     /**

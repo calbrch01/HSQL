@@ -1,9 +1,15 @@
 import { assert } from 'chai';
 import { TaskManager } from '../../managers/TaskManager';
+import { MemFileMap } from '../../misc/file/FileProvider';
+import { FileType } from '../../misc/file/FileType';
 
 describe('AST Generator Visitor', function () {
     it('Simple Import statement', done => {
-        const tm = new TaskManager('mod', false, new Map([['mod', 'import abc;']]));
+        const tm = new TaskManager('mod.hsql', false);
+        tm.addFileProviders(
+            new MemFileMap(new Map([['mod.hsql', { content: 'import abc;', type: FileType.HSQL }]]), true)
+        );
+
         const { ast } = tm.generateAST();
         // const treestuff = new HSQLTreeFactory();
         // const { tree } = treestuff.makeTree('import abc;');
@@ -21,7 +27,14 @@ describe('AST Generator Visitor', function () {
     });
 
     it('Two different import statements', async () => {
-        const tm = new TaskManager('mod', false, new Map([['mod', 'import abc;import bcd as cde;']]));
+        const tm = new TaskManager('mod.hsql', false /* , new Map([['mod.hsql', 'import abc;import bcd as cde;']]) */);
+        tm.addFileProviders(
+            new MemFileMap(
+                new Map([['mod.hsql', { content: 'import abc;import bcd as cde;', type: FileType.HSQL }]]),
+                true
+            )
+        );
+
         const { ast } = tm.generateAST();
 
         // const treestuff = new HSQLTreeFactory();
