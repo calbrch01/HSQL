@@ -1,57 +1,25 @@
 # HSQL
 
-## Dependencies
+## Getting started
 
-### Non-NPM dependencies:
+### Using HSQL
 
--   Java(>8)
+HSQL is best used with VSCode, or the CLI tool if required. Here's some more details on the [CLI tool](./notes/programui.md).
 
-### NPM based:
-
-Dependencies:
-
--   ts-node - TS Runtime wrapping for NodeJS
--   antlr4ts - ANTLR tool
--   @types/node - Types for Node.JS environment
--   yargs - provides optstring parsing for Node.JS application
--   string-template - Provides string templates for usage
-
-devDependencies(Dependencies that are used during development):
-
--   typedoc - Generate project documentation from source comments
--   typescript - Runtime
--   nodemon - Reruns the project if source code is changed (Useful during development)
--   mocha - Testing framework
--   chai - Assertion library
--   antlr4ts-cli - Provides a CLI to work with the ANTLR tool
--   pkg - Compile to bytecode and package into executable
-
-
-## Development + Notes
-
-Please refer to [notes](notes/index.md)
-### Debugging grammar
-
-In VSCode, use the ANTLR extension.
-Open the grammar file and press F5 (/the debug key shortcut/go to the debug menu)
-This will use `input.hsql` and should show:
-
--   Parse/Lexing errors
--   The parse tree
 
 ### Running this project during development
 
 1. Install the requirements
-    ```bash
+    ```sh
     npm install
     ```
 2. Execution can be tested with
     - Run the typescript project directly
-        ```bash
+        ```sh
         ts-node src
         ```
     - Build to JS
-        ```bash
+        ```sh
         npx tsc
         node build
         ```
@@ -65,12 +33,7 @@ This will use `input.hsql` and should show:
         npm run pkg
         ```
 
-### Testing
-
-General tests are stored under `src/test`
-Module-specific file are present side-by-side as `*.spec.ts`
-
-### NPM scripts
+#### NPM scripts
 
 NPM scripts are defined here to help you do some quick actions on this repository.
 
@@ -89,28 +52,19 @@ Usage: `npm run <script-name>`
 | cov            | Code Coverage                                | -                       |
 | clean          | Remove build artifacts (`build`,`doc`,`pkg`) | -                       |
 
-### ANTLR
+#### Testing
 
-The grammar is ~~action-free~~ mostly action-free; actions are used where data can be more easily obtained from the parsing stage. It can be refactored away if required, but it shouldn't be a huge concern.
-### Typedoc
+General tests are stored under `src/test`
+Module-specific file are present side-by-side as `*.spec.ts`
+Tests can be called with the `test` script.
+#### Debugging grammar
 
-Typedoc is a documentation generator and most types requiring explanation have been documented.
-To generate the documentation:
+The repository has preconfigured extension recommendations for usage.
+Open the grammar file and press F5 (/the debug key shortcut/go to the debug menu)
+This will use `input.hsql` and should show:
 
-```sh
-npm run doc
-```
+-   Parse/Lexing errors
+-   The parse tree (Note that semantic actions/predicates are ignored here)
+### Development + Notes
 
-This will place the documentation under `docs/`.
-Note that the result will be a html project. The easiest way to view it, is to use a document server like `serve` that creates a local webserver for you to use:
-
-```sh
-npx serve docs/
-```
-### Madge
-
-The JS emit is based on CommonJS, and care has to be taken to *not* include circular dependencies. Due to how includes are done at runtime in CommonJS modules, certain imports may not work correctly (Although it is deterministic and you can certainly get it to work if circular dependencies are required). Hence, the best way to deal with circular dependencies, is to not have them at all. 
-```sh
-npm run check-circular
-```
-This should give a good idea as to where circular dependencies are present.
+Please refer to [notes](notes/index.md)

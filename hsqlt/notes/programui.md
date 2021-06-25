@@ -3,27 +3,27 @@
 ## CLI command
 
 ```
-hsqlc check|make|run -weopd <file>
+hsqlt check|make|run -weopd <file>
 ```
 
 ## Args
 
-|Mode |Desc|
-|-----|----|
-|check|Check for errors and warnings only|
-|make |Write dependencies|
-|run  |Submit to Systems|
+| Mode  | Desc                               |
+| ----- | ---------------------------------- |
+| check | Check for errors and warnings only |
+| make  | Write dependencies                 |
+| run   | Submit to Systems                  |
 
-|Argument|Short|Desc|
-|--------|-----|----|
-|--no-warn|-w|No warnings|
-|--depcheck-skip|-e|Skip dependency type checks(Assume everything returned is a module)|
-|--pedantic|-p|Pedantic (Abort on warnings)|
-|--output-std|-o|Output primary requested files to stdout|
-|--dont-write-deps|-d|Skip writing dependencies|
-|--target|-t|Target for `run` eg. `hthor`|
-|--cluster|-c|Cluster IP to submit to|
-|--port|-r|Cluster PORT to submit to|
+| Argument          | Short | Desc                                                                |
+| ----------------- | ----- | ------------------------------------------------------------------- |
+| --no-warn         | -w    | No warnings                                                         |
+| --depcheck-skip   | -e    | Skip dependency type checks(Assume everything returned is a module) |
+| --pedantic        | -p    | Pedantic (Abort on warnings)                                        |
+| --output-std      | -o    | Output primary requested files to stdout                            |
+| --dont-write-deps | -d    | Skip writing dependencies                                           |
+| --target          | -t    | Target for `run` eg. `hthor`                                        |
+| --cluster         | -c    | Cluster IP to submit to                                             |
+| --port            | -r    | Cluster PORT to submit to                                           |
 
 
 
