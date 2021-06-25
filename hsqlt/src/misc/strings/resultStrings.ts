@@ -16,7 +16,7 @@ export default {
 
     tableSelectionHasAnyWarning: 'Any-ish tables used as sources. Result will be any-ish',
 
-    couldNotFindFileError: 'File {0} could not be found',
+    couldNotFindFileError: 'File {0} could not be found/read',
 
     invalidAggregateError: 'Invalid aggregate {0}',
 

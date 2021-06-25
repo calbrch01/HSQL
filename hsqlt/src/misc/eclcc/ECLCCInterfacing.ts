@@ -10,34 +10,39 @@ export type getMethodsShape = {
 
 export class ECLCCInterface {
     constructor(protected err: ErrorManager) {}
+    /**
+     * Always resolves, no worries.
+     * Returns a set of imports
+     * @returns
+     */
     async getImports(): Promise<getMethodsShape> {
-        const { returnCode, stdout } = await execAndGetCode(eclcc.syntax);
-        if (returnCode === 0) {
-            const res = dotenv.parse(stdout);
-            return {
-                eclLibPath: [
-                    ...(res['ECLCC_ECLBUNDLE_PATH'] ?? '').split(':'),
-                    ...(res['ECLCC_ECLLIBRARY_PATH'] ?? '').split(':'),
-                ],
-            };
-            // TranslationIssue.
-        } else if (returnCode === 127) {
-            this.err.push(
-                TranslationIssue.createIssue(eclcc.errors.notFoundError, ErrorType.SETUP, ErrorSeverity.WARNING)
-            );
-        } else {
-            this.err.push(
-                TranslationIssue.createIssue(
-                    format(eclcc.errors.unexpectedReturnCode),
-                    ErrorType.SETUP,
-                    ErrorSeverity.WARNING
-                )
-            );
+        try {
+            const { returnCode, stdout } = await execAndGetCode(eclcc.syntax);
+            if (returnCode === 0) {
+                const res = dotenv.parse(stdout);
+                return {
+                    eclLibPath: [
+                        ...(res['ECLCC_ECLBUNDLE_PATH'] ?? '').split(':'),
+                        ...(res['ECLCC_ECLLIBRARY_PATH'] ?? '').split(':'),
+                    ],
+                };
+                // TranslationIssue.
+            } else if (returnCode === 127) {
+                this.err.push(
+                    TranslationIssue.createIssue(eclcc.errors.notFoundError, ErrorType.SETUP, ErrorSeverity.WARNING)
+                );
+            } else {
+                this.err.push(
+                    TranslationIssue.createIssue(
+                        format(eclcc.errors.unexpectedReturnCode),
+                        ErrorType.SETUP,
+                        ErrorSeverity.WARNING
+                    )
+                );
+            }
+            return { eclLibPath: [] };
+        } catch (e) {
+            return { eclLibPath: [] };
         }
-        return { eclLibPath: [] };
-    }
-    async getImportPath(): Promise<string | undefined> {
-        const x = await this.getImports();
-        return x.eclLibPath[0];
     }
 }

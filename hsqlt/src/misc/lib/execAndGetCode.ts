@@ -6,7 +6,7 @@ type execResult = {
     stderr: string;
 };
 /**
- * Run a process and yield the return type
+ * Run a process and yield the return type.
  * Note: Duped in tests
  * @param command Run a command
  */
