@@ -17,12 +17,6 @@ import { FileType } from '../misc/file/FileType';
 import { FileHandler } from '../misc/file/FileHandler';
 import { FileProvider } from '../misc/file/FileProvider';
 import { FSManager } from './FSManager';
-import resultStrings from '../misc/strings/resultStrings';
-
-export enum OutputMethod {
-    FILES,
-    STDOUT,
-}
 
 /**
  * Manage Tasks - Generate ASTs, Resolve vars
@@ -180,9 +174,11 @@ export class TaskManager {
                 }
             });
         } catch (e) {
+            // this should ideally never happen - Promise.allSettled never rejects
             this.errorManager.push(
-                new TranslationIssue(
-                    format(rs.unexpectedErrorTagged, [e.cause ?? e.msg ?? e.message ?? rs.unexpectedError])
+                TranslationIssue.generalErrorToken(
+                    format(rs.unexpectedErrorTagged, [e.cause ?? e.msg ?? e.message ?? rs.unexpectedError]),
+                    ErrorType.OTHER
                 )
             );
         }

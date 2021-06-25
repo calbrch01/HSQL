@@ -11,8 +11,7 @@ import { ErrorManager, ErrorType, TranslationIssue } from './ErrorManager';
 
 /**
  * Manages a set of file providers, does not create them.
- * Please feed it only quality paths.
- * Please create them as required.
+ * Create these as required
  */
 export class FSManager {
     protected _fh: FileHandler;
@@ -42,7 +41,8 @@ export class FSManager {
     }
 
     /**
-     * Obtain a list of defaults
+     * Obtain a list of defaults that use the ECL Standard library.
+     * Note: Raises errors if eclcc is not present (non-halting)
      * @param err
      * @returns
      */

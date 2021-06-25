@@ -2,7 +2,7 @@ import { assert } from 'chai';
 import { MapOutput } from '../../managers/OutputManagers';
 import { TaskManager } from '../../managers/TaskManager';
 import { ErrorSeverity } from '../../managers/ErrorManager';
-import { FSFileProvider, MemFileMap } from '../../misc/file/FileProvider';
+import { FSFileProvider, MemFileProvider } from '../../misc/file/FileProvider';
 import { FileType } from '../../misc/file/FileType';
 
 describe('ECL Generation', function () {
@@ -10,7 +10,7 @@ describe('ECL Generation', function () {
         const opm = new MapOutput();
         const tm = new TaskManager('mod.hsql', false, opm);
         tm.addFileProviders(
-            new MemFileMap(new Map([['mod.hsql', { content: 'import abc;', type: FileType.HSQL }]]), true)
+            new MemFileProvider(new Map([['mod.hsql', { content: 'import abc;', type: FileType.HSQL }]]), true)
         );
         const { ast } = tm.generateAST();
         // const eclgenerator = new ECLGen(tm.errorManager);
@@ -28,7 +28,7 @@ describe('ECL Generation', function () {
         const opm = new MapOutput();
         const tm = new TaskManager('mod.hsql', false, opm);
         tm.addFileProviders(
-            new MemFileMap(new Map([['mod.hsql', { content: 'import abc as bcd;', type: FileType.HSQL }]]), true)
+            new MemFileProvider(new Map([['mod.hsql', { content: 'import abc as bcd;', type: FileType.HSQL }]]), true)
         );
 
         const { ast } = tm.generateAST();
@@ -46,7 +46,7 @@ describe('ECL Generation', function () {
         const opm = new MapOutput();
         const tm = new TaskManager('mod.hsql', false, opm);
         tm.addFileProviders(
-            new MemFileMap(
+            new MemFileProvider(
                 new Map([['mod.hsql', { content: 'import abc as bcd;a=bcd.t1;', type: FileType.HSQL }]]),
                 true
             )

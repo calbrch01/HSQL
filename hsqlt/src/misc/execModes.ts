@@ -3,11 +3,9 @@ import { TaskManager } from '../managers/TaskManager';
 import { EOL } from 'os';
 import rs from './strings/resultStrings';
 import { ErrorSeverity, ErrorType, TranslationIssue } from '../managers/ErrorManager';
-// import { iP } from './strings/formatting';
 
 /**
- * Execution intent.
- * Replaces {@code ExecMode}
+ * Execution intent
  */
 export interface ExecIntent {
     do(taskmanager: TaskManager, outputmanager: OutputManager): Promise<void>;
@@ -38,16 +36,15 @@ export class ExecCheckMode implements ExecIntent {
 
 export class ExecMakeMode implements ExecIntent {
     async do(taskmanager: TaskManager, outputmanager: OutputManager): Promise<void> {
-        //check syntax
+        // check syntax aka generate the ast
         await new ExecCheckMode().do(taskmanager, outputmanager);
-        // const { issues, suppressed } = taskmanager.getIssues();
 
-        //getting the error count
+        // getting the error count
         const {
             counts: [ecount, wcount],
             suppressed,
         } = taskmanager.issueStats();
-        // print out some stats
+        // print out some stats if in debuf mode
         taskmanager.args.g && console.debug(`Statistics W:${wcount},E:${ecount}`);
 
         // if pedantic, true if warnings or errors exist, else check if errors exist
@@ -70,10 +67,6 @@ export class ExecMakeMode implements ExecIntent {
 export class ExecUnimplemented implements ExecIntent {
     async do(taskmanager: TaskManager, outputmanager: OutputManager): Promise<void> {
         // note that passing undefined implies that default values will be assumed
-        taskmanager.errorManager.push(
-            new TranslationIssue(rs.notImplemented, undefined, undefined, undefined, ErrorType.SETUP)
-        );
-        // the below is another way of doing it, but its not as errors are pushed out at the end
-        // console.error(iP(resultStrings.notImplemented, ErrorSeverity.ERROR));
+        taskmanager.errorManager.push(TranslationIssue.generalErrorToken(rs.notImplemented, ErrorType.SETUP));
     }
 }

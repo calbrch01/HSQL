@@ -3,6 +3,10 @@ import { FileTreeDirNode, FileTreeFileNode, FileTreeNode } from '../ds/filetree'
 import { FileType } from './FileType';
 import fs from 'fs';
 import { FileHandler } from './FileHandler';
+
+/**
+ * A path result. If found, its actual path (non-case sensitive version)
+ */
 export type pathResult =
     | {
           type: Exclude<FileType, FileType.OTHER>;
@@ -13,16 +17,23 @@ export type pathResult =
           type: FileType.OTHER;
           found: false;
       };
+
+/**
+ * A path result, where the path result is not known
+ */
 export type pathResultFragment =
     | {
           type: Exclude<FileType, FileType.OTHER>;
-          //   path: string;
           found: true;
       }
     | {
           type: FileType.OTHER;
           found: false;
       };
+
+/**
+ * Methods and constants for helping create pathResult objeects
+ */
 export namespace pathResult {
     export const notFound: pathResult = {
         found: false,
@@ -47,7 +58,8 @@ export interface FileProvider {
     read(x: string): string | undefined;
 }
 
-export class MemFileMap implements FileProvider {
+/** A file map held in memory */
+export class MemFileProvider implements FileProvider {
     protected _fileMap: FileTreeDirNode;
     constructor(
         fileMap: Map<string, { content: string; type: Exclude<FileType, FileType.OTHER | FileType.DIR> }> = new Map(),
@@ -92,7 +104,7 @@ export class MemFileMap implements FileProvider {
 }
 
 /**
- * Using this file provider allows for file access (Please note)
+ * Using this file provider allows for file access (Please note as there is a flag to help with access)
  */
 export class FSFileProvider implements FileProvider {
     constructor(protected _loc: string = '', protected _relsupport: boolean = true, protected _allowOutside = false) {}

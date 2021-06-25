@@ -1,10 +1,10 @@
-import { FSFileProvider, MemFileMap } from './FileProvider';
+import { FSFileProvider, MemFileProvider } from './FileProvider';
 import { FileType } from './FileType';
 import path from 'path';
 import { assert } from 'chai';
 describe('File Provider', function () {
     it('memfile provider', async () => {
-        const mfp = new MemFileMap();
+        const mfp = new MemFileProvider();
         mfp.add('ab/bc/cd.ecl', FileType.ECL, 'hi');
         mfp.add('ab/abf.ecl', FileType.ECL, 'hi');
         // mfp.add('../ab', FileType.ECL, 'hi');

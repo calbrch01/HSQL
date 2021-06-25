@@ -48,7 +48,7 @@ export enum ErrorMode {
  */
 export class TranslationIssue {
     /**
-     * Creating an error. Prefer using {@link TranslationError.createIssue} or ither such static methods if there is a parser node to help.
+     * Creating an error. Prefer using {@link TranslationError.createIssue} or other such static methods if there is a parser node to help.
      * @param msg Message
      * @param line Line of origin of error (starting)
      * @param charPositionInLine character position of error (starting)
@@ -106,6 +106,14 @@ export class TranslationIssue {
             cause?._stop?.charPositionInLine
         );
     }
+    /**
+     * Create an issue - Warning/Error/Info
+     * @param msg Message
+     * @param et Error Type
+     * @param es Severity of the error
+     * @param cause An optional cause (Can be taken from the a parser node)
+     * @returns
+     */
     static createIssue(msg: string, et: ErrorType, es: ErrorSeverity, cause?: ParserRuleContext) {
         return new TranslationIssue(
             msg,
@@ -117,6 +125,13 @@ export class TranslationIssue {
             cause?._stop?.charPositionInLine
         );
     }
+    /**
+     * Creating an error
+     * @param msg
+     * @param et
+     * @param cause
+     * @returns
+     */
     static generalErrorToken(msg: string, et: ErrorType, cause?: ParserRuleContext) {
         return new TranslationIssue(
             msg,

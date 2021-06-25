@@ -5,6 +5,7 @@ grammar HSQL;
 import {SelectJoinType} from '../ast/SelectHelpers';
 
 }
+
 program: (completestmt)* EOF;
 
 completestmt: stmt SEMICOLON;
@@ -227,11 +228,15 @@ toFile: (FILE)? STRING (OVERWRITE)?;
 
 scope: EXPORT | SHARED |;
 
+declarations: (declaration)* EOF;
+declaration: DECLARE;
+
 //****************************************Lexer Rules******************************************/
 
 // comments -> channel 2, ws -> channel 1 main -> channel 0
 
 ///Data Types  ******* Further 
+
 REAL_TYPE: R E A L;
 INTEGER_TYPE: I N T E G E R;
 DECIMAL_TYPE: D E C I M A L;
@@ -281,6 +286,8 @@ IDCOLUMN: I D C O L U M N;
 // Transformations
 PROJECT: P R O J E C T;
 SELECT: S E L E C T;
+DECLARE: D E C L A R E;
+
 FROM: F R O M;
 TOP: T O P;
 // added

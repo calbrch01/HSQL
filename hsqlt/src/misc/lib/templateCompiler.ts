@@ -2,7 +2,7 @@ import compile from 'string-template/compile';
 // type K<T> =
 
 /**
- * Take an object of template literals and compile it down
+ * Take an object of template literals and compile it to template literals.
  * @param x
  * @returns
  */
