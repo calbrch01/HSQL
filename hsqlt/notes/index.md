@@ -1,5 +1,18 @@
 
 
+### Goals
+
+HSQL
+- [ ] SQL 92 syntax support
+- [ ] Function and Modular support
+- [ ] Transparent Medley support
+- [ ] VS Code support
+- [ ] Full ML support
+
+
+## Current architecture
+
+![Architecture](structure.drawio.png)
 
 ## Dependencies
 
@@ -27,7 +40,7 @@ devDependencies(Dependencies that are used during development):
 -   antlr4ts-cli - Provides a CLI to work with the ANTLR tool
 -   pkg - Compile to bytecode and package into executable
 
-
+## Dependency notes
 ### ANTLR
 
 The grammar is ~~action-free~~ mostly action-free; actions are used where data can be more easily obtained from the parsing stage. It can be refactored away if required, but it shouldn't be a huge concern.
@@ -54,32 +67,10 @@ npm run check-circular
 ```
 This should give a good idea as to where circular dependencies are present.
 
-## Basic syntaxes
+### Notes with the repository
 
-### Starting with work
+All assumptions made can be tracked with comments having `FIXME` and `FUTURE` and may be expanded on.
 
-The current objective is to ~~get code generation working~~ add essential HSQL features.
-After that, all assumptions made (can be tracked with comments having `FIXME` and `FUTURE` ) should be worked on.
-
-
-
-
-### Todo list
-- [X] ~~Typedef~~
-
-### Goals
-
-HSQL
-- [ ] SQL 92 syntax support
-- [ ] Function and Modular support
-- [ ] Transparent Medley support
-- [ ] VS Code support
-- [ ] Full ML support
-
-## [Program UI](./programui.md)
-
-## [Scratchpad](./scratchpad.md)
-
-## Current architecture
-
-![Architecture](structure.drawio.png)
+## Other References
+- [SQL 92 reference](http://www.contrib.andrew.cmu.edu/~shadow/sql/sql1992.txt)
+- [SQLite Grammar](https://github.com/antlr/grammars-v4/blob/master/sql/sqlite/SQLiteParser.g4)

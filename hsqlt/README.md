@@ -9,28 +9,26 @@ HSQL is best used with VSCode, or the CLI tool if required. Here's some more det
 
 ### Running this project during development
 
-1. Install the requirements
+What's needed beforehand: `NodeJS`~v14,`Java`>v8
+
+1. Install the project dependencies
     ```sh
     npm install
     ```
 2. Execution can be tested with
     - Run the typescript project directly
         ```sh
-        ts-node src
+        ts-node src # This is the program
         ```
     - Build to JS
-        ```sh
-        npx tsc
-        node build
-        ```
-        _OR_
         ```bash
         npm run build
-        node build
+        node build # This is the program
         ```
     - Compile to bytecode and package to executable (This uses the code built to JS)
         ```bash
         npm run pkg
+        ./dist/hsqlt-linux # pick your corresponding executable
         ```
 
 #### NPM scripts
