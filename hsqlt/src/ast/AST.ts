@@ -36,7 +36,7 @@ export class AST implements BaseASTNode {
         const aliasStr = alias?.toString();
 
         //resolve this import
-        const res = this.TaskMgr.resolve(name);
+        const { output: res } = this.TaskMgr.resolve(name);
 
         const x = this.variableManager.add(aliasStr ?? nameStr, DataMetaData(res, VariableVisibility.DEFAULT));
 

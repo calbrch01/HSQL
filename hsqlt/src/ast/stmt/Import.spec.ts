@@ -2,6 +2,7 @@ import { assert } from 'chai';
 import { HSQLTreeFactory } from '../../conv/tree';
 import { ErrorManager } from '../../managers/ErrorManager';
 import { QualifiedIdentifier } from '../../misc/ast/QualifiedIdentifier';
+import { FileType } from '../../misc/file/FileType';
 import { Import } from './Import';
 
 describe('import AST node tests', function () {
@@ -13,7 +14,7 @@ describe('import AST node tests', function () {
         `import ${moduleName1};`,
         `import ${moduleName1} as ${moduleName1};`,
         `import ${moduleName1} as ${alias1};`,
-    ].map(e => new HSQLTreeFactory(ErrorManager.normal).makeTree(e).tree);
+    ].map(e => new HSQLTreeFactory(ErrorManager.normal).makeTree(e,FileType.HSQL).tree);
 
     const importContexts = trees.map(e => e.completestmt()[0].stmt().importStmt());
     // const im1 = tree1.completestmt()[0].stmt().importStmt();

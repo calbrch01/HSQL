@@ -1,7 +1,8 @@
 import { DataMetaData, DataMetaDataType, VariableTable, VariableVisibility } from './VariableTable';
 import { assert } from 'chai';
 import { Action } from '../data/Action';
-import { dtype, Singular } from '../data/Singular';
+import { Singular } from '../data/Singular';
+import { SingularDataType } from '../../misc/ast/SingularDataType';
 import { Layout } from '../data/Layout';
 import { Col } from '../data/Col';
 import { Table } from '../data/Table';
@@ -39,7 +40,7 @@ describe('Variable Table Tests', function () {
     });
 
     it('module-table resolves', async () => {
-        const col = new Col(dtype.DECIMAL);
+        const col = new Col(SingularDataType.DECIMAL);
         const table = new Table(new Map([['c1', col]]));
         const module = new Module(new Map([['t1', table]]));
         const x = new VariableTable([new Map([['m1', DataMetaData(module, VariableVisibility.DEFAULT)]])]);

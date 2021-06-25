@@ -3,7 +3,7 @@ grammar HSQL;
 @header {
 // for the join clause type
 import {SelectJoinType} from '../ast/SelectHelpers';
-
+import {SingularDataType} from '../ast/SingularDataType';
 }
 
 program: (completestmt)* EOF;
@@ -116,13 +116,14 @@ comparisonOperator: EQ | NEQ | LT | LTE | GT | GTE;
 logicalOperator: AND | OR | NOT | IN | BETWEEN | EXISTS;
 literal: number | string | booleanValue;
 // todo: More precise defination
-dataType:
-	REAL_TYPE
+dataType
+	locals[ dt:SingularDataType=SingularDataType.INTEGER]:
+	REAL_TYPE {$dt=SingularDataType.REAL}
 	| INTEGER_TYPE
-	| DECIMAL_TYPE
-	| VARSTRING_TYPE
-	| STRING_TYPE
-	| BOOLEAN;
+	| DECIMAL_TYPE {$dt=SingularDataType.REAL}
+	| VARSTRING_TYPE {$dt=SingularDataType.STRING}
+	| STRING_TYPE {$dt=SingularDataType.STRING}
+	| BOOLEAN {$dt=SingularDataType.BOOLEAN};
 alterOperator: ADD | DROP | MODIFY;
 
 // use % instead of $ -> that operator is used in ECL SNIPPETS for now
@@ -228,8 +229,14 @@ toFile: (FILE)? STRING (OVERWRITE)?;
 
 scope: EXPORT | SHARED |;
 
+// this is the declarations file
 declarations: (declaration)* EOF;
-declaration: DECLARE;
+declaration: DECLARE IDENTIFIER AS typeClauses SEMICOLON;
+typeClauses: tableClause | layoutClause;
+tableClause: TABLE BSTART_ colDefs BEND_;
+layoutClause: LAYOUT BSTART_ colDefs BEND_;
+colDefs: colDef (COMMA_ colDef)* |;
+colDef: dataType IDENTIFIER;
 
 //****************************************Lexer Rules******************************************/
 

@@ -5,7 +5,8 @@ import { AST } from '../../ast/AST';
 import { Any } from '../../ast/data/Any';
 import { DataType } from '../../ast/data/base/DataType';
 import { NoDataType } from '../../ast/data/NoDataType';
-import { dtype, Singular } from '../../ast/data/Singular';
+import { Singular } from '../../ast/data/Singular';
+import { SingularDataType } from '../../misc/ast/SingularDataType';
 import { BaseASTNode } from '../../ast/stmt/base/BaseASTNode';
 import { StmtExpression } from '../../ast/stmt/base/StmtExpression';
 import { Definition } from '../../ast/stmt/Definition';
@@ -19,6 +20,7 @@ import { QualifiedIdentifier } from '../../misc/ast/QualifiedIdentifier';
 import {
     ActionStmtContext,
     BasicStringLiteralContext,
+    DeclarationsContext,
     DefinitionContext,
     DefinitionStmtContext,
     ImportStmtContext,
@@ -30,6 +32,7 @@ import {
 import { HSQLVisitor } from '../../misc/grammar/HSQLVisitor';
 import { pullVEO, VEO, VEOMaybe } from '../../misc/holders/VEO';
 import rs from '../../misc/strings/resultStrings';
+import { DefinitionGeneration } from './support/DefinitionsGeneration';
 import { OutputASTGenerator } from './support/OutputASTGenerator';
 import { SelectASTGenerator } from './support/SelectASTGenerator';
 /**
@@ -45,7 +48,7 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
     constructor(
         public taskManager: TaskManager,
         protected _errorManager: ErrorManager,
-        protected rootContext: ProgramContext
+        protected rootContext: ProgramContext | DeclarationsContext
     ) {
         super();
         this.ast = new AST(taskManager, rootContext);
@@ -168,9 +171,15 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
 
     visitBasicStringLiteral(ctx: BasicStringLiteralContext) {
         // console.debug('I was called');
-        const dt = new Singular(dtype.STRING);
+        const dt = new Singular(SingularDataType.STRING);
         const node = new StringLiteral(ctx, ctx.text);
         return new VEO(dt, node);
+    }
+
+    visitDeclarations(ctx: DeclarationsContext) {
+        // console.log('BEING CALEED');
+        const declVisitor = new DefinitionGeneration(this).visit(ctx);
+        return null;
     }
 
     getAST(): AST {

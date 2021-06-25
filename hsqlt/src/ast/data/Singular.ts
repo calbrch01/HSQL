@@ -1,39 +1,28 @@
 import { DataType, EDataType } from './base/DataType';
-
-/**
- * Supported elementary data types
- */
-export enum dtype {
-    BOOLEAN,
-    INTEGER,
-    REAL,
-    DECIMAL,
-    STRING,
-    QSTRING,
-}
+import { SingularDataType } from '../../misc/ast/SingularDataType';
 
 /**
  * available data types for singular
  */
-export type dtypes = keyof typeof dtype;
+export type SingularDataTypes = keyof typeof SingularDataType;
 
 /**
  * Single-valued data types
  */
 export class Singular extends DataType {
-    constructor(private _dtype: dtype) {
+    constructor(private _dtype: SingularDataType) {
         super(EDataType.SINGULAR);
     }
-    public get dtype(): dtype {
+    public get dtype(): SingularDataType {
         return this.dtype;
     }
     /**
      * get current data type in string
      */
-    getDataType(): dtypes {
+    getDataType(): SingularDataTypes {
         // return this.val.toString();
         //TODO 10/03 work
-        return dtype[this._dtype] as dtypes;
+        return SingularDataType[this._dtype] as SingularDataTypes;
     }
 
     /**

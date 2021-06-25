@@ -2,7 +2,7 @@ import { EOL } from 'os';
 import format from 'string-template';
 import { argType } from '..';
 import { AST } from '../ast/AST';
-import { Module } from '../ast/data/Module';
+import { AnyModule, Module } from '../ast/data/Module';
 import { ECLGenerator } from '../conv/ast/ECLGenerator';
 import { ASTGenerator } from '../conv/syntax/ASTGenerator';
 import { HSQLTreeFactory } from '../conv/tree';
@@ -17,6 +17,7 @@ import { FileType } from '../misc/file/FileType';
 import { FileHandler } from '../misc/file/FileHandler';
 import { FileProvider } from '../misc/file/FileProvider';
 import { FSManager } from './FSManager';
+import { VariableVisibility } from '../ast/symbol/VariableTable';
 
 /**
  * Manage Tasks - Generate ASTs, Resolve vars
@@ -100,7 +101,7 @@ export class TaskManager {
         const { realPath, content: file, type } = this._fsmanager.read(fnNoExt, local, fileType);
         this.errorManager.pushFile(realPath);
 
-        const { tree, tokenStreams } = this.treeFactory.makeTree(file);
+        const { tree } = this.treeFactory.makeTree(file, type);
         const x = new ASTGenerator(this, this._errorManager, tree);
         // get AST will read imports and call the rest of the required generate ASTS
         const ast = x.getAST();
@@ -115,10 +116,10 @@ export class TaskManager {
      * @param fn filename (Leave empty to use mainfile)
      */
     getStringTree(fn: string = this.mainFile, override: FileType.DHSQL | FileType.HSQL = FileType.HSQL) {
-        const { content: file, realPath } = this._fsmanager.read(fn, true, override);
+        const { content: file, realPath, type } = this._fsmanager.read(fn, true, override);
 
         this.errorManager.pushFile(realPath);
-        const treebundle = this.treeFactory.makeTree(file, realPath);
+        const treebundle = this.treeFactory.makeTree(file, type, realPath);
         this.errorManager.popFile();
 
         // return whatever x was, and add `strTree` to it
@@ -238,13 +239,30 @@ export class TaskManager {
      * @param q resolve this qualified identifier into face
      * @returns the module that was resolved
      */
-    resolve(q: QualifiedIdentifier): Module {
+    resolve(q: QualifiedIdentifier): { output: Module } {
         // const identifiers = q.qidentifier;
         // let joinable = '.';
         const fsl = q.qidentifier;
 
         this.args.g && console.log(`DIRNAME`, __dirname);
 
+        const { res: pathString, isLocal } = FSManager.parseQid(q);
+        const x = this._fsmanager.stat(pathString, isLocal);
+        if (x.type === FileType.DHSQL) {
+            // dhsql are one time imports, don't do
+
+            const { ast } = this.generateAST(x.path, x.type, isLocal);
+
+            const vars = ast.variableManager.vars[0];
+            if (vars === undefined) {
+                return { output: new AnyModule() };
+            }
+            const rows = [...vars]
+                .filter(([name, entry]) => entry.vis === VariableVisibility.PUBLIC && entry.internal === false)
+                .map(([name, entry]) => [name, entry.data] as const);
+            return { output: new Module(new Map(rows)) };
+        }
+        // do something here
         // for (const segment of identifiers) {
         //     joinable = path.join(joinable, segment);
         //     if (!fs.existsSync(joinable)) {
@@ -252,8 +270,8 @@ export class TaskManager {
         //     }
         // }
         // return joinable;
-        const res = this._fsmanager.resolveName(q);
+        // const res = this._fsmanager.resolveName(q);
         // FIXME 03/06 actually resolve, currently we just eject an anymodule
-        return res;
+        return { output: new AnyModule() };
     }
 }

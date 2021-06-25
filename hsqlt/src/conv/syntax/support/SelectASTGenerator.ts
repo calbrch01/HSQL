@@ -6,7 +6,7 @@ import { CollectionType } from '../../../ast/data/base/CollectionType';
 import { DataType, EDataType } from '../../../ast/data/base/DataType';
 import { isDataType } from '../../../ast/data/base/typechecks/isDataType';
 import { Col } from '../../../ast/data/Col';
-import { dtype } from '../../../ast/data/Singular';
+import { SingularDataType } from '../../../misc/ast/SingularDataType';
 import { Table, AnyTable } from '../../../ast/data/Table';
 import { BaseASTNode } from '../../../ast/stmt/base/BaseASTNode';
 import { StmtExpression } from '../../../ast/stmt/base/StmtExpression';
@@ -349,7 +349,7 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
                             // if its a COUNT(*) then create a new column else inherit
                             const col =
                                 element.col === SelectColumnType.ALL
-                                    ? new Col(dtype.INTEGER)
+                                    ? new Col(SingularDataType.INTEGER)
                                     : this.totalDt.get(element.col);
                             if (col === undefined) {
                                 this.errorManager.halt(

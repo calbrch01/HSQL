@@ -3,7 +3,7 @@
 
 // for the join clause type
 import {SelectJoinType} from '../ast/SelectHelpers';
-
+import {SingularDataType} from '../ast/SingularDataType';
 
 
 import { ParseTreeVisitor } from "antlr4ts/tree/ParseTreeVisitor";
@@ -90,6 +90,13 @@ import { AttributeContext } from "./HSQLParser";
 import { NamedOutputContext } from "./HSQLParser";
 import { ToFileContext } from "./HSQLParser";
 import { ScopeContext } from "./HSQLParser";
+import { DeclarationsContext } from "./HSQLParser";
+import { DeclarationContext } from "./HSQLParser";
+import { TypeClausesContext } from "./HSQLParser";
+import { TableClauseContext } from "./HSQLParser";
+import { LayoutClauseContext } from "./HSQLParser";
+import { ColDefsContext } from "./HSQLParser";
+import { ColDefContext } from "./HSQLParser";
 
 
 /**
@@ -703,5 +710,54 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitScope?: (ctx: ScopeContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.declarations`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitDeclarations?: (ctx: DeclarationsContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.declaration`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitDeclaration?: (ctx: DeclarationContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.typeClauses`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitTypeClauses?: (ctx: TypeClausesContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.tableClause`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitTableClause?: (ctx: TableClauseContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.layoutClause`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitLayoutClause?: (ctx: LayoutClauseContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.colDefs`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitColDefs?: (ctx: ColDefsContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.colDef`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitColDef?: (ctx: ColDefContext) => Result;
 }
 
