@@ -76,19 +76,19 @@ export class TranslationIssue {
     static semanticErrorToken(msg: string, cause?: ParserRuleContext) {
         return new TranslationIssue(
             msg,
-            cause?.start.line,
-            cause?.start.charPositionInLine,
+            cause?._start.line,
+            cause?._start.charPositionInLine,
             ErrorSeverity.ERROR,
             ErrorType.SEMANTIC,
-            cause?.stop?.line,
-            cause?.stop?.charPositionInLine
+            cause?._stop?.line,
+            cause?._stop?.charPositionInLine
         );
     }
     static semanticWarningToken(msg: string, cause?: ParserRuleContext) {
         return new TranslationIssue(
             msg,
-            cause?.start.line,
-            cause?.start.charPositionInLine,
+            cause?._start.line,
+            cause?._start.charPositionInLine,
             ErrorSeverity.WARNING,
             ErrorType.SEMANTIC,
             cause?._stop?.line,
@@ -98,8 +98,8 @@ export class TranslationIssue {
     static semanticInfoToken(msg: string, cause?: ParserRuleContext) {
         return new TranslationIssue(
             msg,
-            cause?.start.line,
-            cause?.start.charPositionInLine,
+            cause?._start.line,
+            cause?._start.charPositionInLine,
             ErrorSeverity.INFO,
             ErrorType.SEMANTIC,
             cause?._stop?.line,
@@ -117,8 +117,8 @@ export class TranslationIssue {
     static createIssue(msg: string, et: ErrorType, es: ErrorSeverity, cause?: ParserRuleContext) {
         return new TranslationIssue(
             msg,
-            cause?.start.line,
-            cause?.start.charPositionInLine,
+            cause?._start.line,
+            cause?._start.charPositionInLine,
             es,
             et,
             cause?._stop?.line,
@@ -135,8 +135,8 @@ export class TranslationIssue {
     static generalErrorToken(msg: string, et: ErrorType, cause?: ParserRuleContext) {
         return new TranslationIssue(
             msg,
-            cause?.start.line,
-            cause?.start.charPositionInLine,
+            cause?._start.line,
+            cause?._start.charPositionInLine,
             ErrorSeverity.ERROR,
             et,
             cause?._stop?.line,
@@ -154,7 +154,7 @@ export class ContexedTranslationError extends TranslationIssue {
      */
     ctx: string;
     constructor(_ctx: string, te: TranslationIssue) {
-        super(te.msg, te.line, te.charPositionInLine, te.severity, te.type);
+        super(te.msg, te.line, te.charPositionInLine, te.severity, te.type, te.lineEnd, te.charPositionInLineEnd);
         this.ctx = _ctx;
     }
 }
@@ -172,7 +172,7 @@ export class ErrorManager {
      * Stack represents the error for the file in question.
      *
      * How is this used?
-     * Each file is an AST -> Pushing an popping a context as you start and stop generating an AST should be good.
+     * Each file is an AST -> Pushing an popping a context as you _start and stop generating an AST should be good.
      */
     public errorContext: string[] = [];
 
