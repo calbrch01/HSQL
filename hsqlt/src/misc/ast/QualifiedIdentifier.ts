@@ -51,7 +51,7 @@ export class QualifiedIdentifier {
         }
         const arrayLen = q1.length;
         for (let i = 0; i < arrayLen; i++) {
-            if (q1._qidentifier[i] !== q2._qidentifier[i]) {
+            if (q1._qidentifier[i].toLowerCase() !== q2._qidentifier[i].toLowerCase()) {
                 return false;
             }
         }

@@ -66,6 +66,7 @@ export class VariableTable {
      * @param addtoOverLay whether to add to the root base(false) or to the latest overlay(true). (true)
      */
     add(s: string, v: DataMetaDataType, addtoOverLay: boolean = true): boolean {
+        s = s.toLowerCase();
         const map: Map<string, DataMetaDataType> = this._vars[addtoOverLay ? this.scopeLength - 1 : 0];
         // this.vars.add(v);
 
@@ -77,6 +78,8 @@ export class VariableTable {
     }
 
     get(s: string): DataMetaDataType | undefined {
+        s = s.toLowerCase();
+
         const l = this.scopeLength;
         let x: DataMetaDataType | undefined = undefined;
         for (let i = l - 1; i >= 0; i--) {
@@ -91,6 +94,8 @@ export class VariableTable {
      * @param s variable name
      */
     exists(s: string) {
+        s = s.toLowerCase();
+
         const l = this.scopeLength;
         // let x: boolean = false;
         for (let i = l - 1; i >= 0; i--) {
