@@ -10,9 +10,9 @@ import { TextDocument, TextDocumentContentChangeEvent } from 'vscode-languageser
 import { DocListener, FTDoc } from './TextDoc';
 import { eventChecks } from './TextUtils';
 import { fileURLToPath, pathToFileURL } from 'url';
-import { AST, ContexedTranslationError, ErrorSeverity, ErrorType, TaskManager } from 'hsqlt';
+import { AST, ContexedTranslationError, ErrorSeverity, TaskManager } from 'hsqlt';
 import { FileType } from '../../../hsqlt/build/misc/file/FileType';
-import { MemFileMap } from '../../../hsqlt/build/misc/file/FileProvider';
+import { MemFileProvider } from '../../../hsqlt/build/misc/file/FileProvider';
 import { relative, resolve } from 'path';
 
 // TODO someday work with non-file:// functions
@@ -35,7 +35,7 @@ export function validator(document: TextDocument, documents: TextDocuments<TextD
     const fileMap = new Map(disposable);
 
     const tm = new TaskManager(relative('', mainFile), false);
-    tm.addFileProviders(new MemFileMap(fileMap, true));
+    tm.addFileProviders(new MemFileProvider(fileMap, true));
     const results = tm.generateAST();
     return {
         ...results,
@@ -64,6 +64,7 @@ export function mapIssues(
             issue.charPositionInLineEnd ?? issue.charPositionInLine ?? 0
         );
         // FIXME use a range
+        console.log(issue.line, issue.lineEnd);
         entry.push({
             message: issue.msg,
             range: Range.create(startPosition, endPosition),

@@ -2,18 +2,10 @@
 import {
     createConnection,
     ProposedFeatures,
-    TextDocumentPositionParams,
-    CompletionItem,
-    CompletionItemKind,
     TextDocumentSyncKind,
     TextDocuments,
-    Diagnostic,
 } from 'vscode-languageserver';
 import { TDocs, FTDoc } from './TextDoc';
-import { ErrorManager, ErrorMode, TaskManager } from 'hsqlt';
-import { eventChecks } from './TextUtils';
-
-import { fileURLToPath } from 'url';
 import { getFileList, mapIssues, validator } from './Translation';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 

@@ -58,9 +58,7 @@
     "scripts": {
         "postinstall": "npm i --prefix client && npm i --prefix server",
         "prepackage": "npm run compile-prod",
-        "ppackage": "npm unlink hsqlt && vsce package",
         "package": "vsce package",
-        "ppostpackage": "npm link hsqlt",
         "compile-prod": "webpack --mode production --devtool hidden-source-map",
         "compile": "webpack",
         "watch": "webpack --watch",
