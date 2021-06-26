@@ -15,7 +15,7 @@ import { FileType } from '../../../hsqlt/build/misc/file/FileType';
 import { MemFileProvider } from '../../../hsqlt/build/misc/file/FileProvider';
 import { relative, resolve } from 'path';
 
-// TODO someday work with non-file:// functions
+// FUTURE someday work with non-file:// functions
 export function validator(document: TextDocument, documents: TextDocuments<TextDocument>) {
     // changes?: TextDocumentContentChangeEvent[],
     // version?: number,

@@ -1,4 +1,4 @@
-import { DataMetaData, DataMetaDataType, VariableTable, VariableVisibility } from './VariableTable';
+import { DataMetaData, VariableTable, VariableVisibility } from './VariableTable';
 import { assert } from 'chai';
 import { Action } from '../data/Action';
 import { Singular } from '../data/Singular';

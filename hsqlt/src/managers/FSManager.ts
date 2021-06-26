@@ -4,9 +4,10 @@ import { AnyModule, Module } from '../ast/data/Module';
 import { QualifiedIdentifier } from '../misc/ast/QualifiedIdentifier';
 import { ECLCCInterface } from '../misc/eclcc/ECLCCInterfacing';
 import { FileHandler } from '../misc/file/FileHandler';
-import { FileProvider, FSFileProvider, pathResult } from '../misc/file/FileProvider';
+import { FileProvider, FSFileProvider, MemFileProvider, pathResult } from '../misc/file/FileProvider';
 import { FileType, FileTypeLists } from '../misc/file/FileType';
 import resultStrings from '../misc/strings/resultStrings';
+import std from '../misc/strings/std';
 import { ErrorManager, ErrorType, TranslationIssue } from './ErrorManager';
 
 /**
@@ -48,8 +49,8 @@ export class FSManager {
      */
     static async DefaultsProvidersFactory(err: ErrorManager) {
         const imports = await new ECLCCInterface(err).getImports();
-
-        return [...imports.eclLibPath.map(importPath => new FSFileProvider(importPath, false))];
+        const stdDefs = new MemFileProvider(new Map(std), false);
+        return [stdDefs, ...imports.eclLibPath.map(importPath => new FSFileProvider(importPath, false))];
     }
 
     /**
@@ -172,29 +173,30 @@ export class FSManager {
         );
     }
 
-    static parseQid(x: QualifiedIdentifier): { res:string, isLocal: boolean } {
-        const res = path.join(...x.qidentifier.map(e => {
-            if (e === '$') return '.';
-            if (e === '^') return '..';
-            return e;
-        }));
+    static parseQid(x: QualifiedIdentifier): { res: string; isLocal: boolean } {
+        const res = path.join(
+            ...x.qidentifier.map(e => {
+                if (e === '$') return '.';
+                if (e === '^') return '..';
+                return e;
+            })
+        );
 
         return { res, isLocal: x.qidentifier[0] === '$' };
     }
 
     /**
-     * 
+     *
      * // FUTURE proper applications
      * @deprecated
-     * @param s 
-     * @returns 
+     * @param s
+     * @returns
      */
     resolveName(s: QualifiedIdentifier): Module {
-        const {res:pathString,isLocal} = FSManager.parseQid(s);
-        const x = this.stat(pathString,isLocal);
+        const { res: pathString, isLocal } = FSManager.parseQid(s);
+        const x = this.stat(pathString, isLocal);
         // if(x.type===FileType.DHSQL)
         // do something here
-
 
         return new AnyModule();
     }

@@ -5,7 +5,7 @@ declare l as <layout(...)|ANYLAYOUT>;
 
 declare LinearRegression as Trainable TRAIN '' USING? (...) MAKING '' WITH? (...) returning <TABLE(...)|ANYTABLE>;
 
-declare Bar as Visualization MADE WITH '';
+declare Bar as PLOT  ON '';
 ```
 
 ## TRAIN

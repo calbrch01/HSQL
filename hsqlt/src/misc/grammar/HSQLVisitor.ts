@@ -35,6 +35,8 @@ import { ParenthesizedExpressionContext } from "./HSQLParser";
 import { PredicatedContext } from "./HSQLParser";
 import { LogicalNotContext } from "./HSQLParser";
 import { LogicalBinaryContext } from "./HSQLParser";
+import { TableDeclarationContext } from "./HSQLParser";
+import { PlotDeclarationContext } from "./HSQLParser";
 import { NormalIdentifierContext } from "./HSQLParser";
 import { RootIdentifierContext } from "./HSQLParser";
 import { ParentIdentifierContext } from "./HSQLParser";
@@ -89,12 +91,10 @@ import { OutputStmtContext } from "./HSQLParser";
 import { AttributeContext } from "./HSQLParser";
 import { NamedOutputContext } from "./HSQLParser";
 import { ToFileContext } from "./HSQLParser";
+import { PlotStmtContext } from "./HSQLParser";
 import { ScopeContext } from "./HSQLParser";
 import { DeclarationsContext } from "./HSQLParser";
 import { DeclarationContext } from "./HSQLParser";
-import { TypeClausesContext } from "./HSQLParser";
-import { TableClauseContext } from "./HSQLParser";
-import { LayoutClauseContext } from "./HSQLParser";
 import { ColDefsContext } from "./HSQLParser";
 import { ColDefContext } from "./HSQLParser";
 
@@ -322,6 +322,22 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitLogicalBinary?: (ctx: LogicalBinaryContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `tableDeclaration`
+	 * labeled alternative in `HSQLParser.declaration`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitTableDeclaration?: (ctx: TableDeclarationContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `plotDeclaration`
+	 * labeled alternative in `HSQLParser.declaration`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitPlotDeclaration?: (ctx: PlotDeclarationContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by the `normalIdentifier`
@@ -705,6 +721,13 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	visitToFile?: (ctx: ToFileContext) => Result;
 
 	/**
+	 * Visit a parse tree produced by `HSQLParser.plotStmt`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitPlotStmt?: (ctx: PlotStmtContext) => Result;
+
+	/**
 	 * Visit a parse tree produced by `HSQLParser.scope`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -724,27 +747,6 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitDeclaration?: (ctx: DeclarationContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.typeClauses`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitTypeClauses?: (ctx: TypeClausesContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.tableClause`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitTableClause?: (ctx: TableClauseContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.layoutClause`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitLayoutClause?: (ctx: LayoutClauseContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `HSQLParser.colDefs`.

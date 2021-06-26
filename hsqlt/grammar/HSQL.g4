@@ -6,18 +6,23 @@ import {SelectJoinType} from '../ast/SelectHelpers';
 import {SingularDataType} from '../ast/SingularDataType';
 }
 
-program: (completestmt)* EOF;
+program
+	locals[
+	needML:boolean=false,needPlots:boolean=false,actionCount:number=0
+]: (completestmt)* EOF;
 
 completestmt: stmt SEMICOLON;
 
-stmt: definitionStmt | actionStmt | importStmt;
+stmt:
+	definitionStmt
+	| {$program::actionCount++;} actionStmt
+	| importStmt;
 
 definitionStmt: scope label = IDENTIFIER EQ expr;
 
 expr: definition | actionStmt;
 // | transformStmt | mlStmt | moduleStmt;
-actionStmt: selectStmt | outputStmt |
-/* plotStmt |*/ literal;
+actionStmt: selectStmt | outputStmt | plotStmt | literal;
 
 // SELECT STATEMENT skipping the having for later
 selectStmt:
@@ -109,8 +114,6 @@ offsetClause: OFFSET INTEGER_VALUE;
 
 // operators: comparisonOperator | arithmeticOPERATOR | logicalOperator;
 
-// aggregationOperator: COUNT # countAggr | AVG # avgAggr | MIN # minAggr | MAX # maxAggr | SUM #
-// sumAggr | TRIM # trimAggr;
 comparisonOperator: EQ | NEQ | LT | LTE | GT | GTE;
 // arithmeticOPERATOR: PLUS | SUBSTRACT | MULTIPLY | DIVIDE | MODULO;
 logicalOperator: AND | OR | NOT | IN | BETWEEN | EXISTS;
@@ -199,7 +202,10 @@ toFile: (FILE)? STRING (OVERWRITE)?;
 
 /* PLOT STATEMENT
  */
-// plotStmt: PLOT FROM definition (TITLE)? IDENTIFIER ((TYPE)? IDENTIFIER)?;
+plotStmt:
+	{$program::needPlots=true} PLOT FROM? fromdef = definition (
+		TITLE
+	)? title = IDENTIFIER (TYPE)? typePlot = IDENTIFIER;
 
 // /* MODULE STATEMENT */
 
@@ -230,11 +236,11 @@ toFile: (FILE)? STRING (OVERWRITE)?;
 scope: EXPORT | SHARED |;
 
 // this is the declarations file
-declarations: (declaration)* EOF;
-declaration: DECLARE IDENTIFIER AS typeClauses SEMICOLON;
-typeClauses: tableClause | layoutClause;
-tableClause: TABLE BSTART_ colDefs BEND_;
-layoutClause: LAYOUT BSTART_ colDefs BEND_;
+declarations: (declaration SEMICOLON)* EOF;
+declaration:
+	DECLARE IDENTIFIER AS? TABLE BSTART_ colDefs BEND_ # tableDeclaration
+	// | DECLARE IDENTIFIER AS? LAYOUT BSTART_ colDefs BEND_ #layoutDeclaration
+	| DECLARE IDENTIFIER AS? PLOT ON STRING # plotDeclaration;
 colDefs: colDef (COMMA_ colDef)* |;
 colDef: dataType IDENTIFIER;
 

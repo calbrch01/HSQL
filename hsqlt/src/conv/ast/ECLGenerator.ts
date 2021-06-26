@@ -8,6 +8,7 @@ import { EqualDefinition } from '../../ast/stmt/EqualDefinition';
 import { Import } from '../../ast/stmt/Import';
 import { StringLiteral } from '../../ast/stmt/Literal';
 import { Output } from '../../ast/stmt/Output';
+import { Plot } from '../../ast/stmt/Plot';
 import { Select } from '../../ast/stmt/Select';
 import { SelectJoin } from '../../ast/stmt/SelectJoin';
 import { DataMetaData, VariableVisibility } from '../../ast/symbol/VariableTable';
@@ -77,6 +78,23 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
 
         //  note that the const is by reference, not mutability
         rhstop.coverCode(ecl.equal.eq(x.lhs.toString()), undefined, false);
+
+        return [...rhs, rhstop];
+    }
+
+    visitPlot(x: Plot) {
+        const rhs = this.visit(x.src);
+        const [rhstop] = this.getPopped(rhs, x.node);
+
+        const { dataVisualizationTemplate: dvt } = x;
+        // the beginning of the function
+        const sourceAndDotIdentifier = (dvt.source ?? '') + (dvt.source === undefined ? '' : '.');
+
+        const template = sourceAndDotIdentifier + format(dvt.template, [x.titleText]);
+        // console.log('ASJF', template);
+
+        rhstop.coverCode(ecl.plot.left, ecl.plot.plotRight(x.titleText, template), false);
+        // rhstop.coverCode()
 
         return [...rhs, rhstop];
     }

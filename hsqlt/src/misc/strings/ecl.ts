@@ -30,6 +30,10 @@ export default {
         functionTerm: 'FUNCTION',
         return: 'RETURN ',
     },
+    plot: {
+        left: `PARALLEL(OUTPUT(`,
+        plotRight: compile(`,,NAMED('{0}')),{1})`),
+    },
     table: {
         tableTerm: 'TABLE(',
         joiner: compile('JOIN({0},{1},true,all)'),

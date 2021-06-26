@@ -35,4 +35,5 @@ export default {
 
     didNotOutput: 'Did not make outputs because of issues',
     emptyCode: 'Empty code generation',
+    noActions: 'No actions or export in program',
 } as const;

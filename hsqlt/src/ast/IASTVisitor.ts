@@ -5,6 +5,7 @@ import { EqualDefinition } from './stmt/EqualDefinition';
 import { Import } from './stmt/Import';
 import { StringLiteral } from './stmt/Literal';
 import { Output } from './stmt/Output';
+import { Plot } from './stmt/Plot';
 import { Select } from './stmt/Select';
 import { SelectJoin } from './stmt/SelectJoin';
 
@@ -57,4 +58,6 @@ export interface IASTVisitor<T> {
     visitStringLiteral?: (x: StringLiteral) => T;
 
     visitSelectJoin?: (x: SelectJoin) => T;
+
+    visitPlot?: (x: Plot) => T;
 }

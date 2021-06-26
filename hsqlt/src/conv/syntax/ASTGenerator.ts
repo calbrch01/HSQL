@@ -25,6 +25,7 @@ import {
     DefinitionStmtContext,
     ImportStmtContext,
     OutputStmtContext,
+    PlotStmtContext,
     ProgramContext,
     ScopeContext,
     SelectStmtContext,
@@ -35,6 +36,7 @@ import rs from '../../misc/strings/resultStrings';
 import { DefinitionGeneration } from './support/DefinitionsGeneration';
 import { OutputASTGenerator } from './support/OutputASTGenerator';
 import { SelectASTGenerator } from './support/SelectASTGenerator';
+import { PlotASTGenerator } from './support/PlotASTGenerator';
 /**
  * Generate an AST.
  * Imports are added to the variable table by this.ast.addImport
@@ -76,14 +78,7 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
 
         const importAs = ctx.IDENTIFIER()?.text;
         const importAsQID = importAs === undefined ? undefined : QualifiedIdentifier.fromString(importAs);
-        /*
-         * Now since the identifiers list is a ts tuple
-         * the spread operator applies it as arguments, to this function
-         * this would be equivalent to writing
-         * this.ast.addImport(identifiers[0],identifiers[1]);
-         * or if theres only one element
-         * this.ast.addImport(identifiers[0]);
-         */
+
         this.ast.addImport(ctx, importFrom, importAsQID);
         // NoDataType as the import statement itself does not have a resultant data type
         return new VEO(new NoDataType(), new Import(ctx, importFrom, importAsQID));
@@ -142,11 +137,25 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
         // TODO 29/05 Maybe find a more elegant way of performing this operation.
         // extract the statements
         const visitedChildren = ctx.completestmt();
+
+        if (ctx.actionCount === 0) {
+            this.errorManager.push(TranslationIssue.semanticErrorToken(rs.noActions, ctx));
+        }
+        // for the automatic imports
+        if (ctx.needPlots) {
+            const importFrom = new QualifiedIdentifier('Visualizer');
+            this.ast.addImport(ctx, importFrom);
+
+            this.ast.stmts.push(new Import(ctx, importFrom));
+        }
+
         const visitedAnswers = visitedChildren.map(e => e.accept(this));
-        const results: VEO<DataType, BaseASTNode>[] = visitedAnswers.reduce((t, e) => {
+        const results: VEO[] = visitedAnswers.reduce((t, e) => {
             if (e !== null) return t.concat(e);
             return t;
-        }, [] as VEO[]);
+        }, new Array<VEO>());
+
+        // console.debug(`importStats`, ctx.needPlots, ctx.needML, ctx.actionCount);
 
         // add the results of the statements
         this.ast.stmts.push(...results.map(e => e.stmt));
@@ -161,6 +170,10 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
     visitSelectStmt(ctx: SelectStmtContext) {
         const selectVisitor = new SelectASTGenerator(this);
         return selectVisitor.visit(ctx);
+    }
+
+    visitPlotStmt(ctx: PlotStmtContext) {
+        return new PlotASTGenerator(this).visit(ctx);
     }
 
     visitActionStmt(ctx: ActionStmtContext) {

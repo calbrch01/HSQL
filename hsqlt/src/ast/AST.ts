@@ -2,7 +2,7 @@ import { QualifiedIdentifier } from '../misc/ast/QualifiedIdentifier';
 import { BaseASTNode } from './stmt/base/BaseASTNode';
 import { DataMetaData, VariableTable, VariableVisibility } from './symbol/VariableTable';
 import { TaskManager } from '../managers/TaskManager';
-import { ImportStmtContext } from '../misc/grammar/HSQLParser';
+import { ImportStmtContext, ProgramContext } from '../misc/grammar/HSQLParser';
 import { IASTVisitor } from './IASTVisitor';
 import { ParserRuleContext } from 'antlr4ts';
 import { TranslationIssue } from '../managers/ErrorManager';
@@ -30,13 +30,21 @@ export class AST implements BaseASTNode {
      * @param name
      * @param alias
      */
-    addImport(ctx: ImportStmtContext, name: QualifiedIdentifier, alias?: QualifiedIdentifier) {
+    addImport(ctx: ImportStmtContext | ProgramContext, name: QualifiedIdentifier, alias?: QualifiedIdentifier) {
         // note that it gets imported as whatever is the tail module
         const nameStr = name.tail;
         const aliasStr = alias?.toString();
 
         //resolve this import
-        const { output: res } = this.TaskMgr.resolve(name);
+        const { output: res, viz } = this.TaskMgr.resolve(name, alias);
+
+        viz.forEach((val, key) => {
+            const res = this.variableManager.addVisualizationDeclaration(key, val);
+
+            if (!res) {
+                this.TaskMgr.errorManager.push(TranslationIssue.semanticErrorToken(format(rs.existsError, [key]), ctx));
+            }
+        });
 
         const x = this.variableManager.add(aliasStr ?? nameStr, DataMetaData(res, VariableVisibility.DEFAULT));
 
@@ -44,8 +52,6 @@ export class AST implements BaseASTNode {
             this.TaskMgr.errorManager.push(
                 TranslationIssue.semanticErrorToken(format(rs.existsError, [aliasStr ?? nameStr]), ctx)
             );
-        // this not our problem - the ast generator must do this
-        //this.stmts.push(new Import(ctx, name, alias));
     }
     accept<T>(visitor: IASTVisitor<T>) {
         return visitor.visitAST(this);

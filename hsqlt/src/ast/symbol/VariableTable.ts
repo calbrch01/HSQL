@@ -12,7 +12,7 @@ export enum VariableVisibility {
     SHARED,
     PUBLIC,
 }
-export type DataMetaDataType = {
+export type DataMetaData = {
     data: DataType;
     vis: VariableVisibility;
     internal: boolean;
@@ -25,12 +25,22 @@ export type DataMetaDataType = {
  * @param internal
  * @returns
  */
-export function DataMetaData(data: DataType, vis: VariableVisibility, internal: boolean = false): DataMetaDataType {
+export function DataMetaData(data: DataType, vis: VariableVisibility, internal: boolean = false): DataMetaData {
     return {
         data,
         vis,
         internal,
     };
+}
+
+export type DataVisualization = {
+    template: string;
+    source?: string;
+    exported: boolean;
+};
+
+export function DataVisualization(template: string, exported: boolean = false, source?: string) {
+    return { template, exported, source };
 }
 
 /**
@@ -39,12 +49,36 @@ export function DataMetaData(data: DataType, vis: VariableVisibility, internal: 
  */
 export class VariableTable {
     static actionPrependString = '__r_action_' as const;
+    protected actionCounter: number;
 
     /**
      * Generate variables
      * @param _vars Pre-existing variables to add
      */
-    constructor(protected _vars: Map<string, DataMetaDataType>[] = [new Map()], protected actionCounter: number = 0) {}
+    constructor(
+        protected _vars: Map<string, DataMetaData>[] = [new Map()],
+        protected _visualizationDeclarations: Map<string, DataVisualization> = new Map()
+    ) {
+        this.actionCounter = 0;
+    }
+
+    get visualizationDeclarations() {
+        return this._visualizationDeclarations;
+    }
+
+    addVisualizationDeclaration(s: string, y: DataVisualization) {
+        // console.log('setting', s);
+        s = s.toLowerCase();
+        if (this._visualizationDeclarations.has(s)) {
+            return false;
+        }
+        this._visualizationDeclarations.set(s, y);
+        return true;
+    }
+    getVisualizationDeclaration(s: string) {
+        s = s.toLowerCase();
+        return this._visualizationDeclarations.get(s);
+    }
 
     /**
      * Avoid using this
@@ -65,9 +99,9 @@ export class VariableTable {
      * @param v the data to add
      * @param addtoOverLay whether to add to the root base(false) or to the latest overlay(true). (true)
      */
-    add(s: string, v: DataMetaDataType, addtoOverLay: boolean = true): boolean {
+    add(s: string, v: DataMetaData, addtoOverLay: boolean = true): boolean {
         s = s.toLowerCase();
-        const map: Map<string, DataMetaDataType> = this._vars[addtoOverLay ? this.scopeLength - 1 : 0];
+        const map: Map<string, DataMetaData> = this._vars[addtoOverLay ? this.scopeLength - 1 : 0];
         // this.vars.add(v);
 
         if (map.has(s)) {
@@ -77,11 +111,11 @@ export class VariableTable {
         return true;
     }
 
-    get(s: string): DataMetaDataType | undefined {
+    get(s: string): DataMetaData | undefined {
         s = s.toLowerCase();
 
         const l = this.scopeLength;
-        let x: DataMetaDataType | undefined = undefined;
+        let x: DataMetaData | undefined = undefined;
         for (let i = l - 1; i >= 0; i--) {
             x = this._vars[i].get(s);
             if (x !== undefined) break;
@@ -106,7 +140,7 @@ export class VariableTable {
         // return this._vars.has(s);
     }
 
-    pushScope(overlay: Map<string, DataMetaDataType> = new Map()) {
+    pushScope(overlay: Map<string, DataMetaData> = new Map()) {
         return this._vars.push(overlay);
     }
     popScope() {

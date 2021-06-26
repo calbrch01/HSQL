@@ -416,7 +416,7 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
             const c = this.incCounter.getAndIncrement();
             alias = SelectASTGenerator.colPrefix + c;
             this.errorManager.push(
-                TranslationIssue.semanticInfoToken(format(rs.column, rs.noAliasUsingFallbackInfo, [alias]), ctx)
+                TranslationIssue.semanticInfoToken(format(rs.noAliasUsingFallbackInfo, [rs.column, alias]), ctx)
             );
         }
         if (task === miscHSQL.count) {
@@ -444,7 +444,7 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
             const c = this.incCounter.getAndIncrement();
             alias = SelectASTGenerator.colPrefix + c;
             this.errorManager.push(
-                TranslationIssue.semanticInfoToken(format(rs.column, rs.noAliasUsingFallbackInfo, [alias]), ctx)
+                TranslationIssue.semanticInfoToken(format(rs.noAliasUsingFallbackInfo, [rs.column, alias]), ctx)
             );
         }
         const aggr = mapAggregation(task);
@@ -695,7 +695,7 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
             );
         }
 
-        // FUTURE THIS IS A HACK. But its required to provide SQL-like interface.
+        // FUTURE This is a weird way of doing things, but it makes things look like SQL.
         // IDEA - for x1 join y1 on x2.c1 = y2.c2, find out if x1=x2 and y1=y2
         const leftBitFirst = leftBit.firstIdentifier(),
             rightBitFirst = rightBit.firstIdentifier();

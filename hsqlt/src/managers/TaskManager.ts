@@ -17,7 +17,7 @@ import { FileType } from '../misc/file/FileType';
 import { FileHandler } from '../misc/file/FileHandler';
 import { FileProvider } from '../misc/file/FileProvider';
 import { FSManager } from './FSManager';
-import { VariableVisibility } from '../ast/symbol/VariableTable';
+import { DataVisualization, VariableVisibility } from '../ast/symbol/VariableTable';
 
 /**
  * Manage Tasks - Generate ASTs, Resolve vars
@@ -239,7 +239,10 @@ export class TaskManager {
      * @param q resolve this qualified identifier into face
      * @returns the module that was resolved
      */
-    resolve(q: QualifiedIdentifier): { output: Module } {
+    resolve(
+        q: QualifiedIdentifier,
+        alias?: QualifiedIdentifier
+    ): { output: Module; viz: Map<string, DataVisualization> } {
         // const identifiers = q.qidentifier;
         // let joinable = '.';
         const fsl = q.qidentifier;
@@ -255,12 +258,22 @@ export class TaskManager {
 
             const vars = ast.variableManager.vars[0];
             if (vars === undefined) {
-                return { output: new AnyModule() };
+                return { output: new AnyModule(), viz: new Map() };
             }
             const rows = [...vars]
-                .filter(([name, entry]) => entry.vis === VariableVisibility.PUBLIC && entry.internal === false)
+                .filter(([_name, entry]) => entry.vis === VariableVisibility.PUBLIC && entry.internal === false)
                 .map(([name, entry]) => [name, entry.data] as const);
-            return { output: new Module(new Map(rows)) };
+
+            // filter and get all the entries that are replaced, and now we are no longer exporting them
+            const vizMaps = [...ast.variableManager.visualizationDeclarations]
+                .filter(([_, entry]) => entry.exported === true)
+                .map(([name, entry]) => {
+                    entry.exported = false;
+                    entry.source = alias?.toString() ?? q.tail;
+                    return [name, entry] as const;
+                });
+
+            return { output: new Module(new Map(rows)), viz: new Map(vizMaps) };
         }
         // do something here
         // for (const segment of identifiers) {
@@ -272,6 +285,6 @@ export class TaskManager {
         // return joinable;
         // const res = this._fsmanager.resolveName(q);
         // FIXME 03/06 actually resolve, currently we just eject an anymodule
-        return { output: new AnyModule() };
+        return { output: new AnyModule(), viz: new Map() };
     }
 }
