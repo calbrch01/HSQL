@@ -19,7 +19,7 @@ const tdocs = new TDocs(FTDoc, [
         const needDiagnostics = true;
         if (needDiagnostics) {
             // need to generate file map
-            validate(d);
+            validate(d).catch(e => connection.console.log('Something went really wrong'));
         }
     },
 ]);
@@ -31,8 +31,8 @@ const documents = new TextDocuments(tdocs);
 //     // we will have to get diagnostics here, lets try
 // });
 
-documents.onDidOpen(e => {
-    validate(e.document);
+documents.onDidOpen(async e => {
+    await validate(e.document);
 });
 
 // documents.onDidClose(e => {
@@ -57,14 +57,14 @@ documents.listen(connection);
 // and finally, listen for some input
 connection.listen();
 
-function validate(d: TextDocument) {
-    const { asts, issues } = validator(d, documents);
-    connection.console.log(`I>Got diagnostics :${issues.length} issues`);
-
+async function validate(d: TextDocument) {
+    // console.log('tried getting answers');
+    const { asts, issues } = await validator(d, documents);
+    // connection.console.log(`I>Got diagnostics :${issues.length} issues`);
     const fileList = getFileList(asts);
 
     const mappedIssues = mapIssues(issues, fileList);
-    connection.console.log(`I>Mapped the diagnostics filewise ${mappedIssues.size}`);
+    // connection.console.log(`I>Mapped the diagnostics filewise ${mappedIssues.size}`);
     // send these over
     // FIXME merge the asts uri map with this one
     const issuesList = [...mappedIssues];

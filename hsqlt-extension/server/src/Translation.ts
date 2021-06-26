@@ -10,13 +10,27 @@ import { TextDocument, TextDocumentContentChangeEvent } from 'vscode-languageser
 import { DocListener, FTDoc } from './TextDoc';
 import { eventChecks } from './TextUtils';
 import { fileURLToPath, pathToFileURL } from 'url';
-import { AST, ContexedTranslationError, ErrorSeverity, TaskManager } from 'hsqlt';
+import { AST, ContexedTranslationError, ErrorSeverity, HaltError, TaskManager } from 'hsqlt';
 import { FileType } from '../../../hsqlt/build/misc/file/FileType';
-import { MemFileProvider } from '../../../hsqlt/build/misc/file/FileProvider';
+import { FileProvider, MemFileProvider } from '../../../hsqlt/build/misc/file/FileProvider';
 import { relative, resolve } from 'path';
+import { FSManager } from '../../../hsqlt/build/managers/FSManager';
+
+/**
+ * Cache the locations (This reduces delay with fetching from eclcc)
+ */
+class FSManagerSource {
+    protected static instance: FileProvider[] | undefined;
+    async getInstance(tm: TaskManager): Promise<FileProvider[]> {
+        if (FSManagerSource.instance === undefined) {
+            FSManagerSource.instance = await FSManager.DefaultsProvidersFactory(tm.errorManager);
+        }
+        return FSManagerSource.instance;
+    }
+}
 
 // FUTURE someday work with non-file:// functions
-export function validator(document: TextDocument, documents: TextDocuments<TextDocument>) {
+export async function validator(document: TextDocument, documents: TextDocuments<TextDocument>) {
     // changes?: TextDocumentContentChangeEvent[],
     // version?: number,
     // const changesInc = changes.filter(eventChecks.eventIsIncremental);
@@ -35,10 +49,22 @@ export function validator(document: TextDocument, documents: TextDocuments<TextD
     const fileMap = new Map(disposable);
 
     const tm = new TaskManager(relative('', mainFile), false);
-    tm.addFileProviders(new MemFileProvider(fileMap, true));
-    const results = tm.generateAST();
+    tm.addFileProviders(
+        ...(await new FSManagerSource().getInstance(tm)),
+        new MemFileProvider(fileMap, true)
+    );
+    try {
+        const results = tm.generateAST();
+    } catch (e) {
+        if (e instanceof HaltError) {
+            // console.debug('Threw a usual error');
+        } else {
+            console.debug('Threw an unusual error');
+        }
+    }
+    // tm.ASTMap
     return {
-        ...results,
+        asts: tm.ASTMap,
         issues: tm.errorManager.issues,
     };
 }
@@ -54,6 +80,7 @@ export function mapIssues(
 ): Map<URI, Diagnostic[]> {
     const fileListMapped: [string, Diagnostic[]][] = fileList.map(e => [e, []]);
     const mappedIssues = new Map<URI, Diagnostic[]>(fileListMapped);
+    // console.debug('Issue Count', issues.length, issues);
     for (const issue of issues) {
         const fn = pathToFileURL(issue.ctx).toString();
         const entry = mappedIssues.get(fn) ?? [];
@@ -63,8 +90,8 @@ export function mapIssues(
             (issue.lineEnd ?? issue.line ?? 1) - 1,
             issue.charPositionInLineEnd ?? issue.charPositionInLine ?? 0
         );
+        console.log('issue', startPosition, endPosition);
         // FIXME use a range
-        console.log(issue.line, issue.lineEnd);
         entry.push({
             message: issue.msg,
             range: Range.create(startPosition, endPosition),

@@ -7,5 +7,5 @@ P = select * from a.t1;
 
 
 -- select * from p;
-//output p;
-plot from p title hello type step;
+output p;
+p
