@@ -2,7 +2,7 @@
     "name": "hsqlt-extension",
     "displayName": "hsqlt-extension",
     "description": "",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "publisher": "Testing",
     "engines": {
         "vscode": "^1.56.0"
@@ -80,7 +80,7 @@
         "ts-loader": "^9.2.3",
         "tsconfig-paths-webpack-plugin": "^3.5.1",
         "typescript": "^4.3.2",
-        "vsce": "1.91",
+        "vsce": "^1.95.0",
         "vscode-test": "^1.5.2",
         "webpack": "^5.38.1",
         "webpack-cli": "^4.7.0"
