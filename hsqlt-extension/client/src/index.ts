@@ -8,9 +8,23 @@ import {
     ServerOptions,
     TransportKind,
 } from 'vscode-languageclient';
-import { ErrorSeverity, FileOutput, OutputManager, TaskManager } from 'hsqlt';
-import { FSFileProvider } from '../../../hsqlt/build/misc/file/FileProvider';
+import { FileOutput, FileProvider, FSFileProvider, FSManager, TaskManager } from 'hsqlt';
+
 let client: LanguageClient;
+
+/**
+ * Cache the locations (This reduces delay with fetching from eclcc)
+//  */
+class FSManagerSource {
+    protected static instance: FileProvider[] | undefined;
+    async getInstance(tm: TaskManager): Promise<FileProvider[]> {
+        if (FSManagerSource.instance === undefined) {
+            FSManagerSource.instance = await FSManager.DefaultsProvidersFactory(tm.errorManager);
+        }
+        return FSManagerSource.instance;
+    }
+}
+
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -47,7 +61,11 @@ export function activate(context: vscode.ExtensionContext) {
             console.log(fn);
             const x = new TaskManager(fn, false, new FileOutput(), undefined, true);
             // await vscode.window.showInformationMessage('Start AST generating');
-            x.addFileProviders(new FSFileProvider());
+            // x.addFileProviders(new FSFileProvider());
+            x.addFileProviders(
+                ...(await new FSManagerSource().getInstance(x)),
+                new FSFileProvider()
+            );
             try {
                 x.generateAST();
             } catch (e) {
@@ -70,6 +88,7 @@ export function activate(context: vscode.ExtensionContext) {
                         'Yes',
                         'No'
                     );
+                    console.log('Warnings', x.getIssues());
                     // TODO ?? allow configuration
                     if (ans === 'Yes') {
                         await x.generateOutputs();

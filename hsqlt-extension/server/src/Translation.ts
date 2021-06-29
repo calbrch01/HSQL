@@ -12,8 +12,12 @@ import { eventChecks } from './TextUtils';
 import { fileURLToPath, pathToFileURL } from 'url';
 import { AST, ContexedTranslationError, ErrorSeverity, HaltError, TaskManager } from 'hsqlt';
 import { FileType } from '../../../hsqlt/build/misc/file/FileType';
-import { FileProvider, MemFileProvider } from '../../../hsqlt/build/misc/file/FileProvider';
-import { relative, resolve } from 'path';
+import {
+    FileProvider,
+    FSFileProvider,
+    MemFileProvider,
+} from '../../../hsqlt/build/misc/file/FileProvider';
+import { relative } from 'path';
 import { FSManager } from '../../../hsqlt/build/managers/FSManager';
 
 /**
@@ -51,7 +55,8 @@ export async function validator(document: TextDocument, documents: TextDocuments
     const tm = new TaskManager(relative('', mainFile), false);
     tm.addFileProviders(
         ...(await new FSManagerSource().getInstance(tm)),
-        new MemFileProvider(fileMap, true)
+        new MemFileProvider(fileMap, true),
+        new FSFileProvider()
     );
     try {
         const results = tm.generateAST();

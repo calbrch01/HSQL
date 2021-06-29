@@ -15,6 +15,13 @@ export { AST } from './ast/AST';
 export * from './managers/ErrorManager';
 export * from './managers/TaskManager';
 export * from './managers/OutputManagers';
+
+// reading managers
+export * from './managers/FSManager';
+export * from './misc/file/FileHandler';
+export * from './misc/file/FileProvider';
+export * from './misc/file/FileType';
+
 // export * from './misc/holders/VEO';
 
 //misc
