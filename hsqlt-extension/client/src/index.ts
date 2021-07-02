@@ -9,7 +9,8 @@ import {
     TransportKind,
 } from 'vscode-languageclient';
 import { FileOutput, FileProvider, FSFileProvider, FSManager, TaskManager } from 'hsqlt';
-
+import { relative } from 'path';
+import { URL } from 'url';
 let client: LanguageClient;
 
 /**
@@ -58,8 +59,22 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.commands.registerCommand('hsqlt.compile', async () => {
             await vscode.workspace.saveAll();
             const fn = vscode.window.activeTextEditor.document.fileName;
-            console.log(fn);
-            const x = new TaskManager(fn, false, new FileOutput(), undefined, true);
+            const uri = vscode.window.activeTextEditor.document.uri;
+            let folderName = vscode.workspace.getWorkspaceFolder(uri)?.uri?.fsPath;
+            if (folderName === undefined) {
+                // just the containing folder
+                folderName = relative(fn, '..');
+            }
+
+            // const mainFile = relative(folderName, fn);
+            // console.log(fn);
+            const x = new TaskManager(
+                relative('', fn) /* mainFile */,
+                false,
+                new FileOutput(),
+                undefined,
+                true
+            );
             // await vscode.window.showInformationMessage('Start AST generating');
             // x.addFileProviders(new FSFileProvider());
             x.addFileProviders(
@@ -84,13 +99,13 @@ export function activate(context: vscode.ExtensionContext) {
             } else {
                 if (warnings > 0) {
                     const ans = await vscode.window.showWarningMessage(
-                        'Warnings in Compiling. Write to disk?',
+                        'Warnings in Compiling. Stop?',
                         'Yes',
                         'No'
                     );
                     console.log('Warnings', x.getIssues());
                     // TODO ?? allow configuration
-                    if (ans === 'Yes') {
+                    if (ans !== 'Yes') {
                         await x.generateOutputs();
                         await vscode.window.showInformationMessage('Done writing');
                     }

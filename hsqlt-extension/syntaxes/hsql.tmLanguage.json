@@ -12,11 +12,15 @@
             "include": "#commentBlock"
         },
         {
-            "match": "(?i)(select|from|on|as|plot|import|output|title|train|predict|group|by|order|join|declare|title|type)",
+            "match": "(?i)(select|from|on|as|plot|import|output|title|train|predict|group|by|order|join|declare|title|type|where)\\b",
             "name": "keyword.other"
         },
         {
-            "match": "(?i)(method)",
+            "match": "(?i)(MAX|MIN|COUNT|AVG|TRIM)(?=\\()",
+            "name": "support.function"
+        },
+        {
+            "match": "(?i)(method)\\b",
             "name": "support.function"
         },
         {
