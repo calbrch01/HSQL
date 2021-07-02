@@ -3,9 +3,7 @@ import { QualifiedIdentifier } from '../../misc/ast/QualifiedIdentifier';
 import { SelectJoinType } from '../../misc/ast/SelectHelpers';
 import { SelectJoinedTableContext } from '../../misc/grammar/HSQLParser';
 import { VEO } from '../../misc/holders/VEO';
-import { Any } from '../data/Any';
 import { DataType } from '../data/base/DataType';
-import { Table } from '../data/Table';
 import { IASTVisitor } from '../IASTVisitor';
 import { StmtExpression } from './base/StmtExpression';
 
@@ -13,7 +11,7 @@ import { StmtExpression } from './base/StmtExpression';
  * Select Joins. Currently used only for select statements, although it can be generalized pretty well.
  */
 export class SelectJoin implements StmtExpression {
-    // FIXME consider comparisonOperators properly
+    // FUTURE consider comparisonOperators properly
     constructor(
         public node: SelectJoinedTableContext,
         private _lhs: VEO<DataType, StmtExpression>,

@@ -12,7 +12,7 @@ import { ErrorManager, ErrorType, TranslationIssue } from './ErrorManager';
 
 /**
  * Manages a set of file providers, does not create them.
- * Create these as required
+ * Create them as required
  */
 export class FSManager {
     protected _fh: FileHandler;

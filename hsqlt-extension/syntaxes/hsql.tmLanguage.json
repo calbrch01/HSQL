@@ -3,246 +3,50 @@
     "scopeName": "source.hsql",
     "patterns": [
         {
-            "include": "#program"
-        }
-    ],
-    "repository": {
-        "program": {
-            "patterns": [
-                {
-                    "include": "#commentsLine"
-                },
-                {
-                    "include": "#commentsLine_c"
-                },
-                {
-                    "include": "#commentsBlock"
-                },
-                {
-                    "include": "#statements"
-                }
-            ]
+            "include": "#commentDoubleDash"
         },
-        "statements": {
-            "patterns": [
-                {
-                    "include": "#importstmt"
-                },
-                {
-                    "include": "#assignmentStmt"
-                },
-                {
-                    "include": "#plotStmt"
-                },
-                {
-                    "include": "#exportStmt"
-                },
-                {
-                    "include": "#outputStmt"
-                }
-            ]
+        {
+            "include": "#commentStandard"
         },
-        "importstmt": {
-            "begin": "(import)|(IMPORT)",
-            "beginCaptures": {
-                "0": {
-                    "name": "keyword"
-                }
-            },
-            "patterns": [
-                {
-                    "include": "#identifier"
-                }
-            ],
-            "end": ";\n"
+        {
+            "include": "#commentBlock"
         },
-        "assignmentStmt": {
-            "begin": "(\\w+)\\s?(=)\\s?",
-            "end": ";",
-            "contentName": "source.sql",
-            "patterns": [
-                {
-                    "include": "#trainStmt"
-                },
-                {
-                    "include": "#predictStmt"
-                },
-                {
-                    "include": "source.sql"
-                }
-            ],
-            "beginCaptures": {
-                "1": {
-                    "name": "constant.other"
-                },
-                "2": {
-                    "name": "keyword.operator"
-                }
-            }
+        {
+            "match": "(?i)(select|from|on|as|plot|import|output|title|train|predict|group|by|order|join|declare|title|type)",
+            "name": "keyword.other"
         },
-        "plotStmt": {
-            "match": "([pP][lL][oO][tT])[ ]+?([fF][rR][oO][mM])[ ]+?([\\w.]+)[ ]+?([tT][iI][tT][lL][eE])[ ]+?(\\'.*?\\')[ ]*?(?:[ ]([tT][yY][pP][eE])[ ]+?\\w+)?[ ]*?;",
-            "captures": {
-                "1": {
-                    "name": "keyword.other"
-                },
-                "2": {
-                    "name": "keyword.other"
-                },
-                "3": {
-                    "name": "constant.other"
-                },
-                "4": {
-                    "name": "keyword.other"
-                },
-                "5": {
-                    "name": "string"
-                },
-                "6": {
-                    "name": "keyword.other"
-                },
-                "7": {
-                    "name": "keyword.operator"
-                }
-            }
+        {
+            "match": "(?i)(method)",
+            "name": "support.function"
         },
-        "exportStmt": {
-            "match": "(export|EXPORT)[ ]+?(.*);",
-            "captures": {
-                "1": {
-                    "name": "keyword.other"
-                },
-                "2": {
-                    "name": "constant.other"
-                }
-            }
-        },
-        "outputStmt": {
-            "match": "(?i:(output))\\s+(\\w+(?:\\.\\w+)*)\\s*(?:\\s(?:(?i:(title)\\s+(\\w+))|(?i:(file)\\s+(\\'[^']*\\')\\s+(\\w+)))\\s*)?(?i:\\s((?:update)|(?:overwrite))\\s*)?(?:\\s(?i:(expire))\\s+(\\d+)\\s*)?;",
-            "captures": {
-                "1": {
-                    "name": "keyword.other"
-                },
-                "2": {
-                    "name": "constant.other"
-                },
-                "3": {
-                    "name": "keyword.other"
-                },
-                "4": {
-                    "name": "constant.other"
-                },
-                "5": {
-                    "name": "keyword.other"
-                },
-                "6": {
-                    "name": "string.quoted.single"
-                },
-                "7": {
-                    "name": "support.function"
-                },
-                "8": {
-                    "name": "keyword.other"
-                },
-                "9": {
-                    "name": "keyword.other"
-                },
-                "10": {
-                    "name": "constant.numeric"
-                }
-            }
-        },
-        "commentsLine": {
-            "begin": "--",
-            "end": "\n",
-            "name": "comment.line.double-dash"
-        },
-        "commentsLine_c": {
-            "begin": "//",
-            "end": "\n",
-            "name": "comment.line"
-        },
-        "commentsBlock": {
-            "begin": "/[*]",
-            "end": "[*]/",
-            "name": "comment.block"
-        },
-        "identifier": {
-            "match": "[_]?[a-zA-Z0-9_]+",
-            "name": "constant.other"
-        },
-        "number": {
+        {
             "match": "[0-9]+",
             "name": "constant.numeric"
         },
-        "trainStmt": {
-            "match": "([tT][rR][aA][iI][nN])[ ]+?([fF][rR][oO][mM])[ ]+?(\\w+(?:\\.\\w+)*?)[ ]*?,[ ]*?(\\w+(?:\\.\\w+)*?)(?:,(\\w+(?:\\.\\w+)*?))?[ ]+?([mM][eE][tT][hH][oO][dD])[ ]+?(\\w+)",
-            "captures": {
-                "1": {
-                    "name": "keyword.other"
-                },
-                "2": {
-                    "name": "keyword.other"
-                },
-                "3": {
-                    "name": "constant.other"
-                },
-                "4": {
-                    "name": "constant.other"
-                },
-                "5": {
-                    "name": "constant.other"
-                },
-                "6": {
-                    "name": "keyword.other"
-                },
-                "7": {
-                    "name": "support.function"
-                }
-            }
+        {
+            "match": "[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*",
+            "name": "variable"
         },
-        "predictStmt": {
-            "match": "(?i:(predict))\\s+?(?:(\\w+(?:\\.\\w+)*?)\\s+?)?(?i:(from))\\s+?(\\w+(?:\\.\\w+)*?)\\s*?(?i:\\s(method)\\s+?(\\w+))?",
-            "captures": {
-                "1": {
-                    "name": "keyword.other"
-                },
-                "2": {
-                    "name": "constant.other"
-                },
-                "3": {
-                    "name": "keyword.other"
-                },
-                "4": {
-                    "name": "constant.other"
-                },
-                "5": {
-                    "name": "keyword.other"
-                },
-                "6": {
-                    "name": "support.function"
-                }
-            }
+        {
+            "match": "[<][>]?|[>][=]?|[<][=]|[!][=]|[!=+-/*]",
+            "name": "keyword.operator"
+        }
+    ],
+    "repository": {
+        "commentDoubleDash": {
+            "comment": "Use this to explain the function of the rule, if necessary",
+            "name": "comment.line.double-dash",
+            "match": "--.*$"
         },
-        "paren-expression": {
-            "begin": "\\(",
-            "end": "\\)",
-            "beginCaptures": {
-                "0": {
-                    "name": "punctuation.paren.open"
-                }
-            },
-            "endCaptures": {
-                "0": {
-                    "name": "punctuation.paren.close"
-                }
-            },
-            "name": "expression.group",
-            "patterns": [
-                {
-                    "include": "#expression"
-                }
-            ]
+        "commentStandard": {
+            "comment": "Standard comment",
+            "name": "comment.line.double-slash",
+            "match": "//.*$"
+        },
+        "commentBlock": {
+            "begin": "/[*]",
+            "end": "[*]/",
+            "name": "comment.block"
         }
     }
 }

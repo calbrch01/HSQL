@@ -64,7 +64,8 @@ export class TaskManager {
     }
 
     /**
-     * Initialize
+     * Add in file providers
+     * Note: Its a good idea to add these in after initializing an instance of {@link TaskManager}
      */
     addFileProviders(...fileproviders: FileProvider[]) {
         for (const fileprovider of fileproviders) {
@@ -208,7 +209,7 @@ export class TaskManager {
 
     /**
      * Counts of issues
-     * @returns
+     * @returns [error count, warning count, info count]
      */
     issueStats() {
         const { suppressed, issues } = this.getIssues();
@@ -284,7 +285,6 @@ export class TaskManager {
         // }
         // return joinable;
         // const res = this._fsmanager.resolveName(q);
-        // FIXME 03/06 actually resolve, currently we just eject an anymodule
         return { output: new AnyModule(), viz: new Map() };
     }
 }
