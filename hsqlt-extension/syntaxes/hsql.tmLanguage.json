@@ -12,20 +12,25 @@
             "include": "#commentBlock"
         },
         {
-            "match": "(?i)(select|from|on|as|plot|import|output|title|train|predict|group|by|order|join|declare|title|type|where)\\b",
-            "name": "keyword.other"
-        },
-        {
             "match": "(?i)(MAX|MIN|COUNT|AVG|TRIM)(?=\\()",
             "name": "support.function"
         },
         {
-            "match": "(?i)(method)\\b",
+            "match": "(?i)(method|file)\\b",
             "name": "support.function"
         },
         {
             "match": "[0-9]+",
             "name": "constant.numeric"
+        },
+        {
+            "include": "#strings"
+        },
+        {
+            "include": "#singleQuotedString"
+        },
+        {
+            "include": "#keywords"
         },
         {
             "match": "[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*",
@@ -51,6 +56,18 @@
             "begin": "/[*]",
             "end": "[*]/",
             "name": "comment.block"
+        },
+        "keywords": {
+            "match": "(?i)(select|from|on|as|plot|import|output|title|train|predict|group|by|order|join|declare|title|type|where)\\b",
+            "name": "keyword.other"
+        },
+        "strings": {
+            "match": "\"([^\\\"]|\\.)*\"",
+            "name": "string"
+        },
+        "singleQuotedString": {
+            "match": "'([^\\']|\\.)*'",
+            "name": "string"
         }
     }
 }
