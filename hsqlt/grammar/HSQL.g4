@@ -28,8 +28,11 @@ actionStmt: selectStmt | outputStmt | plotStmt | literal;
 selectStmt:
 	SELECT distinctClause? selectColumns selectFromClause (
 		WHERE selectWhereClause
-	)? selectGroupByClause? (ORDER BY orderByClause)? /* (HAVING selectHavingClause)? */
-		limitOffsetClause?;
+	)? selectGroupByClause? (ORDER BY orderByClause)? (
+		DISTRIBUTE BY distributeByClause
+	) /* (HAVING selectHavingClause)? */ limitOffsetClause?;
+
+distributeByClause:;
 
 distinctClause: DISTINCT;
 // selectHavingClause: booleanExpression;
@@ -278,6 +281,7 @@ SHARED: S H A R E D;
 ASC: A S C;
 DESC: D E S C;
 ORDER: O R D E R;
+DISTRIBUTE: D I S T R I B U T E;
 
 // Aggregation
 GROUP: G R O U P;
