@@ -39,6 +39,8 @@ HSQLT is the currently indev compiler which can translate HSQL into ECL. Its cor
 
 ## Old links
 
+These are old links that point to the original syntax and usage of HSQL's compiler and syntax, and are kept here for quick reference.
+
 - [HSQLC docs](hsql/README.md)
 - [HSQL Syntax](hsql/docs/syntax.md)
 - [HSQL Extension README](hsql-server/README.md)
