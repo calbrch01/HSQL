@@ -72,14 +72,14 @@ export function activate(context: vscode.ExtensionContext) {
                 relative('', fn) /* mainFile */,
                 false,
                 new FileOutput(),
-                undefined,
+                relative('', folderName),
                 true
             );
             // await vscode.window.showInformationMessage('Start AST generating');
             // x.addFileProviders(new FSFileProvider());
             x.addFileProviders(
                 ...(await new FSManagerSource().getInstance(x)),
-                new FSFileProvider()
+                new FSFileProvider(undefined, undefined, true)
             );
             try {
                 x.generateAST();

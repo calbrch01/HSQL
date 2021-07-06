@@ -18,7 +18,7 @@ import { FileHandler } from '../misc/file/FileHandler';
 import { FileProvider } from '../misc/file/FileProvider';
 import { FSManager } from './FSManager';
 import { DataVisualization, VariableVisibility } from '../ast/symbol/VariableTable';
-import { relative } from 'path';
+import { join, relative } from 'path';
 
 /**
  * Manage Tasks - Generate ASTs, Resolve vars
@@ -44,7 +44,7 @@ export class TaskManager {
      * @param pedantic Whether to be pedantic or not
      * @param fileMap A fileMap. Missing files will be taken from disk
      * @param outputManager Output strategy - default is no output
-     * @param baseLoc (current directory)
+     * @param baseLoc offset from current directory (undefined)
      * @param _fsSets A set of fses to use. Default is a simple FS-backed layer. Pass atleast one FSProvider after initializing it.
      * @param args Optional presence of the arguments
      */
@@ -253,7 +253,7 @@ export class TaskManager {
 
         let { res: pathString, isLocal } = FSManager.parseQid(q);
         if (this.baseLoc !== undefined) {
-            pathString = relative(this.baseLoc, pathString);
+            pathString = join(this.baseLoc, pathString);
         }
 
         const x = this._fsmanager.stat(pathString, isLocal);
