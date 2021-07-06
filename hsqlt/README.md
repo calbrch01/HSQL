@@ -4,7 +4,7 @@
 
 ### Using HSQL
 
-HSQL is best used with VSCode, or the CLI tool if required. Here's some more details on the [CLI tool](./notes/programui.md).
+HSQL is best used with VSCode, or the CLI tool. Here's some more details on the [CLI tool](./notes/programui.md).
 
 
 ### Running this project during development

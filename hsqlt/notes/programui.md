@@ -27,10 +27,22 @@ hsqlt check|make|run -weopd <file>
 
 
 
+## Examples
 
-# ECL Cloud IDE
+1. Syntax check a hsql file
+   
+   `hsqlt check input.hsql`
+2. Get output of a hsql file onto stdout
+   
+   `hsqlt make input.hsql -o`
+3. Make output of a hsql file
 
-`Syntax Check` and `Submit`
+   `hsqlt make input.hsql`
+
+
+<!-- # ECL Cloud IDE
+
+`Syntax Check` and `Submit` -->
 
 # VSCode
 
@@ -38,4 +50,6 @@ hsqlt check|make|run -weopd <file>
   - Every time `.` is inserted
   - Pressing Ctl+` `
 - Syntax error highlighting
-  - Work with RAM objects
+  <!-- - Work with RAM objects -->
+
+
