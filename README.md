@@ -33,7 +33,7 @@ HSQLT is the currently indev compiler which can translate HSQL into ECL. Its cor
 |[`hsql`](hsql/)|HSQLC (JS implementation)|
 |[`hsql-extension`](hsql-server/)|HSQL Language Server implementation using HSQLC|
 |[`hsqlt`](hsqlt/)|HSQLT (TS implementation)|
-|[`hsqlt-extension`](hsqlt-hsqlt-extension/)|HSQL Language implementation using HSQLT|
+|[`hsqlt-extension`](hsqlt-extension/)|HSQL Language implementation using HSQLT|
 
 
 
