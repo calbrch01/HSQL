@@ -123,8 +123,8 @@ export class FSFileProvider implements FileProvider {
     }
 
     /**
-     * Read the path fragment (need not be complete folder wise) and extract extension
-     * @param x Path name containing atleast the file name with extension
+     * Get file type from file
+     * @param x Complete file path
      * @returns
      */
     protected getFileType(x: string): pathResultFragment {

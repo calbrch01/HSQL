@@ -78,6 +78,11 @@ export const { argv: args } = yargs(process.argv.slice(2))
         type: 'boolean',
         default: false,
     })
+    .option('b', {
+        desc: 'Offset the base from the CWD',
+        alias: ['offset-base'],
+        type: 'string',
+    })
     .option('k', {
         desc: 'Suppress issues',
         alias: ['suppress-issues'],
@@ -153,15 +158,15 @@ export type argType = typeof args;
  */
 export async function main(argv: argType, /*execMode: ExecMode*/ execMode: ExecIntent): Promise<void> {
     argv.a && console.log('<args>:', argv);
-    // initialize managers
-    const writer: OutputManager = argv.o ? new StandardOutput() : new FileOutput();
+    // initialize managers -> fs manager must be offset correctly
+    const writer: OutputManager = argv.o ? new StandardOutput() : new FileOutput(argv.b);
 
     //taskmap must have no map, and no baseloc for now
     const taskmanager = new TaskManager(argv.file, argv.p, writer, undefined, argv.k, argv);
     //add the standard libraries and the main files
     taskmanager.addFileProviders(
         ...(await FSManager.DefaultsProvidersFactory(taskmanager.errorManager)),
-        new FSFileProvider()
+        new FSFileProvider(args.b)
     );
     // taskmanager.addFileProviders(new FSFileProvider());
     try {

@@ -4,6 +4,7 @@
  */
 
 import { promises as fs } from 'fs';
+import path from 'path';
 import { iP } from '../misc/lib/formatting';
 import { ContexedTranslationError } from './ErrorManager';
 
@@ -70,7 +71,13 @@ export class NoOutput extends OutputManager {
 }
 
 export class FileOutput extends OutputManager {
+    constructor(protected offset?: string) {
+        super();
+    }
     async do(fn: string, contents: string) {
+        if (this.offset !== undefined) {
+            fn = path.join(this.offset, fn);
+        }
         return fs.writeFile(fn, contents);
     }
 }

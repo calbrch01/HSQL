@@ -68,10 +68,11 @@ export function activate(context: vscode.ExtensionContext) {
 
             // const mainFile = relative(folderName, fn);
             // console.log(fn);
+            const folderPath = relative('', folderName);
             const x = new TaskManager(
-                relative('', fn) /* mainFile */,
+                relative(folderPath, fn) /* mainFile */,
                 false,
-                new FileOutput(),
+                new FileOutput(folderPath),
                 undefined,
                 true
             );
@@ -80,14 +81,13 @@ export function activate(context: vscode.ExtensionContext) {
             x.addFileProviders(
                 ...(await new FSManagerSource().getInstance(x)),
                 // offset it from the current directory
-                new FSFileProvider(relative('', folderName), undefined, true)
+                new FSFileProvider(folderPath, undefined, true)
             );
             try {
                 x.generateAST();
             } catch (e) {
                 await vscode.window.showInformationMessage('Errors in AST generating');
             }
-            // await vscode.window.showInformationMessage('Done AST generating');
 
             const {
                 counts: [errors, warnings],
