@@ -1,5 +1,5 @@
 import path from 'path';
-import { pathResult, pathResultFragment } from '../file/FileProvider';
+import { pathResult, pathResultFragment } from '../file/pathResult';
 import { FileType } from '../file/FileType';
 
 // export type FileNode =
