@@ -1,0 +1,3 @@
+import a;
+
+write a.t1 to file TYPE CSV '~output::kek.csv';
