@@ -11,7 +11,7 @@ import { Table, AnyTable } from '../../../ast/data/Table';
 import { BaseASTNode } from '../../../ast/stmt/base/BaseASTNode';
 import { StmtExpression } from '../../../ast/stmt/base/StmtExpression';
 import { Definition } from '../../../ast/stmt/Definition';
-import { Select } from '../../../ast/stmt/Select';
+import { Select, SelectASTArguments } from '../../../ast/stmt/Select';
 import { SelectJoin } from '../../../ast/stmt/SelectJoin';
 import { DataMetaData, VariableVisibility } from '../../../ast/symbol/VariableTable';
 import { ErrorManager, ErrorSeverity, ErrorType, TranslationIssue } from '../../../managers/ErrorManager';
@@ -31,6 +31,7 @@ import {
     DefinitionContext,
     DescSortItemContext,
     DistinctClauseContext,
+    DistributeByClauseContext,
     GroupByClauseContext,
     LimitOffsetClauseContext,
     SelectAggregatedEverythingColContext,
@@ -135,6 +136,8 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
 
     protected _distinct: boolean;
 
+    protected _distributes: string[];
+
     /**
      * The table set after column filters
      */
@@ -154,6 +157,7 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
         this._groupBy = [];
         this._distinct = false;
         this._sortFields = [];
+        this._distributes = [];
     }
 
     protected defaultResult(): VEOMaybe<DataType, BaseASTNode> {
@@ -188,6 +192,9 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
         // const distinctCtx = ctx.distinctClause();
         ctx.distinctClause()?.accept(this);
 
+        // distribute by is at the end, this had to be markedly the end note
+        ctx.distributeByClause()?.accept(this);
+
         // distinctCtx !== undefined && this._jobs.push({ type: SelectJobDesc.DISTINCT, ctx: distinctCtx });
 
         // debug args
@@ -201,20 +208,40 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
         // create node
         const node = new Select(
             ctx,
-            this._changedSources,
-            this.fromTable,
-            this.totalDt,
-            this._where,
-            this._sortFields,
-            this._groupBy,
-            this._colSelect,
-            this._limitOffset,
-            this._distinct,
-            this.finalDt
+            SelectASTArguments(
+                this._changedSources,
+                this.fromTable,
+                this.totalDt,
+                this._where,
+                this._sortFields,
+                this._groupBy,
+                this._colSelect,
+                this._limitOffset,
+                this._distinct,
+                this._distributes,
+                this.finalDt
+            )
         );
         // this.parent.taskManager.args.g && console.debug('Select', node);
 
         return new VEO(this.finalDt, node);
+    }
+
+    visitDistributeByClause(ctx: DistributeByClauseContext) {
+        ctx.idSet()
+            .IDENTIFIER()
+            .forEach(e => {
+                const { text } = e;
+                // if final table has this column
+                if (this.finalDt.has(text)) {
+                    this._distributes.push(text);
+                } else {
+                    this.errorManager.push(
+                        TranslationIssue.semanticErrorToken(format(rs.colDoesNotExistError, [text]), ctx)
+                    );
+                }
+            });
+        return null;
     }
 
     visitSelectWhereClause(ctx: SelectWhereClauseContext) {
@@ -259,7 +286,6 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
 
     visitGroupByClause(ctx: GroupByClauseContext) {
         // const groups = ctx.idSet().IDENTIFIER().map(e=>e.text);
-        this._groupBy;
         ctx.idSet()
             .IDENTIFIER()
             .forEach(e => {

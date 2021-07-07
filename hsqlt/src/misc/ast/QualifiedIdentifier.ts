@@ -15,13 +15,14 @@ import { HSQLVisitor } from '../grammar/HSQLVisitor';
  * stores and works with qualified identifiers
  */
 export class QualifiedIdentifier {
+    static separator = '.' as const;
     protected _qidentifier: string[];
     constructor(..._qidentifier: string[]) {
         this._qidentifier = _qidentifier;
     }
 
     toString() {
-        return this._qidentifier.join('.');
+        return this._qidentifier.join(QualifiedIdentifier.separator);
     }
 
     /**
@@ -29,7 +30,7 @@ export class QualifiedIdentifier {
      * @param identifier identifier in dot notation
      */
     static fromString(identifier: string) {
-        return new QualifiedIdentifier(...identifier.split('.'));
+        return new QualifiedIdentifier(...identifier.split(QualifiedIdentifier.separator));
     }
 
     static fromGrammar(ctx: QualifiedIdentifierContext) {

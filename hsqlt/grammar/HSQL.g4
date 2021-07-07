@@ -30,9 +30,10 @@ selectStmt:
 		WHERE selectWhereClause
 	)? selectGroupByClause? (ORDER BY orderByClause)? (
 		DISTRIBUTE BY distributeByClause
-	) /* (HAVING selectHavingClause)? */ limitOffsetClause?;
+	)? /* (HAVING selectHavingClause)? */ limitOffsetClause?;
 
-distributeByClause:;
+// a set of identifiers -> used to make the hash32 set
+distributeByClause: idSet;
 
 distinctClause: DISTINCT;
 // selectHavingClause: booleanExpression;

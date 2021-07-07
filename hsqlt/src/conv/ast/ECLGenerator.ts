@@ -174,6 +174,8 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
         this.selectProcessLimitOffset(x, varStack, stmtStack);
 
         this.selectProcessDistinct(x, varStack, stmtStack);
+
+        this.selectProcessDistributes(x, varStack, stmtStack);
         // table preps done, let's move onto next step
         // add the function assignment header
         stmtStack.unshift(fnasn);
@@ -183,6 +185,19 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
         //push return code
         stmtStack.push(returnCode, new ECLCode(ecl.commmon.end), new ECLCode(varName));
         return stmtStack;
+    }
+    selectProcessDistributes(x: Select, varStack: string[], stmtStack: ECLCode[]) {
+        if (x.distributes.length === 0) return;
+        const tableVar = this.rootContext.variableManager.nextClaimableActionIdentifier();
+        this.rootContext.variableManager.add(tableVar, DataMetaData(x.finalDt, VariableVisibility.DEFAULT, true));
+
+        const cols = x.distributes.join(ecl.commmon.comma);
+        // const stmt = new ECLCode()
+        const stmt = new ECLCode(ecl.table.distributes(varStack[varStack.length - 1], cols), false).coverCode(
+            ecl.equal.eq(tableVar)
+        );
+        varStack.push(tableVar);
+        stmtStack.push(stmt);
     }
     selectProcessWhereClause(x: Select, varStack: string[], stmtStack: ECLCode[]): void {
         if (x.where === undefined) return;

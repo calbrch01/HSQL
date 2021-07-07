@@ -3,7 +3,7 @@ import %.a;
 //p = select distinct *,count(c1) from a.t1 as b,a.t2 as aa group by c1 limit 5 ;
 
 //p = select * from (select * from a.t2) as t1 order by c3;
-P = select * from a.t1;
+P = select * from a.t1 distribute by c1;
 
 
 -- select * from p;

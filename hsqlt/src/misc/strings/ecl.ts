@@ -43,6 +43,7 @@ export default {
         choosen: 'CHOOSEN(',
         sort: 'SORT(',
         negSort: compile('-({0})'),
+        distributes: compile('DISTRIBUTE({0},HASH32({1}))'),
         aggr: templateCompiler({
             [SelectAggregationType.AVG]: 'AVE(GROUP,{0})',
             [SelectAggregationType.COUNT]: 'COUNT(GROUP)',
