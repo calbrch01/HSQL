@@ -26,5 +26,15 @@ describe('File Provider', function () {
         // throw 'pending';
         const z = ffp.stat('not.found');
         assert.isFalse(z.found);
+
+        const ffp2 = new FSFileProvider('samples');
+        const z1 = ffp2.stat('test.hsql');
+        const z2 = ffp2.stat('input.hsql');
+        assert.isFalse(z2.found);
+        assert.isTrue(z1.found);
+        assert.strictEqual(z1.type, FileType.HSQL);
+
+        const z3 = ffp2.read('test.hsql');
+        assert.strictEqual(z3, "p = 'hello';");
     });
 });

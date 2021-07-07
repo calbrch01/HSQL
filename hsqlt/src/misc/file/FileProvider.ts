@@ -64,11 +64,17 @@ export class MemFileProvider implements FileProvider {
  * Using this file provider allows for file access (Please note as there is a flag to help with access)
  */
 export class FSFileProvider implements FileProvider {
+    /**
+     *
+     * @param _loc Location offset from CWD
+     * @param _relsupport support $. queries
+     * @param _allowOutside
+     */
     constructor(protected _loc: string = '', protected _relsupport: boolean = true, protected _allowOutside = false) {}
     get relsupport(): boolean {
         return this._relsupport;
     }
-    exists(x: string): boolean {
+    public exists(x: string): boolean {
         // const fnn = path.join(this._loc, path.normalize(x));
         // // if we ended up with a file location outside this, bail.
         // if (path.relative(this._loc, fnn).startsWith('..') && !this._allowOutside) return false;
@@ -83,7 +89,7 @@ export class FSFileProvider implements FileProvider {
      * @param x
      * @returns
      */
-    stat(x: string): pathResult {
+    public stat(x: string): pathResult {
         // add the new path to the location
         x = path.join(this._loc, path.normalize(x));
         // if its outside
@@ -116,6 +122,11 @@ export class FSFileProvider implements FileProvider {
         return res;
     }
 
+    /**
+     * Read the path fragment (need not be complete folder wise) and extract extension
+     * @param x Path name containing atleast the file name with extension
+     * @returns
+     */
     protected getFileType(x: string): pathResultFragment {
         const y = fs.statSync(x);
         if (y.isDirectory()) {
@@ -141,13 +152,15 @@ export class FSFileProvider implements FileProvider {
      * @param x
      * @returns
      */
-    read(x: string): string | undefined {
+    public read(x: string): string | undefined {
         // this is a reusable way of finding the real file name
         const res = this.stat(x);
         if (res.found === false) return undefined;
-        const { path: pathLoc, type } = res;
+        let { path: pathLoc, type } = res;
         if (pathLoc == undefined || type === FileType.DIR) return undefined;
         try {
+            // modify it to offset by this._loc as required
+            pathLoc = path.join(this._loc, path.normalize(pathLoc));
             return fs.readFileSync(pathLoc).toString();
         } catch (e) {
             return undefined;
