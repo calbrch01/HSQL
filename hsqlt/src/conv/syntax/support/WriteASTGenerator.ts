@@ -1,18 +1,19 @@
-import { AbstractParseTreeVisitor } from 'antlr4ts/tree/AbstractParseTreeVisitor';
+import { AbstractParseTreeVisitor } from 'antlr4ts/tree';
 import format from 'string-template';
 import { Action, ActionType } from '../../../ast/data/Action';
 import { EDataType } from '../../../ast/data/base/DataType';
-import { isDataType } from '../../../ast/data/base/typechecks/isDataType';
 import { isAny } from '../../../ast/data/base/typechecks/isAny';
-import { fileOutputOptionsType, Output } from '../../../ast/stmt/Output';
+import { isDataType } from '../../../ast/data/base/typechecks/isDataType';
+import { Output } from '../../../ast/stmt/Output';
+import { Write } from '../../../ast/stmt/Write';
 import { ErrorManager, TranslationIssue } from '../../../managers/ErrorManager';
-import { OutputStmtContext } from '../../../misc/grammar/HSQLParser';
+import { FileOutputStmtContext } from '../../../misc/grammar/HSQLParser';
 import { HSQLVisitor } from '../../../misc/grammar/HSQLVisitor';
 import { pullVEO, VEO, VEOMaybe } from '../../../misc/holders/VEO';
 import rs from '../../../misc/strings/resultStrings';
 import { ASTGenerator } from '../ASTGenerator';
 
-export class OutputASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements HSQLVisitor<VEOMaybe> {
+export class WriteASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements HSQLVisitor<VEOMaybe> {
     errorManager: ErrorManager;
     constructor(protected parent: ASTGenerator) {
         super();
@@ -22,10 +23,10 @@ export class OutputASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
         return null;
     }
 
-    visitOutputStmt(ctx: OutputStmtContext) {
+    visitFileOutputStmt(ctx: FileOutputStmtContext) {
         const dt = new Action(ActionType.OUTPUT);
-        const { namedOutputLocation, overwrite, attributeContext } = this.getOutputConfiguration(ctx);
-
+        // get information about the Write context
+        const { overwrite, attributeContext, fileOutputLocation, fileType } = this.getWriteFileConfiguration(ctx);
         const attributeResultMaybe = attributeContext.accept(this.parent);
         const attributeResult = pullVEO(attributeResultMaybe, this.errorManager, attributeContext);
         const { datatype: attributeResultDataType } = attributeResult;
@@ -44,15 +45,23 @@ export class OutputASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
                 TranslationIssue.semanticErrorToken(format(rs.cannotUse, [EDataType[typeInQuestion], rs.output]))
             );
         }
-        const astNode = new Output(ctx, attributeResult.stmt, overwrite, namedOutputLocation);
+        const astNode = new Write(
+            ctx,
+            attributeResult.stmt,
+            overwrite,
+            fileOutputLocation,
+            fileType,
+            fileOutputLocation
+        );
 
         return new VEO(dt, astNode);
     }
 
-    protected getOutputConfiguration(ctx: OutputStmtContext) {
+    protected getWriteFileConfiguration(ctx: FileOutputStmtContext) {
+        const attributeContext = ctx.definition();
         const overwrite = ctx.OVERWRITE() !== undefined;
-        const namedOutputLocation = ctx.namedOutput()?.IDENTIFIER().text;
-        const attributeContext = ctx.attribute();
-        return { namedOutputLocation, overwrite, attributeContext };
+        const fileOutputLocation = ctx.STRING().text;
+        const fileType = ctx.fileType().fileOutputType;
+        return { attributeContext, overwrite, fileOutputLocation, fileType };
     }
 }

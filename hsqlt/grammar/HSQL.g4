@@ -4,11 +4,13 @@ grammar HSQL;
 // for the join clause type
 import {SelectJoinType} from '../ast/SelectHelpers';
 import {SingularDataType} from '../ast/SingularDataType';
+import {FileOutputType} from '../ast/FileOutputType';
+
 }
 
 program
 	locals[
-	needML:boolean=false,needPlots:boolean=false,actionCount:number=0
+	needML:boolean=false,needPlots:boolean=false,actionCount:number=0,willExport:boolean=false
 ]: (completestmt)* EOF;
 
 completestmt: stmt SEMICOLON;
@@ -22,7 +24,12 @@ definitionStmt: scope label = IDENTIFIER EQ expr;
 
 expr: definition | actionStmt;
 // | transformStmt | mlStmt | moduleStmt;
-actionStmt: selectStmt | outputStmt | plotStmt | literal;
+actionStmt:
+	selectStmt
+	| outputStmt
+	| plotStmt
+	| literal
+	| fileOutputStmt;
 
 // SELECT STATEMENT skipping the having for later
 selectStmt:
@@ -198,11 +205,21 @@ importStmt: IMPORT overDefinition (AS IDENTIFIER)?;
 /* OUTPUT STATEMENT
  */
 
-outputStmt: OUTPUT attribute namedOutput? toFile?;
+outputStmt: OUTPUT attribute namedOutput? OVERWRITE?;
 
+fileOutputStmt:
+	WRITE definition (TO FILE?)? TYPE? fileType STRING OVERWRITE?;
+
+// note that THOR output is default
+fileType
+	locals[fileOutputType:FileOutputType=FileOutputType.THOR]:
+	CSV {$fileOutputType=FileOutputType.CSV}
+	| JSON {$fileOutputType=FileOutputType.JSON}
+	| THOR?
+	| XML {$fileOutputType=FileOutputType.XML};
 attribute: definition | selectStmt | literal;
 namedOutput: (TITLE)? IDENTIFIER;
-toFile: (FILE)? STRING (OVERWRITE)?;
+// toFile: (FILE)? STRING (OVERWRITE)?;
 
 /* PLOT STATEMENT
  */
@@ -214,11 +231,6 @@ plotStmt:
 // /* MODULE STATEMENT */
 
 // moduleStmt: MODULE BSTART_ (definitionStmt SEMICOLON)* BEND_;
-
-// /* TRANSFORM STATEMENT */
-
-// transformStmt: ALTER TABLE definition (TO IDENTIFIER)? alterOperator colName = IDENTIFIER (
-// COMMA_ dataType )?;
 
 // /* ML STATEMENT SAME AS v0 */ mlStmt: train | predict | elementaryML;
 
@@ -261,6 +273,14 @@ VARSTRING_TYPE: V A R STRING;
 STRING_TYPE: S T R I N G;
 BOOLEAN: B O O L E A N;
 //DATE to be added
+
+// file types
+CSV: C S V;
+THOR: T H O R;
+XML: X M L;
+JSON: J S O N;
+
+WRITE: W R I T E;
 
 //Merge types
 UNSTABLE: U N STABLE;

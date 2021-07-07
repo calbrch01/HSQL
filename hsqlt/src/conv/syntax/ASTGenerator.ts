@@ -23,6 +23,7 @@ import {
     DeclarationsContext,
     DefinitionContext,
     DefinitionStmtContext,
+    FileOutputStmtContext,
     ImportStmtContext,
     OutputStmtContext,
     PlotStmtContext,
@@ -37,6 +38,7 @@ import { DefinitionGeneration } from './support/DefinitionsGeneration';
 import { OutputASTGenerator } from './support/OutputASTGenerator';
 import { SelectASTGenerator } from './support/SelectASTGenerator';
 import { PlotASTGenerator } from './support/PlotASTGenerator';
+import { WriteASTGenerator } from './support/WriteASTGenerator';
 /**
  * Generate an AST.
  * Imports are added to the variable table by this.ast.addImport
@@ -160,6 +162,11 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
         // add the results of the statements
         this.ast.stmts.push(...results.map(e => e.stmt));
         return null;
+    }
+
+    visitFileOutputStmt(ctx: FileOutputStmtContext) {
+        const fileOutputVisitor = new WriteASTGenerator(this);
+        return fileOutputVisitor.visit(ctx);
     }
 
     visitOutputStmt(ctx: OutputStmtContext) {

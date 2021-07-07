@@ -4,6 +4,8 @@
 // for the join clause type
 import {SelectJoinType} from '../ast/SelectHelpers';
 import {SingularDataType} from '../ast/SingularDataType';
+import {FileOutputType} from '../ast/FileOutputType';
+
 
 
 import { ParseTreeVisitor } from "antlr4ts/tree/ParseTreeVisitor";
@@ -89,9 +91,10 @@ import { StringContext } from "./HSQLParser";
 import { BooleanValueContext } from "./HSQLParser";
 import { ImportStmtContext } from "./HSQLParser";
 import { OutputStmtContext } from "./HSQLParser";
+import { FileOutputStmtContext } from "./HSQLParser";
+import { FileTypeContext } from "./HSQLParser";
 import { AttributeContext } from "./HSQLParser";
 import { NamedOutputContext } from "./HSQLParser";
-import { ToFileContext } from "./HSQLParser";
 import { PlotStmtContext } from "./HSQLParser";
 import { ScopeContext } from "./HSQLParser";
 import { DeclarationsContext } from "./HSQLParser";
@@ -708,6 +711,20 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	visitOutputStmt?: (ctx: OutputStmtContext) => Result;
 
 	/**
+	 * Visit a parse tree produced by `HSQLParser.fileOutputStmt`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitFileOutputStmt?: (ctx: FileOutputStmtContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.fileType`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitFileType?: (ctx: FileTypeContext) => Result;
+
+	/**
 	 * Visit a parse tree produced by `HSQLParser.attribute`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -720,13 +737,6 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitNamedOutput?: (ctx: NamedOutputContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.toFile`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitToFile?: (ctx: ToFileContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `HSQLParser.plotStmt`.

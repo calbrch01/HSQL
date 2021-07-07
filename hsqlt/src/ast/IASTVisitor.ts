@@ -8,6 +8,7 @@ import { Output } from './stmt/Output';
 import { Plot } from './stmt/Plot';
 import { Select } from './stmt/Select';
 import { SelectJoin } from './stmt/SelectJoin';
+import { Write } from './stmt/Write';
 
 export abstract class AbstractASTVisitor<T> {
     abstract defaultResult(): T;
@@ -60,4 +61,6 @@ export interface IASTVisitor<T> {
     visitSelectJoin?: (x: SelectJoin) => T;
 
     visitPlot?: (x: Plot) => T;
+
+    visitWrite?: (x: Write) => T;
 }

@@ -4,9 +4,7 @@ import { IASTVisitor } from '../IASTVisitor';
 import { StmtExpression } from './base/StmtExpression';
 // import { StmtExpression } from './Base';
 
-export type fileOutputOptionsType =
-    | { fileName: string; overwrite: boolean }
-    | { fileName: undefined; overwrite: false };
+export type fileOutputOptionsType = boolean; // { fileName: undefined; overwrite: boolean };
 
 export class Output implements StmtExpression {
     public get source(): StmtExpression {
@@ -18,18 +16,21 @@ export class Output implements StmtExpression {
 
     /**
      *
-     * @param node Base Parser node
+     * @param _node Base Parser node
      * @param _source Source node
      * @param namedOutput Whether to have a named emit
-     * @param fileOutputOptions file output options if any
-     * @param useSingular Whether to use the singular
+     * @param overwrite whether to overwrite
      */
     constructor(
-        public node: ParserRuleContext,
+        protected _node: ParserRuleContext,
         private _source: StmtExpression,
-        public namedOutput?: string,
-        public fileOutputOptions: fileOutputOptionsType = { fileName: undefined, overwrite: false }
+        public overwrite: boolean,
+        public namedOutput?: string
     ) {}
+
+    public get node() {
+        return this._node;
+    }
 
     // protected _source: string;
     // protected _type: OutputType;

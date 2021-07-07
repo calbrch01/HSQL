@@ -11,9 +11,11 @@ import { Output } from '../../ast/stmt/Output';
 import { Plot } from '../../ast/stmt/Plot';
 import { Select } from '../../ast/stmt/Select';
 import { SelectJoin } from '../../ast/stmt/SelectJoin';
+import { Write } from '../../ast/stmt/Write';
 import { DataMetaData, VariableVisibility } from '../../ast/symbol/VariableTable';
 import { ECLCode } from '../../code/ECLCode';
 import { ErrorManager, TranslationIssue } from '../../managers/ErrorManager';
+import { FileOutputType } from '../../misc/ast/FileOutputType';
 import { QualifiedIdentifier } from '../../misc/ast/QualifiedIdentifier';
 import { SelectColumnType, SelectJoinType, SortType } from '../../misc/ast/SelectHelpers';
 import ecl from '../../misc/strings/ecl';
@@ -42,6 +44,23 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
         return [...total, ...current];
     }
 
+    visitWrite(x: Write) {
+        const rhs = this.visit(x.source);
+        const [rhstop] = this.getPopped(rhs, x.node);
+        rhstop.coverCode(ecl.output.outputlhs(), ecl.commmon.comma, false);
+        rhstop.coverCode(
+            undefined,
+            ecl.commmon.comma + x.fileLoc + ecl.commmon.comma + FileOutputType[x.fileType],
+            false
+        );
+        if (x.overwrite) {
+            rhstop.coverCode('', ecl.commmon.comma + ecl.commmon.overwrite, false);
+        }
+
+        rhstop.coverCode('', ecl.commmon.rightBracket, false);
+        return [...rhs, rhstop];
+    }
+
     // TODO 02/06 output -> tests+features
     visitOutput(x: Output) {
         const rhs = this.visit(x.source);
@@ -53,11 +72,9 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
         if (x.namedOutput) {
             rhstop.coverCode('', ecl.commmon.comma + ecl.output.named(x.namedOutput), false);
         }
-        if (x.fileOutputOptions.fileName) {
-            rhstop.coverCode('', ecl.commmon.comma + x.fileOutputOptions.fileName, false);
-            if (x.fileOutputOptions.overwrite) {
-                rhstop.coverCode('', ecl.commmon.comma + ecl.commmon.overwrite, false);
-            }
+
+        if (x.overwrite) {
+            rhstop.coverCode('', ecl.commmon.comma + ecl.commmon.overwrite, false);
         }
 
         rhstop.coverCode('', ecl.commmon.rightBracket, false);
@@ -102,8 +119,8 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
     /**
      * Convenience function - pop out an element from stack.
      * If couldn't pop, throw an error and return empty code.
-     * @param x
-     * @param ctx
+     * @param x ECL Program code stack
+     * @param ctx Context used to throw errors
      * @returns
      */
     private getPopped(x: ECLCode[], ctx: ParserRuleContext): [ECLCode, ECLCode[]] {
