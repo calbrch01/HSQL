@@ -32,14 +32,22 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
      * Main calling
      * @returns
      */
-    getCode() {
+    public getCode() {
         return this.visit(this.rootContext);
     }
-    // empty methods, return void/undefined
+    /**
+     * Default method, start with no code
+     * @returns empty array
+     */
     defaultResult() {
         return [];
     }
-    // concatenate
+    /**
+     * Concatenate code
+     * @param total
+     * @param current
+     * @returns
+     */
     reducer(total: ECLCode[], current: ECLCode[]): ECLCode[] {
         return [...total, ...current];
     }
@@ -203,6 +211,7 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
         stmtStack.push(returnCode, new ECLCode(ecl.commmon.end), new ECLCode(varName));
         return stmtStack;
     }
+    // FUTURE - reorganize and remove this set of functions out of this object
     selectProcessDistributes(x: Select, varStack: string[], stmtStack: ECLCode[]) {
         if (x.distributes.length === 0) return;
         const tableVar = this.rootContext.variableManager.nextClaimableActionIdentifier();

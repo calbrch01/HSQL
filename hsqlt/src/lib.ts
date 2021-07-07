@@ -28,3 +28,4 @@ export * from './misc/file/FileType';
 export * from './ast/symbol/VariableTable';
 export * as ExecModes from './misc/execModes';
 export * from './misc/ast/QualifiedIdentifier';
+export * from './misc/ast/SingularDataType';
