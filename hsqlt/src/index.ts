@@ -135,19 +135,19 @@ export const { argv: args } = yargs(process.argv.slice(2))
             main(args, /* ExecMode.MAKE */ new ExecMakeMode());
         }
     )
-    .command(
-        'run <file>',
-        'Compile and submit to cluster',
-        yargs =>
-            yargs.option('file', {
-                desc: 'filename',
-                type: 'string',
-                demandOption: true,
-            }),
-        args => {
-            main(args, new ExecUnimplemented());
-        }
-    )
+    // .command(
+    //     'run <file>',
+    //     'Compile and submit to cluster',
+    //     yargs =>
+    //         yargs.option('file', {
+    //             desc: 'filename',
+    //             type: 'string',
+    //             demandOption: true,
+    //         }),
+    //     args => {
+    //         main(args, new ExecUnimplemented());
+    //     }
+    // )
     .demandCommand(2);
 
 export type argType = typeof args;
