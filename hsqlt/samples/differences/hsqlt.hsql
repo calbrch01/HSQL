@@ -1,0 +1,19 @@
+-- hsqlt make select.hsql -b Commands/select_command
+-- 
+import %.source;
+
+-- lets see the marks for each column
+markslist = select marks from marks.marks distribute by marks;
+-- or even better
+output markslist title marksList;
+
+-- lets get all the average marks of each subject
+counting = select subid,AVG(marks) as avgmarks from marks.marks group by subid order by subid ;
+// join this to get the subject names
+marksJoined = select * from counting join marks.subs on counting.subid=marks.subs.subid as somesource;
+
+
+output marksJoined title avgmarks;
+-- marksSimplified = select subname, avgmarks from marksJoined;
+
+
