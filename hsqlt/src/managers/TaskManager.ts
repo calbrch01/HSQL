@@ -8,7 +8,7 @@ import { ASTGen, ASTGenerator } from '../conv/syntax/ASTGenerator';
 import { HSQLTreeFactory } from '../conv/tree';
 import { ICodeGenerator } from '../misc/ast/ICodeGenerator';
 import { QualifiedIdentifier } from '../misc/ast/QualifiedIdentifier';
-import { ImportStmtContext } from '../misc/grammar/HSQLParser';
+import { ImportStmtContext, ProgramContext } from '../misc/grammar/HSQLParser';
 import { iP } from '../misc/lib/formatting';
 import rs from '../misc/strings/resultStrings';
 import { ErrorManager, ErrorMode, ErrorSeverity, ErrorType, TranslationIssue } from './ErrorManager';
@@ -93,7 +93,7 @@ export class TaskManager {
         fileType?: FileType.DHSQL | FileType.HSQL,
         local: boolean = true,
         includes: string[] = [],
-        cause?: ImportStmtContext
+        cause?: ImportStmtContext | ProgramContext
     ) {
         if (includes.includes(fnNoExt)) {
             this._errorManager.halt(TranslationIssue.semanticErrorToken(rs.importCycleError, cause));
@@ -245,7 +245,8 @@ export class TaskManager {
     resolve(
         q: QualifiedIdentifier,
         alias: QualifiedIdentifier | undefined,
-        includes: string[]
+        includes: string[],
+        cause?: ImportStmtContext | ProgramContext
     ): { output: Module; viz: Map<string, DataVisualization> } {
         // const identifiers = q.qidentifier;
         // let joinable = '.';
@@ -262,7 +263,7 @@ export class TaskManager {
         if (x.type === FileType.DHSQL || x.type === FileType.HSQL) {
             // dhsql are one time imports, don't do
 
-            const { ast } = this.generateAST(x.path, x.type, isLocal, includes);
+            const { ast } = this.generateAST(x.path, x.type, isLocal, includes, cause);
 
             const vars = ast.variableManager.vars[0];
             if (vars === undefined) {

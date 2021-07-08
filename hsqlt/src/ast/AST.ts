@@ -64,7 +64,7 @@ export class AST implements BaseASTNode {
         const aliasStr = alias?.toString();
 
         //resolve this import
-        const { output: res, viz } = this.TaskMgr.resolve(name, alias, includes);
+        const { output: res, viz } = this.TaskMgr.resolve(name, alias, includes, ctx);
 
         viz.forEach((val, key) => {
             const res = this.variableManager.addVisualizationDeclaration(key, val);
