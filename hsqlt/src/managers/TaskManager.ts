@@ -96,9 +96,7 @@ export class TaskManager {
         cause?: ImportStmtContext
     ) {
         if (includes.includes(fnNoExt)) {
-            this._errorManager.push(
-                TranslationIssue.semanticErrorToken('Import cycle detected. Please remove redundant import', cause)
-            );
+            this._errorManager.halt(TranslationIssue.semanticErrorToken(rs.importCycleError, cause));
         }
 
         const { realPath, content: file, type } = this._fsmanager.read(fnNoExt, local, fileType);
@@ -261,10 +259,10 @@ export class TaskManager {
         }
 
         const x = this._fsmanager.stat(pathString, isLocal);
-        if (x.type === FileType.DHSQL) {
+        if (x.type === FileType.DHSQL || x.type === FileType.HSQL) {
             // dhsql are one time imports, don't do
 
-            const { ast } = this.generateAST(x.path, x.type, isLocal);
+            const { ast } = this.generateAST(x.path, x.type, isLocal, includes);
 
             const vars = ast.variableManager.vars[0];
             if (vars === undefined) {

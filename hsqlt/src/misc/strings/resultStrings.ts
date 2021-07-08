@@ -38,4 +38,5 @@ export default {
     noActions: 'No actions or export in program',
     exportActionIncompatErrors: 'No actions can be used if shared or export is used',
     includeStackEmptyError: 'Include Stack cannot be empty -> must contain atleast current filename',
+    importCycleError: 'Import cycle detected. Please remove redundant import.',
 } as const;
