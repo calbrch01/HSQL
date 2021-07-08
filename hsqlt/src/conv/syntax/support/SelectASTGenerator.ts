@@ -13,7 +13,8 @@ import { StmtExpression } from '../../../ast/stmt/base/StmtExpression';
 import { Definition } from '../../../ast/stmt/Definition';
 import { Select, SelectASTArguments } from '../../../ast/stmt/Select';
 import { SelectJoin } from '../../../ast/stmt/SelectJoin';
-import { DataMetaData, VariableVisibility } from '../../../ast/symbol/VariableTable';
+import { DataMetaData } from '../../../ast/symbol/VariableTable';
+import { VariableVisibility } from '../../../misc/ast/VariableVisibility';
 import { ErrorManager, ErrorSeverity, ErrorType, TranslationIssue } from '../../../managers/ErrorManager';
 import { QualifiedIdentifier } from '../../../misc/ast/QualifiedIdentifier';
 import {
@@ -70,6 +71,7 @@ import { ExpressionChecker } from './ExpressionChecker';
  * 6. limit+offset
  * 7. colfilter
  * 8. distinct
+ * 9. distribute
  */
 
 /*
@@ -84,10 +86,13 @@ import { ExpressionChecker } from './ExpressionChecker';
  * 4. groupandColfit
  * 5. LIMITOFFSET
  * 6. distinct
+ * 7. distribute
  */
 
 /**
  * Select AST generator. This one uses internal fields that fill up after processing after returning the select node
+ *
+ * Currently, codegeneration is done by a function -> That is independent of the generator.
  */
 export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements HSQLVisitor<VEOMaybe> {
     /** The usual error manager required to report errors */
@@ -566,7 +571,7 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
 
         // do two things, add to sources, and add to local varmanager.
         this._changedSources.set(idName, res);
-        this.parent.variableManager.add(idName, DataMetaData(res.datatype, VariableVisibility.PUBLIC));
+        this.parent.variableManager.add(idName, DataMetaData(res.datatype, VariableVisibility.EXPORT));
 
         return new VEO(res.datatype, new Definition(aliasCtx, new QualifiedIdentifier(idName)));
     }
@@ -626,7 +631,7 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
             //push the variable to the the variable table
             this.parent.variableManager.add(
                 idName,
-                DataMetaData(resultingVariable.datatype, VariableVisibility.PUBLIC)
+                DataMetaData(resultingVariable.datatype, VariableVisibility.EXPORT)
             );
             this._changedSources.set(idName, new VEO(dt, resultingVariable.stmt));
 

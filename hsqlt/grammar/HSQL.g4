@@ -5,12 +5,12 @@ grammar HSQL;
 import {SelectJoinType} from '../ast/SelectHelpers';
 import {SingularDataType} from '../ast/SingularDataType';
 import {FileOutputType} from '../ast/FileOutputType';
-
+import {VariableVisibility} from '../ast/VariableVisibility';
 }
 
 program
 	locals[
-	needML:boolean=false,needPlots:boolean=false,actionCount:number=0,willExport:boolean=false
+	needML:boolean=false,needPlots:boolean=false,actionCount:number=0,willWrapModule:boolean=false
 ]: (completestmt)* EOF;
 
 completestmt: stmt SEMICOLON;
@@ -249,7 +249,11 @@ plotStmt:
 
 // predict: PREDICT model = definition FROM ind = definition ( METHOD method = IDENTIFIER )?;
 
-scope: EXPORT | SHARED |;
+scope
+	locals[variableVisibility:VariableVisibility = VariableVisibility.DEFAULT]:
+	EXPORT {$variableVisibility = VariableVisibility.EXPORT,$program::willWrapModule=true}
+	| SHARED {$variableVisibility = VariableVisibility.SHARED,$program::willWrapModule=true}
+	|;
 
 // this is the declarations file
 declarations: (declaration SEMICOLON)* EOF;

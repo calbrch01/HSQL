@@ -1,6 +1,7 @@
 import { QualifiedIdentifier } from '../misc/ast/QualifiedIdentifier';
 import { BaseASTNode } from './stmt/base/BaseASTNode';
-import { DataMetaData, VariableTable, VariableVisibility } from './symbol/VariableTable';
+import { DataMetaData, VariableTable } from './symbol/VariableTable';
+import { VariableVisibility } from '../misc/ast/VariableVisibility';
 import { TaskManager } from '../managers/TaskManager';
 import { ImportStmtContext, ProgramContext } from '../misc/grammar/HSQLParser';
 import { IASTVisitor } from './IASTVisitor';

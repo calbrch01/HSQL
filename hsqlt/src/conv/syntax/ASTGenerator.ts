@@ -13,7 +13,8 @@ import { Definition } from '../../ast/stmt/Definition';
 import { EqualDefinition } from '../../ast/stmt/EqualDefinition';
 import { Import } from '../../ast/stmt/Import';
 import { StringLiteral } from '../../ast/stmt/Literal';
-import { DataMetaData, VariableTable, VariableVisibility } from '../../ast/symbol/VariableTable';
+import { DataMetaData, VariableTable } from '../../ast/symbol/VariableTable';
+import { VariableVisibility } from '../../misc/ast/VariableVisibility';
 import { ErrorManager, TranslationIssue } from '../../managers/ErrorManager';
 import { TaskManager } from '../../managers/TaskManager';
 import { QualifiedIdentifier } from '../../misc/ast/QualifiedIdentifier';
@@ -34,7 +35,7 @@ import {
 import { HSQLVisitor } from '../../misc/grammar/HSQLVisitor';
 import { pullVEO, VEO, VEOMaybe } from '../../misc/holders/VEO';
 import rs from '../../misc/strings/resultStrings';
-import { DefinitionGeneration } from './support/DefinitionsGeneration';
+import { DeclarationGeneration } from './support/DeclarationGeneration';
 import { OutputASTGenerator } from './support/OutputASTGenerator';
 import { SelectASTGenerator } from './support/SelectASTGenerator';
 import { PlotASTGenerator } from './support/PlotASTGenerator';
@@ -45,6 +46,7 @@ import { WriteASTGenerator } from './support/WriteASTGenerator';
  * Definition assignments should be added during visiting
  * Note that in this ASTGenerator, the VEOs are returned as a singlet element, and if two rulenodes return a VEO, only the first is returned by a parent
  *
+ * For getting started, please refer to the Grammar to see what the members are for each context
  */
 export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements HSQLVisitor<VEOMaybe> {
     protected ast: AST;
@@ -64,9 +66,8 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
     protected override defaultResult() {
         return null;
     }
-
     /**
-     * Try to find a non null child
+     * Visit next child as long as the current one is null - ie. stop when you find one and return
      * @param node Node whose children are being evaluated
      * @param curr Current aggregate state
      * @returns whether to continue or not
@@ -85,29 +86,21 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
         // NoDataType as the import statement itself does not have a resultant data type
         return new VEO(new NoDataType(), new Import(ctx, importFrom, importAsQID));
     }
-    /**
-     * Get scope of a variable
-     * @param ctx
-     * @returns
-     */
-    protected getScope(ctx: ScopeContext): VariableVisibility {
-        if (ctx.EXPORT() !== undefined) return VariableVisibility.PUBLIC;
-        else if (ctx.SHARED() !== undefined) return VariableVisibility.SHARED;
-        else return VariableVisibility.DEFAULT;
-    }
+
     visitDefinitionStmt(ctx: DefinitionStmtContext) {
         const lhstext = ctx.IDENTIFIER().text;
         const rhsdata: VEOMaybe<DataType, StmtExpression> = ctx.expr().accept(this);
         //rhsdata is bound to exist
         const x: VEO<DataType, StmtExpression> = pullVEO(rhsdata, this.errorManager, ctx);
-        // console.log(rhsdata);
-        const vis = this.getScope(ctx.scope());
+
+        // get variable visibility
+        const vis = ctx.scope().variableVisibility;
 
         const res = this.ast.variableManager.add(lhstext, DataMetaData(x.datatype, vis));
         if (!res) {
             this.errorManager.push(TranslationIssue.semanticErrorToken(format(rs.existsError, [lhstext]), ctx));
         }
-        const ed = new EqualDefinition(ctx, QualifiedIdentifier.fromString(lhstext), x.stmt);
+        const ed = new EqualDefinition(ctx, QualifiedIdentifier.fromString(lhstext), x.stmt, vis);
         return new VEO(new NoDataType(), ed); //new EqualDefinition(ctx,);
     }
 
@@ -198,7 +191,7 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
 
     visitDeclarations(ctx: DeclarationsContext) {
         // console.log('BEING CALEED');
-        const declVisitor = new DefinitionGeneration(this).visit(ctx);
+        const declVisitor = new DeclarationGeneration(this).visit(ctx);
         return null;
     }
 

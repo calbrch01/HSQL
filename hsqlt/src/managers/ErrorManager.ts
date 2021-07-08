@@ -163,7 +163,7 @@ export type LexerOrParserSymbol = number | Token;
 
 /**
  * Error management system.
- * Note that the file reporting may feel a bit messy, might have to discuss
+ * Interestingly, it also tracks the current file
  */
 export class ErrorManager {
     protected _errors: ContexedTranslationError[];
@@ -202,7 +202,7 @@ export class ErrorManager {
     popFile() {
         return this.errorContext.pop();
     }
-    get contextTop() {
+    get fileContextTop() {
         return this.errorContext[this.errorContext.length - 1];
     }
 
@@ -227,13 +227,13 @@ export class ErrorManager {
      */
     halt(e?: TranslationIssue): never {
         if (e !== undefined) {
-            this._errors.push(new ContexedTranslationError(this.contextTop, e));
+            this._errors.push(new ContexedTranslationError(this.fileContextTop, e));
         }
         throw new HaltError();
     }
 
     push(e: TranslationIssue): void {
-        this._errors.push(new ContexedTranslationError(this.contextTop, e));
+        this._errors.push(new ContexedTranslationError(this.fileContextTop, e));
         if (e.type === ErrorType.HALTING) {
             this.halt();
         }

@@ -2,18 +2,17 @@ import { AbstractParseTreeVisitor } from 'antlr4ts/tree';
 import { DataType } from '../../../ast/data/base/DataType';
 import { Col } from '../../../ast/data/Col';
 import { Table } from '../../../ast/data/Table';
-import { DataMetaData, DataVisualization, VariableVisibility } from '../../../ast/symbol/VariableTable';
-import {
-    ColDefContext,
-    DeclarationContext,
-    PlotDeclarationContext,
-    TableDeclarationContext,
-} from '../../../misc/grammar/HSQLParser';
+import { DataMetaData, DataVisualization } from '../../../ast/symbol/VariableTable';
+import { VariableVisibility } from '../../../misc/ast/VariableVisibility';
+import { ColDefContext, PlotDeclarationContext, TableDeclarationContext } from '../../../misc/grammar/HSQLParser';
 import { HSQLVisitor } from '../../../misc/grammar/HSQLVisitor';
 // import { HSQLVisitor } from '../../../lib';
 import { ASTGenerator } from '../ASTGenerator';
 
-export class DefinitionGeneration
+/**
+ * Generate an AST for declaration definitions
+ */
+export class DeclarationGeneration
     extends AbstractParseTreeVisitor<readonly [string, DataType] | undefined>
     implements HSQLVisitor<readonly [string, DataType] | undefined>
 {
@@ -46,7 +45,7 @@ export class DefinitionGeneration
         const table: Table = new Table(new Map(entries));
 
         const text = ctx.IDENTIFIER().text;
-        this.parent.variableManager.add(text, DataMetaData(table, VariableVisibility.PUBLIC));
+        this.parent.variableManager.add(text, DataMetaData(table, VariableVisibility.EXPORT));
 
         // this.parent.variableManager.add()
         return undefined;

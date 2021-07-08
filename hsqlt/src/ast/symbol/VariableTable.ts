@@ -6,12 +6,8 @@ import { Any } from '../data/Any';
 import { CollectionType } from '../data/base/CollectionType';
 import { DataType } from '../data/base/DataType';
 import { isCollection } from '../data/base/typechecks/isCollection';
+import { VariableVisibility } from '../../misc/ast/VariableVisibility';
 
-export enum VariableVisibility {
-    DEFAULT,
-    SHARED,
-    PUBLIC,
-}
 export type DataMetaData = {
     data: DataType;
     vis: VariableVisibility;

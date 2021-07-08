@@ -53,11 +53,14 @@ export class StandardOutput extends OutputManager {
  */
 export class MapOutput extends OutputManager {
     public fileMap: Map<string, string>;
-    constructor() {
+    constructor(protected offset?: string) {
         super();
         this.fileMap = new Map();
     }
     async do(fn: string, contents: string) {
+        if (this.offset !== undefined) {
+            fn = path.join(this.offset, fn);
+        }
         // could not write if already exists
         if (this.fileMap.has(fn)) throw Error('File already exists');
         this.fileMap.set(fn, contents);

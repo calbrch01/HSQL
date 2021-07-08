@@ -5,7 +5,7 @@
 import {SelectJoinType} from '../ast/SelectHelpers';
 import {SingularDataType} from '../ast/SingularDataType';
 import {FileOutputType} from '../ast/FileOutputType';
-
+import {VariableVisibility} from '../ast/VariableVisibility';
 
 
 import { ATN } from "antlr4ts/atn/ATN";

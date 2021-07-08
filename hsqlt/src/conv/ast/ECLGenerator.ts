@@ -12,7 +12,8 @@ import { Plot } from '../../ast/stmt/Plot';
 import { Select } from '../../ast/stmt/Select';
 import { SelectJoin } from '../../ast/stmt/SelectJoin';
 import { Write } from '../../ast/stmt/Write';
-import { DataMetaData, VariableVisibility } from '../../ast/symbol/VariableTable';
+import { DataMetaData } from '../../ast/symbol/VariableTable';
+import { VariableVisibility } from '../../misc/ast/VariableVisibility';
 import { ECLCode } from '../../code/ECLCode';
 import { ErrorManager, TranslationIssue } from '../../managers/ErrorManager';
 import { FileOutputType } from '../../misc/ast/FileOutputType';
@@ -308,7 +309,12 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
     private selectProcessFromClause(x: Select, varStack: string[], stmtStack: ECLCode[]): void {
         const changedSourcesList = [...x.changedSources];
         changedSourcesList.forEach(([name, node]) => {
-            const eq = new EqualDefinition(x.node, new QualifiedIdentifier(name), node.stmt);
+            const eq = new EqualDefinition(
+                x.node,
+                new QualifiedIdentifier(name),
+                node.stmt,
+                VariableVisibility.DEFAULT
+            );
             const res = eq.accept(this);
             stmtStack.push(...res);
         });

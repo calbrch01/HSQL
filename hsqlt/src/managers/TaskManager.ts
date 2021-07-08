@@ -17,7 +17,8 @@ import { FileType } from '../misc/file/FileType';
 import { FileHandler } from '../misc/file/FileHandler';
 import { FileProvider } from '../misc/file/FileProvider';
 import { FSManager } from './FSManager';
-import { DataVisualization, VariableVisibility } from '../ast/symbol/VariableTable';
+import { DataVisualization } from '../ast/symbol/VariableTable';
+import { VariableVisibility } from '../misc/ast/VariableVisibility';
 import { join, relative } from 'path';
 
 /**
@@ -267,7 +268,7 @@ export class TaskManager {
                 return { output: new AnyModule(), viz: new Map() };
             }
             const rows = [...vars]
-                .filter(([_name, entry]) => entry.vis === VariableVisibility.PUBLIC && entry.internal === false)
+                .filter(([_name, entry]) => entry.vis === VariableVisibility.EXPORT && entry.internal === false)
                 .map(([name, entry]) => [name, entry.data] as const);
 
             // filter and get all the entries that are replaced, and now we are no longer exporting them
