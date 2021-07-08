@@ -4,7 +4,7 @@ import { argType } from '..';
 import { AST } from '../ast/AST';
 import { AnyModule, Module } from '../ast/data/Module';
 import { ECLGenerator } from '../conv/ast/ECLGenerator';
-import { ASTGenerator } from '../conv/syntax/ASTGenerator';
+import { ASTGen, ASTGenerator } from '../conv/syntax/ASTGenerator';
 import { HSQLTreeFactory } from '../conv/tree';
 import { ICodeGenerator } from '../misc/ast/ICodeGenerator';
 import { QualifiedIdentifier } from '../misc/ast/QualifiedIdentifier';
@@ -103,13 +103,14 @@ export class TaskManager {
 
         const { realPath, content: file, type } = this._fsmanager.read(fnNoExt, local, fileType);
         this.errorManager.pushFile(realPath);
-
+        includes.push(realPath);
         const { tree } = this.treeFactory.makeTree(file, type);
-        const x = new ASTGenerator(this, this._errorManager, tree);
+        const x: ASTGen = new ASTGenerator(this, this._errorManager, tree, includes);
         // get AST will read imports and call the rest of the required generate ASTS
         const ast = x.getAST();
         this.ASTMap.set(realPath, { fileType: type, ast });
 
+        includes.pop();
         this.errorManager.popFile();
         return { ast, tree, asts: this.ASTMap };
     }
@@ -239,12 +240,14 @@ export class TaskManager {
 
     /**
      * resolve a file
+     * // TODO 08/07 this file requires passing the includes and the current file location
      * @param q resolve this qualified identifier into face
      * @returns the module that was resolved
      */
     resolve(
         q: QualifiedIdentifier,
-        alias?: QualifiedIdentifier
+        alias: QualifiedIdentifier | undefined,
+        includes: string[]
     ): { output: Module; viz: Map<string, DataVisualization> } {
         // const identifiers = q.qidentifier;
         // let joinable = '.';

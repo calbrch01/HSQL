@@ -9,10 +9,14 @@ import { ParserRuleContext } from 'antlr4ts';
 import { TranslationIssue } from '../managers/ErrorManager';
 import rs from '../misc/strings/resultStrings';
 import format from 'string-template';
+import path from 'path';
 /**
  * AST root node
  */
 export class AST implements BaseASTNode {
+    public get isModule(): boolean {
+        return this._isModule;
+    }
     /**
      * Holds existing variables
      */
@@ -20,9 +24,27 @@ export class AST implements BaseASTNode {
 
     stmts: BaseASTNode[];
 
-    constructor(protected TaskMgr: TaskManager, public node: ParserRuleContext) {
+    /**
+     * Cached filename -> fileName getter will calculate this
+     */
+    protected _fileName: string | undefined;
+
+    constructor(
+        protected TaskMgr: TaskManager,
+        public node: ParserRuleContext,
+        protected _fileLoc: string,
+        protected _isModule: boolean
+    ) {
         this.variableManager = new VariableTable();
         this.stmts = [];
+    }
+
+    get fileName() {
+        // cache this value
+        if (this._fileName === undefined) {
+            this._fileName = path.parse(this._fileLoc).name;
+        }
+        return this._fileName;
     }
 
     /**
@@ -31,13 +53,18 @@ export class AST implements BaseASTNode {
      * @param name
      * @param alias
      */
-    addImport(ctx: ImportStmtContext | ProgramContext, name: QualifiedIdentifier, alias?: QualifiedIdentifier) {
+    addImport(
+        ctx: ImportStmtContext | ProgramContext,
+        name: QualifiedIdentifier,
+        alias: QualifiedIdentifier | undefined,
+        includes: string[]
+    ) {
         // note that it gets imported as whatever is the tail module
         const nameStr = name.tail;
         const aliasStr = alias?.toString();
 
         //resolve this import
-        const { output: res, viz } = this.TaskMgr.resolve(name, alias);
+        const { output: res, viz } = this.TaskMgr.resolve(name, alias, includes);
 
         viz.forEach((val, key) => {
             const res = this.variableManager.addVisualizationDeclaration(key, val);
@@ -55,6 +82,6 @@ export class AST implements BaseASTNode {
             );
     }
     accept<T>(visitor: IASTVisitor<T>) {
-        return visitor.visitAST(this);
+        return visitor.visitAST?.(this) ?? visitor.defaultResult();
     }
 }

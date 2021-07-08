@@ -40,8 +40,21 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
      * Default method, start with no code
      * @returns empty array
      */
-    defaultResult() {
+    defaultResult(): ECLCode[] {
         return [];
+    }
+    visitAST(x: AST) {
+        const stmts = x.stmts;
+        // if(x.)
+        const res = stmts.reduce((t, e) => {
+            const v: ECLCode[] = this.visit(e); //e.accept(this);
+            return this.reducer(t, v);
+        }, this.defaultResult());
+        if (x.isModule) {
+            res.unshift(new ECLCode(format(ecl.exportModule, x.fileName), false));
+            res.push(new ECLCode(ecl.commmon.end));
+        }
+        return res;
     }
     /**
      * Concatenate code
@@ -103,7 +116,7 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
         const [rhstop] = this.getPopped(rhs, x.node);
 
         //  note that the const is by reference, not mutability
-        rhstop.coverCode(ecl.equal.eq(x.lhs.toString()), undefined, false);
+        rhstop.coverCode(ecl.scopes[x.declType] + ecl.equal.eq(x.lhs.toString()), undefined, false);
 
         return [...rhs, rhstop];
     }

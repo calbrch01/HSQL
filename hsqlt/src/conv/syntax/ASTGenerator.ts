@@ -15,7 +15,7 @@ import { Import } from '../../ast/stmt/Import';
 import { StringLiteral } from '../../ast/stmt/Literal';
 import { DataMetaData, VariableTable } from '../../ast/symbol/VariableTable';
 import { VariableVisibility } from '../../misc/ast/VariableVisibility';
-import { ErrorManager, TranslationIssue } from '../../managers/ErrorManager';
+import { ErrorManager, ErrorType, TranslationIssue } from '../../managers/ErrorManager';
 import { TaskManager } from '../../managers/TaskManager';
 import { QualifiedIdentifier } from '../../misc/ast/QualifiedIdentifier';
 import {
@@ -40,6 +40,8 @@ import { OutputASTGenerator } from './support/OutputASTGenerator';
 import { SelectASTGenerator } from './support/SelectASTGenerator';
 import { PlotASTGenerator } from './support/PlotASTGenerator';
 import { WriteASTGenerator } from './support/WriteASTGenerator';
+import resultStrings from '../../misc/strings/resultStrings';
+
 /**
  * Generate an AST.
  * Imports are added to the variable table by this.ast.addImport
@@ -48,16 +50,28 @@ import { WriteASTGenerator } from './support/WriteASTGenerator';
  *
  * For getting started, please refer to the Grammar to see what the members are for each context
  */
-export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements HSQLVisitor<VEOMaybe> {
+export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements HSQLVisitor<VEOMaybe>, ASTGen {
     protected ast: AST;
     public variableManager: VariableTable;
     constructor(
         public taskManager: TaskManager,
         protected _errorManager: ErrorManager,
-        protected rootContext: ProgramContext | DeclarationsContext
+        protected rootContext: ProgramContext | DeclarationsContext,
+        protected includeStack: string[]
     ) {
         super();
-        this.ast = new AST(taskManager, rootContext);
+        if (includeStack.length === 0) {
+            this._errorManager.halt(
+                TranslationIssue.generalErrorToken(
+                    format(resultStrings.unexpectedErrorTagged, resultStrings.includeStackEmptyError),
+                    ErrorType.HALTING,
+                    rootContext
+                )
+            );
+        }
+        // if it is a program context, use the property, else false
+        const willWrap = rootContext instanceof ProgramContext ? rootContext.willWrapModule : false;
+        this.ast = new AST(taskManager, rootContext, includeStack[includeStack.length - 1], willWrap);
         this.variableManager = this.ast.variableManager;
     }
     public get errorManager() {
@@ -76,13 +90,20 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
         return curr === null;
     }
 
+    /*
+     * From here, the visit methods are defined
+     * The signatures will be hinted by the IDE, but they are present in HSQLVisitor<T>.
+     * Eg. a 'program' rule generates visitProgram(ctx:ProgramContext)=>T; (The first letter gets capitalized)
+     *
+     */
+
     visitImportStmt(ctx: ImportStmtContext) {
         const importFrom = QualifiedIdentifier.fromOverDefinition(ctx.overDefinition()); //ctx.overDefinition().accept(new IdentifierCollector());
 
         const importAs = ctx.IDENTIFIER()?.text;
         const importAsQID = importAs === undefined ? undefined : QualifiedIdentifier.fromString(importAs);
 
-        this.ast.addImport(ctx, importFrom, importAsQID);
+        this.ast.addImport(ctx, importFrom, importAsQID, this.includeStack);
         // NoDataType as the import statement itself does not have a resultant data type
         return new VEO(new NoDataType(), new Import(ctx, importFrom, importAsQID));
     }
@@ -118,28 +139,24 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
         return new VEO(dt, new Definition(ctx, qid));
     }
 
-    // FIXME add actual code
-    // visitSelectStmt(ctx: SelectStmtContext) {
-    //     const ct = new Select(ctx, []);
-    //     const dt = new Table();
-    //     return new VEO(dt, ct);
-    // }
-
     // add all the nodes to the AST in that order
     visitProgram(ctx: ProgramContext) {
         // this.visitChildren(ctx);
 
-        // TODO 29/05 Maybe find a more elegant way of performing this operation.
+        if (ctx.willWrapModule && ctx.actionCount > 0) {
+            this.errorManager.push(TranslationIssue.semanticErrorToken(rs.exportActionIncompatErrors, ctx));
+        }
+
         // extract the statements
         const visitedChildren = ctx.completestmt();
 
-        if (ctx.actionCount === 0) {
+        if (!ctx.willWrapModule && ctx.actionCount === 0) {
             this.errorManager.push(TranslationIssue.semanticErrorToken(rs.noActions, ctx));
         }
         // for the automatic imports
         if (ctx.needPlots) {
             const importFrom = new QualifiedIdentifier('Visualizer');
-            this.ast.addImport(ctx, importFrom);
+            this.ast.addImport(ctx, importFrom, undefined, this.includeStack);
 
             this.ast.stmts.push(new Import(ctx, importFrom));
         }
@@ -195,8 +212,18 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
         return null;
     }
 
-    getAST(): AST {
+    /** Visit and return AST */
+    public getAST(): AST {
         this.visit(this.rootContext);
         return this.ast;
     }
+}
+/**
+ * This interface helps simplify the interface and keeps things simple
+ * Use:
+ * const x:ASTGen = new ASTGenerator(...);
+ */
+export interface ASTGen {
+    get errorManager(): ErrorManager;
+    getAST(): AST;
 }

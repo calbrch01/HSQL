@@ -18,14 +18,6 @@ export abstract class AbstractASTVisitor<T> {
         const ac = node.accept(this);
         return ac;
     }
-    visitAST(x: AST) {
-        const stmts = x.stmts;
-        const res = stmts.reduce((t, e) => {
-            const v: T = e.accept(this);
-            return this.reducer(t, v);
-        }, this.defaultResult());
-        return res;
-    }
 }
 
 /**
@@ -45,7 +37,7 @@ export interface IASTVisitor<T> {
 
     visit(node: BaseASTNode): T;
 
-    visitAST: (x: AST) => T;
+    visitAST?: (x: AST) => T;
     // visitLiteral?: (x: Literal) => T;
     visitSelect?: (x: Select) => T;
     visitEqual?: (x: EqualDefinition) => T;

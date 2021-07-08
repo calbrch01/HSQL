@@ -6,6 +6,7 @@
 import { templateCompiler } from '../lib/templateCompiler';
 import compile from 'string-template/compile';
 import { SelectAggregationType, SelectJoinType } from '../ast/SelectHelpers';
+import { VariableVisibility } from '../ast/VariableVisibility';
 // this is compiled as there can be multiple outputs
 export default {
     commmon: {
@@ -59,4 +60,10 @@ export default {
             [SelectJoinType.RIGHT]: 'JOIN({0},{1},LEFT.{2} {3} RIGHT.{4},RIGHT OUTER)',
         }),
     },
+    scopes: {
+        [VariableVisibility.DEFAULT]: '',
+        [VariableVisibility.SHARED]: 'SHARED ',
+        [VariableVisibility.EXPORT]: 'EXPORT ',
+    },
+    exportModule: 'export {0} := MODULE',
 } as const;
