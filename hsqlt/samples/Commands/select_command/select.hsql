@@ -1,0 +1,25 @@
+-- hsqlt make select.hsql -b Commands/select_command
+-- 
+import %.marks;
+
+-- lets see the marks for each column
+markslist = select marks from marks.marks distribute by marks;
+-- or even better
+output markslist title marksList;
+
+-- lets get all the average marks of each subject
+counting = select subid,AVG(marks) as avgmarks from marks.marks group by subid order by subid ;
+// join this to get the subject names
+marksJoined = select * from counting join marks.subs on counting.subid=marks.subs.subid as somesource;
+
+marksSimplified = select subname, avgmarks from marksJoined;
+
+
+output marksSimplified title avgmarks;
+
+
+
+-- a subtle difference between sql and ECL - these two mean the same thing
+select COUNT(*) from marks.marks; //rowcount
+
+select COUNT(marks) as ab from marks.marks;
