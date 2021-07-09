@@ -1,5 +1,5 @@
 -- hsqlt make differences/hsqlt.hsql
--- 
+-- ecl run thor differences/hsqlt.ecl
 import %.source;
 
 -- lets see the marks for each column

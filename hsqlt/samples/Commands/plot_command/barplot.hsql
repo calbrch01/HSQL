@@ -1,3 +1,5 @@
+-- hsqlt make Commands/plot_command/barplot.hsql
+-- ecl run thor Commands/plot_command/barplot.ecl
 import %.marks;
 
 -- get subject id and the average marks grouped

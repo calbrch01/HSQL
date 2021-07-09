@@ -1,4 +1,5 @@
--- hsqlt make Commands/
+-- hsqlt make Commands/import_command/imp.hsql
+-- ecl run thor Commands/import_command/imp.hsql
 import %.marks;
 
 output marks.marks;
