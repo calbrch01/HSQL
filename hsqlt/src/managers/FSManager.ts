@@ -174,8 +174,8 @@ export class FSManager {
         );
     }
 
-    static parseQid(x: QualifiedIdentifier): { res: string; isLocal: boolean } {
-        const res = path.join(
+    static parseQid(x: QualifiedIdentifier, currentContext: string): { res: string; isLocal: boolean } {
+        let res = path.join(
             ...x.qidentifier.map(e => {
                 if (e === '$') return '.';
                 if (e === '^') return '..';
@@ -183,22 +183,27 @@ export class FSManager {
             })
         );
 
-        return { res, isLocal: x.qidentifier[0] === '$' };
+        const isLocal = x.qidentifier[0] === '$';
+
+        if (isLocal) {
+            res = path.join(path.parse(currentContext).dir, res);
+        }
+        return { res, isLocal };
     }
 
-    /**
-     *
-     * // FUTURE proper applications
-     * @deprecated
-     * @param s
-     * @returns
-     */
-    resolveName(s: QualifiedIdentifier): Module {
-        const { res: pathString, isLocal } = FSManager.parseQid(s);
-        const x = this.stat(pathString, isLocal);
-        // if(x.type===FileType.DHSQL)
-        // do something here
+    // /**
+    //  *
+    //  * // FUTURE proper applications
+    //  * @deprecated
+    //  * @param s
+    //  * @returns
+    //  */
+    // resolveName(s: QualifiedIdentifier): Module {
+    //     const { res: pathString, isLocal } = FSManager.parseQid(s);
+    //     const x = this.stat(pathString, isLocal);
+    //     // if(x.type===FileType.DHSQL)
+    //     // do something here
 
-        return new AnyModule();
-    }
+    //     return new AnyModule();
+    // }
 }

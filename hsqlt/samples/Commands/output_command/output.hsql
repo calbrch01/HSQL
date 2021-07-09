@@ -1,7 +1,7 @@
 -- Compile to ECL and run ECL
 -- hsqlt make output.hsql -b Commands/output_command
 -- ecl run thor Commands/output_command/output.ecl 
-import a;
+import %.a;
 //import %.a;
 //p = select distinct *,count(c1) from a.t1 as b,a.t2 as aa group by c1 limit 5 ;
 

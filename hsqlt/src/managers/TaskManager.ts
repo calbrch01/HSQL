@@ -254,7 +254,7 @@ export class TaskManager {
 
         this.args.g && console.log(`DIRNAME`, __dirname);
 
-        let { res: pathString, isLocal } = FSManager.parseQid(q);
+        let { res: pathString, isLocal } = FSManager.parseQid(q, includes[includes.length - 1]);
         if (this.baseLoc !== undefined) {
             pathString = join(this.baseLoc, pathString);
         }

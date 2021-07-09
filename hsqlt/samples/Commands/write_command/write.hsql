@@ -1,4 +1,4 @@
-import a;
+import %.a;
 
 P = select * from a.t1 order by c1;
 
