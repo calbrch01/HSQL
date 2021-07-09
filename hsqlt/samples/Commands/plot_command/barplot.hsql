@@ -3,7 +3,8 @@ import %.marks;
 -- get subject id and the average marks grouped
 counting = select subid,AVG(marks) as avgmarks from marks.marks group by subid order by subid;
 -- get 
-marksJoined = select subname, avgmarks from counting join marks.subs on counting.subid=marks.subs.subid as somesource;
+marksJoined = select subname, avgmarks from 
+        counting join marks.subs on counting.subid=marks.subs.subid as somesource;
 
 plot marksJoined title mybarplot type bar;
 
