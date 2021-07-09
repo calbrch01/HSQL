@@ -1,5 +1,5 @@
 -- Compile to ECL and run ECL
--- hsqlt make output.hsql -b Commands/output_command
+-- hsqlt make Commands/output_command/output.hsql
 -- ecl run thor Commands/output_command/output.ecl 
 import %.a;
 //import %.a;

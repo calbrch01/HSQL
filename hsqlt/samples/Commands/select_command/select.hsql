@@ -1,4 +1,4 @@
--- hsqlt make select.hsql -b Commands/select_command
+-- hsqlt make Commands/select_command/select.hsql
 -- 
 import %.marks;
 

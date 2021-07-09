@@ -1,3 +1,4 @@
+-- hsqlt make Commands/write_command/write.hsql
 import %.a;
 
 P = select * from a.t1 order by c1;
