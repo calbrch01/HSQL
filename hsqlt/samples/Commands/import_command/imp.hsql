@@ -1,0 +1,4 @@
+-- hsqlt make Commands/
+import %.marks;
+
+output marks.marks;
