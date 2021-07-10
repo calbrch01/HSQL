@@ -4,10 +4,14 @@ import {
     ProposedFeatures,
     TextDocumentSyncKind,
     TextDocuments,
+    TextDocumentChangeEvent,
+    Diagnostic,
 } from 'vscode-languageserver';
 import { TDocs, FTDoc } from './TextDoc';
 import { getFileList, mapIssues, validator } from './Translation';
 import { TextDocument } from 'vscode-languageserver-textdocument';
+import { existsSync } from 'fs';
+import { fileURLToPath } from 'url';
 
 const connection = createConnection(ProposedFeatures.all);
 
@@ -31,8 +35,18 @@ const documents = new TextDocuments(tdocs);
 //     // we will have to get diagnostics here, lets try
 // });
 
-documents.onDidOpen(async e => {
+async function val(e: TextDocumentChangeEvent<TextDocument>) {
     await validate(e.document);
+}
+documents.onDidOpen(val);
+documents.onDidSave(val);
+documents.onDidClose(async e => {
+    // connection.sendDiagnostics();
+    if (existsSync(fileURLToPath(e.document.uri))) {
+        return;
+    } else {
+        connection.sendDiagnostics({ uri: e.document.uri, diagnostics: new Array<Diagnostic>() });
+    }
 });
 
 // documents.onDidClose(e => {
@@ -48,6 +62,10 @@ connection.onInitialize(params => {
                 change: TextDocumentSyncKind.Incremental,
                 willSave: true,
             },
+            // completionProvider: {
+            //     resolveProvider: true,
+            //     triggerCharacters: ['.'],
+            // },
         },
     };
 });

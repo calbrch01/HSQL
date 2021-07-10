@@ -115,7 +115,7 @@ export class FSFileProvider implements FileProvider {
             return pathResult.notFound;
         }
 
-        const res = this.getFileType(realpath);
+        const res = FSFileProvider.getFileType(realpath);
         if (res.found) {
             return { ...res, path: relpath };
         }
@@ -127,7 +127,7 @@ export class FSFileProvider implements FileProvider {
      * @param x Complete file path
      * @returns
      */
-    protected getFileType(x: string): pathResultFragment {
+    static getFileType(x: string): pathResultFragment {
         const y = fs.statSync(x);
         if (y.isDirectory()) {
             return { type: FileType.DIR, found: true };

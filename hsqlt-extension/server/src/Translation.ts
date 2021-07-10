@@ -42,13 +42,16 @@ export async function validator(document: TextDocument, documents: TextDocuments
 
     const mainFile = fileURLToPath(document.uri);
 
-    const disposable = allDocs.map(
-        e =>
-            [
-                relative('', fileURLToPath(e.uri)),
-                { content: e.getText(), type: FileType.HSQL },
-            ] as const
-    );
+    // generate a file map and map file extensions over accordingly
+    let disposable = allDocs.reduce((t, e) => {
+        const fileName = relative('', fileURLToPath(e.uri));
+        const type = FSFileProvider.getFileType(fileName).type;
+        if (type === FileType.HSQL || type === FileType.DHSQL) {
+            t.push([fileName, { content: e.getText(), type }]);
+        }
+        return t;
+    }, new Array<[string, { content: string; type: FileType.HSQL | FileType.DHSQL }]>());
+
     // const x = relative;
     const fileMap = new Map(disposable);
 
