@@ -1,5 +1,0 @@
-import input;
-
-p = select c1 from input.p;
-
-output p;
