@@ -4,6 +4,8 @@ import { isDataType } from './base/typechecks/isDataType';
 
 export class Module extends CollectionType {
     get(c: string) {
+        c = c.toLowerCase();
+
         return this.elems.get(c);
     }
     constructor(private elems: Map<string, DataType> = new Map()) {

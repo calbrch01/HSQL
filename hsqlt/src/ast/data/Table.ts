@@ -31,6 +31,8 @@ export class Table extends CollectionType {
         return [...this.cols];
     }
     get(c: string) {
+        c = c.toLowerCase();
+
         return this.cols.get(c);
     }
     // has(C: Col) {
