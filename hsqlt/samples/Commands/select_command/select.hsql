@@ -1,6 +1,21 @@
--- hsqlt make Commands/output_command/output.hsql
--- 
+-- hsqlt make Commands/select_command/output.hsql
+-- ecl run thor Commands/select_command/select.ecl
 import %.marks;
+
+/*
+ * Here is the AST Generation process for Select
+ * Simplifying for ECL, the whole process becomes
+ * 1. FROM
+ *     a. Enumerate aliases
+ *     b. Enumerate joins
+ *     c. Store the table
+ * 2. where
+ * 3. sort
+ * 4. groupandColfit
+ * 5. LIMITOFFSET
+ * 6. distinct
+ * 7. distribute
+*/
 
 -- lets see the marks for each column
 markslist = select marks from marks.marks distribute by marks;
