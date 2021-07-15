@@ -4,7 +4,7 @@ import %.a;
 
 //p = select * from (select * from a.t2) as t1 order by c3;
 export P = select * from a.t1 order by c1;
-
+shared Q = select * from a.t1 order by c1 desc;
 -- OUTPUT p;
 
 -- select * from p;
