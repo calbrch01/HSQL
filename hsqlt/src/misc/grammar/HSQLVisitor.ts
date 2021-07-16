@@ -38,6 +38,7 @@ import { PredicatedContext } from "./HSQLParser";
 import { LogicalNotContext } from "./HSQLParser";
 import { LogicalBinaryContext } from "./HSQLParser";
 import { TableDeclarationContext } from "./HSQLParser";
+import { LayoutDeclarationContext } from "./HSQLParser";
 import { PlotDeclarationContext } from "./HSQLParser";
 import { NormalIdentifierContext } from "./HSQLParser";
 import { RootIdentifierContext } from "./HSQLParser";
@@ -47,6 +48,8 @@ import { CompletestmtContext } from "./HSQLParser";
 import { StmtContext } from "./HSQLParser";
 import { DefinitionStmtContext } from "./HSQLParser";
 import { ExprContext } from "./HSQLParser";
+import { LayoutStmtContext } from "./HSQLParser";
+import { LayoutContentContext } from "./HSQLParser";
 import { ActionStmtContext } from "./HSQLParser";
 import { SelectStmtContext } from "./HSQLParser";
 import { DistributeByClauseContext } from "./HSQLParser";
@@ -336,6 +339,14 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	visitTableDeclaration?: (ctx: TableDeclarationContext) => Result;
 
 	/**
+	 * Visit a parse tree produced by the `layoutDeclaration`
+	 * labeled alternative in `HSQLParser.declaration`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitLayoutDeclaration?: (ctx: LayoutDeclarationContext) => Result;
+
+	/**
 	 * Visit a parse tree produced by the `plotDeclaration`
 	 * labeled alternative in `HSQLParser.declaration`.
 	 * @param ctx the parse tree
@@ -401,6 +412,20 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitExpr?: (ctx: ExprContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.layoutStmt`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitLayoutStmt?: (ctx: LayoutStmtContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.layoutContent`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitLayoutContent?: (ctx: LayoutContentContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `HSQLParser.actionStmt`.

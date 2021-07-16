@@ -22,8 +22,13 @@ stmt:
 
 definitionStmt: scope label = IDENTIFIER EQ expr;
 
-expr: definition | actionStmt;
+expr: definition | actionStmt | layoutStmt;
 // | transformStmt | mlStmt | moduleStmt;
+
+layoutStmt: CREATE LAYOUT BSTART_ layoutContent BEND_;
+
+layoutContent: colDefs;
+
 actionStmt:
 	selectStmt
 	| outputStmt
@@ -263,10 +268,10 @@ scope
 // this is the declarations file
 declarations: (declaration SEMICOLON)* EOF;
 declaration:
-	DECLARE IDENTIFIER AS? TABLE BSTART_ colDefs BEND_ # tableDeclaration
-	// | DECLARE IDENTIFIER AS? LAYOUT BSTART_ colDefs BEND_ #layoutDeclaration
-	| DECLARE IDENTIFIER AS? PLOT ON STRING # plotDeclaration;
-colDefs: colDef (COMMA_ colDef)* |;
+	DECLARE IDENTIFIER AS? TABLE BSTART_ colDefs BEND_		# tableDeclaration
+	| DECLARE IDENTIFIER AS? LAYOUT BSTART_ colDefs BEND_	# layoutDeclaration
+	| DECLARE IDENTIFIER AS? PLOT ON STRING					# plotDeclaration;
+colDefs: colDef (COMMA_ colDef)*;
 colDef: dataType IDENTIFIER;
 
 //****************************************Lexer Rules******************************************/
