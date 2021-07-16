@@ -12,7 +12,7 @@ import { StmtExpression } from '../../ast/stmt/base/StmtExpression';
 import { Definition } from '../../ast/stmt/Definition';
 import { EqualDefinition } from '../../ast/stmt/EqualDefinition';
 import { Import } from '../../ast/stmt/Import';
-import { StringLiteral } from '../../ast/stmt/Literal';
+import { Literal } from '../../ast/stmt/Literal';
 import { DataMetaData, VariableTable } from '../../ast/symbol/VariableTable';
 import { VariableVisibility } from '../../misc/ast/VariableVisibility';
 import { ErrorManager, ErrorType, TranslationIssue } from '../../managers/ErrorManager';
@@ -26,6 +26,7 @@ import {
     DefinitionStmtContext,
     FileOutputStmtContext,
     ImportStmtContext,
+    LiteralContext,
     OutputStmtContext,
     PlotStmtContext,
     ProgramContext,
@@ -199,10 +200,13 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
         return res;
     }
 
-    visitBasicStringLiteral(ctx: BasicStringLiteralContext) {
+    // visitBasicStringLiteral(ctx: BasicStringLiteralContext) {
+
+    visitLiteral(ctx: LiteralContext) {
         // console.debug('I was called');
-        const dt = new Singular(SingularDataType.STRING);
-        const node = new StringLiteral(ctx, ctx.text);
+        const dt = new Singular(ctx.dt);
+
+        const node = new Literal(ctx, ctx.text, ctx.dt);
         return new VEO(dt, node);
     }
 

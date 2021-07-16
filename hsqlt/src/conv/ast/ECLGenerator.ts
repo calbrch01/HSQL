@@ -6,7 +6,7 @@ import { AbstractASTVisitor, IASTVisitor } from '../../ast/IASTVisitor';
 import { Definition } from '../../ast/stmt/Definition';
 import { EqualDefinition } from '../../ast/stmt/EqualDefinition';
 import { Import } from '../../ast/stmt/Import';
-import { StringLiteral } from '../../ast/stmt/Literal';
+import { Literal } from '../../ast/stmt/Literal';
 import { Output } from '../../ast/stmt/Output';
 import { Plot } from '../../ast/stmt/Plot';
 import { Select } from '../../ast/stmt/Select';
@@ -107,7 +107,7 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
         return [new ECLCode(x.val.toString())];
     }
 
-    visitStringLiteral(ctx: StringLiteral) {
+    visitLiteral(ctx: Literal) {
         return [new ECLCode(ctx.val)];
     }
 

@@ -128,7 +128,11 @@ offsetClause: OFFSET INTEGER_VALUE;
 comparisonOperator: EQ | NEQ | LT | LTE | GT | GTE;
 // arithmeticOPERATOR: PLUS | SUBSTRACT | MULTIPLY | DIVIDE | MODULO;
 logicalOperator: AND | OR | NOT | IN | BETWEEN | EXISTS;
-literal: number | string | booleanValue;
+literal
+	locals[dt:SingularDataType=SingularDataType.INTEGER]:
+	number {$dt = $number.ctx.dt}
+	| string {$dt = SingularDataType.STRING}
+	| booleanValue {$dt = SingularDataType.BOOLEAN};
 // todo: More precise defination
 dataType
 	locals[ dt:SingularDataType=SingularDataType.INTEGER]:
@@ -183,10 +187,11 @@ primaryExpression:
 	| string					# stringLiteral
 	| BSTART_ expression BEND_	# parenthesizedExpression;
 
-number:
-	DECIMAL_VALUE	# decimalLiteral
-	| DOUBLE_VALUE	# doubleLiteral
-	| INTEGER_VALUE	# integerLiteral;
+number
+	locals[dt:SingularDataType=SingularDataType.INTEGER]:
+	DECIMAL_VALUE {$dt = SingularDataType.DECIMAL}	# decimalLiteral
+	| DOUBLE_VALUE {$dt=SingularDataType.REAL}		# doubleLiteral
+	| INTEGER_VALUE									# integerLiteral;
 
 string:
 	STRING # basicStringLiteral
