@@ -1,10 +1,16 @@
 import { AbstractParseTreeVisitor } from 'antlr4ts/tree';
 import { DataType } from '../../../ast/data/base/DataType';
 import { Col } from '../../../ast/data/Col';
+import { Layout } from '../../../ast/data/Layout';
 import { Table } from '../../../ast/data/Table';
 import { DataMetaData, DataVisualization } from '../../../ast/symbol/VariableTable';
 import { VariableVisibility } from '../../../misc/ast/VariableVisibility';
-import { ColDefContext, PlotDeclarationContext, TableDeclarationContext } from '../../../misc/grammar/HSQLParser';
+import {
+    ColDefContext,
+    LayoutDeclarationContext,
+    PlotDeclarationContext,
+    TableDeclarationContext,
+} from '../../../misc/grammar/HSQLParser';
 import { HSQLVisitor } from '../../../misc/grammar/HSQLVisitor';
 // import { HSQLVisitor } from '../../../lib';
 import { ASTGenerator } from '../ASTGenerator';
@@ -50,6 +56,31 @@ export class DeclarationGeneration
         // this.parent.variableManager.add()
         return undefined;
     }
+
+    visitLayoutDeclaration(ctx: LayoutDeclarationContext) {
+        const entries = ctx
+            .colDefs()
+            .colDef()
+            // .map(e => e.accept(this))
+            .reduce((t, e, i) => {
+                const res = this.visit(e); //e.accept(this);
+                if (res === undefined) return t;
+                else {
+                    const y = [...t, res];
+                    // safe, syntax allows it
+                    return y as [string, Col][];
+                }
+            }, [] as [string, Col][]);
+
+        const table: Layout = new Layout(new Map(entries));
+
+        const text = ctx.IDENTIFIER().text;
+        this.parent.variableManager.add(text, DataMetaData(table, VariableVisibility.EXPORT));
+
+        // this.parent.variableManager.add()
+        return undefined;
+    }
+
     visitPlotDeclaration(ctx: PlotDeclarationContext) {
         // put escapes into consideration, and strip out the first and last quote
         const templateExpression = ctx.STRING().text.replace(/\\'/g, "'").slice(1, -1);
