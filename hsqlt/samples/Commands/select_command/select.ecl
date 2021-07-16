@@ -9,8 +9,6 @@ RETURN __r_action_2;
 END;
 markslist := __r_action_0;
 
-
-
 //output markslist title marksList;
 OUTPUT(markslist,,NAMED('marksList'));
 
