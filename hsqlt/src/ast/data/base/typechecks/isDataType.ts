@@ -6,7 +6,7 @@ import { typeMap } from '../typeMap';
  *
  * @param x
  * @param y
- * @param ignoreDataAny Ignore data being anyized. This allows checking if data is any
+ * @param ignoreDataAny Ignore data being anyized. This allows checking if data is any (false)
  * @returns
  */
 export function isDataType<T extends keyof typeMap, U extends typeMap[T]>(
