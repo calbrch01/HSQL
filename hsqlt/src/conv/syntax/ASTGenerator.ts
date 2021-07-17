@@ -26,6 +26,7 @@ import {
     DefinitionStmtContext,
     FileOutputStmtContext,
     ImportStmtContext,
+    LayoutStmtContext,
     LiteralContext,
     OutputStmtContext,
     PlotStmtContext,
@@ -42,6 +43,9 @@ import { SelectASTGenerator } from './support/SelectASTGenerator';
 import { PlotASTGenerator } from './support/PlotASTGenerator';
 import { WriteASTGenerator } from './support/WriteASTGenerator';
 import resultStrings from '../../misc/strings/resultStrings';
+import { ColDefsASTGenerator } from './support/ColDefASTGenerator';
+import { Layout } from '../../ast/data/Layout';
+import { CreateLayout } from '../../ast/stmt/CreateLayout';
 
 /**
  * Generate an AST.
@@ -54,6 +58,7 @@ import resultStrings from '../../misc/strings/resultStrings';
 export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements HSQLVisitor<VEOMaybe>, ASTGen {
     protected ast: AST;
     public variableManager: VariableTable;
+    protected colDefsASTGenerator: ColDefsASTGenerator;
     constructor(
         public taskManager: TaskManager,
         protected _errorManager: ErrorManager,
@@ -61,6 +66,7 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
         protected includeStack: string[]
     ) {
         super();
+        this.colDefsASTGenerator = new ColDefsASTGenerator();
         if (includeStack.length === 0) {
             this._errorManager.halt(
                 TranslationIssue.generalErrorToken(
@@ -173,6 +179,19 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
         // add the results of the statements
         this.ast.stmts.push(...results.map(e => e.stmt));
         return null;
+    }
+
+    visitLayoutStmt(ctx: LayoutStmtContext) {
+        // TODO 16/07
+        // the declaration generation is used here as a shortcut to generate coldef mappings
+        const entries = this.colDefsASTGenerator.visit(ctx.layoutContent().colDefs());
+
+        const layout = new Layout(new Map(entries));
+
+        // this.parent.variableManager.add(text, DataMetaData(layout, VariableVisibility.EXPORT));
+        const layoutstmt = new CreateLayout(ctx, layout);
+
+        return new VEO(layout, layoutstmt);
     }
 
     visitFileOutputStmt(ctx: FileOutputStmtContext) {

@@ -14,6 +14,7 @@ import {
 import { HSQLVisitor } from '../../../misc/grammar/HSQLVisitor';
 // import { HSQLVisitor } from '../../../lib';
 import { ASTGenerator } from '../ASTGenerator';
+import { ColDefsASTGenerator } from './ColDefASTGenerator';
 
 /**
  * Generate an AST for declaration definitions
@@ -22,31 +23,34 @@ export class DeclarationGeneration
     extends AbstractParseTreeVisitor<readonly [string, DataType] | undefined>
     implements HSQLVisitor<readonly [string, DataType] | undefined>
 {
+    protected colDefsASTGenerator: ColDefsASTGenerator;
     // protected parent:ASTGenerator;
     protected defaultResult(): undefined {
         return undefined;
     }
     constructor(protected parent: ASTGenerator) {
         super();
+        this.colDefsASTGenerator = new ColDefsASTGenerator();
     }
 
-    visitColDef(ctx: ColDefContext) {
-        return [ctx.IDENTIFIER().text, new Col(ctx.dataType().dt)] as const;
-    }
+    // visitColDef(ctx: ColDefContext) {
+    //     return [ctx.IDENTIFIER().text, new Col(ctx.dataType().dt)] as const;
+    // }
     visitTableDeclaration(ctx: TableDeclarationContext) {
-        const entries = ctx
-            .colDefs()
-            .colDef()
-            // .map(e => e.accept(this))
-            .reduce((t, e, i) => {
-                const res = this.visit(e); //e.accept(this);
-                if (res === undefined) return t;
-                else {
-                    const y = [...t, res];
-                    // safe, syntax allows it
-                    return y as [string, Col][];
-                }
-            }, [] as [string, Col][]);
+        // get coldefs, visit them and get their data
+
+        const entries = this.colDefsASTGenerator.visit(ctx.colDefs());
+        // .colDef()
+        // // .map(e => e.accept(this))
+        // .reduce((t, e, i) => {
+        //     const res = this.visit(e); //e.accept(this);
+        //     if (res === undefined) return t;
+        //     else {
+        //         const y = [...t, res];
+        //         // safe, syntax allows it
+        //         return y as [string, Col][];
+        //     }
+        // }, [] as [string, Col][]);
 
         const table: Table = new Table(new Map(entries));
 
@@ -58,24 +62,26 @@ export class DeclarationGeneration
     }
 
     visitLayoutDeclaration(ctx: LayoutDeclarationContext) {
-        const entries = ctx
-            .colDefs()
-            .colDef()
-            // .map(e => e.accept(this))
-            .reduce((t, e, i) => {
-                const res = this.visit(e); //e.accept(this);
-                if (res === undefined) return t;
-                else {
-                    const y = [...t, res];
-                    // safe, syntax allows it
-                    return y as [string, Col][];
-                }
-            }, [] as [string, Col][]);
+        // get coldefs, visit them and get their data
+        const entries = this.colDefsASTGenerator.visit(ctx.colDefs());
 
-        const table: Layout = new Layout(new Map(entries));
+        // const entries = ctx
+        //     .colDefs()
+        //     .colDef()
+        //     .reduce((t, e, i) => {
+        //         const res = this.visit(e);
+        //         if (res === undefined) return t;
+        //         else {
+        //             const y = [...t, res];
+        //             // safe, syntax allows it
+        //             return y as [string, Col][];
+        //         }
+        //     }, [] as [string, Col][]);
+
+        const layout: Layout = new Layout(new Map(entries));
 
         const text = ctx.IDENTIFIER().text;
-        this.parent.variableManager.add(text, DataMetaData(table, VariableVisibility.EXPORT));
+        this.parent.variableManager.add(text, DataMetaData(layout, VariableVisibility.EXPORT));
 
         // this.parent.variableManager.add()
         return undefined;

@@ -12,6 +12,8 @@ export default {
     commmon: {
         leftBracket: '(',
         rightBracket: ')',
+        leftCurlyBracket: '{',
+        rightCurlyBracket: '}',
         comma: ',',
         overwrite: 'OVERWRITE',
         end: 'END',

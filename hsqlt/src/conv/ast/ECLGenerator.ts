@@ -21,6 +21,8 @@ import { QualifiedIdentifier } from '../../misc/ast/QualifiedIdentifier';
 import { SelectColumnType, SelectJoinType, SortType } from '../../misc/ast/SelectHelpers';
 import ecl from '../../misc/strings/ecl';
 import rs from '../../misc/strings/resultStrings';
+import { CreateLayout } from '../../ast/stmt/CreateLayout';
+import { SingularDataType } from '../../misc/ast/SingularDataType';
 
 /**
  * Semantically, Array is treated as a rest+top fashion -> the array is top to bottom
@@ -64,6 +66,17 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
      */
     reducer(total: ECLCode[], current: ECLCode[]): ECLCode[] {
         return [...total, ...current];
+    }
+
+    visitLayout(x: CreateLayout) {
+        // make column lists
+        // map and join with comma
+        const cols = x.layout
+            .list()
+            .map(([colname, col]) => `${SingularDataType[col.dtype]} ${colname}`)
+            .join(ecl.commmon.comma);
+        const code = new ECLCode(cols, false).coverCode(ecl.commmon.leftCurlyBracket, ecl.commmon.rightCurlyBracket);
+        return [code];
     }
 
     visitWrite(x: Write) {

@@ -1,5 +1,6 @@
 import { AST } from './AST';
 import { BaseASTNode } from './stmt/base/BaseASTNode';
+import { CreateLayout } from './stmt/CreateLayout';
 import { Definition } from './stmt/Definition';
 import { EqualDefinition } from './stmt/EqualDefinition';
 import { Import } from './stmt/Import';
@@ -55,4 +56,6 @@ export interface IASTVisitor<T> {
     visitPlot?: (x: Plot) => T;
 
     visitWrite?: (x: Write) => T;
+
+    visitLayout?: (x: CreateLayout) => T;
 }

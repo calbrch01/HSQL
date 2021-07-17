@@ -14,7 +14,7 @@ export class Singular extends DataType {
         super(EDataType.SINGULAR);
     }
     public get dtype(): SingularDataType {
-        return this.dtype;
+        return this._dtype;
     }
     /**
      * get current data type in string
