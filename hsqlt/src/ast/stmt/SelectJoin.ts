@@ -13,7 +13,7 @@ import { StmtExpression } from './base/StmtExpression';
 export class SelectJoin implements StmtExpression {
     // FUTURE consider comparisonOperators properly
     constructor(
-        public node: SelectJoinedTableContext,
+        private _node: SelectJoinedTableContext,
         private _lhs: VEO<DataType, StmtExpression>,
         private _rhs: VEO<DataType, StmtExpression>,
         private _joinType: SelectJoinType,
@@ -23,6 +23,10 @@ export class SelectJoin implements StmtExpression {
         private _rightCmpName: string,
         private _comparisonOperator: string
     ) {}
+
+    public get node(): SelectJoinedTableContext {
+        return this._node;
+    }
 
     public get leftCmpName(): string {
         return this._leftCmpName;

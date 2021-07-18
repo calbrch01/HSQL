@@ -8,6 +8,7 @@ import { Literal } from './stmt/Literal';
 import { Output } from './stmt/Output';
 import { Plot } from './stmt/Plot';
 import { Select } from './stmt/Select';
+import { SelectData } from './stmt/SelectData';
 import { SelectJoin } from './stmt/SelectJoin';
 import { Write } from './stmt/Write';
 
@@ -52,6 +53,8 @@ export interface IASTVisitor<T> {
     visitLiteral?: (x: Literal) => T;
 
     visitSelectJoin?: (x: SelectJoin) => T;
+
+    visitSelectData?: (x: SelectData) => T;
 
     visitPlot?: (x: Plot) => T;
 

@@ -27,6 +27,7 @@ import { BasicStringLiteralContext } from "./HSQLParser";
 import { UnicodeStringLiteralContext } from "./HSQLParser";
 import { SelectFromDerivedTableContext } from "./HSQLParser";
 import { SelectFromDefinitionContext } from "./HSQLParser";
+import { SelectFromDatasetContext } from "./HSQLParser";
 import { SelectBracketedFromTableContext } from "./HSQLParser";
 import { SelectJoinedTableContext } from "./HSQLParser";
 import { IdentifierLiteralContext } from "./HSQLParser";
@@ -249,6 +250,14 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitSelectFromDefinition?: (ctx: SelectFromDefinitionContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `selectFromDataset`
+	 * labeled alternative in `HSQLParser.selectFromRef`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitSelectFromDataset?: (ctx: SelectFromDatasetContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by the `selectBracketedFromTable`
