@@ -23,6 +23,7 @@ import ecl from '../../misc/strings/ecl';
 import rs from '../../misc/strings/resultStrings';
 import { CreateLayout } from '../../ast/stmt/CreateLayout';
 import { SingularDataType } from '../../misc/ast/SingularDataType';
+import { SelectData } from '../../ast/stmt/SelectData';
 
 /**
  * Semantically, Array is treated as a rest+top fashion -> the array is top to bottom
@@ -102,7 +103,7 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
         const [rhstop] = this.getPopped(rhs, x.node);
 
         // this creates an extra ',' required for no record format
-        rhstop.coverCode(ecl.output.outputlhs(), ecl.commmon.comma, false);
+        rhstop.coverCode(ecl.output.outputlhs(), undefined, false);
 
         if (x.namedOutput) {
             rhstop.coverCode('', ecl.commmon.comma + ecl.output.named(x.namedOutput), false);
@@ -183,6 +184,11 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
                 x.rightCmpName
             )
         );
+        return [code];
+    }
+
+    visitSelectData(x: SelectData) {
+        const code = new ECLCode(ecl.table.ds(x.source, x.layoutId.toString(), FileOutputType[x.fileType]));
         return [code];
     }
 

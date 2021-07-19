@@ -1,6 +1,7 @@
 import { CollectionType } from './base/CollectionType';
 import { DataType, EDataType } from './base/DataType';
 import { Col } from './Col';
+import { AnyTable, Table } from './Table';
 
 export class Layout extends CollectionType {
     constructor(private cols: Map<string, Col> = new Map()) {
@@ -23,6 +24,10 @@ export class Layout extends CollectionType {
 
     static isLayout(x: DataType): x is Layout {
         return x.type === EDataType.LAYOUT;
+    }
+
+    toTable() {
+        return new Table(new Map(this.list()));
     }
 
     isExactType(t: DataType) {
@@ -58,14 +63,18 @@ export class AnyLayout extends Layout {
         return new AnyLayout();
     }
 
-    isExactType(d: DataType) {
+    override isExactType(d: DataType) {
         if (AnyLayout.isLayout(d)) {
             return true;
         }
         return false;
     }
 
-    list() {
+    override toTable() {
+        return new AnyTable();
+    }
+
+    override list() {
         return [];
     }
 }

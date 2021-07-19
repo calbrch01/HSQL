@@ -44,6 +44,7 @@ export default {
         colList: compile('{ {0} }'),
         dedup: compile('DEDUP({0},ALL)'),
         choosen: 'CHOOSEN(',
+        ds: compile('DATASET({0},{1},{2})'),
         sort: 'SORT(',
         negSort: compile('-({0})'),
         distributes: compile('DISTRIBUTE({0},HASH32({1}))'),

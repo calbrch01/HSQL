@@ -1152,18 +1152,18 @@ export class HSQLParser extends Parser {
 				_prevctx = _localctx;
 				this.state = 259;
 				this.match(HSQLParser.STRING);
-				this.state = 262;
+				this.state = 261;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 				if (_la === HSQLParser.TYPE) {
 					{
 					this.state = 260;
 					this.match(HSQLParser.TYPE);
-					this.state = 261;
-					this.fileType();
 					}
 				}
 
+				this.state = 263;
+				this.fileType();
 				this.state = 264;
 				this.match(HSQLParser.LAYOUT);
 				this.state = 265;
@@ -3353,7 +3353,7 @@ export class HSQLParser extends Parser {
 		"\n\x11\x03\x11\x05\x11\xEE\n\x11\x03\x12\x03\x12\x03\x12\x03\x13\x03\x13" +
 		"\x03\x13\x03\x13\x07\x13\xF7\n\x13\f\x13\x0E\x13\xFA\v\x13\x03\x14\x03" +
 		"\x14\x03\x14\x03\x14\x03\x14\x03\x14\x03\x14\x03\x14\x05\x14\u0104\n\x14" +
-		"\x03\x14\x03\x14\x03\x14\x05\x14\u0109\n\x14\x03\x14\x03\x14\x03\x14\x05" +
+		"\x03\x14\x03\x14\x05\x14\u0108\n\x14\x03\x14\x03\x14\x03\x14\x03\x14\x05" +
 		"\x14\u010E\n\x14\x03\x14\x03\x14\x03\x14\x03\x14\x07\x14\u0114\n\x14\f" +
 		"\x14\x0E\x14\u0117\v\x14\x03\x14\x03\x14\x05\x14\u011B\n\x14\x03\x14\x03" +
 		"\x14\x03\x14\x03\x14\x03\x14\x05\x14\u0122\n\x14\x07\x14\u0124\n\x14\f" +
@@ -3463,9 +3463,9 @@ export class HSQLParser extends Parser {
 		"\xFB\xFC\b\x14\x01\x02\xFC\xFD\x07h\x02\x02\xFD\xFE\x05\x12\n\x02\xFE" +
 		"\xFF\x07i\x02\x02\xFF\u0100\x05(\x15\x02\u0100\u011B\x03\x02\x02\x02\u0101" +
 		"\u0103\x05P)\x02\u0102\u0104\x05(\x15\x02\u0103\u0102\x03\x02\x02\x02" +
-		"\u0103\u0104\x03\x02\x02\x02\u0104\u011B\x03\x02\x02\x02\u0105\u0108\x07" +
-		"`\x02\x02\u0106\u0107\x07L\x02\x02\u0107\u0109\x05j6\x02\u0108\u0106\x03" +
-		"\x02\x02\x02\u0108\u0109\x03\x02\x02\x02\u0109\u010A\x03\x02\x02\x02\u010A" +
+		"\u0103\u0104\x03\x02\x02\x02\u0104\u011B\x03\x02\x02\x02\u0105\u0107\x07" +
+		"`\x02\x02\u0106\u0108\x07L\x02\x02\u0107\u0106\x03\x02\x02\x02\u0107\u0108" +
+		"\x03\x02\x02\x02\u0108\u0109\x03\x02\x02\x02\u0109\u010A\x05j6\x02\u010A" +
 		"\u010B\x07A\x02\x02\u010B\u010D\x05P)\x02\u010C\u010E\x05(\x15\x02\u010D" +
 		"\u010C\x03\x02\x02\x02\u010D\u010E\x03\x02\x02\x02\u010E\u011B\x03\x02" +
 		"\x02\x02\u010F\u0110\x07h\x02\x02\u0110\u0115\x05&\x14\x02\u0111\u0112" +
@@ -3623,7 +3623,7 @@ export class HSQLParser extends Parser {
 		"\u0266\x03\x02\x02\x02\u0264\u0262\x03\x02\x02\x02\u0264\u0265\x03\x02" +
 		"\x02\x02\u0265y\x03\x02\x02\x02\u0266\u0264\x03\x02\x02\x02\u0267\u0268" +
 		"\x05F$\x02\u0268\u0269\x07f\x02\x02\u0269{\x03\x02\x02\x02J\x7F\x8B\x95" +
-		"\xA4\xA8\xAE\xB1\xB6\xBB\xBE\xCD\xD5\xDF\xE6\xEA\xED\xF8\u0103\u0108\u010D" +
+		"\xA4\xA8\xAE\xB1\xB6\xBB\xBE\xCD\xD5\xDF\xE6\xEA\xED\xF8\u0103\u0107\u010D" +
 		"\u0115\u011A\u0121\u0125\u0129\u012F\u0134\u0139\u013D\u0151\u0156\u015A" +
 		"\u0162\u0174\u0181\u018A\u0190\u0194\u019B\u01A3\u01A7\u01AF\u01B1\u01B8" +
 		"\u01C0\u01C7\u01CE\u01DB\u01E2\u01E8\u01EA\u01F2\u01F7\u01FA\u0200\u0202" +
@@ -4262,14 +4262,14 @@ export class SelectFromDefinitionContext extends SelectFromRefContext {
 }
 export class SelectFromDatasetContext extends SelectFromRefContext {
 	public STRING(): TerminalNode { return this.getToken(HSQLParser.STRING, 0); }
+	public fileType(): FileTypeContext {
+		return this.getRuleContext(0, FileTypeContext);
+	}
 	public LAYOUT(): TerminalNode { return this.getToken(HSQLParser.LAYOUT, 0); }
 	public definition(): DefinitionContext {
 		return this.getRuleContext(0, DefinitionContext);
 	}
 	public TYPE(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.TYPE, 0); }
-	public fileType(): FileTypeContext | undefined {
-		return this.tryGetRuleContext(0, FileTypeContext);
-	}
 	public selectAlias(): SelectAliasContext | undefined {
 		return this.tryGetRuleContext(0, SelectAliasContext);
 	}

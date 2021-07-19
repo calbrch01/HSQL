@@ -39,6 +39,7 @@ import {
     SelectAggregatedOneColContext,
     SelectColumnsContext,
     SelectFromClauseContext,
+    SelectFromDatasetContext,
     SelectFromDefinitionContext,
     SelectFromDerivedTableContext,
     SelectJoinedTableContext,
@@ -53,6 +54,7 @@ import miscHSQL from '../../../misc/strings/miscHSQL';
 import rs from '../../../misc/strings/resultStrings';
 import { ASTGenerator } from '../ASTGenerator';
 import { ExpressionChecker } from './ExpressionChecker';
+import { SelectData } from '../../../ast/stmt/SelectData';
 
 /*
  * Let's talk about select. its really big.
@@ -276,6 +278,11 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
         return null;
     }
 
+    /**
+     * Set distinct as true
+     * @param ctx
+     * @returns
+     */
     visitDistinctClause(ctx: DistinctClauseContext) {
         this._distinct = true;
         return null;
@@ -780,5 +787,65 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
         this.parent.variableManager.add(name, DataMetaData(dt, VariableVisibility.DEFAULT, true));
         this._changedSources.set(name, new VEO(dt, stmt));
         return new VEO(dt, new Definition(ctx, new QualifiedIdentifier(name)));
+    }
+
+    visitSelectFromDataset(ctx: SelectFromDatasetContext) {
+        const childCtx = ctx.definition();
+        const childRes = this.parent.visit(childCtx);
+        const alias = ctx.selectAlias()?.IDENTIFIER().text;
+        let resultingVariable = pullVEO(childRes, this.errorManager, childCtx);
+
+        // idea
+        // pull the definition out of there,
+        // use the definition's layout to create a table
+        if (!(resultingVariable.stmt instanceof Definition)) {
+            this.errorManager.halt(
+                TranslationIssue.semanticErrorToken(format(rs.notTagged, [Definition.name]), childCtx)
+            );
+        }
+
+        // resulting qid
+        const qid = resultingVariable.stmt.val;
+        // is the qid from a layout type?
+
+        let resultantDt: Table;
+        if (isDataType(resultingVariable.datatype, EDataType.LAYOUT)) {
+            // resultantDt =
+            resultantDt = resultingVariable.datatype.toTable();
+            console.log('B1');
+        } else {
+            resultantDt = new AnyTable();
+            console.log('B2');
+            this.errorManager.push(
+                TranslationIssue.createIssue(
+                    format(rs.cannotUse, EDataType[resultingVariable.datatype.type], EDataType[EDataType.TABLE]),
+                    ErrorType.SEMANTIC,
+                    ErrorSeverity.ERROR,
+                    childCtx
+                )
+            );
+        }
+
+        // final name
+        let name: string;
+        //if no id, give it one
+        if (alias == undefined) {
+            const usableName = this.parent.variableManager.nextClaimableActionIdentifier();
+            name = usableName;
+            this.errorManager.push(
+                TranslationIssue.semanticInfoToken(format(rs.noAliasUsingFallbackInfo, [rs.table, usableName]), ctx)
+            );
+        } else {
+            // if alias is there, why worry
+            name = alias;
+        }
+
+        const stmt = new SelectData(ctx, ctx.STRING().text, qid, ctx.fileType()?.fileOutputType);
+        //
+        this.parent.variableManager.add(name, DataMetaData(resultantDt, VariableVisibility.DEFAULT, true));
+
+        this._changedSources.set(name, new VEO(resultantDt, stmt));
+        // return null;
+        return new VEO(resultantDt, new Definition(ctx, new QualifiedIdentifier(name)));
     }
 }

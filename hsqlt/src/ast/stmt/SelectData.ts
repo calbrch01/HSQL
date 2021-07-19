@@ -18,6 +18,10 @@ export class SelectData implements StmtExpression {
         return this._node;
     }
 
+    public get source(): string {
+        return this._source;
+    }
+
     public get layoutId(): QualifiedIdentifier {
         return this._layoutId;
     }

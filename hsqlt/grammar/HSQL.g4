@@ -84,7 +84,7 @@ selectFromClause:
 selectFromRef:
 	BSTART_ selectStmt BEND_ selectAlias									# selectFromDerivedTable
 	| definition selectAlias?												# selectFromDefinition
-	| STRING (TYPE fileType)? LAYOUT definition selectAlias?				# selectFromDataset
+	| STRING TYPE? fileType LAYOUT definition selectAlias?					# selectFromDataset
 	| BSTART_ selectFromRef (COMMA_ selectFromRef)* BEND_					# selectBracketedFromTable
 	| selectFromRef joinOperator selectFromRef joinConstraint selectAlias?	# selectJoinedTable;
 // joinconstraint is mandatory or else the selectAlias will never come up, the selectFromRef will consume it

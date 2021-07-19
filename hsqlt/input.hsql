@@ -1,13 +1,18 @@
 import %.a;
-import pc;
+-- import pc;
 //import %.a;
 //p = select distinct *,count(c1) from a.t1 as b,a.t2 as aa group by c1 limit 5 ;
 
 //p = select * from (select * from a.t2) as t1 order by c3;
-export P = select * from a.t1 order by c1;
+P = select * from a.t1 order by c1;
 q = create layout(
-    int x,string y
+    int x,
+    string y
 );
+r = select * from '~output::writetofile.csv' TYPE CSV layout q;
+
+
+output r;
 -- o = 9;
 -- output p;
 -- select * from p;

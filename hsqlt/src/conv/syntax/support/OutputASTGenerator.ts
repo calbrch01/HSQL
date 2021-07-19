@@ -38,12 +38,12 @@ export class OutputASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
                 )
             );
         }
-        if (!isDataType(attributeResultDataType, EDataType.TABLE)) {
-            const typeInQuestion = attributeResultDataType.type ?? EDataType.ANY;
-            this.errorManager.push(
-                TranslationIssue.semanticErrorToken(format(rs.cannotUse, [EDataType[typeInQuestion], rs.output]))
-            );
-        }
+        // if (!isDataType(attributeResultDataType, EDataType.TABLE)) {
+        //     const typeInQuestion = attributeResultDataType.type ?? EDataType.ANY;
+        //     this.errorManager.push(
+        //         TranslationIssue.semanticErrorToken(format(rs.cannotUse, [EDataType[typeInQuestion], rs.output]))
+        //     );
+        // }
         const astNode = new Output(ctx, attributeResult.stmt, overwrite, namedOutputLocation);
 
         return new VEO(dt, astNode);
