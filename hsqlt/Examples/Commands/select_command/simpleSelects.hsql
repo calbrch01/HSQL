@@ -8,7 +8,6 @@ name2 = 'Bahareh';
 // ECL definition
 customers = demods.ds;
 
-
 // select particular columns
 
 /* SELECT SYNTAX

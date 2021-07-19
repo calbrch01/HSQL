@@ -1,9 +1,9 @@
 IMPORT $.demods;
 OUTPUT(demods.ds,);
 
-
 name1 := 'Mahdi';
-name2 := 'Bahareh';
+name2 := 'Arjuna';
+
 customers := demods.ds;
 __r_action_0 := FUNCTION
 __r_action_1 := TABLE(Customers,{ CustomerName,City });
