@@ -1,0 +1,5 @@
+import %.demods;
+customers = demods.ds;
+
+// select everything
+SELECT * FROM Customers;

@@ -1,5 +1,2 @@
-name1 = 'Mahdi';
-output name;
-
-
--- There are different outputs in ECL ( One for table and one for constants. (We could be working on that later?) )
+name1 = 'Mr. Dan Camper';
+output name1;

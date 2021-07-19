@@ -1,0 +1,5 @@
+import %.demods;
+customers = demods.ds;
+
+// select where
+select * from Customers where customerid>2;
