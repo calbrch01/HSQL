@@ -1,5 +1,4 @@
 import { AbstractParseTreeVisitor } from 'antlr4ts/tree';
-import { statSync } from 'fs';
 import format from 'string-template';
 import { Any } from '../../../ast/data/Any';
 import { CollectionType } from '../../../ast/data/base/CollectionType';
@@ -57,7 +56,7 @@ import { ExpressionChecker } from './ExpressionChecker';
 import { SelectData } from '../../../ast/stmt/SelectData';
 
 /*
- * Let's talk about select. its really big.
+ * Let's talk about select. Its a bit big.
  * We will have sources, cols and jobs.
  * Jobs are how we can do SELECT.
  * This is the safest order to the query.
@@ -202,16 +201,6 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
         // distribute by is at the end, this had to be markedly the end note
         ctx.distributeByClause()?.accept(this);
 
-        // distinctCtx !== undefined && this._jobs.push({ type: SelectJobDesc.DISTINCT, ctx: distinctCtx });
-
-        // debug args
-        // this.parent.taskManager.args.g && console.debug('G> this._changedSources', this._changedSources);
-        // this.parent.taskManager.args.g && console.debug('G> this._cols', this._colSelect);
-
-        //get the data type that we had set from visitSelectFromClause ->
-
-        // this.parent.taskManager.args.g && console.debug('this._jobs', this._jobs);
-
         // create node
         const node = new Select(
             ctx,
@@ -229,7 +218,6 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
                 this.finalDt
             )
         );
-        // this.parent.taskManager.args.g && console.debug('Select', node);
 
         return new VEO(this.finalDt, node);
     }
@@ -812,10 +800,10 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
         if (isDataType(resultingVariable.datatype, EDataType.LAYOUT)) {
             // resultantDt =
             resultantDt = resultingVariable.datatype.toTable();
-            console.log('B1');
+            // console.log('B1');
         } else {
             resultantDt = new AnyTable();
-            console.log('B2');
+            // console.log('B2');
             this.errorManager.push(
                 TranslationIssue.createIssue(
                     format(rs.cannotUse, EDataType[resultingVariable.datatype.type], EDataType[EDataType.TABLE]),

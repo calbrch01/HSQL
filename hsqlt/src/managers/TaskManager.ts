@@ -237,8 +237,7 @@ export class TaskManager {
     }
 
     /**
-     * resolve a file
-     * // TODO 08/07 this file requires passing the includes and the current file location
+     * Resolve a file, and get its contents
      * @param q resolve this qualified identifier into face
      * @returns the module that was resolved
      */
@@ -260,7 +259,10 @@ export class TaskManager {
         }
 
         const x = this._fsmanager.stat(pathString, isLocal);
-        if (x.type === FileType.DHSQL || x.type === FileType.HSQL) {
+
+        if (!x.found) {
+            this.errorManager.push(TranslationIssue.semanticErrorToken(format(rs.notFound, q.toString()), cause));
+        } else if (x.type === FileType.DHSQL || x.type === FileType.HSQL) {
             // dhsql are one time imports, don't do
 
             const { ast } = this.generateAST(x.path, x.type, isLocal, includes, cause);
