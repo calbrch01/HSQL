@@ -1,2 +1,2 @@
-import %.demoDS;
+import %.demods;
 output demoDS.ds;
