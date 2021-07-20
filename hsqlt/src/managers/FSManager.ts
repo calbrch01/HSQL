@@ -131,7 +131,7 @@ export class FSManager {
 
         if (pos === -1) {
             this.errorManager.halt(
-                TranslationIssue.generalErrorToken(format(resultStrings.couldNotFindFileError), ErrorType.IO)
+                TranslationIssue.generalErrorToken(format(resultStrings.couldNotFindFileError, strpath), ErrorType.IO)
             );
         }
         for (const [type, pathResultVal] of stats) {
@@ -142,7 +142,7 @@ export class FSManager {
                     if (readFile === undefined) {
                         return this.errorManager.halt(
                             TranslationIssue.generalErrorToken(
-                                format(resultStrings.couldNotFindFileError),
+                                format(resultStrings.couldNotFindFileError, strpath),
                                 ErrorType.IO
                             )
                         );
