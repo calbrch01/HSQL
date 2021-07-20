@@ -6,19 +6,21 @@ import {
     Diagnostic,
     DiagnosticSeverity,
 } from 'vscode-languageserver';
-import { TextDocument, TextDocumentContentChangeEvent } from 'vscode-languageserver-textdocument';
-import { DocListener, FTDoc } from './TextDoc';
-import { eventChecks } from './TextUtils';
+import { TextDocument } from 'vscode-languageserver-textdocument';
 import { fileURLToPath, pathToFileURL } from 'url';
-import { AST, ContexedTranslationError, ErrorSeverity, HaltError, TaskManager } from 'hsqlt';
-import { FileType } from '../../../hsqlt/build/misc/file/FileType';
 import {
+    AST,
+    ContexedTranslationError,
+    ErrorSeverity,
+    HaltError,
+    TaskManager,
+    FileType,
     FileProvider,
     FSFileProvider,
     MemFileProvider,
-} from '../../../hsqlt/build/misc/file/FileProvider';
+    FSManager,
+} from 'hsqlt';
 import { relative } from 'path';
-import { FSManager } from '../../../hsqlt/build/managers/FSManager';
 
 /**
  * Cache the locations (This reduces delay with fetching from eclcc)
