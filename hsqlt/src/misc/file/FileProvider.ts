@@ -117,7 +117,7 @@ export class FSFileProvider implements FileProvider {
 
         const res = FSFileProvider.getFileType(realpath);
         if (res.found) {
-            return { ...res, path: relpath };
+            return { ...res, path: realpath };
         }
         return res;
     }
