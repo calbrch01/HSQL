@@ -136,7 +136,6 @@ See the example code for [ECL Definition Syntax](.\simpleSelects.HSQL)
 | <code>select * from Customers where customerid>2;</code> | <code>__r_action_4;<br />__r_action_7 := FUNCTION<br />__r_action_8 := Customers( customerid > 2);<br />__r_action_9 := TABLE(__r_action_8,{ __r_action_8 });<br />RETURN __r_action_9;<br />END;<br />__r_action_7;</code> |
 
 
-<!-- // TODO add examples for SELECT DISTINCT -->
 #### SELECT DISTINCT
 
 | HSQL code                                            | ECL result                                                                                                                                                                                     |

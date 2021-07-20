@@ -52,7 +52,7 @@ import { pullVEO, VEO, VEOMaybe } from '../../../misc/holders/VEO';
 import miscHSQL from '../../../misc/strings/miscHSQL';
 import rs from '../../../misc/strings/resultStrings';
 import { ASTGenerator } from '../ASTGenerator';
-import { ExpressionChecker } from './ExpressionChecker';
+import { FastExpressionChecker } from './ExpressionChecker';
 import { SelectData } from '../../../ast/stmt/SelectData';
 
 /*
@@ -241,7 +241,7 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
 
     visitSelectWhereClause(ctx: SelectWhereClauseContext) {
         // const { text } = ctx;
-        const res = new ExpressionChecker(this.parent, this.totalDt).visit(ctx.booleanExpression());
+        const res = new FastExpressionChecker(this.parent, this.totalDt).visit(ctx.booleanExpression());
         this._where = res;
         return null;
     }

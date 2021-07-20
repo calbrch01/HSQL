@@ -1,5 +1,7 @@
 import { FileType } from '../file/FileType';
-
+/**
+ * Default export for standard library
+ */
 export default [
     [
         'Visualizer.dhsql',

@@ -13,7 +13,7 @@ import format from 'string-template';
  * Does not check type compatibility
  * // FUTURE
  */
-export class ExpressionChecker extends AbstractParseTreeVisitor<string> implements HSQLVisitor<string> {
+export class FastExpressionChecker extends AbstractParseTreeVisitor<string> implements HSQLVisitor<string> {
     protected defaultResult(): string {
         return '';
     }
