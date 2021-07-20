@@ -47,29 +47,7 @@ export class FileHandler {
     }
 
     /**
-     * Get the file type
-     * @deprecated
-     * @param pathString
-     * @param override
-     * @returns
-     */
-    // static getFileType(pathString: string, override?: FileType): FileType {
-    //     const x = path.extname(pathString);
-    //     // are switch cases really bad?
-    //     switch (x) {
-    //         case '.hsql':
-    //             return override ?? FileType.HSQL;
-    //         case '.dhsql':
-    //             return override ?? FileType.DHSQL;
-    //         case '.ecl':
-    //             return override ?? FileType.ECL;
-    //         default:
-    //             return override ?? FileType.OTHER;
-    //     }
-    // }
-
-    /**
-     * Convert a id path to that
+     * Convert a qid to a path string
      */
     static idToPathMap(s: QualifiedIdentifier): string[] {
         return s.qidentifier.map(e => {

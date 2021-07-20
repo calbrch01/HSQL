@@ -247,9 +247,7 @@ export class TaskManager {
         includes: string[],
         cause?: ImportStmtContext | ProgramContext
     ): { output: Module; viz: Map<string, DataVisualization> } {
-        // const identifiers = q.qidentifier;
-        // let joinable = '.';
-        const fsl = q.qidentifier;
+        // const fsl = q.qidentifier;
 
         this.args.g && console.log(`DIRNAME`, __dirname);
 
@@ -263,12 +261,12 @@ export class TaskManager {
         if (!x.found) {
             this.errorManager.push(TranslationIssue.semanticErrorToken(format(rs.notFound, q.toString()), cause));
         } else if (x.type === FileType.DHSQL || x.type === FileType.HSQL) {
-            // dhsql are one time imports, don't do
-
             const { ast } = this.generateAST(x.path, x.type, isLocal, includes, cause);
 
+            // get the root stack
             const vars = ast.variableManager.vars[0];
             if (vars === undefined) {
+                // This should not be happening, but we can be careful and return empty
                 return { output: new AnyModule(), viz: new Map() };
             }
             const rows = [...vars]
@@ -286,15 +284,7 @@ export class TaskManager {
 
             return { output: new Module(new Map(rows)), viz: new Map(vizMaps) };
         }
-        // do something here
-        // for (const segment of identifiers) {
-        //     joinable = path.join(joinable, segment);
-        //     if (!fs.existsSync(joinable)) {
-        //         this.errorListener;
-        //     }
-        // }
-        // return joinable;
-        // const res = this._fsmanager.resolveName(q);
+
         return { output: new AnyModule(), viz: new Map() };
     }
 }

@@ -16,14 +16,13 @@ import { ErrorManager, ErrorType, TranslationIssue } from './ErrorManager';
  * Create them as required
  */
 export class FSManager {
-    protected _fh: FileHandler;
     /**
      *
      * @param _errorManager
      * @param _fsSets eval order first to last
      */
     constructor(private _errorManager: ErrorManager, protected _fsSets: FileProvider[] = []) {
-        this._fh = new FileHandler(this._errorManager);
+        // this._fh = new FileHandler(this._errorManager);
     }
     addFileManager(x: FileProvider, top: boolean = false) {
         if (top) return this._fsSets.unshift(x);
@@ -37,9 +36,6 @@ export class FSManager {
     }
     public get errorManager(): ErrorManager {
         return this._errorManager;
-    }
-    public get fh(): FileHandler {
-        return this._fh;
     }
 
     /**
