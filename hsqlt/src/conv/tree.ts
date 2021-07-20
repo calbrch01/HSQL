@@ -5,6 +5,9 @@ import { FileType } from '../misc/file/FileType';
 import { HSQLLexer } from '../misc/grammar/HSQLLexer';
 import { DeclarationsContext, HSQLParser, ProgramContext } from '../misc/grammar/HSQLParser';
 
+/**
+ * Map what type of type of file is expected to return what type of tree root
+ */
 export type strReturn = {
     [FileType.HSQL]: ProgramContext;
     [FileType.DHSQL]: DeclarationsContext;

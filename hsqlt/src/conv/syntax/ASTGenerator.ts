@@ -6,21 +6,17 @@ import { Any } from '../../ast/data/Any';
 import { DataType } from '../../ast/data/base/DataType';
 import { NoDataType } from '../../ast/data/NoDataType';
 import { Singular } from '../../ast/data/Singular';
-import { SingularDataType } from '../../misc/ast/SingularDataType';
-import { BaseASTNode } from '../../ast/stmt/base/BaseASTNode';
 import { StmtExpression } from '../../ast/stmt/base/StmtExpression';
 import { Definition } from '../../ast/stmt/Definition';
 import { EqualDefinition } from '../../ast/stmt/EqualDefinition';
 import { Import } from '../../ast/stmt/Import';
 import { Literal } from '../../ast/stmt/Literal';
 import { DataMetaData, VariableTable } from '../../ast/symbol/VariableTable';
-import { VariableVisibility } from '../../misc/ast/VariableVisibility';
 import { ErrorManager, ErrorType, TranslationIssue } from '../../managers/ErrorManager';
 import { TaskManager } from '../../managers/TaskManager';
 import { QualifiedIdentifier } from '../../misc/ast/QualifiedIdentifier';
 import {
     ActionStmtContext,
-    BasicStringLiteralContext,
     DeclarationsContext,
     DefinitionContext,
     DefinitionStmtContext,
@@ -31,7 +27,6 @@ import {
     OutputStmtContext,
     PlotStmtContext,
     ProgramContext,
-    ScopeContext,
     SelectStmtContext,
 } from '../../misc/grammar/HSQLParser';
 import { HSQLVisitor } from '../../misc/grammar/HSQLVisitor';
@@ -182,7 +177,6 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
     }
 
     visitLayoutStmt(ctx: LayoutStmtContext) {
-        // TODO 16/07
         // the declaration generation is used here as a shortcut to generate coldef mappings
         const entries = this.colDefsASTGenerator.visit(ctx.layoutContent().colDefs());
 

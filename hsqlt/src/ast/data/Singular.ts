@@ -13,6 +13,9 @@ export class Singular extends DataType {
     constructor(private _dtype: SingularDataType) {
         super(EDataType.SINGULAR);
     }
+    /**
+     * Get data type wrapped as int
+     */
     public get dtype(): SingularDataType {
         return this._dtype;
     }
@@ -21,7 +24,6 @@ export class Singular extends DataType {
      */
     getDataType(): SingularDataTypes {
         // return this.val.toString();
-        //TODO 10/03 work
         return SingularDataType[this._dtype] as SingularDataTypes;
     }
 

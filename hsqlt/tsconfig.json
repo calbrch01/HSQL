@@ -70,6 +70,7 @@
             "**/*.spec.ts",
             "src/test/**/*.ts",
             "out/*"
-        ]
+        ],
+        "hideGenerator": true
     }
 }

@@ -7,7 +7,6 @@ import { StmtExpression } from './base/StmtExpression';
 
 export class SelectData implements StmtExpression {
     constructor(
-        // TODO 17/07
         protected _node: SelectFromDatasetContext,
         protected _source: string,
         protected _layoutId: QualifiedIdentifier,

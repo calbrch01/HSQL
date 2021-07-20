@@ -18,32 +18,35 @@ HSQL
 
 ### Non-NPM dependencies:
 
--   Java(>8) - Required for ANTLR
+- Java(>8) - Required for ANTLR
 
 ### NPM based:
 
 Dependencies:
 
--   ts-node - TS Runtime wrapping for NodeJS
--   antlr4ts - ANTLR tool
--   @types/node - Types for Node.JS environment
--   yargs - provides optstring parsing for Node.JS application
--   string-template - Provides string templates for usage
+- ts-node - TS Runtime wrapping for NodeJS
+- antlr4ts - ANTLR tool
+- @types/node - Types for Node.JS environment
+- yargs - provides optstring parsing for Node.JS application
+- string-template - Provides string templates for usage
 
 devDependencies(Dependencies that are used during development):
 
--   typedoc - Generate project documentation from source comments
--   typescript - Runtime
--   nodemon - Reruns the project if source code is changed (Useful during development)
--   mocha - Testing framework
--   chai - Assertion library
--   antlr4ts-cli - Provides a CLI to work with the ANTLR tool
--   pkg - Compile to bytecode and package into executable
+- typedoc - Generate project documentation from source comments
+- typescript - Runtime
+- nodemon - Reruns the project if source code is changed (Useful during development)
+- mocha - Testing framework
+- chai - Assertion library
+- antlr4ts-cli - Provides a CLI to work with the ANTLR tool
+- pkg - Compile to bytecode and package into executable
+- madge - Circular dependency detection 
 
 ## Dependency notes
 ### ANTLR
 
-The grammar is ~~action-free~~ mostly action-free; actions are used where data can be more easily obtained from the parsing stage. It can be refactored away if required, but it shouldn't be a huge concern.
+The grammar is not language independent; actions are used where data can be more easily obtained from the parsing stage. It can be refactored away if required, but it shouldn't be a huge concern. 
+
+Note: The local declarations can be reworked to suit the target language, as most languages have a similar methodology for assignments.
 ### Typedoc
 
 Typedoc is a documentation generator and most types requiring explanation have been documented.

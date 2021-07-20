@@ -64,7 +64,6 @@ export class Table extends CollectionType {
             const list = collectionType.list();
             // add these items to the list
             for (const [name, data] of list) {
-                // TODO raise warning
                 if (result.has(name) && !forJoins) {
                     err.push(
                         TranslationIssue.semanticWarningToken(format(rs.existsError, [rs.column + ' ' + name]), ctx)
