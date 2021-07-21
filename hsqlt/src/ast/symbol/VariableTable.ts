@@ -144,13 +144,16 @@ export class VariableTable {
     }
 
     /**
-     * Helper function to automatically push an overlay
-     * @param callbackFn
+     * Helper function to automatically push an overlay,
+     * run the helper function, pop the scope and return the result from the helper scope.
+     * @param callbackFn Callback function with access to current scope data
+     * @returns whatever callbackFn returns
      */
-    withNewScope(callbackFn: () => void) {
+    withNewScope<T>(callbackFn: (x: Map<string, DataMetaData>) => T) {
         this.pushScope();
-        callbackFn();
+        const res = callbackFn(this._vars[this._vars.length - 1]);
         this.popScope();
+        return res;
     }
 
     /**
