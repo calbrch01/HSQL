@@ -78,9 +78,9 @@ export class FileOutput extends OutputManager {
         super();
     }
     async do(fn: string, contents: string) {
-        if (this.offset !== undefined) {
-            fn = path.join(this.offset, fn);
-        }
+        // if (this.offset !== undefined) {
+        //     fn = path.join(this.offset, fn);
+        // }
         return fs.writeFile(fn, contents);
     }
 }
