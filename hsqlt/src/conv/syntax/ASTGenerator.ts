@@ -180,6 +180,18 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
         // the declaration generation is used here as a shortcut to generate coldef mappings
         const entries = this.colDefsASTGenerator.visit(ctx.layoutContent().colDefs());
 
+        // sadly we have to do some extra computations regarding the column names, just to check if it has been repeated or not
+        const x = new Set<string>();
+        // for each key in the entries, iterate and check if they exist
+        entries.forEach(([k]) => {
+            if (x.has(k)) {
+                this.errorManager.push(
+                    TranslationIssue.semanticWarningToken(format(rs.existsError, rs.column + ' ' + k), ctx)
+                );
+            }
+            x.add(k);
+        });
+
         const layout = new Layout(new Map(entries));
 
         // this.parent.variableManager.add(text, DataMetaData(layout, VariableVisibility.EXPORT));

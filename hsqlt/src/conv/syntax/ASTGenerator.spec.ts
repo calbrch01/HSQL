@@ -45,12 +45,45 @@ describe('AST Generator Visitor', function () {
         // const ast = v.getAST(tree);
 
         //assertions
-        assert.lengthOf(ast.stmts, 2, 'Expect one statement');
+        assert.lengthOf(ast.stmts, 2, 'Expect two statements');
         assert.strictEqual(ast.variableManager.vars[0].size, 2, 'expect two modules available only');
 
         assert.isTrue(ast.variableManager.exists('abc'));
         assert.isTrue(ast.variableManager.exists('cde'));
         assert.isFalse(ast.variableManager.exists('bcd'));
+
+        // ast.variableManager.exists('cde');
+    });
+    it('Layouts - should error on duplicates', async () => {
+        const tm = new TaskManager('mod.hsql', false /* , new Map([['mod.hsql', 'import abc;import bcd as cde;']]) */);
+        tm.addFileProviders(
+            new MemFileProvider(
+                new Map([
+                    ['mod.hsql', { content: 'export foo = create layout(int a,int b,string a);', type: FileType.HSQL }],
+                ]),
+                true
+            )
+        );
+
+        const { ast } = tm.generateAST();
+
+        // const treestuff = new HSQLTreeFactory();
+
+        // const { tree } = treestuff.makeTree('import abc;import bcd as cde;');
+        // const readingManager = new ReadingManager(ErrorManager.normal);
+        // const v = new ASTGenerator(readingManager);
+        // const ast = v.getAST(tree);
+
+        //assertions
+        assert.lengthOf(ast.stmts, 1, 'Expect one statement');
+        assert.strictEqual(ast.variableManager.vars[0].size, 1, 'expect 1 exported variable');
+        assert.lengthOf(tm.errorManager.issues, 1);
+
+        // assert.strictEqual(ast.variableManager.vars[0].size, 2, 'expect two modules available only');
+
+        // assert.isTrue(ast.variableManager.exists('abc'));
+        // assert.isTrue(ast.variableManager.exists('cde'));
+        // assert.isFalse(ast.variableManager.exists('bcd'));
 
         // ast.variableManager.exists('cde');
     });
