@@ -1,0 +1,1 @@
+export x = create layout (int id,string name);

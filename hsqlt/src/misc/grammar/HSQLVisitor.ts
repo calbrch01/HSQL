@@ -49,6 +49,7 @@ import { CompletestmtContext } from "./HSQLParser";
 import { StmtContext } from "./HSQLParser";
 import { DefinitionStmtContext } from "./HSQLParser";
 import { ExprContext } from "./HSQLParser";
+import { CreateStmtContext } from "./HSQLParser";
 import { LayoutStmtContext } from "./HSQLParser";
 import { LayoutContentContext } from "./HSQLParser";
 import { ActionStmtContext } from "./HSQLParser";
@@ -421,6 +422,13 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitExpr?: (ctx: ExprContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.createStmt`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitCreateStmt?: (ctx: CreateStmtContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `HSQLParser.layoutStmt`.

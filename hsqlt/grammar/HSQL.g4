@@ -22,10 +22,10 @@ stmt:
 
 definitionStmt: scope label = IDENTIFIER EQ expr;
 
-expr: definition | actionStmt | layoutStmt;
+expr: definition | actionStmt | createStmt;
 // | transformStmt | mlStmt | moduleStmt;
-
-layoutStmt: CREATE LAYOUT BSTART_ layoutContent BEND_;
+createStmt: CREATE layoutStmt;
+layoutStmt: LAYOUT BSTART_ layoutContent BEND_;
 
 layoutContent: colDefs;
 
