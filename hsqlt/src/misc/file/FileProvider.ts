@@ -159,8 +159,9 @@ export class FSFileProvider implements FileProvider {
         let { path: pathLoc, type } = res;
         if (pathLoc == undefined || type === FileType.DIR) return undefined;
         try {
+            // this line and explanation below is no longer required as this.stat gives us the correct path
             // modify it to offset by this._loc as required
-            pathLoc = path.join(this._loc, path.normalize(pathLoc));
+            // pathLoc = path.join(this._loc, path.normalize(pathLoc));
             return fs.readFileSync(pathLoc).toString();
         } catch (e) {
             return undefined;
