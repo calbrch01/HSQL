@@ -1,4 +1,5 @@
 import { assert } from 'chai';
+import { ErrorSeverity } from '../../managers/ErrorManager';
 import { TaskManager } from '../../managers/TaskManager';
 import { MemFileProvider } from '../../misc/file/FileProvider';
 import { FileType } from '../../misc/file/FileType';
@@ -78,6 +79,7 @@ describe('AST Generator Visitor', function () {
         assert.lengthOf(ast.stmts, 1, 'Expect one statement');
         assert.strictEqual(ast.variableManager.vars[0].size, 1, 'expect 1 exported variable');
         assert.lengthOf(tm.errorManager.issues, 1);
+        assert.strictEqual(tm.errorManager.issues[0].severity, ErrorSeverity.WARNING);
 
         // assert.strictEqual(ast.variableManager.vars[0].size, 2, 'expect two modules available only');
 
