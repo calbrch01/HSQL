@@ -100,8 +100,9 @@ export class TaskManager {
         }
 
         const { realPath, content: file, type } = this._fsmanager.read(fnNoExt, local, fileType);
+        // error manager will hold the real paths, includes array *will hold the imaginary paths*
         this.errorManager.pushFile(realPath);
-        includes.push(realPath);
+        includes.push(fnNoExt);
         const { tree } = this.treeFactory.makeTree(file, type);
         const x: ASTGen = new ASTGenerator(this, this._errorManager, tree, includes);
         // get AST will read imports and call the rest of the required generate ASTS
@@ -261,7 +262,7 @@ export class TaskManager {
         if (!x.found) {
             this.errorManager.push(TranslationIssue.semanticErrorToken(format(rs.notFound, q.toString()), cause));
         } else if (x.type === FileType.DHSQL || x.type === FileType.HSQL) {
-            const { ast } = this.generateAST(x.path, x.type, isLocal, includes, cause);
+            const { ast } = this.generateAST(pathString, x.type, isLocal, includes, cause);
 
             // get the root stack
             const vars = ast.variableManager.vars[0];
