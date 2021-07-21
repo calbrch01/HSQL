@@ -10,7 +10,7 @@ describe('ECL Generation', function () {
         const opm = new MapOutput();
         const tm = new TaskManager('mod.hsql', false, opm);
         tm.addFileProviders(
-            new MemFileProvider(new Map([['mod.hsql', { content: 'import abc;', type: FileType.HSQL }]]), true)
+            new MemFileProvider(new Map([['mod.hsql', { content: 'import a;', type: FileType.HSQL }]]), true)
         );
         const { ast } = tm.generateAST();
         // const eclgenerator = new ECLGen(tm.errorManager);
@@ -20,7 +20,7 @@ describe('ECL Generation', function () {
             0,
             'There should have been no errors'
         );
-        assert.strictEqual(opm.fileMap.get('mod.ecl'), `IMPORT abc;`);
+        assert.strictEqual(opm.fileMap.get('mod.ecl'), `IMPORT a;`);
 
         // console.log(`opm`, opm);
     });
@@ -28,7 +28,7 @@ describe('ECL Generation', function () {
         const opm = new MapOutput();
         const tm = new TaskManager('mod.hsql', false, opm);
         tm.addFileProviders(
-            new MemFileProvider(new Map([['mod.hsql', { content: 'import abc as bcd;', type: FileType.HSQL }]]), true)
+            new MemFileProvider(new Map([['mod.hsql', { content: 'import a as bcd;', type: FileType.HSQL }]]), true)
         );
 
         const { ast } = tm.generateAST();
@@ -47,7 +47,7 @@ describe('ECL Generation', function () {
         const tm = new TaskManager('mod.hsql', false, opm);
         tm.addFileProviders(
             new MemFileProvider(
-                new Map([['mod.hsql', { content: 'import abc as bcd;a=bcd.t1;', type: FileType.HSQL }]]),
+                new Map([['mod.hsql', { content: 'import a as bcd;ab=bcd.t1;', type: FileType.HSQL }]]),
                 true
             )
         );
@@ -60,7 +60,7 @@ describe('ECL Generation', function () {
             0,
             'There should have been no errors'
         );
-        assert.strictEqual(opm.fileMap.get('mod.ecl'), `IMPORT abc as bcd;\na := bcd.t1;`);
+        assert.strictEqual(opm.fileMap.get('mod.ecl'), `IMPORT a as bcd;\nab := bcd.t1;`);
     });
     describe('generation for select', function () {
         it('basic selects');
