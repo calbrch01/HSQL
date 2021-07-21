@@ -15,16 +15,28 @@ program
 
 completestmt: stmt SEMICOLON;
 
+// the definition statement's willWrapModule set the willWrap for the program accordingly it is done
+// this indirect way so that modules within the program do not interfere with program's
+// willWrapModule
 stmt:
-	definitionStmt
+	definitionStmt {$definitionStmt.ctx.willWrapModule && ($program::willWrapModule = true) 
+		}
 	| {$program::actionCount++;} actionStmt
 	| importStmt;
 
-definitionStmt: scope label = IDENTIFIER EQ expr;
+// the `scope` sets the local
+definitionStmt
+	locals[willWrapModule:boolean=false]:
+	scope label = IDENTIFIER EQ expr;
 
 expr: definition | actionStmt | createStmt;
 // | transformStmt | mlStmt | moduleStmt;
-createStmt: CREATE layoutStmt;
+createStmt: CREATE (layoutStmt | moduleStmt);
+
+// todo 21/07 moduleStmt: MODULE /* BEGIN END */;
+
+moduleStmt: MODULE BSTART_ (definitionStmt SEMICOLON)* BEND_;
+
 layoutStmt: LAYOUT BSTART_ layoutContent BEND_;
 
 layoutContent: colDefs;
@@ -241,8 +253,6 @@ plotStmt:
 
 // /* MODULE STATEMENT */
 
-// moduleStmt: MODULE BSTART_ (definitionStmt SEMICOLON)* BEND_;
-
 // /* ML STATEMENT SAME AS v0 */ mlStmt: train | predict | elementaryML;
 
 // // This is a standard get model operation train: TRAIN FROM ind = definition COMMA_ dep =
@@ -262,8 +272,8 @@ plotStmt:
 
 scope
 	locals[variableVisibility:VariableVisibility = VariableVisibility.DEFAULT]:
-	EXPORT {$variableVisibility = VariableVisibility.EXPORT,$program::willWrapModule=true}
-	| SHARED {$variableVisibility = VariableVisibility.SHARED,$program::willWrapModule=true}
+	EXPORT {$variableVisibility = VariableVisibility.EXPORT,$definitionStmt::willWrapModule=true}
+	| SHARED {$variableVisibility = VariableVisibility.SHARED,$definitionStmt::willWrapModule=true}
 	|;
 
 // this is the declarations file
