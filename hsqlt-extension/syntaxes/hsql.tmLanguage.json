@@ -12,8 +12,7 @@
             "include": "#commentBlock"
         },
         {
-            "match": "(?i)(MAX|MIN|COUNT|AVG|TRIM)(?=\\()",
-            "name": "support.function"
+            "include": "#aggregates"
         },
         {
             "match": "(?i)(method|file)\\b",
@@ -23,8 +22,7 @@
             "include": "#fileTypes"
         },
         {
-            "match": "[0-9]+",
-            "name": "constant.numeric"
+            "include": "#numbers"
         },
         {
             "include": "#strings"
@@ -33,18 +31,39 @@
             "include": "#singleQuotedString"
         },
         {
+            "include": "#scope"
+        },
+        {
             "include": "#keywords"
         },
         {
-            "match": "[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*",
-            "name": "variable"
+            "include": "#variable"
         },
         {
-            "match": "[<][>]?|[>][=]?|[<][=]|[!][=]|[!=+-/*]",
-            "name": "keyword.operator"
+            "include": "#operators"
         }
     ],
     "repository": {
+        "scope": {
+            "match": "(?i)(export|shared)",
+            "name": "keyword.control.export"
+        },
+        "aggregates": {
+            "match": "(?i)(MAX|MIN|COUNT|AVG|TRIM)(?=\\()",
+            "name": "support.function"
+        },
+        "numbers": {
+            "match": "[0-9]+(\\.[0-9]*)?",
+            "name": "constant.numeric"
+        },
+        "operators": {
+            "match": "[<][>]?|[>][=]?|[<][=]|[!][=]|[!=+-/*]",
+            "name": "keyword.operator"
+        },
+        "variable": {
+            "match": "[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*",
+            "name": "variable"
+        },
         "fileTypes": {
             "match": "(?i)(csv|thor|xml|json)",
             "name": "constant.language"
@@ -65,7 +84,7 @@
             "name": "comment.block"
         },
         "keywords": {
-            "match": "(?i)(select|from|on|as|plot|import|output|title|train|predict|group|by|order|join|declare|title|type|where|distribute|write|to)\\b",
+            "match": "(?i)(select|from|on|as|plot|import|output|title|train|predict|group|by|order|join|declare|title|type|where|distribute|write|to|create)\\b",
             "name": "keyword.other"
         },
         "strings": {
