@@ -24,6 +24,8 @@ import rs from '../../misc/strings/resultStrings';
 import { CreateLayout } from '../../ast/stmt/CreateLayout';
 import { SingularDataType } from '../../misc/ast/SingularDataType';
 import { SelectData } from '../../ast/stmt/SelectData';
+import { CreateModule } from '../../ast/stmt/CreateModule';
+import os from 'os';
 
 /**
  * Semantically, Array is treated as a rest+top fashion -> the array is top to bottom
@@ -123,6 +125,18 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
 
     visitLiteral(ctx: Literal) {
         return [new ECLCode(ctx.val)];
+    }
+
+    visitModule(x: CreateModule) {
+        const res: ECLCode = new ECLCode(
+            x.contents
+                .map(e => e.accept(this))
+                .flat()
+                .join(os.EOL),
+            false
+        ).coverCode(ecl.commmon.module, ecl.commmon.end);
+
+        return [res];
     }
 
     visitEqual(x: EqualDefinition) {

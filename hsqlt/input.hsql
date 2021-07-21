@@ -1,11 +1,17 @@
-import xt;
+-- import xt;
 
 q = create layout(
     int x,
     int y
 );
-r = select * from '~output::writetofile.csv' TYPE CSV layout q;
+r = select * from '~output::writetofile.csv' TYPE CSV layout q as b;
+
+-- r = 5;
+b = 5;
+z = create module(export y = 5;);
 -- name1 = 'Mahdi';
+
+y = z.y;
 -- output name;
 
 output r;

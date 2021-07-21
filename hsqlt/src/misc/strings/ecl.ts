@@ -17,6 +17,7 @@ export default {
         comma: ',',
         overwrite: 'OVERWRITE',
         end: 'END',
+        module: 'MODULE ',
     },
     import: templateCompiler({
         regular: 'IMPORT {0}',

@@ -24,6 +24,7 @@ import {
     ImportStmtContext,
     LayoutStmtContext,
     LiteralContext,
+    ModuleStmtContext,
     OutputStmtContext,
     PlotStmtContext,
     ProgramContext,
@@ -41,6 +42,10 @@ import resultStrings from '../../misc/strings/resultStrings';
 import { ColDefsASTGenerator } from './support/ColDefASTGenerator';
 import { Layout } from '../../ast/data/Layout';
 import { CreateLayout } from '../../ast/stmt/CreateLayout';
+import { Module } from '../../ast/data/Module';
+import { CollectionType } from '../../ast/data/base/CollectionType';
+import { VariableVisibility } from '../../misc/ast/VariableVisibility';
+import { CreateModule } from '../../ast/stmt/CreateModule';
 
 /**
  * Generate an AST.
@@ -210,9 +215,42 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
         return outputVisitor.visit(ctx); //new VEO();
     }
 
+    visitModuleStmt(ctx: ModuleStmtContext) {
+        /*
+         * This is a particularly trickly one
+         * The idea here is to obtain all the EqualDefinitions, and accepting each subnode adds to the new variable scope.
+         * This information can be then reused to contruct the datatype of the module, filtering out the internal and non-exported data types
+         */
+        return this.variableManager.withNewScope(scopedVars => {
+            // console.log('scope1', scopedVars);
+            const innerValues: EqualDefinition<StmtExpression>[] = ctx.definitionStmt().map(e => {
+                const x = e.accept(this);
+                const y = pullVEO(x, this.errorManager, e);
+                if (y.stmt instanceof EqualDefinition) {
+                    return y.stmt;
+                } else {
+                    return this.errorManager.halt(TranslationIssue.semanticErrorToken(rs.unexpectedError, e));
+                }
+            });
+            // console.log('scope2', scopedVars);
+
+            // scopedVars have been populated after being set by e.accept(this) above
+            const scopedVarsList = [...scopedVars];
+            // consider only public data -> ones which are not internal
+            const publicScopedVarsList = scopedVarsList
+                .filter(([name, data]) => data.vis === VariableVisibility.EXPORT && !data.internal)
+                .map(([name, data]) => [name, data.data] as const);
+
+            const dt = new Module(new Map(publicScopedVarsList));
+            const stmt = new CreateModule(ctx, innerValues);
+            return new VEO(dt, stmt);
+        });
+    }
+
     visitSelectStmt(ctx: SelectStmtContext) {
         const selectVisitor = new SelectASTGenerator(this);
-        return selectVisitor.visit(ctx);
+        return this.variableManager.withNewScope(() => selectVisitor.visit(ctx));
+        // return selectVisitor.visit(ctx);
     }
 
     visitPlotStmt(ctx: PlotStmtContext) {
