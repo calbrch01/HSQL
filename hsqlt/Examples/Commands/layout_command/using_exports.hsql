@@ -1,6 +1,6 @@
 -- hsqlt make Examples/Commands/layout_command/using_exports.hsql
 -- ecl run thor Examples/Commands/layout_command/using_exports.ecl
-import a;
+-- import a;
 
 import %.layout_stmt;
 ds = layout_stmt.ds;
@@ -8,7 +8,7 @@ rec = layout_stmt.ds;
 -- y = layout_stmt.z;
 
 z = select COUNT(brand) as cnum,avg(price) as avgprice,brand from ds group by brand;
-
+-- z = select * from ds;
 -- y = select * from ;
 -- x= 5;
 output z;

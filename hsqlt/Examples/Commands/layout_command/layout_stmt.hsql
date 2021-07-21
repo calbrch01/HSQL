@@ -14,3 +14,4 @@ export rec = create layout(
     string condition
 );
 export ds = select * from '~hsql::usa_cars.thor' layout rec;
+-- output ds;
