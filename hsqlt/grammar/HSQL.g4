@@ -22,7 +22,8 @@ stmt:
 	definitionStmt {$definitionStmt.ctx.willWrapModule && ($program::willWrapModule = true) 
 		}
 	| {$program::actionCount++;} actionStmt
-	| importStmt;
+	| importStmt
+	| functionStmt;
 
 // the `scope` sets the local
 definitionStmt
@@ -31,9 +32,14 @@ definitionStmt
 
 expr: definition | actionStmt | createStmt;
 // | transformStmt | mlStmt | moduleStmt;
-createStmt: CREATE (layoutStmt | moduleStmt | functionStmt);
+createStmt: CREATE (layoutStmt | moduleStmt);
 
-functionStmt: FUNCTION BSTART_ functionArgs BEND_;
+functionStmt:
+	CREATE FUNCTION fname = IDENTIFIER BSTART_ functionArgs BEND_ CURLY_BSTART_ (
+		definitionStmt SEMICOLON
+	)* (returnStmt SEMICOLON)? CURLY_BEND_;
+
+returnStmt: RETURN definition;
 
 functionArgs: functionArg ( COMMA_ functionArg)* |;
 
@@ -398,6 +404,7 @@ LIMIT: L I M I T;
 OFFSET: O F F S E T;
 MODULE: M O D U L E;
 FUNCTION: F U N C T I O N;
+RETURN: R E T U R N;
 
 UESCAPE: U E S C A P E;
 TYPE: T Y P E;
