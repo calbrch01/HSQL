@@ -7,12 +7,15 @@ import {
     TextDocumentChangeEvent,
     Diagnostic,
     CompletionItem,
+    URI,
 } from 'vscode-languageserver';
 import { TDocs, FTDoc } from './TextDoc';
-import { getFileList, mapIssues, validator } from './Translation';
+import { getFileList, mapIssues, resolveTypeResolver, validator } from './Translation';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import { existsSync } from 'fs';
 import { fileURLToPath } from 'url';
+import { VariableTable } from 'hsqlt';
+import { EDataType } from 'hsqlt';
 
 const connection = createConnection(ProposedFeatures.all);
 
@@ -44,31 +47,17 @@ documents.onDidClose(async e => {
     }
 });
 
-connection.onCompletion((params, token) => {
-    // return new Array<CompletionItem>();
-    return [];
-});
-
-connection.onInitialize(params => {
-    const workspaceDirs = params.workspaceFolders;
-    return {
-        capabilities: {
-            textDocumentSync: {
-                openClose: true,
-                change: TextDocumentSyncKind.Incremental,
-                willSave: true,
-            },
-            completionProvider: {
-                resolveProvider: true,
-                // triggerCharacters: ['.'],
-            },
-        },
-    };
-});
-
+let varTable: [URI, VariableTable | undefined] | undefined;
 async function validate(d: TextDocument) {
     // console.log('tried getting answers');
-    const { asts, issues } = await validator(d, documents);
+    const { asts, issues, varTable: variableTable } = await validator(d, documents);
+    if (variableTable !== undefined) {
+        varTable = [d.uri, variableTable];
+    } else if (varTable?.[0] !== d.uri) {
+        varTable = [d.uri, undefined];
+    } else {
+        varTable = undefined;
+    }
     // connection.console.log(`I>Got diagnostics :${issues.length} issues`);
     const fileList = getFileList(asts);
 
@@ -81,6 +70,46 @@ async function validate(d: TextDocument) {
         connection.sendDiagnostics({ uri, diagnostics });
     });
 }
+EDataType;
+connection.onCompletion((params, token) => {
+    // return new Array<CompletionItem>();
+    // console.log(varTable);
+    const vt = varTable?.[1]?.vars[0];
+    if (vt === undefined) {
+        return [];
+    }
+    const entries = [...vt];
+    if (token.isCancellationRequested) {
+        //dont bother doing the expensive work
+        return;
+    }
+    const submittables = entries.map<CompletionItem>(([name, dataType]) => {
+        return {
+            label: name,
+            kind: resolveTypeResolver[dataType.data.type],
+        } as CompletionItem;
+    });
+    return submittables;
+});
+
+// connection.onCompletionResolve((params, tokens) => {});
+
+connection.onInitialize(params => {
+    const workspaceDirs = params.workspaceFolders;
+    return {
+        capabilities: {
+            textDocumentSync: {
+                openClose: true,
+                change: TextDocumentSyncKind.Incremental,
+                willSave: true,
+            },
+            completionProvider: {
+                // resolveProvider: true,
+                // triggerCharacters: ['.'],
+            },
+        },
+    };
+});
 
 //Document manager should tune into the connection
 documents.listen(connection);

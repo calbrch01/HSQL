@@ -5,6 +5,7 @@ import {
     URI,
     Diagnostic,
     DiagnosticSeverity,
+    CompletionItemKind,
 } from 'vscode-languageserver';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import { fileURLToPath, pathToFileURL } from 'url';
@@ -19,6 +20,8 @@ import {
     FSFileProvider,
     MemFileProvider,
     FSManager,
+    VariableTable,
+    EDataType,
 } from 'hsqlt';
 import { relative } from 'path';
 
@@ -35,6 +38,10 @@ class FSManagerSource {
     }
 }
 
+// export class TranslationHelper{
+//     constructor()
+// }
+
 // FUTURE someday work with non-file:// functions
 export async function validator(document: TextDocument, documents: TextDocuments<TextDocument>) {
     // changes?: TextDocumentContentChangeEvent[],
@@ -43,6 +50,7 @@ export async function validator(document: TextDocument, documents: TextDocuments
     const allDocs = documents.all();
 
     const mainFile = fileURLToPath(document.uri);
+    const fileMainMapped = relative('', mainFile);
 
     // generate a file map and map file extensions over accordingly
     let disposable = allDocs.reduce((t, e) => {
@@ -56,8 +64,7 @@ export async function validator(document: TextDocument, documents: TextDocuments
 
     // const x = relative;
     const fileMap = new Map(disposable);
-
-    const tm = new TaskManager(relative('', mainFile), false);
+    const tm = new TaskManager(fileMainMapped, false);
     tm.addFileProviders(
         ...(await new FSManagerSource().getInstance(tm)),
         new MemFileProvider(fileMap, true),
@@ -75,6 +82,7 @@ export async function validator(document: TextDocument, documents: TextDocuments
     // tm.ASTMap
     return {
         asts: tm.ASTMap,
+        varTable: tm.ASTMap.get(fileMainMapped)?.ast.variableManager,
         issues: tm.errorManager.issues,
     };
 }
@@ -147,3 +155,14 @@ export function mapDiagnosticType(x: ErrorSeverity): DiagnosticSeverity {
         }
     }
 }
+export const resolveTypeResolver = {
+    [EDataType.ANY]: CompletionItemKind.Text,
+    [EDataType.ACTION]: CompletionItemKind.Function,
+    [EDataType.FUNCTION]: CompletionItemKind.Function,
+    [EDataType.LAYOUT]: CompletionItemKind.Struct,
+    [EDataType.MODULE]: CompletionItemKind.Module,
+    [EDataType.NOTHING]: CompletionItemKind.Text,
+    [EDataType.SINGULAR]: CompletionItemKind.Variable,
+    [EDataType.TABLE]: CompletionItemKind.Class,
+    [EDataType.SET]: CompletionItemKind.Enum,
+};
