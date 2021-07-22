@@ -5,6 +5,7 @@ export enum EDataType {
     TABLE,
     /** not used yet */
     SET,
+    FUNCTION,
     SINGULAR,
     ACTION,
     NOTHING,

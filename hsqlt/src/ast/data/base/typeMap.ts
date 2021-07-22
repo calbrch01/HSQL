@@ -1,5 +1,6 @@
 import { Action } from '../Action';
 import { Any } from '../Any';
+import { HFunction } from '../Function';
 import { Layout } from '../Layout';
 import { Module } from '../Module';
 import { NoDataType } from '../NoDataType';
@@ -15,6 +16,7 @@ export interface typeMap {
     // FUTURE 30/05 introduce sets
     [EDataType.SET]: Any;
     [EDataType.SINGULAR]: Singular;
+    [EDataType.FUNCTION]: HFunction;
     [EDataType.ACTION]: Action;
     [EDataType.NOTHING]: NoDataType;
 }
