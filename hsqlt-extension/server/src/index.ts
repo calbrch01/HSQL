@@ -6,6 +6,7 @@ import {
     TextDocuments,
     TextDocumentChangeEvent,
     Diagnostic,
+    CompletionItem,
 } from 'vscode-languageserver';
 import { TDocs, FTDoc } from './TextDoc';
 import { getFileList, mapIssues, validator } from './Translation';
@@ -16,17 +17,13 @@ import { fileURLToPath } from 'url';
 const connection = createConnection(ProposedFeatures.all);
 
 // text documents based on string based docs
-const tdocs = new TDocs(FTDoc, [
-    (d, c, v) => {
-        // connection.console.log(`Incremental change on ${d.uri} ${JSON.stringify(c)}`);
-
-        const needDiagnostics = true;
-        if (needDiagnostics) {
-            // need to generate file map
-            validate(d).catch(e => connection.console.log('Something went really wrong'));
-        }
-    },
-]);
+const tdocs = new TDocs(FTDoc).addUpdateListener((d, c, v) => {
+    // const needDiagnostics = true;
+    // if (needDiagnostics) {
+    // need to generate file map
+    validate(d).catch(e => connection.console.log('Something went really wrong'));
+    // }
+});
 
 // documents
 const documents = new TextDocuments(tdocs);
@@ -47,9 +44,10 @@ documents.onDidClose(async e => {
     }
 });
 
-// documents.onDidClose(e => {
-//     connection.console.log(`Closed ${e.document.uri} - ${e.document.languageId}`);
-// });
+connection.onCompletion((params, token) => {
+    // return new Array<CompletionItem>();
+    return [];
+});
 
 connection.onInitialize(params => {
     const workspaceDirs = params.workspaceFolders;
@@ -60,18 +58,13 @@ connection.onInitialize(params => {
                 change: TextDocumentSyncKind.Incremental,
                 willSave: true,
             },
-            // completionProvider: {
-            //     resolveProvider: true,
-            //     triggerCharacters: ['.'],
-            // },
+            completionProvider: {
+                resolveProvider: true,
+                // triggerCharacters: ['.'],
+            },
         },
     };
 });
-
-//Document manager should tune into the connection
-documents.listen(connection);
-// and finally, listen for some input
-connection.listen();
 
 async function validate(d: TextDocument) {
     // console.log('tried getting answers');
@@ -88,3 +81,8 @@ async function validate(d: TextDocument) {
         connection.sendDiagnostics({ uri, diagnostics });
     });
 }
+
+//Document manager should tune into the connection
+documents.listen(connection);
+// and finally, listen for some input
+connection.listen();

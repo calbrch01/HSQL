@@ -4,16 +4,8 @@
  */
 
 import { TextDocuments } from 'vscode-languageserver';
-import {
-    TextDocumentContentChangeEvent,
-    TextEdit,
-} from 'vscode-languageserver-protocol';
-import {
-    DocumentUri,
-    Position,
-    Range,
-    TextDocument,
-} from 'vscode-languageserver-textdocument';
+import { TextDocumentContentChangeEvent, TextEdit } from 'vscode-languageserver-protocol';
+import { DocumentUri, Position, Range, TextDocument } from 'vscode-languageserver-textdocument';
 import { eventChecks, mergeSort, TextDocComputations } from './TextUtils';
 
 /**
@@ -58,10 +50,7 @@ export class FTDoc implements TextDocumentUpdatable {
      */
     protected get lineOffsets(): number[] {
         if (this._lineOffsets === undefined) {
-            this._lineOffsets = TextDocComputations.computeLineOffsets(
-                this._content,
-                true
-            );
+            this._lineOffsets = TextDocComputations.computeLineOffsets(this._content, true);
         }
         return this._lineOffsets;
     }
@@ -83,10 +72,7 @@ export class FTDoc implements TextDocumentUpdatable {
             position.line + 1 < lineOffsets.length
                 ? lineOffsets[position.line + 1]
                 : this._content.length;
-        return Math.max(
-            Math.min(lineOffset + position.character, nextLineOffset),
-            lineOffset
-        );
+        return Math.max(Math.min(lineOffset + position.character, nextLineOffset), lineOffset);
     }
 
     /**
@@ -144,16 +130,11 @@ export class FTDoc implements TextDocumentUpdatable {
      * @param changes
      * @param version
      */
-    public update(
-        changes: TextDocumentContentChangeEvent[],
-        version: number
-    ): void {
+    public update(changes: TextDocumentContentChangeEvent[], version: number): void {
         for (let change of changes) {
             if (eventChecks.eventIsIncremental(change)) {
                 // makes sure start is before end
-                const range = TextDocComputations.getWellformedRange(
-                    change.range
-                );
+                const range = TextDocComputations.getWellformedRange(change.range);
 
                 // update content
                 const startOffset = this.offsetAt(range.start);
@@ -173,35 +154,23 @@ export class FTDoc implements TextDocumentUpdatable {
                     startOffset
                 );
                 if (endLine - startLine === addedLineOffsets.length) {
-                    for (
-                        let i = 0, len = addedLineOffsets.length;
-                        i < len;
-                        i++
-                    ) {
+                    for (let i = 0, len = addedLineOffsets.length; i < len; i++) {
                         lineOffsets[i + startLine + 1] = addedLineOffsets[i];
                     }
                 } else {
                     if (addedLineOffsets.length < 10000) {
-                        lineOffsets.splice(
-                            startLine + 1,
-                            endLine - startLine,
-                            ...addedLineOffsets
-                        );
+                        lineOffsets.splice(startLine + 1, endLine - startLine, ...addedLineOffsets);
                     } else {
                         // avoid too many arguments for splice
                         this._lineOffsets = lineOffsets = lineOffsets
                             .slice(0, startLine + 1)
-                            .concat(
-                                addedLineOffsets,
-                                lineOffsets.slice(endLine + 1)
-                            );
+                            .concat(addedLineOffsets, lineOffsets.slice(endLine + 1));
                     }
                 }
                 const diff = change.text.length - (endOffset - startOffset);
                 if (diff !== 0) {
                     for (
-                        let i = startLine + 1 + addedLineOffsets.length,
-                            len = lineOffsets.length;
+                        let i = startLine + 1 + addedLineOffsets.length, len = lineOffsets.length;
                         i < len;
                         i++
                     ) {
@@ -242,18 +211,18 @@ export type DocListener<T> = (
  * use as new FTDocs(FullTextDocument/FTDoc)
  */
 export class TDocs<T extends TextDocumentUpdatable> {
+    /**
+     *
+     * @param cc A specific shaped class constructor
+     * @param _listeners Listeners that can respond
+     */
     constructor(
         protected cc: ShapedClassConstructor<T>,
         protected _listeners: DocListener<T>[] = []
     ) {
         // super();
     }
-    create(
-        uri: DocumentUri,
-        languageId: string,
-        ver: number,
-        content: string
-    ): TextDocument {
+    create(uri: DocumentUri, languageId: string, ver: number, content: string): TextDocument {
         return new this.cc(uri, languageId, ver, content);
     }
 
@@ -263,17 +232,14 @@ export class TDocs<T extends TextDocumentUpdatable> {
 
     addUpdateListener(listener: DocListener<T>) {
         this._listeners.push(listener);
+        return this;
     }
 
-    update(
-        document: T,
-        changes: TextDocumentContentChangeEvent[],
-        version: number
-    ): TextDocument {
+    update(document: T, changes: TextDocumentContentChangeEvent[], version: number): TextDocument {
         if (document instanceof this.cc) {
             document.update(changes, version);
             // run the listeners
-            this._listeners.forEach((e) => e(document, changes, version));
+            this._listeners.forEach(e => e(document, changes, version));
             return document;
         } else {
             throw new Error('Invalid object passed in, expected same as init');
@@ -288,16 +254,13 @@ export class TDocs<T extends TextDocumentUpdatable> {
      */
     applyEdits(document: TextDocument, edits: TextEdit[]): string {
         let text = document.getText();
-        let sortedEdits = mergeSort(
-            edits.map(TextDocComputations.getWellformedEdit),
-            (a, b) => {
-                let diff = a.range.start.line - b.range.start.line;
-                if (diff === 0) {
-                    return a.range.start.character - b.range.start.character;
-                }
-                return diff;
+        let sortedEdits = mergeSort(edits.map(TextDocComputations.getWellformedEdit), (a, b) => {
+            let diff = a.range.start.line - b.range.start.line;
+            if (diff === 0) {
+                return a.range.start.character - b.range.start.character;
             }
-        );
+            return diff;
+        });
         let lastModifiedOffset = 0;
         const spans = [];
 
