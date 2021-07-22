@@ -1,6 +1,6 @@
 import { Action } from '../Action';
 import { Any } from '../Any';
-import { HFunction } from '../Function';
+import { HFunction } from '../HFunction';
 import { Layout } from '../Layout';
 import { Module } from '../Module';
 import { NoDataType } from '../NoDataType';

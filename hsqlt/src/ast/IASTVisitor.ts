@@ -1,5 +1,6 @@
 import { AST } from './AST';
 import { BaseASTNode } from './stmt/base/BaseASTNode';
+import { CreateFunction } from './stmt/CreateFunction';
 import { CreateLayout } from './stmt/CreateLayout';
 import { CreateModule } from './stmt/CreateModule';
 import { Definition } from './stmt/Definition';
@@ -64,4 +65,6 @@ export interface IASTVisitor<T> {
     visitLayout?: (x: CreateLayout) => T;
 
     visitModule?: (x: CreateModule) => T;
+
+    visitFunction?: (x: CreateFunction) => T;
 }
