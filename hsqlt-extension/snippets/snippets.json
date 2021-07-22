@@ -26,9 +26,9 @@
     "Write to File with FileType": {
         "prefix": "write",
         "body": [
-            "write $1 to file '$2';",
-            "$3"
+            "write $1 to file TYPE $2 '$3';",
+            "$4"
         ],
-        "description": "Write to a file"
+        "description": "Write to a file, with given type"
     }
 }
