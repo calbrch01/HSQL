@@ -2,7 +2,7 @@
     "name": "hsqlt-extension",
     "displayName": "hsqlt-extension",
     "description": "",
-    "version": "0.0.18",
+    "version": "0.0.19",
     "publisher": "Testing",
     "engines": {
         "vscode": "^1.56.0"
@@ -39,6 +39,12 @@
                 "embeddedLanguages": {
                     "source.sql": "sql"
                 }
+            }
+        ],
+        "snippets": [
+            {
+                "language": "hsql",
+                "path": "./snippets/snippets.json"
             }
         ],
         "languages": [

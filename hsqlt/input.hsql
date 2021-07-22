@@ -13,6 +13,7 @@ z = create module(export y = 5;);
 
 y = z.y;
 -- output name;
+-- output r title b;
 
 output r;
 -- o = 9;

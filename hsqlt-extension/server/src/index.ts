@@ -31,15 +31,13 @@ const tdocs = new TDocs(FTDoc, [
 // documents
 const documents = new TextDocuments(tdocs);
 
-// documents.onDidChangeContent((e) => {
-//     // we will have to get diagnostics here, lets try
-// });
-
 async function val(e: TextDocumentChangeEvent<TextDocument>) {
     await validate(e.document);
 }
 documents.onDidOpen(val);
 documents.onDidSave(val);
+
+//clear the diagnostic if the file doesn't exist anymore
 documents.onDidClose(async e => {
     // connection.sendDiagnostics();
     if (existsSync(fileURLToPath(e.document.uri))) {

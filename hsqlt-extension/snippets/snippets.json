@@ -1,0 +1,34 @@
+{
+    "OUTPUT (Simple)": {
+        "prefix": "output",
+        "body": [
+            "output $1;",
+            "$2"
+        ],
+        "description": "OUTPUT to workunit"
+    },
+    "OUTPUT (Named)": {
+        "prefix": "output",
+        "body": [
+            "output $1 title $2;",
+            "$3"
+        ],
+        "description": "OUTPUT to a workunit with a title"
+    },
+    "Write to File": {
+        "prefix": "write",
+        "body": [
+            "write $1 to file '$2';",
+            "$3"
+        ],
+        "description": "Write to a file"
+    },
+    "Write to File with FileType": {
+        "prefix": "write",
+        "body": [
+            "write $1 to file '$2';",
+            "$3"
+        ],
+        "description": "Write to a file"
+    }
+}
