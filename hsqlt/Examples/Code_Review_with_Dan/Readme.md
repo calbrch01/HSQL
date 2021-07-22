@@ -19,7 +19,7 @@ If you decide to use the command line tool (Located [here](./Extension_LatestVer
 
 - Windows:
 ```cmd
-.\hsqlt-win.exe
+hsqlt-win.exe
 ```
 
 ### CLI Tool usage
@@ -50,7 +50,7 @@ import %.mymodule; // from same folder -> use as 'mymodule'
 import %.mymodule as anothername; // from same folder -> use as 'anothername'
 
 ```
-See the example code for [IMPORT Syntax](.\import.ecl)
+See the example code for [IMPORT Syntax](./import.ecl)
 
 | HSQL code                                            | ECL result                                            |
 | ---------------------------------------------------- | ----------------------------------------------------- |
@@ -66,7 +66,7 @@ Note:
 <!-- <img src="./GrammarRule_SVGs/"> -->
 ![Definition Rail Road Diagram](GrammarRule_SVGs/definitionStmt.rrd.png)
 
-See the example code for [ECL Definition Syntax](.\simpleECLDefinition.HSQL)
+See the example code for [ECL Definition Syntax](./simpleECLDefinition.HSQL)
 
 <!-- ```
 name1 = 'Mahdi';
@@ -109,7 +109,7 @@ Breaking this pretty huge statement down, there are a few key points to note:
 
 ### Set 1 - Simple Selects 
 
-See the example code for [ECL Definition Syntax](.\simpleSelects.HSQL)
+See the example code for [ECL Definition Syntax](./simpleSelects.HSQL)
 
 #### SELECT Particular columns
 
