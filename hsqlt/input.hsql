@@ -1,28 +1,28 @@
 -- import xt;
-
-q = create layout(
+import %.a;
+export q = select * from a.t1 join a.t2 on a.t1.c1=a.t2.c3;/* create layout(
     int x,
     int y
-);
-r = select * from '~output::writetofile.csv' TYPE CSV layout q as b;
+); */
+-- r = select * from '~output::writetofile.csv' TYPE CSV layout q as b;
 
-a = 6;
--- b = 'Hello';
+-- a = 6;
+-- -- b = 'Hello';
 
--- y = ;
--- r = 5;
-b = 5;
-z = create module(export k = 5;);
--- name1 = 'Mahdi';
+-- -- y = ;
+-- -- r = 5;
+-- b = 5;
+-- z = create module(export k = 5;);
+-- -- name1 = 'Mahdi';
 
 
 
-ab = 75;
+-- ab = 75;
 
--- output name;
--- output r title b;
+-- -- output name;
+-- -- output r title b;
 
-output r;
+-- output r;
 -- o = 9;
 -- output p;
 -- select * from p;
