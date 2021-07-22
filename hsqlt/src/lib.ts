@@ -8,6 +8,10 @@
 export * as ParserRules from './misc/grammar/HSQLParser';
 export * as HSQLVisitor from './misc/grammar/HSQLVisitor';
 
+// data types
+export * from './ast/data/base/typeMap';
+export * from './ast/data/base/DataType';
+
 //ast
 export { AST } from './ast/AST';
 
