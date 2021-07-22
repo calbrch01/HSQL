@@ -31,7 +31,13 @@ definitionStmt
 
 expr: definition | actionStmt | createStmt;
 // | transformStmt | mlStmt | moduleStmt;
-createStmt: CREATE (layoutStmt | moduleStmt);
+createStmt: CREATE (layoutStmt | moduleStmt | functionStmt);
+
+functionStmt: FUNCTION BSTART_ functionArgs BEND_;
+
+functionArgs: functionArg ( COMMA_ functionArg)* |;
+
+functionArg: colDef | LAYOUT definition IDENTIFIER;
 
 // todo 21/07 moduleStmt: MODULE /* BEGIN END */;
 
@@ -391,6 +397,7 @@ EXPIRE: E X P I R E;
 LIMIT: L I M I T;
 OFFSET: O F F S E T;
 MODULE: M O D U L E;
+FUNCTION: F U N C T I O N;
 
 UESCAPE: U E S C A P E;
 TYPE: T Y P E;
