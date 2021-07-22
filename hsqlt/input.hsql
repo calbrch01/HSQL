@@ -6,12 +6,19 @@ q = create layout(
 );
 r = select * from '~output::writetofile.csv' TYPE CSV layout q as b;
 
+a = 6;
+-- b = 'Hello';
+
+-- y = ;
 -- r = 5;
 b = 5;
-z = create module(export y = 5;);
+z = create module(export k = 5;);
 -- name1 = 'Mahdi';
 
-y = z.y;
+
+
+ab = 75;
+
 -- output name;
 -- output r title b;
 
