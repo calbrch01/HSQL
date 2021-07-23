@@ -21,7 +21,11 @@ export type DataMetaData = {
  * @param internal
  * @returns
  */
-export function DataMetaData(data: DataType, vis: VariableVisibility, internal: boolean = false): DataMetaData {
+export function DataMetaData(
+    data: DataType,
+    vis: VariableVisibility = VariableVisibility.DEFAULT,
+    internal: boolean = false
+): DataMetaData {
     return {
         data,
         vis,
@@ -146,12 +150,12 @@ export class VariableTable {
     /**
      * Helper function to automatically push an overlay,
      * run the helper function, pop the scope and return the result from the helper scope.
-     * @param callbackFn Callback function with access to current scope data
+     * @param callbackFn Callback function with access to current scope index
      * @returns whatever callbackFn returns
      */
-    withNewScope<T>(callbackFn: (x: Map<string, DataMetaData>) => T) {
+    withNewScope<T>(callbackFn: (x: number) => T) {
         this.pushScope();
-        const res = callbackFn(this._vars[this._vars.length - 1]);
+        const res = callbackFn(this._vars.length - 1);
         this.popScope();
         return res;
     }

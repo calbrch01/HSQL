@@ -12,13 +12,15 @@ q = select * from a.t1 join a.t2 on a.t1.c1=a.t2.c3;/* create layout(
 -- -- y = ;
 -- -- r = 5;
 -- b = 5;
+
+y = create layout(int x,int y);
 z = create module (
     export k = 5;
     export ab = 6;
 );
-create function xz (int x, int y){
+create function y (layout y x, int y){
     z = 5;
-    
+    xy = x;
     return x;
 };
 b =z.k;

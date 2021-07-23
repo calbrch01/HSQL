@@ -1,4 +1,5 @@
 import { ParserRuleContext } from 'antlr4ts';
+import { FunctionArgument, FunctionArgumentFilled } from '../../misc/ast/FunctionArgumentType';
 import { IASTVisitor } from '../IASTVisitor';
 import { StmtExpression } from '../stmt/base/StmtExpression';
 import { DataType, EDataType } from './base/DataType';
@@ -7,7 +8,7 @@ import { DataType, EDataType } from './base/DataType';
  * (Called HFunction to not interfere with the inbuilt Function)
  */
 export class HFunction extends DataType {
-    constructor(private _fargs: [string, DataType][], private _returnType: DataType) {
+    constructor(private _fargs: Map<string, FunctionArgumentFilled>, private _returnType: DataType) {
         super(EDataType.FUNCTION);
     }
     /**
@@ -19,7 +20,7 @@ export class HFunction extends DataType {
     /**
      * Get the type of function arguments
      */
-    public get fargs(): [string, DataType][] {
+    public get fargs(): Map<string, FunctionArgumentFilled> {
         return this._fargs;
     }
     isExactType(type: DataType): boolean {
@@ -27,10 +28,12 @@ export class HFunction extends DataType {
         return this === type;
     }
     cloneType(): DataType {
+        // the `as any` is provably safe, its just easier than putting manual checks
+        const fargs = [...this._fargs].map<[string, FunctionArgumentFilled]>(([name, { type, dataType }]) => [
+            name,
+            { type, dataType: dataType.cloneType() as any },
+        ]);
         // deep clone it
-        return new HFunction(
-            [...this._fargs.map(([name, dt]) => [name, dt.cloneType()])] as [string, DataType][],
-            this._returnType.cloneType()
-        );
+        return new HFunction(new Map(fargs), this._returnType.cloneType());
     }
 }

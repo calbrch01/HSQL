@@ -682,7 +682,7 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
         }
 
         if (!(isDataType(lhs.datatype, EDataType.TABLE) && isDataType(rhs.datatype, EDataType.TABLE))) {
-            // FIXME find issued issue cause
+            // find the problematic datatype
             const problemDt = rhs.datatype.type !== EDataType.TABLE ? rhs.datatype.type : lhs.datatype.type;
             this.errorManager.push(
                 TranslationIssue.semanticErrorToken(

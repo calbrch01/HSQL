@@ -6,7 +6,9 @@ import {SelectJoinType} from '../ast/SelectHelpers';
 import {SingularDataType} from '../ast/SingularDataType';
 import {FileOutputType} from '../ast/FileOutputType';
 import {VariableVisibility} from '../ast/VariableVisibility';
-import {FunctionArgument,FunctionArgumentType} from '../ast/FunctionArgumentType';
+// import {FunctionArgument,FunctionArgumentType} from '../ast/FunctionArgumentType';
+import {QualifiedIdentifier} from '../ast/QualifiedIdentifier';
+
 
 }
 
@@ -39,19 +41,15 @@ createStmt: CREATE (layoutStmt | moduleStmt);
 functionStmt:
 	CREATE FUNCTION fname = IDENTIFIER BSTART_ functionArgs BEND_ CURLY_BSTART_ (
 		definitionStmt SEMICOLON
-	)* (returnStmt SEMICOLON)? CURLY_BEND_;
+	)* returnStmt SEMICOLON CURLY_BEND_;
 
 returnStmt: RETURN definition;
 
-functionArgs
-	locals[fargs:FunctionArgument[]=[]]:
-	functionArg (COMMA_ functionArg)*
-	|;
+functionArgs: functionArg (COMMA_ functionArg)* |;
 
 functionArg:
-	colDef { $functionArgs::fargs.push({type:FunctionArgumentType.PRIMITIVE,name:$colDef.ctx.IDENTIFIER().text,dataType: $colDef.ctx.dataType().dt})
-		}	# functionDefaultArgument
-	| LAYOUT definition IDENTIFIER																																# functionLayoutArgument;
+	colDef							# functionDefaultArgument
+	| LAYOUT definition IDENTIFIER	# functionLayoutArgument;
 
 // todo 21/07 moduleStmt: MODULE /* BEGIN END */;
 

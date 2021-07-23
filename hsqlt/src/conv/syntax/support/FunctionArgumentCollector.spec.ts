@@ -3,7 +3,7 @@ import { assert } from 'chai';
 import { ErrorManager } from '../../../managers/ErrorManager';
 import { HSQLLexer } from '../../../misc/grammar/HSQLLexer';
 import { HSQLParser } from '../../../misc/grammar/HSQLParser';
-import { FunctionArgumentCollector } from './FunctionArgumentCollector';
+import { FunctionArgumentCollectorVisitor } from './FunctionArgumentCollector';
 
 describe('FunctionArgumentCollector', function () {
     it('basic', async () => {
@@ -13,10 +13,10 @@ describe('FunctionArgumentCollector', function () {
         const parser = new HSQLParser(tokenStreams);
         const tree = parser.functionArgs();
 
-        // const em = ErrorManager.normal;
-        const visitor = new FunctionArgumentCollector();
-        const res = visitor.visit(tree);
-        assert.lengthOf(res, 3);
+        const em = ErrorManager.normal;
+        const facv = new FunctionArgumentCollectorVisitor({ errorManager: em });
+        facv.visit(tree);
+        assert.strictEqual(facv.argMap.size, 3);
         // void 0;
     });
 });

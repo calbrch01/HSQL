@@ -1,3 +1,4 @@
+import { FunctionArgument } from '../../misc/ast/FunctionArgumentType';
 import { QualifiedIdentifier } from '../../misc/ast/QualifiedIdentifier';
 import { FunctionStmtContext } from '../../misc/grammar/HSQLParser';
 import { DataType } from '../data/base/DataType';
@@ -8,18 +9,21 @@ import { EqualDefinition } from './EqualDefinition';
 export class CreateFunction implements StmtExpression {
     constructor(
         private _node: FunctionStmtContext,
-        private _args: [string, DataType][],
-        private _returns: QualifiedIdentifier,
-        private _body: EqualDefinition[]
+        private _name: string,
+        private _args: Map<string, FunctionArgument>,
+        private _body: EqualDefinition[],
+        private _returns: QualifiedIdentifier | undefined
     ) {}
-
+    public get name() {
+        return this._name;
+    }
     public get node(): FunctionStmtContext {
         return this._node;
     }
-    public get args(): [string, DataType][] {
+    public get args(): Map<string, FunctionArgument> {
         return this._args;
     }
-    public get returns(): QualifiedIdentifier {
+    public get returns(): QualifiedIdentifier | undefined {
         return this._returns;
     }
     public get body(): EqualDefinition[] {
