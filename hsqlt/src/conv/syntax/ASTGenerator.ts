@@ -21,6 +21,7 @@ import {
     DefinitionContext,
     DefinitionStmtContext,
     FileOutputStmtContext,
+    FunctionStmtContext,
     ImportStmtContext,
     LayoutStmtContext,
     LiteralContext,
@@ -38,12 +39,10 @@ import { OutputASTGenerator } from './support/OutputASTGenerator';
 import { SelectASTGenerator } from './support/SelectASTGenerator';
 import { PlotASTGenerator } from './support/PlotASTGenerator';
 import { WriteASTGenerator } from './support/WriteASTGenerator';
-import resultStrings from '../../misc/strings/resultStrings';
 import { ColDefsASTGenerator } from './support/ColDefASTGenerator';
 import { Layout } from '../../ast/data/Layout';
 import { CreateLayout } from '../../ast/stmt/CreateLayout';
 import { Module } from '../../ast/data/Module';
-import { CollectionType } from '../../ast/data/base/CollectionType';
 import { VariableVisibility } from '../../misc/ast/VariableVisibility';
 import { CreateModule } from '../../ast/stmt/CreateModule';
 
@@ -70,7 +69,7 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
         if (includeStack.length === 0) {
             this._errorManager.halt(
                 TranslationIssue.generalErrorToken(
-                    format(resultStrings.unexpectedErrorTagged, resultStrings.includeStackEmptyError),
+                    format(rs.unexpectedErrorTagged, rs.includeStackEmptyError),
                     ErrorType.HALTING,
                     rootContext
                 )
@@ -130,6 +129,27 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
         }
         const ed = new EqualDefinition(ctx, QualifiedIdentifier.fromString(lhstext), x.stmt, vis);
         return new VEO(new NoDataType(), ed); //new EqualDefinition(ctx,);
+    }
+
+    visitFunctionStmt(ctx: FunctionStmtContext) {
+        const { text: fname } = ctx.IDENTIFIER();
+        console.log('no', ctx.definitionStmt().length);
+
+        // const fargs =
+        //     const result = this.ast.variableManager.add(fname, DataMetaData(x.datatype, vis));
+        // if (!result) {
+        //     this.errorManager.push(TranslationIssue.semanticErrorToken(format(rs.existsError, [lhstext]), ctx));
+        // }
+        const centraldata = ctx.definitionStmt().map(e => {
+            const res = e.accept(this);
+            const veo = pullVEO(res, this._errorManager, e);
+            if (veo.stmt instanceof EqualDefinition) {
+                return [veo.datatype, veo.stmt] as [DataType, EqualDefinition<StmtExpression>];
+            } else {
+                return this.errorManager.halt(TranslationIssue.semanticErrorToken(rs.unexpectedError, e));
+            }
+        });
+        return null;
     }
 
     visitDefinition(ctx: DefinitionContext) {
@@ -290,7 +310,10 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
  * Use:
  * const x:ASTGen = new ASTGenerator(...);
  */
-export interface ASTGen {
-    get errorManager(): ErrorManager;
+export interface ASTGen extends ErrorManagerContainer {
     getAST(): AST;
+}
+
+export interface ErrorManagerContainer {
+    get errorManager(): ErrorManager;
 }

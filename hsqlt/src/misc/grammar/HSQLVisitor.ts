@@ -6,6 +6,8 @@ import {SelectJoinType} from '../ast/SelectHelpers';
 import {SingularDataType} from '../ast/SingularDataType';
 import {FileOutputType} from '../ast/FileOutputType';
 import {VariableVisibility} from '../ast/VariableVisibility';
+import {FunctionArgument,FunctionArgumentType} from '../ast/FunctionArgumentType';
+
 
 
 import { ParseTreeVisitor } from "antlr4ts/tree/ParseTreeVisitor";
@@ -22,6 +24,8 @@ import { InListContext } from "./HSQLParser";
 import { DecimalLiteralContext } from "./HSQLParser";
 import { DoubleLiteralContext } from "./HSQLParser";
 import { IntegerLiteralContext } from "./HSQLParser";
+import { FunctionDefaultArgumentContext } from "./HSQLParser";
+import { FunctionLayoutArgumentContext } from "./HSQLParser";
 import { ValueExpressionDefaultContext } from "./HSQLParser";
 import { BasicStringLiteralContext } from "./HSQLParser";
 import { UnicodeStringLiteralContext } from "./HSQLParser";
@@ -216,6 +220,22 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitIntegerLiteral?: (ctx: IntegerLiteralContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `functionDefaultArgument`
+	 * labeled alternative in `HSQLParser.functionArg`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitFunctionDefaultArgument?: (ctx: FunctionDefaultArgumentContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `functionLayoutArgument`
+	 * labeled alternative in `HSQLParser.functionArg`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitFunctionLayoutArgument?: (ctx: FunctionLayoutArgumentContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by the `valueExpressionDefault`

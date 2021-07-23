@@ -6,6 +6,8 @@ import {SelectJoinType} from '../ast/SelectHelpers';
 import {SingularDataType} from '../ast/SingularDataType';
 import {FileOutputType} from '../ast/FileOutputType';
 import {VariableVisibility} from '../ast/VariableVisibility';
+import {FunctionArgument,FunctionArgumentType} from '../ast/FunctionArgumentType';
+
 
 
 import { ATN } from "antlr4ts/atn/ATN";

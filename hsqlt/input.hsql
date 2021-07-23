@@ -16,7 +16,11 @@ z = create module (
     export k = 5;
     export ab = 6;
 );
-
+create function xz (int x, int y){
+    z = 5;
+    
+    return x;
+};
 b =z.k;
 
 output b;
@@ -26,7 +30,7 @@ write q to file TYPE csv '~ts';
 
 write q to file '~ts';
 
-
+output select * from q;
 
 
 -- ab = 75;

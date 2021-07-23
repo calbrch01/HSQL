@@ -1,7 +1,7 @@
 import { AbstractParseTreeVisitor } from 'antlr4ts/tree/AbstractParseTreeVisitor';
 import {
     DefinitionContext,
-    DefinitionContext as QualifiedIdentifierContext,
+    // DefinitionContext as DefinitionContext,
     NormalIdentifierContext,
     NormalTailIdentifierContext,
     OverDefinitionContext,
@@ -13,6 +13,8 @@ import { HSQLVisitor } from '../grammar/HSQLVisitor';
 
 /**
  * stores and works with qualified identifiers
+ * What is a QualifiedIdentifier? A definition essentially.
+ * What is - `a`, `a.b.c`, `ab.bc`,`$.ab.bc`,...
  */
 export class QualifiedIdentifier {
     static separator = '.' as const;
@@ -32,8 +34,12 @@ export class QualifiedIdentifier {
     static fromString(identifier: string) {
         return new QualifiedIdentifier(...identifier.split(QualifiedIdentifier.separator));
     }
-
-    static fromGrammar(ctx: QualifiedIdentifierContext) {
+    /**
+     * Generate a qualified Identifier from a definition node from parser
+     * @param ctx
+     * @returns
+     */
+    static fromGrammar(ctx: DefinitionContext) {
         // return new QualifiedIdentifier(...ctx.IDENTIFIER().map(e => e.text));
         return new QualifiedIdentifierGenerator().visit(ctx);
     }
@@ -133,6 +139,9 @@ export class QualifiedIdentifier {
     }
 }
 
+/**
+ * Generate a Qualified Identifier from a node
+ */
 class QualifiedIdentifierGenerator
     extends AbstractParseTreeVisitor<QualifiedIdentifier>
     implements HSQLVisitor<QualifiedIdentifier>

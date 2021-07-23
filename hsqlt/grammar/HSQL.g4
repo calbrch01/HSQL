@@ -6,6 +6,8 @@ import {SelectJoinType} from '../ast/SelectHelpers';
 import {SingularDataType} from '../ast/SingularDataType';
 import {FileOutputType} from '../ast/FileOutputType';
 import {VariableVisibility} from '../ast/VariableVisibility';
+import {FunctionArgument,FunctionArgumentType} from '../ast/FunctionArgumentType';
+
 }
 
 program
@@ -41,9 +43,15 @@ functionStmt:
 
 returnStmt: RETURN definition;
 
-functionArgs: functionArg ( COMMA_ functionArg)* |;
+functionArgs
+	locals[fargs:FunctionArgument[]=[]]:
+	functionArg (COMMA_ functionArg)*
+	|;
 
-functionArg: colDef | LAYOUT definition IDENTIFIER;
+functionArg:
+	colDef { $functionArgs::fargs.push({type:FunctionArgumentType.PRIMITIVE,name:$colDef.ctx.IDENTIFIER().text,dataType: $colDef.ctx.dataType().dt})
+		}	# functionDefaultArgument
+	| LAYOUT definition IDENTIFIER																																# functionLayoutArgument;
 
 // todo 21/07 moduleStmt: MODULE /* BEGIN END */;
 

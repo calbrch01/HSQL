@@ -1,7 +1,7 @@
 import { AbstractParseTreeVisitor } from 'antlr4ts/tree/AbstractParseTreeVisitor';
 import { DataType } from '../../../ast/data/base/DataType';
 import { Col } from '../../../ast/data/Col';
-import { ColDefContext, ColDefsContext } from '../../../misc/grammar/HSQLParser';
+import { ColDefContext, ColDefsContext, FunctionArgContext } from '../../../misc/grammar/HSQLParser';
 import { HSQLVisitor } from '../../../misc/grammar/HSQLVisitor';
 import { ASTGenerator } from '../ASTGenerator';
 
