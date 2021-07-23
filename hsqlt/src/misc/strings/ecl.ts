@@ -17,6 +17,7 @@ export default {
         comma: ',',
         overwrite: 'OVERWRITE',
         end: 'END',
+        ds: compile('DATASET({0})'),
         module: 'MODULE ',
     },
     import: templateCompiler({
@@ -31,6 +32,7 @@ export default {
         named: "NAMED('{0}')",
     }),
     functions: {
+        functionHeader: compile('{0}({1}) := FUNCTION'),
         functionTerm: 'FUNCTION',
         return: 'RETURN ',
     },

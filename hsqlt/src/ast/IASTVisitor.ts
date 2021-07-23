@@ -1,3 +1,4 @@
+import { ErrorManager } from '../managers/ErrorManager';
 import { AST } from './AST';
 import { BaseASTNode } from './stmt/base/BaseASTNode';
 import { CreateFunction } from './stmt/CreateFunction';
@@ -17,6 +18,7 @@ import { Write } from './stmt/Write';
 export abstract class AbstractASTVisitor<T> {
     abstract defaultResult(): T;
     abstract reducer(total: T, current: T): T;
+    abstract get errorManager(): ErrorManager;
 
     public visit(node: BaseASTNode): T {
         const ac = node.accept(this);

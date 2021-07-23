@@ -12,7 +12,7 @@ export class CreateFunction implements StmtExpression {
         private _name: string,
         private _args: Map<string, FunctionArgument>,
         private _body: EqualDefinition[],
-        private _returns: QualifiedIdentifier | undefined
+        private _returns: QualifiedIdentifier
     ) {}
     public get name() {
         return this._name;
@@ -23,7 +23,7 @@ export class CreateFunction implements StmtExpression {
     public get args(): Map<string, FunctionArgument> {
         return this._args;
     }
-    public get returns(): QualifiedIdentifier | undefined {
+    public get returns(): QualifiedIdentifier {
         return this._returns;
     }
     public get body(): EqualDefinition[] {

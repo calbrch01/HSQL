@@ -26,12 +26,18 @@ import { SingularDataType } from '../../misc/ast/SingularDataType';
 import { SelectData } from '../../ast/stmt/SelectData';
 import { CreateModule } from '../../ast/stmt/CreateModule';
 import os from 'os';
+import { CreateFunction } from '../../ast/stmt/CreateFunction';
+import { FunctionArgumentType } from '../../misc/ast/FunctionArgumentType';
 
 /**
  * Semantically, Array is treated as a rest+top fashion -> the array is top to bottom
  */
 export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTVisitor<ECLCode[]> {
-    constructor(protected errorManager: ErrorManager, protected rootContext: AST) {
+    public get errorManager(): ErrorManager {
+        return this._errorManager;
+    }
+
+    constructor(private _errorManager: ErrorManager, protected rootContext: AST) {
         super();
     }
     /**
@@ -69,6 +75,23 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
      */
     reducer(total: ECLCode[], current: ECLCode[]): ECLCode[] {
         return [...total, ...current];
+    }
+
+    visitFunction(x: CreateFunction) {
+        const functionArgs = [...x.args]
+            .map(([name, arg]) => {
+                if (arg.type === FunctionArgumentType.PRIMITIVE) {
+                    return SingularDataType[arg.dataType] + ' ' + name;
+                } else {
+                    return ecl.commmon.ds(arg.layoutId.toString()) + ' ' + name;
+                }
+            })
+            .join(ecl.commmon.comma);
+        const header = new ECLCode(ecl.functions.functionHeader(x.name, functionArgs));
+        const body = x.body.flatMap(e => this.visit(e));
+        const returnVar = new ECLCode(ecl.functions.return + x.returns);
+        const ender = new ECLCode(ecl.commmon.end);
+        return [header, ...body, returnVar, ender];
     }
 
     visitLayout(x: CreateLayout) {

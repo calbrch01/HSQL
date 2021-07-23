@@ -18,7 +18,7 @@ z = create module (
     export k = 5;
     export ab = 6;
 );
-create function y (layout y x, int y){
+create function yz (layout y x, int y){
     z = 5;
     xy = x;
     return x;

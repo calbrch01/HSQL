@@ -4,7 +4,7 @@ import compile from 'string-template/compile';
 /**
  * Take an object of template literals and compile it to template literals.
  * @param x
- * @returns
+ * @returns The same object, but the corresponding key now represents the compiled template
  */
 export function templateCompiler<T extends { [k in keyof T]: string }>(x: T) {
     const res: Partial<{ [x in keyof T]: (...y: any[]) => string }> = {};
@@ -17,4 +17,4 @@ export function templateCompiler<T extends { [k in keyof T]: string }>(x: T) {
     return res as { [x in keyof T]: (...y: any[]) => string };
 }
 
-const y = templateCompiler({ hello: 'hello' });
+// const y = templateCompiler({ hello: 'hello' });
