@@ -18,13 +18,13 @@ z = create module (
     export k = 5;
     export ab = 6;
 );
-create function yz (layout y x, int y){
+create function yz (layout a.l1 x, int y){
     z = 5;
     xy = x;
     return x;
 };
 b =z.k;
-
+c = yz(a.t1,b);
 output b;
 
 // step 0 -> code completion -> snippets

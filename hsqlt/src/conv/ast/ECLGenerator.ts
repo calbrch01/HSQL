@@ -28,6 +28,7 @@ import { CreateModule } from '../../ast/stmt/CreateModule';
 import os from 'os';
 import { CreateFunction } from '../../ast/stmt/CreateFunction';
 import { FunctionArgumentType } from '../../misc/ast/FunctionArgumentType';
+import { FunctionCall } from '../../ast/stmt/FunctionCall';
 
 /**
  * Semantically, Array is treated as a rest+top fashion -> the array is top to bottom
@@ -187,6 +188,26 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
         // rhstop.coverCode()
 
         return [...rhs, rhstop];
+    }
+
+    visitFunctionCall(x: FunctionCall) {
+        const codes = x.args.map(e => {
+            const stmt = e.stmt;
+            return stmt.accept(this);
+        });
+        const pre: ECLCode[] = [];
+        const args: ECLCode[] = [];
+
+        codes.forEach(e => {
+            const [rhstop] = this.getPopped(e, x.node);
+            e.push(...pre);
+            args.push(rhstop);
+        });
+        const mainCode = new ECLCode(
+            ecl.functions.call(x.val.toString(), args.map(e => e.code).join(ecl.commmon.comma)),
+            false
+        );
+        return [...pre, mainCode];
     }
 
     /**

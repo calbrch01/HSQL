@@ -56,6 +56,8 @@ import { StmtContext } from "./HSQLParser";
 import { DefinitionStmtContext } from "./HSQLParser";
 import { ExprContext } from "./HSQLParser";
 import { CreateStmtContext } from "./HSQLParser";
+import { FunctionCallContext } from "./HSQLParser";
+import { FunctionCallArgsContext } from "./HSQLParser";
 import { FunctionStmtContext } from "./HSQLParser";
 import { ReturnStmtContext } from "./HSQLParser";
 import { FunctionArgsContext } from "./HSQLParser";
@@ -456,6 +458,20 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitCreateStmt?: (ctx: CreateStmtContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.functionCall`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitFunctionCall?: (ctx: FunctionCallContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.functionCallArgs`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitFunctionCallArgs?: (ctx: FunctionCallArgsContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `HSQLParser.functionStmt`.

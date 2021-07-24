@@ -21,6 +21,7 @@ import {
     DefinitionContext,
     DefinitionStmtContext,
     FileOutputStmtContext,
+    FunctionCallContext,
     FunctionStmtContext,
     ImportStmtContext,
     LayoutStmtContext,
@@ -51,6 +52,8 @@ import { HFunction } from '../../ast/data/HFunction';
 import { FunctionArgumentFilled, FunctionArgumentType } from '../../misc/ast/FunctionArgumentType';
 import { isDataType } from '../../ast/data/base/typechecks/isDataType';
 import { Table } from '../../ast/data/Table';
+import { isAny } from '../../ast/data/base/typechecks/isAny';
+import { FunctionCall } from '../../ast/stmt/FunctionCall';
 
 /**
  * Generate an AST.
@@ -205,6 +208,65 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
         const stmt = new CreateFunction(ctx, fname, fargs, bodyExpressions, returningQid);
 
         return new VEO(dt, stmt);
+    }
+
+    visitFunctionCall(ctx: FunctionCallContext) {
+        let dt: DataType;
+        const fnNameCtx = ctx.definition();
+        const fnName = QualifiedIdentifier.fromGrammar(fnNameCtx);
+        const x = this.variableManager.resolve(fnName);
+
+        const stmt = ctx
+            .functionCallArgs()
+            .attribute()
+            .map(e => {
+                const nodeMaybe = e.accept(this);
+                const nodeForced: VEO<DataType, StmtExpression> = pullVEO(nodeMaybe, this.errorManager, e);
+                return nodeForced;
+            });
+
+        if (x === undefined) {
+            this.errorManager.push(TranslationIssue.semanticErrorToken(format(rs.notFound, fnName.toString())));
+            dt = new Any();
+        } else if (isAny(x)) {
+            this.errorManager.push(
+                TranslationIssue.semanticWarningToken(format(rs.cannotInfer, fnName.toString(), rs.function), ctx)
+            );
+            dt = new Any();
+        } else if (isDataType(x, EDataType.FUNCTION, false)) {
+            // a function
+            dt = x.returnType;
+            //check args
+            if (x.fargs.length === stmt.length) {
+                // TODO 25/07 check function arguments
+                x.fargs.forEach(([_, dataType], i) => {
+                    if (!isAny(dataType.dataType) && !stmt[i].datatype.isExactType(dataType.dataType)) {
+                        const attr = ctx.functionCallArgs().attribute(i);
+                        this.errorManager.push(
+                            TranslationIssue.semanticErrorToken(format(rs.functionArgMismatchError, attr.text), attr)
+                        );
+                    }
+                });
+            } else {
+                this.errorManager.push(
+                    TranslationIssue.semanticErrorToken(
+                        format(rs.functionArgCountMismatch, fnName.toString()),
+                        ctx.functionCallArgs()
+                    )
+                );
+            }
+        } else {
+            this.errorManager.push(
+                TranslationIssue.semanticWarningToken(format(rs.cannotInfer, fnName.toString(), rs.function), ctx)
+            );
+            dt = new Any();
+        }
+
+        // check the argument list
+
+        const astNode = new FunctionCall(ctx, fnName, stmt);
+
+        return new VEO(dt, astNode);
     }
 
     visitDefinition(ctx: DefinitionContext) {

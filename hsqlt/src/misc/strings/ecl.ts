@@ -34,6 +34,7 @@ export default {
     functions: {
         functionHeader: compile('{0}({1}) := FUNCTION'),
         functionTerm: 'FUNCTION',
+        call: compile('{0}({1})'),
         return: 'RETURN ',
     },
     plot: {

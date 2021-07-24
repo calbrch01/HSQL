@@ -6,6 +6,7 @@ import { CreateLayout } from './stmt/CreateLayout';
 import { CreateModule } from './stmt/CreateModule';
 import { Definition } from './stmt/Definition';
 import { EqualDefinition } from './stmt/EqualDefinition';
+import { FunctionCall } from './stmt/FunctionCall';
 import { Import } from './stmt/Import';
 import { Literal } from './stmt/Literal';
 import { Output } from './stmt/Output';
@@ -69,4 +70,6 @@ export interface IASTVisitor<T> {
     visitModule?: (x: CreateModule) => T;
 
     visitFunction?: (x: CreateFunction) => T;
+
+    visitFunctionCall?: (x: FunctionCall) => T;
 }

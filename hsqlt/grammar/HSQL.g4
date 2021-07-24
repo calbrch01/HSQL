@@ -39,7 +39,7 @@ expr: functionCall | definition | actionStmt | createStmt;
 createStmt: CREATE (layoutStmt | moduleStmt);
 
 functionCall: definition BSTART_ functionCallArgs BEND_;
-functionCallArgs: attribute (COMMA_ attribute)*;
+functionCallArgs: attribute (COMMA_ attribute)* |;
 
 functionStmt:
 	CREATE FUNCTION fname = IDENTIFIER BSTART_ functionArgs BEND_ CURLY_BSTART_ (

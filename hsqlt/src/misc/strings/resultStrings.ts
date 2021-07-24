@@ -8,6 +8,7 @@ export default {
     output: 'OUTPUT',
     column: 'COLUMN',
     table: 'TABLE',
+    function: 'Function',
     notCollection: 'Not a collection type',
     colDoesNotExistError: 'Column {0} does not exist',
     colAlreadyExistsError: 'Column {0} does already exists',
@@ -42,4 +43,6 @@ export default {
     couldNotMainFileError: 'Could not get start file location',
     couldNotSubmitError: 'Could not submit using ecl. Check ECL Client Tools configuration',
     eclccOutput: 'ECL Client Tools Output:\n',
+    functionArgCountMismatch: 'Function call to {0} argument length mismatch',
+    functionArgMismatchError: 'Function argument {0} type mismatch',
 } as const;

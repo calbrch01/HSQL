@@ -8,7 +8,7 @@ export class ECLCode {
      * @param code the code to represent
      * @param insertSemi whether to insert semicolons or not - default true
      */
-    constructor(protected code: string, public insertSemi = true) {}
+    constructor(private _code: string, public insertSemi = true) {}
     /**
      * Enclose code in more code
      * @param leftSide left part of code
@@ -18,9 +18,13 @@ export class ECLCode {
      * @returns
      */
     coverCode(leftSide: string = '', rightSide: string = '', respectSemi = this.insertSemi, insertSemi = true) {
-        this.code = leftSide + this.code + (respectSemi ? ';' : '') + rightSide;
+        this._code = leftSide + this._code + (respectSemi ? ';' : '') + rightSide;
         this.insertSemi = insertSemi;
         return this;
+    }
+
+    public get code(): string {
+        return this._code;
     }
 
     /**
@@ -32,7 +36,7 @@ export class ECLCode {
      * @returns
      */
     newCoverCode(leftSide: string, rightSide: string = '', respectSemi = this.insertSemi, insertSemi = true) {
-        return new ECLCode(leftSide + this.code + (respectSemi ? ';' : '') + rightSide, insertSemi);
+        return new ECLCode(leftSide + this._code + (respectSemi ? ';' : '') + rightSide, insertSemi);
     }
 
     /**
@@ -40,7 +44,7 @@ export class ECLCode {
      * @returns The string representation of the code
      */
     toString() {
-        if (this.insertSemi) return this.code + ';';
-        else return this.code;
+        if (this.insertSemi) return this._code + ';';
+        else return this._code;
     }
 }
