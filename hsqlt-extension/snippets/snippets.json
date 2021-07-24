@@ -30,5 +30,13 @@
             "$4"
         ],
         "description": "Write to a file, with given type"
+    },
+    "Plot": {
+        "prefix": "plot",
+        "body": [
+            "plot from $1 title $2 TYPE $3;",
+            "$4"
+        ],
+        "description": "Plot a given table"
     }
 }
