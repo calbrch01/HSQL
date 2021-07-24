@@ -261,7 +261,7 @@ fileType
 	| JSON {$fileOutputType=FileOutputType.JSON}
 	| THOR?
 	| XML {$fileOutputType=FileOutputType.XML};
-attribute: definition | selectStmt | literal;
+attribute: definition | BSTART_ selectStmt BEND_ | literal;
 namedOutput: (TITLE)? IDENTIFIER;
 // toFile: (FILE)? STRING (OVERWRITE)?;
 

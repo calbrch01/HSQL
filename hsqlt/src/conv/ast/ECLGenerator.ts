@@ -200,7 +200,8 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
 
         codes.forEach(e => {
             const [rhstop] = this.getPopped(e, x.node);
-            e.push(...pre);
+            // push pre to one array and args to one more array
+            pre.push(...e);
             args.push(rhstop);
         });
         const mainCode = new ECLCode(

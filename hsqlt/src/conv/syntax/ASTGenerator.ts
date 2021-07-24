@@ -216,14 +216,12 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
         const fnName = QualifiedIdentifier.fromGrammar(fnNameCtx);
         const x = this.variableManager.resolve(fnName);
 
-        const stmt = ctx
-            .functionCallArgs()
-            .attribute()
-            .map(e => {
-                const nodeMaybe = e.accept(this);
-                const nodeForced: VEO<DataType, StmtExpression> = pullVEO(nodeMaybe, this.errorManager, e);
-                return nodeForced;
-            });
+        const stmtAttributes = ctx.functionCallArgs();
+        const stmt = stmtAttributes.attribute().map(e => {
+            const nodeMaybe = e.accept(this);
+            const nodeForced: VEO<DataType, StmtExpression> = pullVEO(nodeMaybe, this.errorManager, e);
+            return nodeForced;
+        });
 
         if (x === undefined) {
             this.errorManager.push(TranslationIssue.semanticErrorToken(format(rs.notFound, fnName.toString())));

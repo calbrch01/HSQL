@@ -24,7 +24,7 @@ create function yz (layout a.l1 x, int y){
     return x;
 };
 b =z.k;
-c = yz(a.t1,b);
+c = yz((select * from a.t1),b);
 output b;
 
 // step 0 -> code completion -> snippets
@@ -32,7 +32,7 @@ write q to file TYPE csv '~ts';
 
 write q to file '~ts';
 
-output select * from q;
+output (select * from q);
 
 
 -- ab = 75;
