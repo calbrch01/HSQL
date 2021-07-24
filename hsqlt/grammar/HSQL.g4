@@ -34,9 +34,12 @@ definitionStmt
 	locals[willWrapModule:boolean=false]:
 	scope label = IDENTIFIER EQ expr;
 
-expr: definition | actionStmt | createStmt;
+expr: functionCall | definition | actionStmt | createStmt;
 // | transformStmt | mlStmt | moduleStmt;
 createStmt: CREATE (layoutStmt | moduleStmt);
+
+functionCall: definition BSTART_ functionCallArgs BEND_;
+functionCallArgs: attribute (COMMA_ attribute)*;
 
 functionStmt:
 	CREATE FUNCTION fname = IDENTIFIER BSTART_ functionArgs BEND_ CURLY_BSTART_ (

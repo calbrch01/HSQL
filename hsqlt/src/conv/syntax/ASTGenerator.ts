@@ -197,7 +197,7 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
         // }
 
         //construct the data type
-        const dt = new HFunction(new Map(functionMaps), returnType);
+        const dt = new HFunction(functionMaps, returnType);
         const res = this.variableManager.add(fname, DataMetaData(dt));
         if (!res) {
             this.errorManager.push(TranslationIssue.semanticErrorToken(format(rs.existsError, [fname]), ctx));

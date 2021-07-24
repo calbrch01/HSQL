@@ -10,7 +10,7 @@ export class CreateFunction implements StmtExpression {
     constructor(
         private _node: FunctionStmtContext,
         private _name: string,
-        private _args: Map<string, FunctionArgument>,
+        private _args: [string, FunctionArgument][],
         private _body: EqualDefinition[],
         private _returns: QualifiedIdentifier
     ) {}
@@ -20,7 +20,7 @@ export class CreateFunction implements StmtExpression {
     public get node(): FunctionStmtContext {
         return this._node;
     }
-    public get args(): Map<string, FunctionArgument> {
+    public get args(): [string, FunctionArgument][] {
         return this._args;
     }
     public get returns(): QualifiedIdentifier {

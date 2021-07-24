@@ -25,38 +25,49 @@ export class FunctionArgumentCollectorVisitor extends AbstractParseTreeVisitor<v
         return this._errorManager;
     }
 
-    public get argMap(): Map<string, FunctionArgument> {
+    public get argMap(): [string, FunctionArgument][] {
         return this._argMap;
     }
-
-    constructor(private _parent: ErrorManagerContainer, private _argMap: Map<string, FunctionArgument> = new Map()) {
+    private _argMap: [string, FunctionArgument][];
+    private _argSet: Set<string>;
+    constructor(private _parent: ErrorManagerContainer) {
         super();
         // this._argMap = new Map();
+        this._argMap = [];
+        this._argSet = new Set();
         this._errorManager = _parent.errorManager;
     }
 
     visitFunctionDefaultArgument(ctx: FunctionDefaultArgumentContext): void {
         const name = ctx.colDef().IDENTIFIER().text;
-        if (this._argMap.has(name)) {
+        if (this._argSet.has(name)) {
             this.errorManager.push(TranslationIssue.semanticErrorToken(format(resultStrings.existsError, name), ctx));
         } else {
-            this._argMap.set(name, {
-                type: FunctionArgumentType.PRIMITIVE,
-                dataType: ctx.colDef().dataType().dt,
-            });
+            this._argSet.add(name);
+            this._argMap.push([
+                name,
+                {
+                    type: FunctionArgumentType.PRIMITIVE,
+                    dataType: ctx.colDef().dataType().dt,
+                },
+            ]);
         }
     }
 
     visitFunctionLayoutArgument(ctx: FunctionLayoutArgumentContext): void {
         const name = ctx.IDENTIFIER().text;
         const layoutqid = QualifiedIdentifier.fromGrammar(ctx.definition());
-        if (this._argMap.has(name)) {
+        if (this._argSet.has(name)) {
             this.errorManager.push(TranslationIssue.semanticErrorToken(format(resultStrings.existsError, name), ctx));
         } else {
-            this._argMap.set(name, {
-                type: FunctionArgumentType.LAYOUT,
-                layoutId: layoutqid,
-            });
+            this._argSet.add(name);
+            this._argMap.push([
+                name,
+                {
+                    type: FunctionArgumentType.LAYOUT,
+                    layoutId: layoutqid,
+                },
+            ]);
         }
     }
 }
