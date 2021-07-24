@@ -3,13 +3,13 @@ import format from 'string-template';
 import { argType } from '..';
 import { AST } from '../ast/AST';
 import { AnyModule, Module } from '../ast/data/Module';
-import { ECLGenerator } from '../conv/abstractSyntaxTree/ECLGenerator';
+import { ECLGenerator } from '../conv/ast/ECLGenerator';
 import { ASTGen, ASTGenerator } from '../conv/syntax/ASTGenerator';
 import { HSQLTreeFactory } from '../conv/ParseTreeGenerator';
 import { ICodeGenerator } from '../misc/ast/ICodeGenerator';
 import { QualifiedIdentifier } from '../misc/ast/QualifiedIdentifier';
 import { ImportStmtContext, ProgramContext } from '../misc/grammar/HSQLParser';
-import { iP } from '../misc/lib/formatting';
+import { issueFormatter } from '../misc/lib/formatting';
 import rs from '../misc/strings/resultStrings';
 import { ErrorManager, ErrorMode, ErrorSeverity, ErrorType, TranslationIssue } from './ErrorManager';
 import { NoOutput, OutputManager } from './OutputManagers';
@@ -36,26 +36,32 @@ import { join, relative } from 'path';
  *
  */
 export class TaskManager {
-    protected _fsmanager: FSManager;
-    protected _errorManager: ErrorManager;
+    /** File system manager */
+    private _fsmanager: FSManager;
+    /** Error Manager */
+    private _errorManager: ErrorManager;
+    /** Parse Tree Creation */
     protected treeFactory: HSQLTreeFactory;
-    public ASTMap: Map<string, { sourcePath: string; fileType: FileType.HSQL | FileType.DHSQL; ast: AST }>;
+    private _ASTMap: Map<string, { fileType: FileType.HSQL | FileType.DHSQL; ast: AST }>;
 
     /**
-     *
+     * Map the required input file paths to the real output paths
+     */
+    private _inputFileToOutputFile: Map<string, string>;
+
+    /**
+     * Create a Task Manager without any file sourcces.
      * @param mainFile Root file to start translation from
      * @param pedantic Whether to be pedantic or not
      * @param fileMap A fileMap. Missing files will be taken from disk
      * @param outputManager Output strategy - default is no output
      * @param baseLoc offset from current directory (undefined)
-     * @param _fsSets A set of fses to use. Default is a simple FS-backed layer. Pass atleast one FSProvider after initializing it.
-     * @param args Optional presence of the arguments
+     * @param args Optional additional arguments
      */
     constructor(
         public mainFile: string,
         public pedantic: boolean = false,
         protected outputManager: OutputManager = new NoOutput(),
-        public baseLoc?: string,
         protected suppressIssues: boolean = false,
         public args: Partial<argType> = {} // protected args:argType
     ) {
@@ -63,7 +69,8 @@ export class TaskManager {
         this._errorManager = new ErrorManager(pedantic ? ErrorMode.PEDANTIC : ErrorMode.NORMAL);
         // this.readingMgr = new ReadingManager(this._errorManager, fileMap, fsBacked, baseLoc);
         this._fsmanager = new FSManager(this._errorManager);
-        this.ASTMap = new Map();
+        this._ASTMap = new Map();
+        this._inputFileToOutputFile = new Map();
         this.treeFactory = new HSQLTreeFactory(this._errorManager);
     }
 
@@ -74,7 +81,8 @@ export class TaskManager {
      */
     public clear(mainFile?: string) {
         this._errorManager.clear();
-        this.ASTMap.clear();
+        this._ASTMap.clear();
+        this._inputFileToOutputFile.clear();
         // if passed, set it
         if (mainFile) {
             this.mainFile = mainFile;
@@ -89,12 +97,6 @@ export class TaskManager {
         for (const fileprovider of fileproviders) {
             this._fsmanager.addFileManager(fileprovider);
         }
-    }
-    /**
-     * Obtain an instance of the ErrorManager
-     */
-    public get errorManager() {
-        return this._errorManager;
     }
 
     /**
@@ -117,20 +119,30 @@ export class TaskManager {
         if (includes.includes(fnNoExt)) {
             this._errorManager.halt(TranslationIssue.semanticErrorToken(rs.importCycleError, cause));
         }
-
+        // read the file, getting the actual path for usage
         const { realPath, content: file, type } = this._fsmanager.read(fnNoExt, local, fileType);
+
         // error manager will hold the real paths, includes array *will hold the imaginary paths*
         this.errorManager.pushFile(realPath);
         includes.push(fnNoExt);
+
+        // make the parse tree, and use it to generate the AST
         const { tree } = this.treeFactory.makeTree(file, type);
         const x: ASTGen = new ASTGenerator(this, this._errorManager, tree, includes);
         // get AST will read imports and call the rest of the required generate ASTS
         const ast = x.getAST();
-        this.ASTMap.set(realPath, { fileType: type, ast, sourcePath: fnNoExt });
 
+        // set the ast
+        this._ASTMap.set(realPath, { fileType: type, ast });
+        // set the appropriate file path
+        this._inputFileToOutputFile.set(fnNoExt, realPath);
+
+        //pop the includes array and the error context
         includes.pop();
         this.errorManager.popFile();
-        return { ast, tree, asts: this.ASTMap };
+
+        // return current ast, all the asts and the parse tree as well for reference
+        return { ast, tree, asts: this._ASTMap };
     }
 
     /**
@@ -158,20 +170,20 @@ export class TaskManager {
     async generateOutputs() {
         /** Entries needed to write */
         const work: Promise<void>[] = [];
-        const fns = [...this.ASTMap.entries()];
+        const fns = [...this._ASTMap.entries()];
         for (const [fn, { ast, fileType }] of fns) {
             // ignore dhsql files
             if (fileType === FileType.DHSQL) continue;
-            // console.debug(`File:${fn}`);
-            const generator: ICodeGenerator = new ECLGenerator(this.errorManager, ast); //new ECLGen(this.errorManager, ast);
-            //push error file context
+            const generator: ICodeGenerator = new ECLGenerator(this.errorManager, ast);
+            // push error file context
             this.errorManager.pushFile(fn);
-            //do the codegen
+            // do the codegen with the above error context
             const x = generator.getCode();
-            //pop error file context
+            // pop error file context
             this.errorManager.popFile();
             // console.log(`Result`, x);
-            //get new filename
+
+            // get new filename
             const newFn = FileHandler.changeExtension(fn, FileType.ECL);
             const res = this.outputManager.do(newFn, x.join(EOL));
             work.push(res);
@@ -215,7 +227,8 @@ export class TaskManager {
         // run this function if it exists else warn the user
         // but, only if its true
         !this.suppressIssues &&
-            (this.outputManager.reportIssues(this._errorManager.issues) ?? console.log(iP(rs.noErrorOutput)));
+            (this.outputManager.reportIssues(this._errorManager.issues) ??
+                console.log(issueFormatter(rs.noErrorOutput)));
     }
 
     /**
@@ -272,9 +285,6 @@ export class TaskManager {
         this.args.g && console.log(`DIRNAME`, __dirname);
 
         let { res: pathString, isLocal } = FSManager.parseQid(q, includes[includes.length - 1]);
-        if (this.baseLoc !== undefined) {
-            pathString = join(this.baseLoc, pathString);
-        }
 
         const x = this._fsmanager.stat(pathString, isLocal);
 
@@ -306,5 +316,23 @@ export class TaskManager {
         }
 
         return { output: new AnyModule(), viz: new Map() };
+    }
+
+    // getters and setters from here
+
+    public get inputFileToOutputFile(): Map<string, string> {
+        return this._inputFileToOutputFile;
+    }
+    public get ASTMap(): Map<string, { fileType: FileType.HSQL | FileType.DHSQL; ast: AST }> {
+        return this._ASTMap;
+    }
+    /**
+     * Obtain an instance of the ErrorManager
+     */
+    public get errorManager() {
+        return this._errorManager;
+    }
+    protected get fsmanager(): FSManager {
+        return this._fsmanager;
     }
 }

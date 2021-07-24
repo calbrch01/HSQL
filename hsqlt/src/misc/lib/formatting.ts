@@ -13,7 +13,7 @@ const issueSeverityMap = {
     [ErrorSeverity.INFO]: 'I',
     [ErrorSeverity.WARNING]: 'W',
     [ErrorSeverity.ERROR]: 'E',
-} as const;
+};
 
 /**
  * Assign string codes to these enums
@@ -31,7 +31,7 @@ export function mapIssue(issueType: ErrorSeverity) {
  * @param num2
  * @returns
  */
-export function issuePrepender(
+export function issueFormatter(
     reason: string,
     issueType: ErrorSeverity = ErrorSeverity.INFO,
     num1?: number,
@@ -40,8 +40,3 @@ export function issuePrepender(
 ) {
     return `${mapIssue(issueType)}(${str1 ?? '-'}:${num1 ?? '-'}:${num2 ?? '-'}):${reason}`;
 }
-
-/**
- * Short alias to {@link issuePrepender}
- */
-export const iP = issuePrepender;

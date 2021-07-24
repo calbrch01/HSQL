@@ -73,7 +73,6 @@ export function activate(context: vscode.ExtensionContext) {
                 relative(folderPath, fn) /* mainFile */,
                 false,
                 new FileOutput(folderPath),
-                undefined,
                 true
             );
             // await vscode.window.showInformationMessage('Start AST generating');

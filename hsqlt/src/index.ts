@@ -162,7 +162,7 @@ export async function main(argv: argType, /*execMode: ExecMode*/ execMode: ExecI
     const writer: OutputManager = argv.o ? new StandardOutput() : new FileOutput(argv.b);
 
     //taskmap must have no map, and no baseloc for now
-    const taskmanager = new TaskManager(argv.file, argv.p, writer, undefined, argv.k, argv);
+    const taskmanager = new TaskManager(argv.file, argv.p, writer, argv.k, argv);
     //add the standard libraries and the main files
     taskmanager.addFileProviders(
         ...(await FSManager.DefaultsProvidersFactory(taskmanager.errorManager)),

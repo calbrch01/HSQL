@@ -5,7 +5,7 @@
 
 import { promises as fs } from 'fs';
 import path from 'path';
-import { iP } from '../misc/lib/formatting';
+import { issueFormatter } from '../misc/lib/formatting';
 import { ContexedTranslationError } from './ErrorManager';
 
 /**
@@ -22,13 +22,14 @@ export abstract class OutputManager {
     abstract do(fn: string, contents: string): Promise<void>;
 
     /**
-     * Report issues
+     * Report issues.
      * @returns if successful
      */
     reportIssues(issues: ContexedTranslationError[]): boolean {
         for (const issue of issues) {
-            console.log(iP(issue.msg, issue.severity, issue.line, issue.charPositionInLine, issue.ctx));
+            console.log(issueFormatter(issue.msg, issue.severity, issue.line, issue.charPositionInLine, issue.ctx));
         }
+        // this default implementation will succeed all the time, but an overridden implementation may not;
         return true;
     }
     /**

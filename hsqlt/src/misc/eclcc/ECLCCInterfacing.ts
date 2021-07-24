@@ -8,6 +8,9 @@ export type getMethodsShape = {
     eclLibPath: string[];
 };
 
+/**
+ * ECLCC Interfacing
+ */
 export class ECLCCInterface {
     constructor(protected err: ErrorManager) {}
     /**
@@ -19,6 +22,9 @@ export class ECLCCInterface {
         try {
             const { returnCode, stdout } = await execAndGetCode(eclcc.syntax);
             if (returnCode === 0) {
+                /**
+                 * Dotenv passes env files, which is how eclcc outputs its information
+                 */
                 const res = dotenv.parse(stdout);
                 return {
                     eclLibPath: [
