@@ -61,6 +61,33 @@ export class ExecMakeMode implements ExecIntent {
     }
 }
 
+export class ExecRunMode implements ExecIntent {
+    async do(taskmanager: TaskManager, outputmanager: OutputManager): Promise<void> {
+        // check syntax aka generate the ast
+        await new ExecCheckMode().do(taskmanager, outputmanager);
+
+        // getting the error count
+        const {
+            counts: [ecount, wcount],
+            suppressed,
+        } = taskmanager.issueStats();
+        // print out some stats if in debug mode
+        taskmanager.args.g && console.debug(`Statistics W:${wcount},E:${ecount}`);
+
+        // if pedantic, true if warnings or errors exist, else check if errors exist
+        const skipOutput = (taskmanager.pedantic && wcount + ecount > 0) || (!taskmanager.pedantic && ecount > 0);
+
+        // console.debug(`E${skipOutput}`);
+        if (skipOutput) {
+            taskmanager.errorManager.push(
+                TranslationIssue.createIssue(rs.didNotOutput, ErrorType.IO, ErrorSeverity.INFO)
+            );
+        } else {
+            await taskmanager.generateOutputs();
+        }
+    }
+}
+
 /**
  * Unimplemented Syntax check
  */

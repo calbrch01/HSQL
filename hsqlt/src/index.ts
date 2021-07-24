@@ -11,7 +11,7 @@ import { ErrorType, HaltError, TranslationIssue } from './managers/ErrorManager'
 import { FSManager } from './managers/FSManager';
 import { FileOutput, OutputManager, StandardOutput } from './managers/OutputManagers';
 import { TaskManager } from './managers/TaskManager';
-import { ExecCheckMode, ExecIntent, ExecMakeMode, ExecTreeMode, ExecUnimplemented } from './misc/execModes';
+import { ExecCheckMode, ExecIntent, ExecMakeMode, ExecTreeMode, ExecUnimplemented } from './misc/execIntent';
 import { FSFileProvider } from './misc/file/FileProvider';
 import rs from './misc/strings/resultStrings';
 // 2 ignores the node call and the script name
@@ -60,18 +60,18 @@ export const { argv: args } = yargs(process.argv.slice(2))
         alias: ['target'],
         type: 'string',
     })
-    .option('c', {
-        desc: 'Cluster location',
-        alias: ['cluster'],
-        type: 'string',
-        default: process.env.ECL_WATCH_IP ?? 'localhost',
-    })
-    .option('r', {
-        desc: 'Cluster poRt',
-        alias: ['port'],
-        type: 'number',
-        default: isNaN(parseInt(process.env.ECL_WATCH_PORT ?? '')) ? 8010 : parseInt(process.env.ECL_WATCH_PORT ?? ''),
-    })
+    // .option('c', {
+    //     desc: 'Cluster location',
+    //     alias: ['cluster'],
+    //     type: 'string',
+    //     default: process.env.ECL_WATCH_IP ?? 'localhost',
+    // })
+    // .option('r', {
+    //     desc: 'Cluster poRt',
+    //     alias: ['port'],
+    //     type: 'number',
+    //     default: isNaN(parseInt(process.env.ECL_WATCH_PORT ?? '')) ? 8010 : parseInt(process.env.ECL_WATCH_PORT ?? ''),
+    // })
     .option('a', {
         desc: 'Show args',
         alias: ['show-args'],
@@ -135,19 +135,19 @@ export const { argv: args } = yargs(process.argv.slice(2))
             main(args, /* ExecMode.MAKE */ new ExecMakeMode());
         }
     )
-    // .command(
-    //     'run <file>',
-    //     'Compile and submit to cluster',
-    //     yargs =>
-    //         yargs.option('file', {
-    //             desc: 'filename',
-    //             type: 'string',
-    //             demandOption: true,
-    //         }),
-    //     args => {
-    //         main(args, new ExecUnimplemented());
-    //     }
-    // )
+    .command(
+        'run <file>',
+        'Compile and submit to cluster using ECL Client Tools',
+        yargs =>
+            yargs.option('file', {
+                desc: 'filename',
+                type: 'string',
+                demandOption: true,
+            }),
+        args => {
+            main(args, new ExecUnimplemented());
+        }
+    )
     .demandCommand(2);
 
 export type argType = typeof args;

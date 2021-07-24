@@ -182,6 +182,14 @@ export class ErrorManager {
     public get issues() {
         return this._errors;
     }
+
+    /**
+     * Clear all issues
+     * @returns
+     */
+    public clear() {
+        return (this._errors.length = 0);
+    }
     /**
      * Get an error listener instance bound to this errormanager.
      * Note: They are bound via closures so it can be relocated freely

@@ -32,12 +32,14 @@ import { join, relative } from 'path';
  *
  * ECL can then be flushed to disk (if allowed) or printed out
  *
+ * To reset, use clear()
+ *
  */
 export class TaskManager {
     protected _fsmanager: FSManager;
     protected _errorManager: ErrorManager;
     protected treeFactory: HSQLTreeFactory;
-    public ASTMap: Map<string, { fileType: FileType.HSQL | FileType.DHSQL; ast: AST }>;
+    public ASTMap: Map<string, { sourcePath: string; fileType: FileType.HSQL | FileType.DHSQL; ast: AST }>;
 
     /**
      *
@@ -61,26 +63,43 @@ export class TaskManager {
         this._errorManager = new ErrorManager(pedantic ? ErrorMode.PEDANTIC : ErrorMode.NORMAL);
         // this.readingMgr = new ReadingManager(this._errorManager, fileMap, fsBacked, baseLoc);
         this._fsmanager = new FSManager(this._errorManager);
-        this.ASTMap = new Map<string, { fileType: FileType.HSQL | FileType.DHSQL; ast: AST }>();
+        this.ASTMap = new Map();
         this.treeFactory = new HSQLTreeFactory(this._errorManager);
+    }
+
+    /**
+     * Clear Issue Manager and remove built ASTs.
+     * This is a better alternative to generating a new task manager every time
+     * @param mainFile
+     */
+    public clear(mainFile?: string) {
+        this._errorManager.clear();
+        this.ASTMap.clear();
+        // if passed, set it
+        if (mainFile) {
+            this.mainFile = mainFile;
+        }
     }
 
     /**
      * Add in file providers
      * Note: Its a good idea to add these in after initializing an instance of {@link TaskManager}
      */
-    addFileProviders(...fileproviders: FileProvider[]) {
+    public addFileProviders(...fileproviders: FileProvider[]) {
         for (const fileprovider of fileproviders) {
             this._fsmanager.addFileManager(fileprovider);
         }
     }
-
+    /**
+     * Obtain an instance of the ErrorManager
+     */
     public get errorManager() {
         return this._errorManager;
     }
 
     /**
-     * Generate AST for a given file
+     * Generate AST for a given file.
+     * Note that this creates ASTs for dependant files as well
      * @param fnNoExt file (defaults to mainfile)
      * @param fileType override
      * @param local is local file (true)
@@ -107,7 +126,7 @@ export class TaskManager {
         const x: ASTGen = new ASTGenerator(this, this._errorManager, tree, includes);
         // get AST will read imports and call the rest of the required generate ASTS
         const ast = x.getAST();
-        this.ASTMap.set(realPath, { fileType: type, ast });
+        this.ASTMap.set(realPath, { fileType: type, ast, sourcePath: fnNoExt });
 
         includes.pop();
         this.errorManager.popFile();

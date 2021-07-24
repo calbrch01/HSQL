@@ -30,6 +30,6 @@ export * from './misc/file/FileType';
 
 //misc
 export * from './ast/symbol/VariableTable';
-export * as ExecModes from './misc/execModes';
+export * as ExecModes from './misc/execIntent';
 export * from './misc/ast/QualifiedIdentifier';
 export * from './misc/ast/SingularDataType';
