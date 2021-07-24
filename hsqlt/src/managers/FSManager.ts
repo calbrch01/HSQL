@@ -2,7 +2,7 @@ import path from 'path';
 import format from 'string-template';
 import { AnyModule, Module } from '../ast/data/Module';
 import { QualifiedIdentifier } from '../misc/ast/QualifiedIdentifier';
-import { ECLCCInterface } from '../misc/eclcc/ECLCCInterfacing';
+import { ECLClientToolsInterface } from '../misc/eclcc/ECLClientToolsInterfacing';
 import { FileHandler } from '../misc/file/FileHandler';
 import { FileProvider, FSFileProvider, MemFileProvider } from '../misc/file/FileProvider';
 import { pathResult } from '../misc/file/pathResult';
@@ -45,7 +45,7 @@ export class FSManager {
      * @returns
      */
     static async DefaultsProvidersFactory(err: ErrorManager) {
-        const imports = await new ECLCCInterface(err).getImports();
+        const imports = await new ECLClientToolsInterface(err).getImports();
         const stdDefs = new MemFileProvider(new Map(std), false);
         return [stdDefs, ...imports.eclLibPath.map(importPath => new FSFileProvider(importPath, false))];
     }

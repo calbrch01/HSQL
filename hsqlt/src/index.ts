@@ -11,7 +11,14 @@ import { ErrorType, HaltError, TranslationIssue } from './managers/ErrorManager'
 import { FSManager } from './managers/FSManager';
 import { FileOutput, OutputManager, StandardOutput } from './managers/OutputManagers';
 import { TaskManager } from './managers/TaskManager';
-import { ExecCheckMode, ExecIntent, ExecMakeMode, ExecTreeMode, ExecUnimplemented } from './misc/execIntent';
+import {
+    ExecCheckIntent,
+    ExecIntent,
+    ExecMakeIntent,
+    ExecRunIntent,
+    ExecTreeIntent,
+    ExecUnimplemented,
+} from './misc/execIntent';
 import { FSFileProvider } from './misc/file/FileProvider';
 import rs from './misc/strings/resultStrings';
 // 2 ignores the node call and the script name
@@ -106,7 +113,7 @@ export const { argv: args } = yargs(process.argv.slice(2))
                 demandOption: true,
             }),
         args => {
-            main(args, new ExecTreeMode());
+            main(args, new ExecTreeIntent());
         }
     )
     .command(
@@ -119,7 +126,7 @@ export const { argv: args } = yargs(process.argv.slice(2))
                 demandOption: true,
             }),
         args => {
-            main(args, /* ExecMode.CHECK */ new ExecCheckMode());
+            main(args, /* ExecMode.CHECK */ new ExecCheckIntent());
         }
     )
     .command(
@@ -132,7 +139,7 @@ export const { argv: args } = yargs(process.argv.slice(2))
                 demandOption: true,
             }),
         args => {
-            main(args, /* ExecMode.MAKE */ new ExecMakeMode());
+            main(args, /* ExecMode.MAKE */ new ExecMakeIntent());
         }
     )
     .command(
@@ -145,7 +152,7 @@ export const { argv: args } = yargs(process.argv.slice(2))
                 demandOption: true,
             }),
         args => {
-            main(args, new ExecUnimplemented());
+            main(args, new ExecRunIntent());
         }
     )
     .demandCommand(2);

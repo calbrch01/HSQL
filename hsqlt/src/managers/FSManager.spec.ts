@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import { QualifiedIdentifier } from '../misc/ast/QualifiedIdentifier';
-import { ECLCCInterface } from '../misc/eclcc/ECLCCInterfacing';
+import { ECLClientToolsInterface } from '../misc/eclcc/ECLClientToolsInterfacing';
 import { FSFileProvider } from '../misc/file/FileProvider';
 import { ErrorManager } from './ErrorManager';
 import { FSManager } from './FSManager';
@@ -9,7 +9,7 @@ describe('FSManager', function () {
     it('basics', async () => {
         const em = ErrorManager.normal;
         const fsm = new FSManager(em);
-        const { eclLibPath } = await new ECLCCInterface(em).getImports();
+        const { eclLibPath } = await new ECLClientToolsInterface(em).getImports();
         assert.exists(eclLibPath);
         for (const importPath of eclLibPath) {
             fsm.addFileManager(new FSFileProvider(importPath, false));
@@ -28,7 +28,7 @@ describe('FSManager', function () {
     it('Offset', async () => {
         const em = ErrorManager.normal;
         const fsm = new FSManager(em);
-        const { eclLibPath } = await new ECLCCInterface(em).getImports();
+        const { eclLibPath } = await new ECLClientToolsInterface(em).getImports();
         assert.exists(eclLibPath);
         for (const importPath of eclLibPath) {
             fsm.addFileManager(new FSFileProvider(importPath, false));

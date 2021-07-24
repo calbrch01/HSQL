@@ -3,9 +3,14 @@ import { TaskManager } from '../managers/TaskManager';
 import { EOL } from 'os';
 import rs from './strings/resultStrings';
 import { ErrorSeverity, ErrorType, TranslationIssue } from '../managers/ErrorManager';
+import { ECLClientToolsInterface } from './eclcc/ECLClientToolsInterfacing';
+import resultStrings from './strings/resultStrings';
+import { FileHandler } from './file/FileHandler';
+import { FileType } from './file/FileType';
 
 /**
  * Execution intent
+ * Note:Error printing is to be handled outside.
  */
 export interface ExecIntent {
     do(taskmanager: TaskManager, outputmanager: OutputManager): Promise<void>;
@@ -14,7 +19,7 @@ export interface ExecIntent {
 /**
  * Exec tree mode
  */
-export class ExecTreeMode implements ExecIntent {
+export class ExecTreeIntent implements ExecIntent {
     async do(taskmanager: TaskManager, _outputmanager: OutputManager) {
         const { strTree } = taskmanager.getStringTree();
         console.log(strTree, EOL);
@@ -24,7 +29,7 @@ export class ExecTreeMode implements ExecIntent {
 /**
  * Exec Syntax check mode
  */
-export class ExecCheckMode implements ExecIntent {
+export class ExecCheckIntent implements ExecIntent {
     async do(taskmanager: TaskManager, _outputmanager: OutputManager): Promise<void> {
         // generate the ast
         taskmanager.generateAST();
@@ -34,10 +39,10 @@ export class ExecCheckMode implements ExecIntent {
     }
 }
 
-export class ExecMakeMode implements ExecIntent {
+export class ExecMakeIntent implements ExecIntent {
     async do(taskmanager: TaskManager, outputmanager: OutputManager): Promise<void> {
         // check syntax aka generate the ast
-        await new ExecCheckMode().do(taskmanager, outputmanager);
+        await new ExecCheckIntent().do(taskmanager, outputmanager);
 
         // getting the error count
         const {
@@ -61,21 +66,23 @@ export class ExecMakeMode implements ExecIntent {
     }
 }
 
-export class ExecRunMode implements ExecIntent {
+export class ExecRunIntent implements ExecIntent {
     async do(taskmanager: TaskManager, outputmanager: OutputManager): Promise<void> {
         // check syntax aka generate the ast
-        await new ExecCheckMode().do(taskmanager, outputmanager);
+        await new ExecMakeIntent().do(taskmanager, outputmanager);
 
         // getting the error count
         const {
             counts: [ecount, wcount],
-            suppressed,
         } = taskmanager.issueStats();
         // print out some stats if in debug mode
-        taskmanager.args.g && console.debug(`Statistics W:${wcount},E:${ecount}`);
+        taskmanager.args.o && console.debug(`Statistics W:${wcount},E:${ecount}`);
 
         // if pedantic, true if warnings or errors exist, else check if errors exist
-        const skipOutput = (taskmanager.pedantic && wcount + ecount > 0) || (!taskmanager.pedantic && ecount > 0);
+        const skipOutput =
+            taskmanager.args.o ||
+            (taskmanager.pedantic && wcount + ecount > 0) ||
+            (!taskmanager.pedantic && ecount > 0);
 
         // console.debug(`E${skipOutput}`);
         if (skipOutput) {
@@ -83,7 +90,22 @@ export class ExecRunMode implements ExecIntent {
                 TranslationIssue.createIssue(rs.didNotOutput, ErrorType.IO, ErrorSeverity.INFO)
             );
         } else {
-            await taskmanager.generateOutputs();
+            try {
+                const val = taskmanager.inputFileToOutputFile.get(taskmanager.mainFile);
+
+                if (val === undefined) {
+                    taskmanager.errorManager.push(
+                        TranslationIssue.generalErrorToken(resultStrings.couldNotMainFileError, ErrorType.IO)
+                    );
+                } else {
+                    const eclFileName = FileHandler.changeExtension(val, FileType.ECL);
+                    const ei = new ECLClientToolsInterface(taskmanager.errorManager);
+                    const output = await ei.runOutput(taskmanager.args.t ?? 'thor', eclFileName);
+                    taskmanager.errorManager.push(TranslationIssue.miscInformation(resultStrings.eclccOutput + output));
+                }
+            } catch (e) {}
+            // do your work
+            // await taskmanager.generateOutputs();
         }
     }
 }

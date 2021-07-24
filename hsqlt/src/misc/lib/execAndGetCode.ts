@@ -1,4 +1,4 @@
-import { exec } from 'child_process';
+import { ChildProcess, exec } from 'child_process';
 
 type execResult = {
     returnCode: number | null;
@@ -21,8 +21,12 @@ export async function execAndGetCode(command: string) {
         });
         let stdout = '',
             stderr = '';
-        proc.stdout?.on('data', chunk => (stdout += chunk.toString()));
-        proc.stderr?.on('data', chunk => (stderr += chunk.toString()));
+        proc.stdout?.on('data', chunk => {
+            stdout += chunk.toString();
+        });
+        proc.stderr?.on('data', chunk => {
+            stderr += chunk.toString();
+        });
 
         /** If we error out, bail and reject */
         proc.on('error', err => {

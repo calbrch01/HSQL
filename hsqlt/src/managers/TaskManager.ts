@@ -220,6 +220,8 @@ export class TaskManager {
         // if (!res) this.errorManager.push(new TranslationError(format(rs.couldNotWrite)));
     }
 
+    runOutput(file: string = this.mainFile) {}
+
     /**
      * reportErrors if suppress
      */

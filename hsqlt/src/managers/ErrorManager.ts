@@ -143,6 +143,23 @@ export class TranslationIssue {
             cause?._stop?.charPositionInLine
         );
     }
+
+    /**
+     * Information with no context
+     * @param msg
+     * @returns
+     */
+    static miscInformation(msg: string) {
+        return new TranslationIssue(
+            msg,
+            undefined,
+            undefined,
+            ErrorSeverity.INFO,
+            ErrorType.OTHER,
+            undefined,
+            undefined
+        );
+    }
 }
 
 /**

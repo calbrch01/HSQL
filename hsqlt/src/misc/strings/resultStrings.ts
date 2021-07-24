@@ -39,4 +39,7 @@ export default {
     exportActionIncompatErrors: 'No actions can be used if shared or export is used',
     includeStackEmptyError: 'Include Stack cannot be empty -> must contain atleast current filename',
     importCycleError: 'Import cycle detected. Please remove redundant import.',
+    couldNotMainFileError: 'Could not get start file location',
+    couldNotSubmitError: 'Could not submit using ecl. Check ECL Client Tools configuration',
+    eclccOutput: 'ECL Client Tools Output:\n',
 } as const;
