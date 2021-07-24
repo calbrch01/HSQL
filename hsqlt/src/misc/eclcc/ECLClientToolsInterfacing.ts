@@ -62,9 +62,7 @@ export class ECLClientToolsInterface {
     async runOutput(target: string, location: string) {
         try {
             const { returnCode, stdout, stderr } = await execAndGetCode(format(eclcc.run, target, location));
-            if (returnCode === 0) {
-                return stdout;
-            } else if (returnCode === 127) {
+            if (returnCode === 127) {
                 this.err.push(
                     TranslationIssue.createIssue(
                         format(eclcc.errors.notFoundError, eclcc.strings.eclcc),
@@ -73,7 +71,7 @@ export class ECLClientToolsInterface {
                     )
                 );
             }
-            return stderr;
+            return stderr + '\n' + stdout;
         } catch (e) {
             this.err.push(
                 TranslationIssue.createIssue(
