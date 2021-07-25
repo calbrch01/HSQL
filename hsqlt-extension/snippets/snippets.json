@@ -38,5 +38,21 @@
             "$4"
         ],
         "description": "Plot a given table"
+    },
+    "Select (Simple)": {
+        "prefix": "select",
+        "body": [
+            "select $1 from $2",
+            "$3"
+        ],
+        "description": "select from a dataset"
+    },
+    "Select (DATASET)": {
+        "prefix": "select",
+        "body": [
+            "select $1 from '$2' layout $3",
+            "$4"
+        ],
+        "description": "select from a dataset"
     }
 }
