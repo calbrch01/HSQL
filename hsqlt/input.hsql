@@ -1,38 +1,51 @@
 -- import xt;
-import %.a;
-q = select * from a.t1 join a.t2 on a.t1.c1=a.t2.c3;/* create layout(
-    int x,
-    int y
-); */
--- r = select * from '~output::writetofile.csv' TYPE CSV layout q as b;
+-- import %.a;
+-- q = select * from a.t1 join a.t2 on a.t1.c1=a.t2.c3;/* create layout(
+--     int x,
+--     int y
+-- ); */
+-- -- r = select * from '~output::writetofile.csv' TYPE CSV layout q as b;
 
--- a = 6;
--- -- b = 'Hello';
+-- -- a = 6;
+-- -- -- b = 'Hello';
 
--- -- y = ;
--- -- r = 5;
--- b = 5;
+-- -- -- y = ;
+-- -- -- r = 5;
+-- -- b = 5;
 
-y = create layout(int x,int y);
-z = create module (
-    export k = 5;
-    export ab = 6;
-);
-create function yz (layout a.l1 x, int y){
-    z = 5;
-    xy = x;
-    return x;
-};
-b =z.k;
-c = yz((select * from a.t1),b);
-output b;
+-- y = create layout(int x,int y);
+
+-- z = create module (
+--     export k = 5;
+--     export ab = 6;
+-- );
+
+-- create function yz (layout a.l1 x, int y){
+
+--     xy = x;
+--     ab = select * from x where c1>y;
+--     return ab;
+-- };
+
+
+-- b1 =z.k;
+-- b2 = 2;
+
+
+-- c = yz((select * from a.t1),b1);
+-- d = yz((select * from a.t1),b2);
+
+-- output c;
+-- output d;
+
+x = train from x,y,z method xyz ADD ORDER ;
 
 // step 0 -> code completion -> snippets
-write q to file TYPE csv '~ts';
+-- write q to file TYPE csv '~ts';
 
-write q to file '~ts';
+-- write q to file '~ts';
 
-output (select * from q);
+-- output (select * from q);
 
 
 -- ab = 75;
