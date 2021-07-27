@@ -34,7 +34,12 @@ definitionStmt
 	locals[willWrapModule:boolean=false]:
 	scope label = IDENTIFIER EQ expr;
 
-expr: functionCall | definition | actionStmt | createStmt;
+expr:
+	functionCall
+	| definition
+	| actionStmt
+	| createStmt
+	| mlStmt;
 // | transformStmt | mlStmt | moduleStmt;
 createStmt: CREATE (layoutStmt | moduleStmt);
 
@@ -68,6 +73,71 @@ actionStmt:
 	| plotStmt
 	| literal
 	| fileOutputStmt;
+
+/* IMPORT STATEMENT
+ */
+
+importStmt: IMPORT overDefinition (AS IDENTIFIER)?;
+
+// $.^ AS upperDir
+
+/* OUTPUT STATEMENT
+ */
+
+outputStmt: OUTPUT attribute namedOutput? OVERWRITE?;
+
+fileOutputStmt:
+	WRITE definition (TO FILE?)? TYPE? fileType STRING OVERWRITE?;
+
+// note that THOR output is default
+fileType
+	locals[fileOutputType:FileOutputType=FileOutputType.THOR]:
+	CSV {$fileOutputType=FileOutputType.CSV}
+	| JSON {$fileOutputType=FileOutputType.JSON}
+	| THOR?
+	| XML {$fileOutputType=FileOutputType.XML};
+attribute:
+	definition
+	| BSTART_ selectStmt BEND_
+	| literal
+	| functionCall;
+namedOutput: (TITLE)? IDENTIFIER;
+// toFile: (FILE)? STRING (OVERWRITE)?;
+
+/* PLOT STATEMENT
+ */
+plotStmt:
+	{$program::needPlots=true} PLOT FROM? fromdef = definition (
+		TITLE
+	)? title = IDENTIFIER (TYPE)? typePlot = IDENTIFIER;
+
+// /* MODULE STATEMENT */
+
+// /* ML STATEMENT SAME AS v0 */ 
+mlStmt: train /* | predict | elementaryML */;
+
+// train: TRAIN FROM ind = definition COMMA_ dep = definition ( COMMA_ test = definition )? METHOD
+// method = IDENTIFIER trainAddOrderSegment OPTION? trainOptions;
+
+// This is a standard get model operation 
+train:
+	TRAIN FROM ind = definition COMMA_ dep = definition METHOD method = IDENTIFIER
+		trainAddOrderSegment OPTION? trainOptions;
+
+// 
+trainAddOrderSegment: ADD ORDER;
+// // This variant of ML is useful in DBScan where a separate model isnt trained elementaryML:
+// PREDICT FROM ind = definition (COMMA_ ind2 = definition)? METHOD method = IDENTIFIER ( OPTION
+// trainOptions )?;
+
+trainOptions: trainOption ( COMMA_ trainOption)* |;
+
+trainOption: IDENTIFIER AS trainValue;
+
+// TAG put expr
+trainValue: expr;
+
+// predict: PREDICT model = definition FROM ind = definition ( METHOD method = IDENTIFIER )?;
 
 // SELECT STATEMENT skipping the having for later
 selectStmt:
@@ -104,11 +174,7 @@ aliasingCol: AS alias = IDENTIFIER;
 /* note that from can actually have multiple sources. However, while dealing with codegen, we may
  need to split the cases for 1 table and 1+ tables
  */
-selectFromClause:
-	FROM (
-		selectFromRef (COMMA_ selectFromRef)*
-		// | joinedTable
-	);
+selectFromClause: FROM (selectFromRef (COMMA_ selectFromRef)*);
 
 // here's a big issue -> antlr does not like mutually left recursive grammar. However, direct left
 // recursion works.
@@ -138,10 +204,6 @@ selectWhereClause: booleanExpression;
 
 joinConstraint: ON joinSpecification;
 //we limit it to qualifiedidentifiers only
-
-// joinedTable: selectFromTableReference ( join_operator selectFromTableReference joinConstraint?
-// //if no constraint, assume TRUE (can use that to throw an error) )*; colRef: USING BSTART_
-// IDENTIFIER (COMMA_ IDENTIFIER)* BEND_
 
 //the clause is allowed to be an entire join condition *but*
 joinSpecification:
@@ -226,6 +288,8 @@ primaryExpression:
 	| string					# stringLiteral
 	| BSTART_ expression BEND_	# parenthesizedExpression;
 
+booleanValue: TRUE | FALSE;
+
 number
 	locals[dt:SingularDataType=SingularDataType.INTEGER]:
 	DECIMAL_VALUE {$dt = SingularDataType.DECIMAL}	# decimalLiteral
@@ -237,67 +301,15 @@ string:
 	// not sure what to do with unicode yet
 	| UNICODE_STRING (UESCAPE STRING)? # unicodeStringLiteral;
 
-booleanValue: TRUE | FALSE;
-
-/* IMPORT STATEMENT
- */
-
-importStmt: IMPORT overDefinition (AS IDENTIFIER)?;
-
-// $.^ AS upperDir
-
-/* OUTPUT STATEMENT
- */
-
-outputStmt: OUTPUT attribute namedOutput? OVERWRITE?;
-
-fileOutputStmt:
-	WRITE definition (TO FILE?)? TYPE? fileType STRING OVERWRITE?;
-
-// note that THOR output is default
-fileType
-	locals[fileOutputType:FileOutputType=FileOutputType.THOR]:
-	CSV {$fileOutputType=FileOutputType.CSV}
-	| JSON {$fileOutputType=FileOutputType.JSON}
-	| THOR?
-	| XML {$fileOutputType=FileOutputType.XML};
-attribute: definition | BSTART_ selectStmt BEND_ | literal;
-namedOutput: (TITLE)? IDENTIFIER;
-// toFile: (FILE)? STRING (OVERWRITE)?;
-
-/* PLOT STATEMENT
- */
-plotStmt:
-	{$program::needPlots=true} PLOT FROM? fromdef = definition (
-		TITLE
-	)? title = IDENTIFIER (TYPE)? typePlot = IDENTIFIER;
-
-// /* MODULE STATEMENT */
-
-// /* ML STATEMENT SAME AS v0 */ mlStmt: train | predict | elementaryML;
-
-// // This is a standard get model operation train: TRAIN FROM ind = definition COMMA_ dep =
-// definition ( COMMA_ test = definition )? METHOD method = IDENTIFIER (OPTION trainOptions)?;
-
-// // This variant of ML is useful in DBScan where a separate model isnt trained elementaryML:
-// PREDICT FROM ind = definition (COMMA_ ind2 = definition)? METHOD method = IDENTIFIER ( OPTION
-// trainOptions )?;
-
-// trainOptions: (trainOption) ( COMMA_ trainOption)*;
-
-// trainOption: IDENTIFIER EQ trainValue;
-
-// // TAG put expr trainValue: number | string | definition;
-
-// predict: PREDICT model = definition FROM ind = definition ( METHOD method = IDENTIFIER )?;
-
 scope
 	locals[variableVisibility:VariableVisibility = VariableVisibility.DEFAULT]:
-	EXPORT {$variableVisibility = VariableVisibility.EXPORT,$definitionStmt::willWrapModule=true}
-	| SHARED {$variableVisibility = VariableVisibility.SHARED,$definitionStmt::willWrapModule=true}
+	EXPORT {$variableVisibility = VariableVisibility.EXPORT,$definitionStmt::willWrapModule=true
+			}
+	| SHARED {$variableVisibility = VariableVisibility.SHARED,$definitionStmt::willWrapModule=true
+			}
 	|;
 
-// this is the declarations file
+//****************************************Parser Rules for definitions******************************************/
 declarations: (declaration SEMICOLON)* EOF;
 declaration:
 	DECLARE IDENTIFIER AS? TABLE BSTART_ colDefs BEND_		# tableDeclaration
@@ -308,7 +320,7 @@ colDef: dataType IDENTIFIER;
 
 //****************************************Lexer Rules******************************************/
 
-// comments -> channel 2, ws -> channel 1 main -> channel 0
+// comments -> channel 2, ws -> channel 1, main -> channel 0
 
 ///Data Types  ******* Further 
 

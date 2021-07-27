@@ -66,6 +66,19 @@ import { ModuleStmtContext } from "./HSQLParser";
 import { LayoutStmtContext } from "./HSQLParser";
 import { LayoutContentContext } from "./HSQLParser";
 import { ActionStmtContext } from "./HSQLParser";
+import { ImportStmtContext } from "./HSQLParser";
+import { OutputStmtContext } from "./HSQLParser";
+import { FileOutputStmtContext } from "./HSQLParser";
+import { FileTypeContext } from "./HSQLParser";
+import { AttributeContext } from "./HSQLParser";
+import { NamedOutputContext } from "./HSQLParser";
+import { PlotStmtContext } from "./HSQLParser";
+import { MlStmtContext } from "./HSQLParser";
+import { TrainContext } from "./HSQLParser";
+import { TrainAddOrderSegmentContext } from "./HSQLParser";
+import { TrainOptionsContext } from "./HSQLParser";
+import { TrainOptionContext } from "./HSQLParser";
+import { TrainValueContext } from "./HSQLParser";
 import { SelectStmtContext } from "./HSQLParser";
 import { DistributeByClauseContext } from "./HSQLParser";
 import { DistinctClauseContext } from "./HSQLParser";
@@ -104,16 +117,9 @@ import { PredicateContext } from "./HSQLParser";
 import { ValueExpressionListContext } from "./HSQLParser";
 import { ValueExpressionContext } from "./HSQLParser";
 import { PrimaryExpressionContext } from "./HSQLParser";
+import { BooleanValueContext } from "./HSQLParser";
 import { NumberContext } from "./HSQLParser";
 import { StringContext } from "./HSQLParser";
-import { BooleanValueContext } from "./HSQLParser";
-import { ImportStmtContext } from "./HSQLParser";
-import { OutputStmtContext } from "./HSQLParser";
-import { FileOutputStmtContext } from "./HSQLParser";
-import { FileTypeContext } from "./HSQLParser";
-import { AttributeContext } from "./HSQLParser";
-import { NamedOutputContext } from "./HSQLParser";
-import { PlotStmtContext } from "./HSQLParser";
 import { ScopeContext } from "./HSQLParser";
 import { DeclarationsContext } from "./HSQLParser";
 import { DeclarationContext } from "./HSQLParser";
@@ -530,6 +536,97 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	visitActionStmt?: (ctx: ActionStmtContext) => Result;
 
 	/**
+	 * Visit a parse tree produced by `HSQLParser.importStmt`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitImportStmt?: (ctx: ImportStmtContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.outputStmt`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitOutputStmt?: (ctx: OutputStmtContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.fileOutputStmt`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitFileOutputStmt?: (ctx: FileOutputStmtContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.fileType`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitFileType?: (ctx: FileTypeContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.attribute`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitAttribute?: (ctx: AttributeContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.namedOutput`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitNamedOutput?: (ctx: NamedOutputContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.plotStmt`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitPlotStmt?: (ctx: PlotStmtContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.mlStmt`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitMlStmt?: (ctx: MlStmtContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.train`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitTrain?: (ctx: TrainContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.trainAddOrderSegment`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitTrainAddOrderSegment?: (ctx: TrainAddOrderSegmentContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.trainOptions`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitTrainOptions?: (ctx: TrainOptionsContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.trainOption`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitTrainOption?: (ctx: TrainOptionContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.trainValue`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitTrainValue?: (ctx: TrainValueContext) => Result;
+
+	/**
 	 * Visit a parse tree produced by `HSQLParser.selectStmt`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -796,6 +893,13 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	visitPrimaryExpression?: (ctx: PrimaryExpressionContext) => Result;
 
 	/**
+	 * Visit a parse tree produced by `HSQLParser.booleanValue`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitBooleanValue?: (ctx: BooleanValueContext) => Result;
+
+	/**
 	 * Visit a parse tree produced by `HSQLParser.number`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -808,62 +912,6 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitString?: (ctx: StringContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.booleanValue`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitBooleanValue?: (ctx: BooleanValueContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.importStmt`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitImportStmt?: (ctx: ImportStmtContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.outputStmt`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitOutputStmt?: (ctx: OutputStmtContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.fileOutputStmt`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitFileOutputStmt?: (ctx: FileOutputStmtContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.fileType`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitFileType?: (ctx: FileTypeContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.attribute`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitAttribute?: (ctx: AttributeContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.namedOutput`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitNamedOutput?: (ctx: NamedOutputContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `HSQLParser.plotStmt`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitPlotStmt?: (ctx: PlotStmtContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `HSQLParser.scope`.
