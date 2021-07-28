@@ -12,6 +12,7 @@ import {
     TableDeclarationContext,
 } from '../../../misc/grammar/HSQLParser';
 import { HSQLVisitor } from '../../../misc/grammar/HSQLVisitor';
+import { getLiteralStringText } from '../../../misc/lib/formatting';
 // import { HSQLVisitor } from '../../../lib';
 import { ASTGenerator } from '../ASTGenerator';
 import { ColDefsASTGenerator } from './ColDefASTGenerator';
@@ -61,7 +62,8 @@ export class DeclarationGeneration
 
     visitPlotDeclaration(ctx: PlotDeclarationContext) {
         // put escapes into consideration, and strip out the first and last quote
-        const templateExpression = ctx.STRING().text.replace(/\\'/g, "'").slice(1, -1);
+        // const templateExpression = ctx.STRING().text.replace(/\\'/g, "'").slice(1, -1);
+        const templateExpression = getLiteralStringText(ctx.STRING());
         this.parent.variableManager.addVisualizationDeclaration(
             ctx.IDENTIFIER().text,
 

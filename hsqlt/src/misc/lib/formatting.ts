@@ -4,6 +4,7 @@
  * @module
  */
 
+import { TerminalNode } from 'antlr4ts/tree';
 import { ErrorSeverity } from '../../managers/ErrorManager';
 
 /**
@@ -39,4 +40,13 @@ export function issueFormatter(
     str1?: string
 ) {
     return `${mapIssue(issueType)}(${str1 ?? '-'}:${num1 ?? '-'}:${num2 ?? '-'}):${reason}`;
+}
+
+/**
+ * Extract the insides of a string that is in the format of 'xyz' from a parse tree noe
+ * @param x Terminal Node (String, usually)
+ * @returns
+ */
+export function getLiteralStringText(x: TerminalNode) {
+    return x.text.replace(/\\'/g, "'").slice(1, -1);
 }
