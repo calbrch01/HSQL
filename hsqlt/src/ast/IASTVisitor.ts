@@ -14,8 +14,12 @@ import { Plot } from './stmt/Plot';
 import { Select } from './stmt/Select';
 import { SelectData } from './stmt/SelectData';
 import { SelectJoin } from './stmt/SelectJoin';
+import { Train } from './stmt/Train';
 import { Write } from './stmt/Write';
 
+/**
+ * An abstract class which provisions some of the basics of a visitor.
+ */
 export abstract class AbstractASTVisitor<T> {
     abstract defaultResult(): T;
     abstract reducer(total: T, current: T): T;
@@ -72,4 +76,6 @@ export interface IASTVisitor<T> {
     visitFunction?: (x: CreateFunction) => T;
 
     visitFunctionCall?: (x: FunctionCall) => T;
+
+    visitTrain?: (x: Train) => T;
 }
