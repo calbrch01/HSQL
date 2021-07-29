@@ -22,7 +22,7 @@ END;
 -- create function yz () begin
 --     return b;
 -- END;
--- output b;
+output b;
 
 
 -- b1 =z.k;

@@ -84,7 +84,7 @@
             "name": "comment.block"
         },
         "keywords": {
-            "match": "(?i)(select|from|on|as|plot|import|output|title|train|predict|group|by|order|join|declare|title|type|where|distribute|write|to|create|module|layout|function)\\b",
+            "match": "(?i)(select|from|on|as|plot|import|output|title|train|predict|group|by|order|join|declare|title|type|where|distribute|write|to|create|module|layout|function|begin|end)\\b",
             "name": "keyword.other"
         },
         "strings": {
