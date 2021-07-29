@@ -47,6 +47,8 @@ import { LogicalBinaryContext } from "./HSQLParser";
 import { TableDeclarationContext } from "./HSQLParser";
 import { LayoutDeclarationContext } from "./HSQLParser";
 import { PlotDeclarationContext } from "./HSQLParser";
+import { TrainDeclarationContext } from "./HSQLParser";
+import { OneShotTrainDeclarationContext } from "./HSQLParser";
 import { NormalIdentifierContext } from "./HSQLParser";
 import { RootIdentifierContext } from "./HSQLParser";
 import { ParentIdentifierContext } from "./HSQLParser";
@@ -123,6 +125,11 @@ import { StringContext } from "./HSQLParser";
 import { ScopeContext } from "./HSQLParser";
 import { DeclarationsContext } from "./HSQLParser";
 import { DeclarationContext } from "./HSQLParser";
+import { DeclarationModelOptionsContext } from "./HSQLParser";
+import { ModelImportSegmentContext } from "./HSQLParser";
+import { DeclarationModeOptionContext } from "./HSQLParser";
+import { DeclarationModelTypeContext } from "./HSQLParser";
+import { ModelReturnSegmentContext } from "./HSQLParser";
 import { ColDefsContext } from "./HSQLParser";
 import { ColDefContext } from "./HSQLParser";
 
@@ -398,6 +405,22 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitPlotDeclaration?: (ctx: PlotDeclarationContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `trainDeclaration`
+	 * labeled alternative in `HSQLParser.declaration`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitTrainDeclaration?: (ctx: TrainDeclarationContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `oneShotTrainDeclaration`
+	 * labeled alternative in `HSQLParser.declaration`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitOneShotTrainDeclaration?: (ctx: OneShotTrainDeclarationContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by the `normalIdentifier`
@@ -933,6 +956,41 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitDeclaration?: (ctx: DeclarationContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.declarationModelOptions`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitDeclarationModelOptions?: (ctx: DeclarationModelOptionsContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.modelImportSegment`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitModelImportSegment?: (ctx: ModelImportSegmentContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.declarationModeOption`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitDeclarationModeOption?: (ctx: DeclarationModeOptionContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.declarationModelType`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitDeclarationModelType?: (ctx: DeclarationModelTypeContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.modelReturnSegment`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitModelReturnSegment?: (ctx: ModelReturnSegmentContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `HSQLParser.colDefs`.

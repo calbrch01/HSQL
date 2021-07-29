@@ -22,7 +22,10 @@ import { ColDefsASTGenerator } from './ColDefASTGenerator';
 /**
  * Generate an AST for declaration definitions
  */
-export class DeclarationGeneration extends AbstractParseTreeVisitor<VEOMaybe> implements HSQLVisitor<VEOMaybe> {
+export class DeclarationGeneration
+    extends AbstractParseTreeVisitor<{ dt: DataType } | null>
+    implements HSQLVisitor<{ dt: DataType } | null>
+{
     protected colDefsASTGenerator: ColDefsASTGenerator;
     protected defaultResult(): null {
         return null;

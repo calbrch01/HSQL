@@ -314,7 +314,31 @@ declarations: (declaration SEMICOLON)* EOF;
 declaration:
 	DECLARE IDENTIFIER AS? TABLE BSTART_ colDefs BEND_		# tableDeclaration
 	| DECLARE IDENTIFIER AS? LAYOUT BSTART_ colDefs BEND_	# layoutDeclaration
-	| DECLARE IDENTIFIER AS? PLOT ON STRING					# plotDeclaration;
+	| DECLARE IDENTIFIER AS? PLOT ON STRING					# plotDeclaration
+	| DECLARE IDENTIFIER AS? TRAIN STRING declarationModelType declarationModelOptions
+		modelReturnSegment WHERE STRING modelReturnSegment modelImportSegment # trainDeclaration
+	| DECLARE IDENTIFIER AS? PREDICT STRING declarationModelType declarationModelOptions
+		modelReturnSegment # oneShotTrainDeclaration;
+
+declarationModelOptions:
+	WHERE BSTART_ declarationModeOption (
+		COMMA_ declarationModeOption
+	)* BEND_
+	|;
+
+modelImportSegment: IMPORT definition ( COMMA_ definition)* |;
+
+declarationModeOption: IDENTIFIER AS dataType;
+declarationModelType
+	locals[declarationIsReal:boolean=false]:
+	INTEGER_TYPE
+	| REAL_TYPE {$declarationIsReal=true}
+	|;
+
+modelReturnSegment:
+	RETURN TABLE BSTART_ colDefs BEND_
+	| RETURN ANYTABLE;
+
 colDefs: colDef (COMMA_ colDef)*;
 colDef: dataType IDENTIFIER;
 
@@ -345,6 +369,7 @@ UNSTABLE: U N STABLE;
 STABLE: S T A B L E;
 
 // Alter
+ANYTABLE: A N Y TABLE;
 TABLE: T A B L E;
 ALTER: A L T E R;
 TO: T O;
