@@ -10,6 +10,14 @@ declare LinearRegression as TRAIN '' USING (minpts as int,) MAKING '' WITH? (...
 declare Bar as PLOT  ON '';
 ```
 
+## ML
+```
+declare LR as TRAIN 'BUILDER STRING' REAL WHERE (minpts as int) WHERE 'MAKER STRING' RETURN TABLE() IMPORT LinearRegression;
+
+declare LR as TRAIN 'BUILDER STRING' INT WHERE 'MAKER STRING' RETURN TABLE() IMPORT LinearRegression;
+
+```
+
 ## TRAIN
 
 

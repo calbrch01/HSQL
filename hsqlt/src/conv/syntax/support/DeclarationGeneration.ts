@@ -10,8 +10,10 @@ import {
     LayoutDeclarationContext,
     PlotDeclarationContext,
     TableDeclarationContext,
+    TrainDeclarationContext,
 } from '../../../misc/grammar/HSQLParser';
 import { HSQLVisitor } from '../../../misc/grammar/HSQLVisitor';
+import { VEOMaybe } from '../../../misc/holders/VEO';
 import { getLiteralStringText } from '../../../misc/lib/formatting';
 // import { HSQLVisitor } from '../../../lib';
 import { ASTGenerator } from '../ASTGenerator';
@@ -20,13 +22,10 @@ import { ColDefsASTGenerator } from './ColDefASTGenerator';
 /**
  * Generate an AST for declaration definitions
  */
-export class DeclarationGeneration
-    extends AbstractParseTreeVisitor<readonly [string, DataType] | undefined>
-    implements HSQLVisitor<readonly [string, DataType] | undefined>
-{
+export class DeclarationGeneration extends AbstractParseTreeVisitor<VEOMaybe> implements HSQLVisitor<VEOMaybe> {
     protected colDefsASTGenerator: ColDefsASTGenerator;
-    protected defaultResult(): undefined {
-        return undefined;
+    protected defaultResult(): null {
+        return null;
     }
     constructor(protected parent: ASTGenerator) {
         super();
@@ -44,7 +43,7 @@ export class DeclarationGeneration
         this.parent.variableManager.add(text, DataMetaData(table, VariableVisibility.EXPORT));
 
         // this.parent.variableManager.add()
-        return undefined;
+        return null;
     }
 
     visitLayoutDeclaration(ctx: LayoutDeclarationContext) {
@@ -57,7 +56,7 @@ export class DeclarationGeneration
         this.parent.variableManager.add(text, DataMetaData(layout, VariableVisibility.EXPORT));
 
         // this.parent.variableManager.add()
-        return undefined;
+        return null;
     }
 
     visitPlotDeclaration(ctx: PlotDeclarationContext) {
@@ -69,6 +68,11 @@ export class DeclarationGeneration
 
             DataVisualization(templateExpression, true)
         );
-        return undefined;
+        return null;
+    }
+
+    visitTrainDeclaration(ctx: TrainDeclarationContext) {
+        const strings = ctx.STRING().map(e => getLiteralStringText(e));
+        return null;
     }
 }
