@@ -16,7 +16,7 @@ describe('FunctionArgumentCollector', function () {
         const em = ErrorManager.normal;
         const facv = new FunctionArgumentCollectorVisitor({ errorManager: em });
         facv.visit(tree);
-        assert.strictEqual(facv.argMap.size, 3);
+        assert.lengthOf(facv.argMap, 3);
         // void 0;
     });
 });

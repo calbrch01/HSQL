@@ -315,10 +315,11 @@ declaration:
 	DECLARE IDENTIFIER AS? TABLE BSTART_ colDefs BEND_		# tableDeclaration
 	| DECLARE IDENTIFIER AS? LAYOUT BSTART_ colDefs BEND_	# layoutDeclaration
 	| DECLARE IDENTIFIER AS? PLOT ON STRING					# plotDeclaration
-	| DECLARE IDENTIFIER AS? TRAIN STRING declarationModelType declarationModelOptions
-		modelReturnSegment WHERE STRING modelReturnSegment modelImportSegment # trainDeclaration
-	| DECLARE IDENTIFIER AS? PREDICT STRING declarationModelType declarationModelOptions
-		modelReturnSegment # oneShotTrainDeclaration;
+	| DECLARE IDENTIFIER AS? TRAIN STRING declarationModelType declarationModelOptions RETURN
+		tableDeclarationSegment WHERE STRING RETURN tableDeclarationSegment modelImportSegment #
+		trainDeclaration
+	| DECLARE IDENTIFIER AS? PREDICT STRING declarationModelType declarationModelOptions RETURN
+		tableDeclarationSegment # oneShotTrainDeclaration;
 
 declarationModelOptions:
 	WHERE BSTART_ declarationModeOption (
@@ -335,9 +336,9 @@ declarationModelType
 	| REAL_TYPE {$declarationIsReal=true}
 	|;
 
-modelReturnSegment:
-	RETURN TABLE BSTART_ colDefs BEND_
-	| RETURN ANYTABLE;
+tableDeclarationSegment:
+	TABLE BSTART_ colDefs BEND_	# fixedTableDeclaration
+	| ANYTABLE					# anyTableDeclaration;
 
 colDefs: colDef (COMMA_ colDef)*;
 colDef: dataType IDENTIFIER;

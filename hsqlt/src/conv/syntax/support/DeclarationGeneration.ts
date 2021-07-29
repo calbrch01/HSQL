@@ -2,14 +2,18 @@ import { AbstractParseTreeVisitor } from 'antlr4ts/tree';
 import { DataType } from '../../../ast/data/base/DataType';
 import { Col } from '../../../ast/data/Col';
 import { Layout } from '../../../ast/data/Layout';
-import { Table } from '../../../ast/data/Table';
+import { AnyTable, Table } from '../../../ast/data/Table';
 import { DataMetaData, DataVisualization } from '../../../ast/symbol/VariableTable';
 import { VariableVisibility } from '../../../misc/ast/VariableVisibility';
 import {
+    AnyTableDeclarationContext,
     ColDefContext,
+    FixedTableDeclarationContext,
     LayoutDeclarationContext,
+    LayoutStmtContext,
     PlotDeclarationContext,
     TableDeclarationContext,
+    TableDeclarationSegmentContext,
     TrainDeclarationContext,
 } from '../../../misc/grammar/HSQLParser';
 import { HSQLVisitor } from '../../../misc/grammar/HSQLVisitor';
@@ -77,5 +81,22 @@ export class DeclarationGeneration
     visitTrainDeclaration(ctx: TrainDeclarationContext) {
         const strings = ctx.STRING().map(e => getLiteralStringText(e));
         return null;
+    }
+
+    visitFixedTableDeclaration(ctx: FixedTableDeclarationContext) {
+        const entries = this.colDefsASTGenerator.visit(ctx.colDefs());
+
+        const dt: Table = new Table(new Map(entries));
+        return { dt };
+    }
+    visitAnyTableDeclaration(ctx: AnyTableDeclarationContext) {
+        return { dt: new AnyTable() };
+    }
+
+    visitLayoutStmt(ctx: LayoutStmtContext) {
+        const entries = this.colDefsASTGenerator.visit(ctx.layoutContent());
+
+        const dt: Table = new Table(new Map(entries));
+        return { dt };
     }
 }

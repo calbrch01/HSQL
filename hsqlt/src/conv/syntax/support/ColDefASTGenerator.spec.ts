@@ -22,4 +22,19 @@ describe('Column Definition', function () {
             ['b', new Col(SingularDataType.STRING)],
         ] as ColTuple[]);
     });
+    it('can work with layouts', async function () {
+        const charStreams = CharStreams.fromString('integer a,string b');
+        const lexer = new HSQLLexer(charStreams);
+        const tokenStreams = new CommonTokenStream(lexer);
+        const parser = new HSQLParser(tokenStreams);
+        const tree = parser.layoutContent();
+
+        const visitor = new ColDefsASTGenerator();
+        const res = visitor.visit(tree);
+        // console.debug(res);
+        assert.deepEqual(res, [
+            ['a', new Col(SingularDataType.INTEGER)],
+            ['b', new Col(SingularDataType.STRING)],
+        ] as ColTuple[]);
+    });
 });

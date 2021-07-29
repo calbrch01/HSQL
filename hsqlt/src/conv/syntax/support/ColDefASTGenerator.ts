@@ -7,8 +7,8 @@ import { ASTGenerator } from '../ASTGenerator';
 
 export type ColTuple = readonly [string, Col];
 /**
- * A commonly used AST Generation for column definitions
- * Use {@link getColDefs} instead
+ * A commonly used AST Generation for column definitions.
+ * Usage: Ask to visit any set of nodes whose children are colDefs
  */
 export class ColDefsASTGenerator extends AbstractParseTreeVisitor<ColTuple[]> implements HSQLVisitor<ColTuple[]> {
     protected defaultResult(): ColTuple[] {

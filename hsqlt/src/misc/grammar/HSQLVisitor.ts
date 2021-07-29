@@ -41,6 +41,8 @@ import { NumericLiteralContext } from "./HSQLParser";
 import { BooleanLiteralContext } from "./HSQLParser";
 import { StringLiteralContext } from "./HSQLParser";
 import { ParenthesizedExpressionContext } from "./HSQLParser";
+import { FixedTableDeclarationContext } from "./HSQLParser";
+import { AnyTableDeclarationContext } from "./HSQLParser";
 import { PredicatedContext } from "./HSQLParser";
 import { LogicalNotContext } from "./HSQLParser";
 import { LogicalBinaryContext } from "./HSQLParser";
@@ -129,7 +131,7 @@ import { DeclarationModelOptionsContext } from "./HSQLParser";
 import { ModelImportSegmentContext } from "./HSQLParser";
 import { DeclarationModeOptionContext } from "./HSQLParser";
 import { DeclarationModelTypeContext } from "./HSQLParser";
-import { ModelReturnSegmentContext } from "./HSQLParser";
+import { TableDeclarationSegmentContext } from "./HSQLParser";
 import { ColDefsContext } from "./HSQLParser";
 import { ColDefContext } from "./HSQLParser";
 
@@ -357,6 +359,22 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitParenthesizedExpression?: (ctx: ParenthesizedExpressionContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `fixedTableDeclaration`
+	 * labeled alternative in `HSQLParser.tableDeclarationSegment`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitFixedTableDeclaration?: (ctx: FixedTableDeclarationContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `anyTableDeclaration`
+	 * labeled alternative in `HSQLParser.tableDeclarationSegment`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitAnyTableDeclaration?: (ctx: AnyTableDeclarationContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by the `predicated`
@@ -986,11 +1004,11 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	visitDeclarationModelType?: (ctx: DeclarationModelTypeContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by `HSQLParser.modelReturnSegment`.
+	 * Visit a parse tree produced by `HSQLParser.tableDeclarationSegment`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	visitModelReturnSegment?: (ctx: ModelReturnSegmentContext) => Result;
+	visitTableDeclarationSegment?: (ctx: TableDeclarationSegmentContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `HSQLParser.colDefs`.
