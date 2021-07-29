@@ -125,7 +125,7 @@ train:
 		trainAddOrderSegment OPTION? trainOptions;
 
 // 
-trainAddOrderSegment: ADD ORDER;
+trainAddOrderSegment: ADD ORDER |;
 // // This variant of ML is useful in DBScan where a separate model isnt trained elementaryML:
 // PREDICT FROM ind = definition (COMMA_ ind2 = definition)? METHOD method = IDENTIFIER ( OPTION
 // trainOptions )?;

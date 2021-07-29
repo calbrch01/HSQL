@@ -238,7 +238,8 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
             if (x.fargs.length === stmt.length) {
                 // TODO 25/07 check function arguments
                 x.fargs.forEach(([_, dataType], i) => {
-                    if (!isAny(dataType.dataType) && !stmt[i].datatype.isExactType(dataType.dataType)) {
+                    const isArgAsNeeded = stmt[i].datatype.isExactType(dataType.dataType);
+                    if (!isAny(dataType.dataType) && !isArgAsNeeded) {
                         const attr = ctx.functionCallArgs().attribute(i);
                         this.errorManager.push(
                             TranslationIssue.semanticErrorToken(format(rs.functionArgMismatchError, attr.text), attr)

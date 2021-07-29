@@ -11,12 +11,17 @@ import { Col } from './Col';
  * Table
  */
 export class Table extends CollectionType {
+    private cols: Map<string, Col>;
     /**
      *
      * @param cols Columns to contain
      */
-    constructor(private cols: Map<string, Col> = new Map()) {
+    constructor(_cols: Map<string, Col> = new Map()) {
         super(EDataType.TABLE);
+        this.cols = new Map();
+        _cols.forEach((v, k) => {
+            this.cols.set(k.toLowerCase(), v);
+        });
     }
 
     /**
@@ -89,9 +94,12 @@ export class Table extends CollectionType {
             // their lengths are the same, so if every lhs = rhs, then every rhs = lhs
             for (const [lhsName, lhsVar] of this.cols) {
                 const rhsVar = t.get(lhsName);
-                if (rhsVar === undefined) return false;
-                else {
-                    if (!lhsVar.isExactType(rhsVar)) return false;
+                if (rhsVar === undefined) {
+                    return false;
+                } else {
+                    if (!lhsVar.isExactType(rhsVar)) {
+                        return false;
+                    }
                 }
             }
             return true;
