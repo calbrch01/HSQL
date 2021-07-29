@@ -47,9 +47,9 @@ functionCall: definition BSTART_ functionCallArgs BEND_;
 functionCallArgs: attribute (COMMA_ attribute)* |;
 
 functionStmt:
-	CREATE FUNCTION fname = IDENTIFIER BSTART_ functionArgs BEND_ CURLY_BSTART_ (
+	CREATE FUNCTION fname = IDENTIFIER BSTART_ functionArgs BEND_ BEGIN (
 		definitionStmt SEMICOLON
-	)* returnStmt SEMICOLON CURLY_BEND_;
+	)* returnStmt SEMICOLON END;
 
 returnStmt: RETURN definition;
 
@@ -61,7 +61,7 @@ functionArg:
 
 // todo 21/07 moduleStmt: MODULE /* BEGIN END */;
 
-moduleStmt: MODULE BSTART_ (definitionStmt SEMICOLON)* BEND_;
+moduleStmt: MODULE BEGIN (definitionStmt SEMICOLON)* END;
 
 layoutStmt: LAYOUT BSTART_ layoutContent BEND_;
 
@@ -482,6 +482,11 @@ IN: I N;
 BETWEEN: B E T W E E N;
 EXISTS: E X I S T S;
 
+// grouping statements
+BEGIN: B E G I N;
+END: E N D;
+
+// data literals
 STRING: '\'' ( '\\\'' | ~'\'' | '\'\'')* '\'';
 
 UNICODE_STRING: 'U&\'' ( ~'\'' | '\'\'')* '\'';

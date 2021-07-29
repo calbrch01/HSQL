@@ -11,21 +11,18 @@
 
 -- -- -- y = ;
 -- -- -- r = 5;
--- -- b = 5;
+b = 5;
 
 -- y = create layout(int x,int y);
 
--- z = create module (
---     export k = 5;
---     export ab = 6;
--- );
-
--- create function yz (layout a.l1 x, int y){
-
---     xy = x;
---     ab = select * from x where c1>y;
---     return ab;
--- };
+z = create module BEGIN
+    export k = 5;
+    export ab = 6;
+END;
+-- create function yz () begin
+--     return b;
+-- END;
+-- output b;
 
 
 -- b1 =z.k;
@@ -38,7 +35,7 @@
 -- output c;
 -- output d;
 
-x = train from x,y,z method xyz ADD ORDER ;
+-- x = train from x,y,z method xyz ADD ORDER ;
 
 // step 0 -> code completion -> snippets
 -- write q to file TYPE csv '~ts';
