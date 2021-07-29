@@ -92,7 +92,7 @@
             "name": "string"
         },
         "singleQuotedString": {
-            "match": "'([^\\']|\\.)*'",
+            "match": "'([^\\']|(\\'))*'",
             "name": "string"
         }
     }

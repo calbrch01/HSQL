@@ -36,6 +36,7 @@ export default {
 
     didNotOutput: 'Did not make outputs because of issues',
     emptyCode: 'Empty code generation',
+    emptyAST: 'Empty AST Generation. This is likely from another syntax error',
     noActions: 'No actions or export in program',
     exportActionIncompatErrors: 'No actions can be used if shared or export is used',
     includeStackEmptyError: 'Include Stack cannot be empty -> must contain atleast current filename',

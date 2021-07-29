@@ -1,6 +1,6 @@
 import { ParserRuleContext } from 'antlr4ts';
 import { IASTVisitor } from '../IASTVisitor';
-import { DataVisualization } from '../symbol/VariableTable';
+import { DataVisualization } from '../../misc/ast/DataVisualization';
 import { StmtExpression } from './base/StmtExpression';
 
 export class Plot implements StmtExpression {

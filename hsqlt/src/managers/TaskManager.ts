@@ -17,7 +17,7 @@ import { FileType } from '../misc/file/FileType';
 import { FileHandler } from '../misc/file/FileHandler';
 import { FileProvider } from '../misc/file/FileProvider';
 import { FSManager } from './FSManager';
-import { DataVisualization } from '../ast/symbol/VariableTable';
+import { DataVisualization } from '../misc/ast/DataVisualization';
 import { VariableVisibility } from '../misc/ast/VariableVisibility';
 import { join, relative } from 'path';
 

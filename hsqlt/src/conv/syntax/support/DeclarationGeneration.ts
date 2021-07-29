@@ -1,9 +1,12 @@
 import { AbstractParseTreeVisitor } from 'antlr4ts/tree';
+import format from 'string-template';
 import { DataType } from '../../../ast/data/base/DataType';
 import { Col } from '../../../ast/data/Col';
 import { Layout } from '../../../ast/data/Layout';
 import { AnyTable, Table } from '../../../ast/data/Table';
-import { DataMetaData, DataVisualization } from '../../../ast/symbol/VariableTable';
+import { DataMetaData } from '../../../ast/symbol/VariableTable';
+import { DataVisualization } from '../../../misc/ast/DataVisualization';
+import { TranslationIssue } from '../../../managers/ErrorManager';
 import { VariableVisibility } from '../../../misc/ast/VariableVisibility';
 import {
     AnyTableDeclarationContext,
@@ -19,6 +22,7 @@ import {
 import { HSQLVisitor } from '../../../misc/grammar/HSQLVisitor';
 import { VEOMaybe } from '../../../misc/holders/VEO';
 import { getLiteralStringText } from '../../../misc/lib/formatting';
+import resultStrings from '../../../misc/strings/resultStrings';
 // import { HSQLVisitor } from '../../../lib';
 import { ASTGenerator } from '../ASTGenerator';
 import { ColDefsASTGenerator } from './ColDefASTGenerator';
@@ -79,7 +83,21 @@ export class DeclarationGeneration
     }
 
     visitTrainDeclaration(ctx: TrainDeclarationContext) {
-        const strings = ctx.STRING().map(e => getLiteralStringText(e));
+        const [trainStmtFormat, predictStmtFormat] = ctx.STRING().map(e => getLiteralStringText(e));
+        const { declarationIsReal: isReal } = ctx.declarationModelType();
+        const [modelReturnTable, predictReturnTable] = ctx.tableDeclarationSegment().map(e => {
+            const childRes = e.accept(this);
+            if (childRes === null) {
+                return this.parent.errorManager.halt(
+                    TranslationIssue.semanticErrorToken(
+                        format(resultStrings.unexpectedErrorTagged, resultStrings.emptyAST),
+                        e
+                    )
+                );
+            } else {
+                return childRes.dt;
+            }
+        });
         return null;
     }
 

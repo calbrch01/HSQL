@@ -316,8 +316,8 @@ declaration:
 	| DECLARE IDENTIFIER AS? LAYOUT BSTART_ colDefs BEND_	# layoutDeclaration
 	| DECLARE IDENTIFIER AS? PLOT ON STRING					# plotDeclaration
 	| DECLARE IDENTIFIER AS? TRAIN STRING declarationModelType declarationModelOptions RETURN
-		tableDeclarationSegment WHERE STRING RETURN tableDeclarationSegment modelImportSegment #
-		trainDeclaration
+		tableDeclarationSegment WHERE STRING RETURN tableDeclarationSegment modelImportSegment //hi
+	# trainDeclaration
 	| DECLARE IDENTIFIER AS? PREDICT STRING declarationModelType declarationModelOptions RETURN
 		tableDeclarationSegment # oneShotTrainDeclaration;
 
@@ -487,7 +487,7 @@ BEGIN: B E G I N;
 END: E N D;
 
 // data literals
-STRING: '\'' ( '\\\'' | ~'\'' | '\'\'')* '\'';
+STRING: '\'' ( '\\\'' | ~'\'' /* | '\'\'' */)* '\'';
 
 UNICODE_STRING: 'U&\'' ( ~'\'' | '\'\'')* '\'';
 
