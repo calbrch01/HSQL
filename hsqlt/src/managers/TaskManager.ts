@@ -20,6 +20,7 @@ import { FSManager } from './FSManager';
 import { DataVisualization } from '../misc/ast/DataVisualization';
 import { VariableVisibility } from '../misc/ast/VariableVisibility';
 import { join, relative } from 'path';
+import { TrainVar } from '../misc/ast/TrainType';
 
 /**
  * Manage Tasks - Generate ASTs, Resolve vars
@@ -281,7 +282,7 @@ export class TaskManager {
         alias: QualifiedIdentifier | undefined,
         includes: string[],
         cause?: ImportStmtContext | ProgramContext
-    ): { output: Module; viz: Map<string, DataVisualization> } {
+    ): { output: Module; viz: Map<string, DataVisualization>; trains: Map<string, TrainVar> } {
         // const fsl = q.qidentifier;
 
         this.args.g && console.log(`DIRNAME`, __dirname);
@@ -299,7 +300,7 @@ export class TaskManager {
             const vars = ast.variableManager.vars[0];
             if (vars === undefined) {
                 // This should not be happening, but we can be careful and return empty
-                return { output: new AnyModule(), viz: new Map() };
+                return { output: new AnyModule(), viz: new Map(), trains: new Map() };
             }
             const rows = [...vars]
                 .filter(([_name, entry]) => entry.vis === VariableVisibility.EXPORT && entry.internal === false)
@@ -310,14 +311,22 @@ export class TaskManager {
                 .filter(([_, entry]) => entry.exported === true)
                 .map(([name, entry]) => {
                     entry.exported = false;
+                    // set the source as the importing variable name
                     entry.source = alias?.toString() ?? q.tail;
                     return [name, entry] as const;
                 });
-
-            return { output: new Module(new Map(rows)), viz: new Map(vizMaps) };
+            const trainMaps = [...ast.variableManager.trainDeclarations]
+                .filter(([_, entry]) => entry.exported === true)
+                .map(([name, entry]) => {
+                    entry.exported = true;
+                    // if source is not entered, put self
+                    entry.source ??= alias?.toString() ?? q.tail;
+                    return [name, entry] as const;
+                });
+            return { output: new Module(new Map(rows)), viz: new Map(vizMaps), trains: new Map(trainMaps) };
         }
 
-        return { output: new AnyModule(), viz: new Map() };
+        return { output: new AnyModule(), viz: new Map(), trains: new Map() };
     }
 
     // getters and setters from here

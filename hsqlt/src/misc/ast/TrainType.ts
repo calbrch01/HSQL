@@ -17,6 +17,7 @@ export type TrainVar =
           exported: boolean;
           declarationOpts: Map<string, DataType>;
           importList: QualifiedIdentifier[];
+          source?: string;
       }
     | {
           type: TrainVarType.ONESHOT;
@@ -25,4 +26,5 @@ export type TrainVar =
           exported: boolean;
           declarationOpts: Map<string, DataType>;
           importList: QualifiedIdentifier[];
+          source?: string;
       };
