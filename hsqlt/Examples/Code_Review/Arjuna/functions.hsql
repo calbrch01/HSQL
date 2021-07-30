@@ -8,10 +8,10 @@ ds = select * from '~hsql::W3SQL.csv' type CSV LAYOUT rec limit 85 offset 1;
 
 
 
-create function isInCountry(layout rec x,string y){
+create function isInCountry(layout rec x,string y) BEGIN
     z = select * from x where country=y order by customerid desc;
     return z;
-};
+END;
 
 inMexico = isInCountry(ds,'Mexico');
 inSpain = isInCountry(ds,'Spain');
