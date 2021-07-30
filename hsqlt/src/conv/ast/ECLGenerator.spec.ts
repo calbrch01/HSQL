@@ -5,12 +5,17 @@ import { ErrorSeverity } from '../../managers/ErrorManager';
 import { FSFileProvider, MemFileProvider } from '../../misc/file/FileProvider';
 import { FileType } from '../../misc/file/FileType';
 
+// Note that this test uses a.dhsql from the root folder
 describe('ECL Generation', function () {
     it('Simple Generation', async () => {
         const opm = new MapOutput();
         const tm = new TaskManager('mod.hsql', false, opm);
         tm.addFileProviders(
-            new MemFileProvider(new Map([['mod.hsql', { content: 'import a;', type: FileType.HSQL }]]), true)
+            new MemFileProvider(
+                new Map([['mod.hsql', { content: 'import a;output a.t1;', type: FileType.HSQL }]]),
+                true
+            ),
+            new FSFileProvider(undefined, true, false)
         );
         const { ast } = tm.generateAST();
         // const eclgenerator = new ECLGen(tm.errorManager);
@@ -20,7 +25,7 @@ describe('ECL Generation', function () {
             0,
             'There should have been no errors'
         );
-        assert.strictEqual(opm.fileMap.get('mod.ecl'), `IMPORT a;`);
+        assert.strictEqual(opm.fileMap.get('mod.ecl'), `IMPORT a;\nOUTPUT(a.t1);`);
 
         // console.log(`opm`, opm);
     });
@@ -28,7 +33,11 @@ describe('ECL Generation', function () {
         const opm = new MapOutput();
         const tm = new TaskManager('mod.hsql', false, opm);
         tm.addFileProviders(
-            new MemFileProvider(new Map([['mod.hsql', { content: 'import a as bcd;', type: FileType.HSQL }]]), true)
+            new MemFileProvider(
+                new Map([['mod.hsql', { content: 'import a as bcd;output bcd.t1;', type: FileType.HSQL }]]),
+                true
+            ),
+            new FSFileProvider(undefined, true, false)
         );
 
         const { ast } = tm.generateAST();
@@ -39,7 +48,7 @@ describe('ECL Generation', function () {
             0,
             'There should have been no errors'
         );
-        assert.strictEqual(opm.fileMap.get('mod.ecl'), `IMPORT abc as bcd;`);
+        assert.strictEqual(opm.fileMap.get('mod.ecl'), `IMPORT a as bcd;\nOUTPUT(bcd.t1);`);
         // console.log(`opm`, opm);
     });
     it('generation for assignment', async () => {
@@ -47,9 +56,10 @@ describe('ECL Generation', function () {
         const tm = new TaskManager('mod.hsql', false, opm);
         tm.addFileProviders(
             new MemFileProvider(
-                new Map([['mod.hsql', { content: 'import a as bcd;ab=bcd.t1;', type: FileType.HSQL }]]),
+                new Map([['mod.hsql', { content: 'import a as bcd;ab=bcd.t1;output ab;', type: FileType.HSQL }]]),
                 true
-            )
+            ),
+            new FSFileProvider(undefined, true, false)
         );
 
         const { ast } = tm.generateAST();
@@ -60,7 +70,7 @@ describe('ECL Generation', function () {
             0,
             'There should have been no errors'
         );
-        assert.strictEqual(opm.fileMap.get('mod.ecl'), `IMPORT a as bcd;\nab := bcd.t1;`);
+        assert.strictEqual(opm.fileMap.get('mod.ecl'), `IMPORT a as bcd;\nab := bcd.t1;\nOUTPUT(ab);`);
     });
     describe('generation for select', function () {
         it('basic selects');
