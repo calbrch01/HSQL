@@ -344,13 +344,11 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
     }
 
     visitFileOutputStmt(ctx: FileOutputStmtContext) {
-        const fileOutputVisitor = new WriteASTGenerator(this);
-        return fileOutputVisitor.visit(ctx);
+        return new WriteASTGenerator(this).visit(ctx);
     }
 
     visitOutputStmt(ctx: OutputStmtContext) {
-        const outputVisitor = new OutputASTGenerator(this);
-        return outputVisitor.visit(ctx); //new VEO();
+        return new OutputASTGenerator(this).visit(ctx);
     }
 
     visitModuleStmt(ctx: ModuleStmtContext) {

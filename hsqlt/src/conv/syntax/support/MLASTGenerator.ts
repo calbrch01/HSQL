@@ -59,7 +59,7 @@ export class MLASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implement
             this.errorManager.push(TranslationIssue.semanticErrorToken(format(rs.notFound, [templateSource])));
             // there is no way to generate this statement, yank it.
             // this is an action - so it should be fine, hopefully
-            return null;
+            return new VEO(new AnyTable(), new Train(ctx, indDef[1], depDef[1], false, ''));
         }
 
         const stmt = new Train(ctx, indDef[1], depDef[1], visSource.isDiscrete, visSource.makeTemplate);
