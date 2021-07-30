@@ -88,7 +88,7 @@ export class DeclarationGeneration
 
     visitTrainDeclaration(ctx: TrainDeclarationContext) {
         const [trainStmtFormat, predictStmtFormat] = ctx.STRING().map(e => getLiteralStringText(e));
-        const { declarationIsReal: isReal } = ctx.declarationModelType();
+        const { willDiscrete } = ctx.declarationModelType();
 
         const [modelReturnTable, predictReturnTable] = ctx.tableDeclarationSegment().map(e => {
             const childRes = e.accept(this);
@@ -140,6 +140,7 @@ export class DeclarationGeneration
         const trainVar: TrainVar = {
             type: TrainVarType.DEFAULT,
             exported: true,
+            isDiscrete: willDiscrete,
             makeTemplate: trainStmtFormat,
             makeResult: modelReturnTable,
             predictTemplate: predictStmtFormat,

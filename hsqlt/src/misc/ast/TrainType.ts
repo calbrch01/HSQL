@@ -17,6 +17,7 @@ export type TrainVar =
           exported: boolean;
           declarationOpts: Map<string, DataType>;
           importList: QualifiedIdentifier[];
+          isDiscrete: boolean;
           source?: string;
       }
     | {
@@ -26,5 +27,6 @@ export type TrainVar =
           exported: boolean;
           declarationOpts: Map<string, DataType>;
           importList: QualifiedIdentifier[];
+          isDiscrete: boolean;
           source?: string;
       };

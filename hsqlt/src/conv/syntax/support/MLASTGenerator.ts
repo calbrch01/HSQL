@@ -8,6 +8,7 @@ import { BaseASTNode } from '../../../ast/stmt/base/BaseASTNode';
 import { Train } from '../../../ast/stmt/Train';
 import { VariableTable } from '../../../ast/symbol/VariableTable';
 import { ErrorManager, TranslationIssue } from '../../../managers/ErrorManager';
+import { TrainVarType } from '../../../misc/ast/TrainType';
 import { TrainContext } from '../../../misc/grammar/HSQLParser';
 import { HSQLVisitor } from '../../../misc/grammar/HSQLVisitor';
 import { pullVEO, VEO, VEOMaybe } from '../../../misc/holders/VEO';
@@ -54,14 +55,14 @@ export class MLASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implement
         const templateSource = ctx.IDENTIFIER().text;
         const visSource = this.variableTable.getTrainDeclaration(templateSource);
 
-        if (visSource === undefined) {
+        if (visSource === undefined || visSource.type === TrainVarType.ONESHOT) {
             this.errorManager.push(TranslationIssue.semanticErrorToken(format(rs.notFound, [templateSource])));
             // there is no way to generate this statement, yank it.
             // this is an action - so it should be fine, hopefully
             return null;
         }
 
-        const stmt = new Train(ctx, indDef[1], depDef[1], true, visSource.makeTemplate);
+        const stmt = new Train(ctx, indDef[1], depDef[1], visSource.isDiscrete, visSource.makeTemplate);
         return new VEO(visSource.makeResult, stmt); //new VEO(visSource.);
     }
 }

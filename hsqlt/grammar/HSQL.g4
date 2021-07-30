@@ -332,9 +332,9 @@ modelImportSegment: IMPORT definition ( COMMA_ definition)* |;
 
 declarationModelOption: IDENTIFIER AS dataType;
 declarationModelType
-	locals[declarationIsReal:boolean=false]:
-	INTEGER_TYPE
-	| REAL_TYPE {$declarationIsReal=true}
+	locals[willDiscrete:boolean=false]:
+	INTEGER_TYPE {$willDiscrete=true}
+	| REAL_TYPE
 	|;
 
 tableDeclarationSegment:
