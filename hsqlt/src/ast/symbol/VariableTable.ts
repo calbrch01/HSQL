@@ -93,6 +93,11 @@ export class VariableTable {
         return this._visualizationDeclarations.get(s);
     }
 
+    getTrainDeclaration(s: string) {
+        s = s.toLowerCase();
+        return this._trainDeclarations.get(s);
+    }
+
     /**
      * Avoid using this
      */

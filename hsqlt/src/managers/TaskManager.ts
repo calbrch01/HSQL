@@ -19,7 +19,6 @@ import { FileProvider } from '../misc/file/FileProvider';
 import { FSManager } from './FSManager';
 import { DataVisualization } from '../misc/ast/DataVisualization';
 import { VariableVisibility } from '../misc/ast/VariableVisibility';
-import { join, relative } from 'path';
 import { TrainVar } from '../misc/ast/TrainType';
 
 /**

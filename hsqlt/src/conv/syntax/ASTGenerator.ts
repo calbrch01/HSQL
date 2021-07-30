@@ -26,6 +26,7 @@ import {
     ImportStmtContext,
     LayoutStmtContext,
     LiteralContext,
+    MlStmtContext,
     ModuleStmtContext,
     OutputStmtContext,
     PlotStmtContext,
@@ -54,6 +55,7 @@ import { isDataType } from '../../ast/data/base/typechecks/isDataType';
 import { Table } from '../../ast/data/Table';
 import { isAny } from '../../ast/data/base/typechecks/isAny';
 import { FunctionCall } from '../../ast/stmt/FunctionCall';
+import { MLASTGenerator } from './support/MLASTGenerator';
 
 /**
  * Generate an AST.
@@ -379,6 +381,10 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
             const stmt = new CreateModule(ctx, innerValues);
             return new VEO(dt, stmt);
         });
+    }
+
+    visitMlStmt(ctx: MlStmtContext) {
+        return new MLASTGenerator(this).visit(ctx);
     }
 
     visitSelectStmt(ctx: SelectStmtContext) {

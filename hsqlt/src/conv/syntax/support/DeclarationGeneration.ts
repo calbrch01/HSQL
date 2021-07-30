@@ -1,7 +1,6 @@
 import { AbstractParseTreeVisitor } from 'antlr4ts/tree';
 import format from 'string-template';
 import { DataType, EDataType } from '../../../ast/data/base/DataType';
-import { Col } from '../../../ast/data/Col';
 import { Layout } from '../../../ast/data/Layout';
 import { AnyTable, Table } from '../../../ast/data/Table';
 import { DataMetaData } from '../../../ast/symbol/VariableTable';
@@ -20,10 +19,8 @@ import {
     TrainDeclarationContext,
 } from '../../../misc/grammar/HSQLParser';
 import { HSQLVisitor } from '../../../misc/grammar/HSQLVisitor';
-import { VEOMaybe } from '../../../misc/holders/VEO';
 import { getLiteralStringText } from '../../../misc/lib/formatting';
-import resultStrings from '../../../misc/strings/resultStrings';
-// import { HSQLVisitor } from '../../../lib';
+import rs from '../../../misc/strings/resultStrings';
 import { ASTGenerator } from '../ASTGenerator';
 import { ColDefsASTGenerator } from './ColDefASTGenerator';
 import { Singular } from '../../../ast/data/Singular';
@@ -85,9 +82,7 @@ export class DeclarationGeneration
             DataVisualization(templateExpression, true)
         );
         if (res === false)
-            this.parent.errorManager.push(
-                TranslationIssue.semanticErrorToken(format(resultStrings.existsError, plotName), ctx)
-            );
+            this.parent.errorManager.push(TranslationIssue.semanticErrorToken(format(rs.existsError, plotName), ctx));
         return null;
     }
 
@@ -100,10 +95,7 @@ export class DeclarationGeneration
             // it should never be null, this might be caused by some syntax error.
             if (childRes === null || !isDataType(childRes.dt, EDataType.TABLE, true)) {
                 return this.parent.errorManager.halt(
-                    TranslationIssue.semanticErrorToken(
-                        format(resultStrings.unexpectedErrorTagged, resultStrings.emptyAST),
-                        e
-                    )
+                    TranslationIssue.semanticErrorToken(format(rs.unexpectedErrorTagged, rs.emptyAST), e)
                 );
             } else {
                 return childRes.dt;
@@ -118,9 +110,7 @@ export class DeclarationGeneration
                 const { text: name } = e.IDENTIFIER();
                 const nameLower = name.toLowerCase();
                 if (trainOptions.has(nameLower)) {
-                    this.parent.errorManager.push(
-                        TranslationIssue.semanticErrorToken(format(resultStrings.existsError, name), e)
-                    );
+                    this.parent.errorManager.push(TranslationIssue.semanticErrorToken(format(rs.existsError, name), e));
                 }
 
                 trainOptions.set(nameLower, new Singular(dt));
@@ -137,7 +127,7 @@ export class DeclarationGeneration
                 const defStringLowerCase = defString.toLowerCase();
                 if (importList.has(defStringLowerCase)) {
                     this.parent.errorManager.push(
-                        TranslationIssue.semanticErrorToken(format(resultStrings.existsError, defString), e)
+                        TranslationIssue.semanticErrorToken(format(rs.existsError, defString), e)
                     );
                 } else {
                     importList.add(defStringLowerCase);
@@ -161,9 +151,7 @@ export class DeclarationGeneration
         const trainName = ctx.IDENTIFIER().text;
         const res = this.parent.variableManager.addTrainDeclaration(trainName, trainVar);
         if (res === false)
-            this.parent.errorManager.push(
-                TranslationIssue.semanticErrorToken(format(resultStrings.existsError, trainName), ctx)
-            );
+            this.parent.errorManager.push(TranslationIssue.semanticErrorToken(format(rs.existsError, trainName), ctx));
         return null;
     }
 

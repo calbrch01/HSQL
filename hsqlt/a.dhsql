@@ -3,5 +3,5 @@ declare l1 as LAYOUT (integer c1,integer c2);
 declare t2 as TABLE (integer c3,integer c4);
 declare l2 as LAYOUT (integer c3,integer c4);
 
--- declare l3 as train 'TR\''
---  INT WHERE (kak as int) RETURN ANYTABLE WHERE 'p' RETURN ANYTABLE;
+ declare l3 as train 'TR\''
+  INT WHERE (kak as int) RETURN ANYTABLE WHERE 'p' RETURN ANYTABLE;

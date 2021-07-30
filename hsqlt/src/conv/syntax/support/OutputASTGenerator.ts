@@ -2,9 +2,8 @@ import { AbstractParseTreeVisitor } from 'antlr4ts/tree/AbstractParseTreeVisitor
 import format from 'string-template';
 import { Action, ActionType } from '../../../ast/data/Action';
 import { EDataType } from '../../../ast/data/base/DataType';
-import { isDataType } from '../../../ast/data/base/typechecks/isDataType';
 import { isAny } from '../../../ast/data/base/typechecks/isAny';
-import { fileOutputOptionsType, Output } from '../../../ast/stmt/Output';
+import { Output } from '../../../ast/stmt/Output';
 import { ErrorManager, TranslationIssue } from '../../../managers/ErrorManager';
 import { OutputStmtContext } from '../../../misc/grammar/HSQLParser';
 import { HSQLVisitor } from '../../../misc/grammar/HSQLVisitor';
@@ -38,12 +37,6 @@ export class OutputASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
                 )
             );
         }
-        // if (!isDataType(attributeResultDataType, EDataType.TABLE)) {
-        //     const typeInQuestion = attributeResultDataType.type ?? EDataType.ANY;
-        //     this.errorManager.push(
-        //         TranslationIssue.semanticErrorToken(format(rs.cannotUse, [EDataType[typeInQuestion], rs.output]))
-        //     );
-        // }
         const astNode = new Output(ctx, attributeResult.stmt, overwrite, namedOutputLocation);
 
         return new VEO(dt, astNode);

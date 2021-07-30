@@ -64,10 +64,18 @@ export class AST implements BaseASTNode {
         const aliasStr = alias?.toString();
 
         //resolve this import
-        const { output: res, viz } = this.TaskMgr.resolve(name, alias, includes, ctx);
+        const { output: res, viz, trains } = this.TaskMgr.resolve(name, alias, includes, ctx);
 
         viz.forEach((val, key) => {
             const res = this.variableManager.addVisualizationDeclaration(key, val);
+
+            if (!res) {
+                this.TaskMgr.errorManager.push(TranslationIssue.semanticErrorToken(format(rs.existsError, [key]), ctx));
+            }
+        });
+
+        trains.forEach((val, key) => {
+            const res = this.variableManager.addTrainDeclaration(key, val);
 
             if (!res) {
                 this.TaskMgr.errorManager.push(TranslationIssue.semanticErrorToken(format(rs.existsError, [key]), ctx));
