@@ -25,7 +25,7 @@ completestmt: stmt SEMICOLON;
 stmt:
 	definitionStmt {$definitionStmt.ctx.willWrapModule && ($program::willWrapModule = true) 
 		}
-	| {$program::actionCount++;} actionStmt
+	| actionStmt {$program::actionCount++;}
 	| importStmt
 	| functionStmt;
 
@@ -38,18 +38,18 @@ expr:
 	functionCall
 	| definition
 	| actionStmt
-	| createStmt
+	| layoutStmt
+	| moduleStmt
 	| mlStmt;
-// | transformStmt | mlStmt | moduleStmt;
-createStmt: CREATE (layoutStmt | moduleStmt);
+// | transformStmt | mlStmt | moduleStmt; createStmt: layoutStmt | moduleStmt;
 
 functionCall: definition BSTART_ functionCallArgs BEND_;
 functionCallArgs: attribute (COMMA_ attribute)* |;
 
 functionStmt:
-	CREATE FUNCTION fname = IDENTIFIER BSTART_ functionArgs BEND_ BEGIN (
+	FUNCTION fname = IDENTIFIER BSTART_ functionArgs BEND_ CURLY_BSTART_ (
 		definitionStmt SEMICOLON
-	)* returnStmt SEMICOLON END;
+	)* returnStmt SEMICOLON CURLY_BEND_;
 
 returnStmt: RETURN definition;
 
@@ -59,9 +59,10 @@ functionArg:
 	colDef							# functionDefaultArgument
 	| LAYOUT definition IDENTIFIER	# functionLayoutArgument;
 
-// todo 21/07 moduleStmt: MODULE /* BEGIN END */;
+// todo 21/07 moduleStmt: MODULE /* CURLY_BSTART_ CURLY_BEND_ */;
 
-moduleStmt: MODULE BEGIN (definitionStmt SEMICOLON)* END;
+moduleStmt:
+	MODULE CURLY_BSTART_ (definitionStmt SEMICOLON)* CURLY_BEND_;
 
 layoutStmt: LAYOUT BSTART_ layoutContent BEND_;
 
@@ -481,10 +482,6 @@ NOT: N O T;
 IN: I N;
 BETWEEN: B E T W E E N;
 EXISTS: E X I S T S;
-
-// grouping statements
-BEGIN: B E G I N;
-END: E N D;
 
 // data literals
 STRING: '\'' ( '\\\'' | ~'\'' /* | '\'\'' */)* '\'';

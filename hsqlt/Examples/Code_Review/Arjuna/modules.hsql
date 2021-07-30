@@ -1,9 +1,10 @@
-z = create module begin
+z = module {
     export k = 5;
     export ab = 6;
     shared ac = 6;
-end;
+};
 
+-- export z;
 output z.k;
 output z.ab;
 --  this below statement would raise an error
