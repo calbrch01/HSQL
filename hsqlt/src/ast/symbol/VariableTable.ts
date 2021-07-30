@@ -50,7 +50,7 @@ export class VariableTable {
     constructor(
         private _vars: Map<string, DataMetaData>[] = [new Map()],
         private _visualizationDeclarations: Map<string, DataVisualization> = new Map(),
-        private _trainDeclaration: Map<string, TrainVar> = new Map()
+        private _trainDeclarations: Map<string, TrainVar> = new Map()
     ) {
         this.actionCounter = 0;
     }
@@ -58,15 +58,18 @@ export class VariableTable {
     get visualizationDeclarations() {
         return this._visualizationDeclarations;
     }
+    public get trainDeclarations(): Map<string, TrainVar> {
+        return this._trainDeclarations;
+    }
 
     // TODO set the correct datatype
     addTrainDeclaration(s: string, y: TrainVar) {
         // console.log('setting', s);
         s = s.toLowerCase();
-        if (this._trainDeclaration.has(s)) {
+        if (this._trainDeclarations.has(s)) {
             return false;
         }
-        this._trainDeclaration.set(s, y);
+        this._trainDeclarations.set(s, y);
         return true;
     }
 
