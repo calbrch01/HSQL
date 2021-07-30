@@ -8,6 +8,7 @@ import { DataType } from '../data/base/DataType';
 import { isCollection } from '../data/base/typechecks/isCollection';
 import { VariableVisibility } from '../../misc/ast/VariableVisibility';
 import { DataVisualization } from '../../misc/ast/DataVisualization';
+import { TrainVar } from '../../misc/ast/TrainType';
 
 export type DataMetaData = {
     data: DataType;
@@ -49,7 +50,7 @@ export class VariableTable {
     constructor(
         private _vars: Map<string, DataMetaData>[] = [new Map()],
         private _visualizationDeclarations: Map<string, DataVisualization> = new Map(),
-        private _trainDeclaration: Map<string, string> = new Map()
+        private _trainDeclaration: Map<string, TrainVar> = new Map()
     ) {
         this.actionCounter = 0;
     }
@@ -59,7 +60,7 @@ export class VariableTable {
     }
 
     // TODO set the correct datatype
-    addTrainDeclaration(s: string, y: string) {
+    addTrainDeclaration(s: string, y: TrainVar) {
         // console.log('setting', s);
         s = s.toLowerCase();
         if (this._trainDeclaration.has(s)) {
@@ -69,6 +70,12 @@ export class VariableTable {
         return true;
     }
 
+    /**
+     * Add a visualization to the variable table
+     * @param s Name
+     * @param y Name
+     * @returns
+     */
     addVisualizationDeclaration(s: string, y: DataVisualization) {
         // console.log('setting', s);
         s = s.toLowerCase();

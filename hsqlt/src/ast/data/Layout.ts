@@ -4,8 +4,17 @@ import { Col } from './Col';
 import { AnyTable, Table } from './Table';
 
 export class Layout extends CollectionType {
-    constructor(private cols: Map<string, Col> = new Map()) {
+    private cols: Map<string, Col>;
+    /**
+     *
+     * @param cols Columns to contain
+     */
+    constructor(_cols: Map<string, Col> = new Map()) {
         super(EDataType.LAYOUT);
+        this.cols = new Map();
+        _cols.forEach((v, k) => {
+            this.cols.set(k.toLowerCase(), v);
+        });
     }
 
     cloneType() {

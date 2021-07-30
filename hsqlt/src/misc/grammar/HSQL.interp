@@ -310,7 +310,7 @@ declarations
 declaration
 declarationModelOptions
 modelImportSegment
-declarationModeOption
+declarationModelOption
 declarationModelType
 tableDeclarationSegment
 colDefs

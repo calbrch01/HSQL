@@ -1,5 +1,6 @@
 import { DataType } from '../../ast/data/base/DataType';
 import { Table } from '../../ast/data/Table';
+import { QualifiedIdentifier } from './QualifiedIdentifier';
 
 export enum TrainVarType {
     DEFAULT,
@@ -11,8 +12,11 @@ export type TrainVar =
           type: TrainVarType.DEFAULT;
           makeTemplate: string;
           makeResult: Table;
+          predictTemplate: string;
+          predictResult: Table;
           exported: boolean;
           declarationOpts: Map<string, DataType>;
+          importList: QualifiedIdentifier[];
       }
     | {
           type: TrainVarType.ONESHOT;
@@ -20,4 +24,5 @@ export type TrainVar =
           makeResult: Table;
           exported: boolean;
           declarationOpts: Map<string, DataType>;
+          importList: QualifiedIdentifier[];
       };

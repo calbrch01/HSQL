@@ -322,14 +322,14 @@ declaration:
 		tableDeclarationSegment # oneShotTrainDeclaration;
 
 declarationModelOptions:
-	WHERE BSTART_ declarationModeOption (
-		COMMA_ declarationModeOption
+	WHERE BSTART_ declarationModelOption (
+		COMMA_ declarationModelOption
 	)* BEND_
 	|;
 
 modelImportSegment: IMPORT definition ( COMMA_ definition)* |;
 
-declarationModeOption: IDENTIFIER AS dataType;
+declarationModelOption: IDENTIFIER AS dataType;
 declarationModelType
 	locals[declarationIsReal:boolean=false]:
 	INTEGER_TYPE

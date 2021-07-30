@@ -228,7 +228,7 @@ export class HSQLParser extends Parser {
 	public static readonly RULE_declaration = 72;
 	public static readonly RULE_declarationModelOptions = 73;
 	public static readonly RULE_modelImportSegment = 74;
-	public static readonly RULE_declarationModeOption = 75;
+	public static readonly RULE_declarationModelOption = 75;
 	public static readonly RULE_declarationModelType = 76;
 	public static readonly RULE_tableDeclarationSegment = 77;
 	public static readonly RULE_colDefs = 78;
@@ -250,7 +250,7 @@ export class HSQLParser extends Parser {
 		"overDefinitionTail", "definition", "expression", "booleanExpression", 
 		"predicate", "valueExpressionList", "valueExpression", "primaryExpression", 
 		"booleanValue", "number", "string", "scope", "declarations", "declaration", 
-		"declarationModelOptions", "modelImportSegment", "declarationModeOption", 
+		"declarationModelOptions", "modelImportSegment", "declarationModelOption", 
 		"declarationModelType", "tableDeclarationSegment", "colDefs", "colDef",
 	];
 
@@ -4000,7 +4000,7 @@ export class HSQLParser extends Parser {
 				this.state = 791;
 				this.match(HSQLParser.BSTART_);
 				this.state = 792;
-				this.declarationModeOption();
+				this.declarationModelOption();
 				this.state = 797;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
@@ -4010,7 +4010,7 @@ export class HSQLParser extends Parser {
 					this.state = 793;
 					this.match(HSQLParser.COMMA_);
 					this.state = 794;
-					this.declarationModeOption();
+					this.declarationModelOption();
 					}
 					}
 					this.state = 799;
@@ -4104,9 +4104,9 @@ export class HSQLParser extends Parser {
 		return _localctx;
 	}
 	// @RuleVersion(0)
-	public declarationModeOption(): DeclarationModeOptionContext {
-		let _localctx: DeclarationModeOptionContext = new DeclarationModeOptionContext(this._ctx, this.state);
-		this.enterRule(_localctx, 150, HSQLParser.RULE_declarationModeOption);
+	public declarationModelOption(): DeclarationModelOptionContext {
+		let _localctx: DeclarationModelOptionContext = new DeclarationModelOptionContext(this._ctx, this.state);
+		this.enterRule(_localctx, 150, HSQLParser.RULE_declarationModelOption);
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
@@ -7326,13 +7326,13 @@ export class OneShotTrainDeclarationContext extends DeclarationContext {
 export class DeclarationModelOptionsContext extends ParserRuleContext {
 	public WHERE(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.WHERE, 0); }
 	public BSTART_(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.BSTART_, 0); }
-	public declarationModeOption(): DeclarationModeOptionContext[];
-	public declarationModeOption(i: number): DeclarationModeOptionContext;
-	public declarationModeOption(i?: number): DeclarationModeOptionContext | DeclarationModeOptionContext[] {
+	public declarationModelOption(): DeclarationModelOptionContext[];
+	public declarationModelOption(i: number): DeclarationModelOptionContext;
+	public declarationModelOption(i?: number): DeclarationModelOptionContext | DeclarationModelOptionContext[] {
 		if (i === undefined) {
-			return this.getRuleContexts(DeclarationModeOptionContext);
+			return this.getRuleContexts(DeclarationModelOptionContext);
 		} else {
-			return this.getRuleContext(i, DeclarationModeOptionContext);
+			return this.getRuleContext(i, DeclarationModelOptionContext);
 		}
 	}
 	public BEND_(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.BEND_, 0); }
@@ -7397,7 +7397,7 @@ export class ModelImportSegmentContext extends ParserRuleContext {
 }
 
 
-export class DeclarationModeOptionContext extends ParserRuleContext {
+export class DeclarationModelOptionContext extends ParserRuleContext {
 	public IDENTIFIER(): TerminalNode { return this.getToken(HSQLParser.IDENTIFIER, 0); }
 	public AS(): TerminalNode { return this.getToken(HSQLParser.AS, 0); }
 	public dataType(): DataTypeContext {
@@ -7407,11 +7407,11 @@ export class DeclarationModeOptionContext extends ParserRuleContext {
 		super(parent, invokingState);
 	}
 	// @Override
-	public get ruleIndex(): number { return HSQLParser.RULE_declarationModeOption; }
+	public get ruleIndex(): number { return HSQLParser.RULE_declarationModelOption; }
 	// @Override
 	public accept<Result>(visitor: HSQLVisitor<Result>): Result {
-		if (visitor.visitDeclarationModeOption) {
-			return visitor.visitDeclarationModeOption(this);
+		if (visitor.visitDeclarationModelOption) {
+			return visitor.visitDeclarationModelOption(this);
 		} else {
 			return visitor.visitChildren(this);
 		}

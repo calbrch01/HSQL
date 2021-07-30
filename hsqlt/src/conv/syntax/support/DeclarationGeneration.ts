@@ -1,6 +1,6 @@
 import { AbstractParseTreeVisitor } from 'antlr4ts/tree';
 import format from 'string-template';
-import { DataType } from '../../../ast/data/base/DataType';
+import { DataType, EDataType } from '../../../ast/data/base/DataType';
 import { Col } from '../../../ast/data/Col';
 import { Layout } from '../../../ast/data/Layout';
 import { AnyTable, Table } from '../../../ast/data/Table';
@@ -26,6 +26,10 @@ import resultStrings from '../../../misc/strings/resultStrings';
 // import { HSQLVisitor } from '../../../lib';
 import { ASTGenerator } from '../ASTGenerator';
 import { ColDefsASTGenerator } from './ColDefASTGenerator';
+import { Singular } from '../../../ast/data/Singular';
+import { TrainVar, TrainVarType } from '../../../misc/ast/TrainType';
+import { isDataType } from '../../../ast/data/base/typechecks/isDataType';
+import { QualifiedIdentifier } from '../../../misc/ast/QualifiedIdentifier';
 
 /**
  * Generate an AST for declaration definitions
@@ -74,20 +78,27 @@ export class DeclarationGeneration
         // put escapes into consideration, and strip out the first and last quote
         // const templateExpression = ctx.STRING().text.replace(/\\'/g, "'").slice(1, -1);
         const templateExpression = getLiteralStringText(ctx.STRING());
-        this.parent.variableManager.addVisualizationDeclaration(
-            ctx.IDENTIFIER().text,
+        const plotName = ctx.IDENTIFIER().text;
+        const res = this.parent.variableManager.addVisualizationDeclaration(
+            plotName,
 
             DataVisualization(templateExpression, true)
         );
+        if (res === false)
+            this.parent.errorManager.push(
+                TranslationIssue.semanticErrorToken(format(resultStrings.existsError, plotName), ctx)
+            );
         return null;
     }
 
     visitTrainDeclaration(ctx: TrainDeclarationContext) {
         const [trainStmtFormat, predictStmtFormat] = ctx.STRING().map(e => getLiteralStringText(e));
         const { declarationIsReal: isReal } = ctx.declarationModelType();
+
         const [modelReturnTable, predictReturnTable] = ctx.tableDeclarationSegment().map(e => {
             const childRes = e.accept(this);
-            if (childRes === null) {
+            // it should never be null, this might be caused by some syntax error.
+            if (childRes === null || !isDataType(childRes.dt, EDataType.TABLE, true)) {
                 return this.parent.errorManager.halt(
                     TranslationIssue.semanticErrorToken(
                         format(resultStrings.unexpectedErrorTagged, resultStrings.emptyAST),
@@ -98,6 +109,61 @@ export class DeclarationGeneration
                 return childRes.dt;
             }
         });
+
+        const trainOptions: Map<string, DataType> = new Map();
+        ctx.declarationModelOptions()
+            .declarationModelOption()
+            .forEach(e => {
+                const { dt } = e.dataType();
+                const { text: name } = e.IDENTIFIER();
+                const nameLower = name.toLowerCase();
+                if (trainOptions.has(nameLower)) {
+                    this.parent.errorManager.push(
+                        TranslationIssue.semanticErrorToken(format(resultStrings.existsError, name), e)
+                    );
+                }
+
+                trainOptions.set(nameLower, new Singular(dt));
+            });
+
+        const importList: Set<string> = new Set();
+
+        const imports = ctx
+            .modelImportSegment()
+            .definition()
+            .map(e => {
+                const definition = QualifiedIdentifier.fromGrammar(e);
+                const defString = definition.toString();
+                const defStringLowerCase = defString.toLowerCase();
+                if (importList.has(defStringLowerCase)) {
+                    this.parent.errorManager.push(
+                        TranslationIssue.semanticErrorToken(format(resultStrings.existsError, defString), e)
+                    );
+                } else {
+                    importList.add(defStringLowerCase);
+                }
+
+                return definition;
+            });
+
+        // wrap into object
+        const trainVar: TrainVar = {
+            type: TrainVarType.DEFAULT,
+            exported: true,
+            makeTemplate: trainStmtFormat,
+            makeResult: modelReturnTable,
+            predictTemplate: predictStmtFormat,
+            predictResult: predictReturnTable,
+            declarationOpts: trainOptions,
+            importList: imports,
+        };
+
+        const trainName = ctx.IDENTIFIER().text;
+        const res = this.parent.variableManager.addTrainDeclaration(trainName, trainVar);
+        if (res === false)
+            this.parent.errorManager.push(
+                TranslationIssue.semanticErrorToken(format(resultStrings.existsError, trainName), ctx)
+            );
         return null;
     }
 
