@@ -317,11 +317,16 @@ declaration:
 	| DECLARE IDENTIFIER AS? LAYOUT BSTART_ colDefs BEND_	# layoutDeclaration
 	| DECLARE IDENTIFIER AS? PLOT ON STRING					# plotDeclaration
 	| DECLARE IDENTIFIER AS? TRAIN STRING declarationModelType declarationModelOptions RETURN
-		tableDeclarationSegment WHERE STRING RETURN tableDeclarationSegment modelImportSegment //hi
+		tableDeclarationSegment WHERE STRING RETURN tableDeclarationSegment modelImportSegment
+		modelUseSegment //hi
 	# trainDeclaration
 	| DECLARE IDENTIFIER AS? PREDICT STRING declarationModelType declarationModelOptions RETURN
-		tableDeclarationSegment # oneShotTrainDeclaration;
+		tableDeclarationSegment modelImportSegment modelUseSegment # oneShotTrainDeclaration;
 
+modelUseSegment
+	locals[useName:string|undefined]:
+	BY definition {$useName=$definition.text}
+	|;
 declarationModelOptions:
 	WHERE BSTART_ declarationModelOption (
 		COMMA_ declarationModelOption

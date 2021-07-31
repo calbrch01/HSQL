@@ -62,6 +62,10 @@ export class MLASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implement
             return new VEO(new AnyTable(), new Train(ctx, indDef[1], depDef[1], false, ''));
         }
 
+        visSource.importList.forEach(e => {
+            this.parent.ensureImport(e);
+        });
+
         const stmt = new Train(ctx, indDef[1], depDef[1], visSource.isDiscrete, visSource.makeTemplate);
         return new VEO(visSource.makeResult, stmt); //new VEO(visSource.);
     }

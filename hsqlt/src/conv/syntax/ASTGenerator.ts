@@ -67,6 +67,7 @@ import { MLASTGenerator } from './support/MLASTGenerator';
  */
 export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements HSQLVisitor<VEOMaybe>, ASTGen {
     protected ast: AST;
+
     public variableManager: VariableTable;
     protected colDefsASTGenerator: ColDefsASTGenerator;
     constructor(
@@ -123,6 +124,16 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
         this.ast.addImport(ctx, importFrom, importAsQID, this.includeStack);
         // NoDataType as the import statement itself does not have a resultant data type
         return new VEO(new NoDataType(), new Import(ctx, importFrom, importAsQID));
+    }
+
+    /**
+     * Ask for an import,
+     * @param ctx
+     */
+    ensureImport(importFrom: QualifiedIdentifier) {
+        if (this.variableManager.resolve(importFrom) !== undefined) {
+            this.ast.addImport(this.rootContext, importFrom, undefined, this.includeStack);
+        }
     }
 
     visitDefinitionStmt(ctx: DefinitionStmtContext) {
@@ -301,6 +312,13 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
         // for the automatic imports
         if (ctx.needPlots) {
             const importFrom = new QualifiedIdentifier('Visualizer');
+            this.ast.addImport(ctx, importFrom, undefined, this.includeStack);
+
+            this.ast.stmts.push(new Import(ctx, importFrom));
+        }
+
+        if (ctx.needML) {
+            const importFrom = new QualifiedIdentifier('ML_Core');
             this.ast.addImport(ctx, importFrom, undefined, this.includeStack);
 
             this.ast.stmts.push(new Import(ctx, importFrom));

@@ -8,7 +8,7 @@ import { ASTGen, ASTGenerator } from '../conv/syntax/ASTGenerator';
 import { HSQLTreeFactory } from '../conv/ParseTreeGenerator';
 import { ICodeGenerator } from '../misc/ast/ICodeGenerator';
 import { QualifiedIdentifier } from '../misc/ast/QualifiedIdentifier';
-import { ImportStmtContext, ProgramContext } from '../misc/grammar/HSQLParser';
+import { DeclarationContext, ImportStmtContext, ProgramContext } from '../misc/grammar/HSQLParser';
 import { issueFormatter } from '../misc/lib/formatting';
 import rs from '../misc/strings/resultStrings';
 import { ErrorManager, ErrorMode, ErrorSeverity, ErrorType, TranslationIssue } from './ErrorManager';
@@ -114,7 +114,7 @@ export class TaskManager {
         fileType?: FileType.DHSQL | FileType.HSQL,
         local: boolean = true,
         includes: string[] = [],
-        cause?: ImportStmtContext | ProgramContext
+        cause?: ImportStmtContext | ProgramContext | DeclarationContext
     ) {
         if (includes.includes(fnNoExt)) {
             this._errorManager.halt(TranslationIssue.semanticErrorToken(rs.importCycleError, cause));
@@ -280,7 +280,7 @@ export class TaskManager {
         q: QualifiedIdentifier,
         alias: QualifiedIdentifier | undefined,
         includes: string[],
-        cause?: ImportStmtContext | ProgramContext
+        cause?: ImportStmtContext | ProgramContext | DeclarationContext
     ): { output: Module; viz: Map<string, DataVisualization>; trains: Map<string, TrainVar> } {
         // const fsl = q.qidentifier;
 
@@ -319,7 +319,7 @@ export class TaskManager {
                 .map(([name, entry]) => {
                     entry.exported = true;
                     // if source is not entered, put self
-                    entry.source ??= alias?.toString() ?? q.tail;
+                    entry.toImport ??= alias?.toString() ?? q.tail;
                     return [name, entry] as const;
                 });
             return { output: new Module(new Map(rows)), viz: new Map(vizMaps), trains: new Map(trainMaps) };

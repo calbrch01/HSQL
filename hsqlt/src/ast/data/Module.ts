@@ -1,3 +1,4 @@
+import { TagStore } from '../../misc/ds/tagstore';
 import { CollectionType } from './base/CollectionType';
 import { DataType, EDataType } from './base/DataType';
 import { isDataType } from './base/typechecks/isDataType';
@@ -10,8 +11,13 @@ export class Module extends CollectionType {
         return this._elems.get(c);
     }
 
-    constructor(elems: Map<string, DataType> = new Map()) {
-        super(EDataType.MODULE);
+    /**
+     *
+     * @param elems Elements
+     * @param tagStore Optional tagstore
+     */
+    constructor(elems: Map<string, DataType> = new Map(), tagStore?: TagStore) {
+        super(EDataType.MODULE, tagStore);
         // for each of these elements, set the map to have similar but non case-
         this._elems = new Map();
         elems.forEach((v, k) => {
@@ -22,7 +28,7 @@ export class Module extends CollectionType {
     cloneType() {
         const cols = [...this._elems];
         const duplicatedColumns: [string, DataType][] = cols.map(([eName, eVar]) => [eName, eVar.cloneType()]);
-        return new Module(new Map(duplicatedColumns));
+        return new Module(new Map(duplicatedColumns), this.tags);
     }
 
     list() {

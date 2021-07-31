@@ -1,3 +1,5 @@
+import { TagStore } from '../../../misc/ds/tagstore';
+
 export enum EDataType {
     ANY,
     MODULE,
@@ -18,6 +20,11 @@ export abstract class DataType {
     // protected abstract _type: EDataType;
 
     protected _anyized: boolean = false;
+    private _tags: TagStore;
+    public get tags(): TagStore {
+        return this._tags;
+    }
+    // public
     public get anyized() {
         return this._anyized;
     }
@@ -25,7 +32,9 @@ export abstract class DataType {
     get type() {
         return this._type;
     }
-    constructor(protected _type: EDataType) {}
+    constructor(protected _type: EDataType, map?: TagStore) {
+        this._tags = map ?? new TagStore();
+    }
     /**
      * Is of similar type (Does not use nesting)
      * @param type

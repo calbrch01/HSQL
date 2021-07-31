@@ -1,6 +1,7 @@
 import { ParserRuleContext } from 'antlr4ts';
 import format from 'string-template';
 import { ErrorManager, TranslationIssue } from '../../managers/ErrorManager';
+import { TagStore } from '../../misc/ds/tagstore';
 import rs from '../../misc/strings/resultStrings';
 import { Any } from './Any';
 import { CollectionType } from './base/CollectionType';
@@ -15,9 +16,10 @@ export class Table extends CollectionType {
     /**
      *
      * @param cols Columns to contain
+     * @param tagStore Optional TagStore
      */
-    constructor(_cols: Map<string, Col> = new Map()) {
-        super(EDataType.TABLE);
+    constructor(_cols: Map<string, Col> = new Map(), tagStore?: TagStore) {
+        super(EDataType.TABLE, tagStore);
         this.cols = new Map();
         _cols.forEach((v, k) => {
             this.cols.set(k.toLowerCase(), v);
@@ -30,7 +32,8 @@ export class Table extends CollectionType {
     cloneType() {
         const cols = this.list();
         const duplicatedColumns: [string, Col][] = cols.map(([eName, eVar]) => [eName, eVar.cloneType()]);
-        return new Table(new Map(duplicatedColumns));
+        // note how we are duplicating the tagstore here
+        return new Table(new Map(duplicatedColumns), this.tags);
     }
     list() {
         return [...this.cols];
@@ -40,9 +43,6 @@ export class Table extends CollectionType {
 
         return this.cols.get(c);
     }
-    // has(C: Col) {
-    //     return this.cols.has(e => e.equals(C)) !== -1;
-    // }
 
     static isTable(x: DataType): x is Table {
         return x.type === EDataType.TABLE;
@@ -85,13 +85,7 @@ export class Table extends CollectionType {
         const myElems = [...this.cols];
         if (Table.isTable(t)) {
             if (t.cols.size !== this.cols.size) return false;
-            //cache col length
-            // const colLength = t.cols.size;
-            // for (let i = 0; i < colLength; ++i) {
-            //     // check all cols are the same
-            //     if (!this.cols[i].isExactType(t.cols[i])) return false;
-
-            // their lengths are the same, so if every lhs = rhs, then every rhs = lhs
+            // go through every column and check if theyre the same
             for (const [lhsName, lhsVar] of this.cols) {
                 const rhsVar = t.get(lhsName);
                 if (rhsVar === undefined) {

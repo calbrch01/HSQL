@@ -7,26 +7,23 @@ export enum TrainVarType {
     ONESHOT,
 }
 
+export type TrainVarDefault = {
+    makeTemplate: string;
+    makeResult: Table;
+    predictTemplate: string;
+    predictResult: Table;
+    /** Whether it is allowed to be used outside or not */
+    exported: boolean;
+    declarationOpts: Map<string, DataType>;
+    importList: QualifiedIdentifier[];
+    isDiscrete: boolean;
+    /** where it should use canonically -> This is what it should import. This will usually become aliased. Undefined means no need to worry about importing some other module. */
+    toImport?: string;
+    /** this is what it can use actually; this is the actual alias point. This will be undefined till the alias gets created due to the train stmt */
+    target?: string;
+};
 export type TrainVar =
-    | {
-          type: TrainVarType.DEFAULT;
-          makeTemplate: string;
-          makeResult: Table;
-          predictTemplate: string;
-          predictResult: Table;
-          exported: boolean;
-          declarationOpts: Map<string, DataType>;
-          importList: QualifiedIdentifier[];
-          isDiscrete: boolean;
-          source?: string;
-      }
-    | {
+    | ({ type: TrainVarType.DEFAULT } & TrainVarDefault)
+    | ({
           type: TrainVarType.ONESHOT;
-          makeTemplate: string;
-          makeResult: Table;
-          exported: boolean;
-          declarationOpts: Map<string, DataType>;
-          importList: QualifiedIdentifier[];
-          isDiscrete: boolean;
-          source?: string;
-      };
+      } & Omit<TrainVarDefault, 'predictTemplate' | 'predictResult'>);

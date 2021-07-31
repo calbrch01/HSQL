@@ -147,6 +147,7 @@ export class DeclarationGeneration
             predictResult: predictReturnTable,
             declarationOpts: trainOptions,
             importList: imports,
+            toImport: undefined,
         };
 
         const trainName = ctx.IDENTIFIER().text;

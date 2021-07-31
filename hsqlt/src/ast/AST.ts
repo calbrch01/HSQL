@@ -3,13 +3,14 @@ import { BaseASTNode } from './stmt/base/BaseASTNode';
 import { DataMetaData, VariableTable } from './symbol/VariableTable';
 import { VariableVisibility } from '../misc/ast/VariableVisibility';
 import { TaskManager } from '../managers/TaskManager';
-import { ImportStmtContext, ProgramContext } from '../misc/grammar/HSQLParser';
+import { DeclarationContext, ImportStmtContext, ProgramContext } from '../misc/grammar/HSQLParser';
 import { IASTVisitor } from './IASTVisitor';
 import { ParserRuleContext } from 'antlr4ts';
 import { TranslationIssue } from '../managers/ErrorManager';
 import rs from '../misc/strings/resultStrings';
 import format from 'string-template';
 import path from 'path';
+import { TagStore } from '../misc/ds/tagstore';
 /**
  * AST root node
  */
@@ -54,7 +55,7 @@ export class AST implements BaseASTNode {
      * @param alias
      */
     addImport(
-        ctx: ImportStmtContext | ProgramContext,
+        ctx: ImportStmtContext | ProgramContext | DeclarationContext,
         name: QualifiedIdentifier,
         alias: QualifiedIdentifier | undefined,
         includes: string[]

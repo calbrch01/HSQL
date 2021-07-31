@@ -126,6 +126,7 @@ import { StringContext } from "./HSQLParser";
 import { ScopeContext } from "./HSQLParser";
 import { DeclarationsContext } from "./HSQLParser";
 import { DeclarationContext } from "./HSQLParser";
+import { ModelUseSegmentContext } from "./HSQLParser";
 import { DeclarationModelOptionsContext } from "./HSQLParser";
 import { ModelImportSegmentContext } from "./HSQLParser";
 import { DeclarationModelOptionContext } from "./HSQLParser";
@@ -966,6 +967,13 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitDeclaration?: (ctx: DeclarationContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.modelUseSegment`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitModelUseSegment?: (ctx: ModelUseSegmentContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `HSQLParser.declarationModelOptions`.
