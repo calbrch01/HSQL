@@ -136,6 +136,18 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
         }
     }
 
+    /**
+     * Add an import and return the new alias for it
+     * @param importFrom the import
+     * @returns the new alias for it
+     */
+    addImportWithAlias(importFrom: QualifiedIdentifier) {
+        const varName = this.variableManager.nextClaimableActionIdentifier();
+        const varId = QualifiedIdentifier.fromString(varName);
+        this.ast.addImport(this.rootContext, importFrom, varId, this.includeStack);
+        return varId;
+    }
+
     visitDefinitionStmt(ctx: DefinitionStmtContext) {
         const lhstext = ctx.IDENTIFIER().text;
         const rhsdata: VEOMaybe<DataType, StmtExpression> = ctx.expr().accept(this);

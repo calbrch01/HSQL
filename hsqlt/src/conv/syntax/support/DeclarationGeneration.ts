@@ -136,6 +136,9 @@ export class DeclarationGeneration
                 return definition;
             });
 
+        const internal = ctx.modelUseSegment().isInternal;
+        const internalName = ctx.modelUseSegment().definition();
+        const internalNameQid = internalName != undefined ? QualifiedIdentifier.fromGrammar(internalName) : undefined;
         // wrap into object
         const trainVar: TrainVar = {
             type: TrainVarType.DEFAULT,
@@ -146,8 +149,9 @@ export class DeclarationGeneration
             predictTemplate: predictStmtFormat,
             predictResult: predictReturnTable,
             declarationOpts: trainOptions,
+            internal,
+            toImport: internalNameQid,
             importList: imports,
-            toImport: undefined,
         };
 
         const trainName = ctx.IDENTIFIER().text;

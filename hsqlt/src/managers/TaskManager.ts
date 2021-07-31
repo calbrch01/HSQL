@@ -319,7 +319,7 @@ export class TaskManager {
                 .map(([name, entry]) => {
                     entry.exported = true;
                     // if source is not entered, put self
-                    entry.toImport ??= alias?.toString() ?? q.tail;
+                    entry.toImport ??= new QualifiedIdentifier(alias?.toString() ?? q.tail);
                     return [name, entry] as const;
                 });
             return { output: new Module(new Map(rows)), viz: new Map(vizMaps), trains: new Map(trainMaps) };

@@ -324,8 +324,8 @@ declaration:
 		tableDeclarationSegment modelImportSegment modelUseSegment # oneShotTrainDeclaration;
 
 modelUseSegment
-	locals[useName:string|undefined]:
-	BY definition {$useName=$definition.text}
+	locals[useName:string|undefined,isInternal:boolean=true]:
+	BY definition {$useName=$definition.text;$isInternal=false}
 	|;
 declarationModelOptions:
 	WHERE BSTART_ declarationModelOption (

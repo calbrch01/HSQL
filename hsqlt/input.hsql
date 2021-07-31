@@ -36,6 +36,8 @@ output a.t1;
 -- output d;
 
 x = train from a.t1,a.t2 method l3 ADD ORDER ;
+y = train from a.t1,a.t2 method l3 ADD ORDER ;
+
 
 // step 0 -> code completion -> snippets
 -- write q to file TYPE csv '~ts';

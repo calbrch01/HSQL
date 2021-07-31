@@ -20,7 +20,7 @@ export type DataMetaData = {
  * Wrap the data in its metadata
  * @param data
  * @param vis
- * @param internal
+ * @param internal Whether internal value that shouldnt be visible to IDEs (false)
  * @returns
  */
 export function DataMetaData(

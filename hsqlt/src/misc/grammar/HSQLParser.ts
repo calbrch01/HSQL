@@ -3964,7 +3964,7 @@ export class HSQLParser extends Parser {
 				this.match(HSQLParser.BY);
 				this.state = 790;
 				_localctx._definition = this.definition();
-				_localctx.useName=(_localctx._definition != null ? this._input.getTextFromRange(_localctx._definition._start, _localctx._definition._stop) : undefined)
+				_localctx.useName = (_localctx._definition != null ? this._input.getTextFromRange(_localctx._definition._start, _localctx._definition._stop) : undefined);_localctx.isInternal=false
 				}
 				break;
 			case HSQLParser.SEMICOLON:
@@ -7324,6 +7324,7 @@ export class OneShotTrainDeclarationContext extends DeclarationContext {
 
 export class ModelUseSegmentContext extends ParserRuleContext {
 	public useName: string|undefined;
+	public isInternal: boolean = true;
 	public _definition!: DefinitionContext;
 	public BY(): TerminalNode | undefined { return this.tryGetToken(HSQLParser.BY, 0); }
 	public definition(): DefinitionContext | undefined {

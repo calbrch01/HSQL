@@ -53,12 +53,14 @@ export class AST implements BaseASTNode {
      * @param ctx
      * @param name
      * @param alias
+     * @param internal whether it is an internal import
      */
     addImport(
         ctx: ImportStmtContext | ProgramContext | DeclarationContext,
         name: QualifiedIdentifier,
         alias: QualifiedIdentifier | undefined,
-        includes: string[]
+        includes: string[],
+        internal: boolean = false
     ) {
         // note that it gets imported as whatever is the tail module
         const nameStr = name.tail;
@@ -83,7 +85,10 @@ export class AST implements BaseASTNode {
             }
         });
 
-        const x = this.variableManager.add(aliasStr ?? nameStr, DataMetaData(res, VariableVisibility.DEFAULT));
+        const x = this.variableManager.add(
+            aliasStr ?? nameStr,
+            DataMetaData(res, VariableVisibility.DEFAULT, internal)
+        );
 
         if (x === false)
             this.TaskMgr.errorManager.push(

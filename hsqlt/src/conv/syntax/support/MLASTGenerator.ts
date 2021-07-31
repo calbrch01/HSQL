@@ -8,6 +8,7 @@ import { BaseASTNode } from '../../../ast/stmt/base/BaseASTNode';
 import { Train } from '../../../ast/stmt/Train';
 import { VariableTable } from '../../../ast/symbol/VariableTable';
 import { ErrorManager, TranslationIssue } from '../../../managers/ErrorManager';
+import { QualifiedIdentifier } from '../../../misc/ast/QualifiedIdentifier';
 import { TrainVarType } from '../../../misc/ast/TrainType';
 import { TrainContext } from '../../../misc/grammar/HSQLParser';
 import { HSQLVisitor } from '../../../misc/grammar/HSQLVisitor';
@@ -58,15 +59,33 @@ export class MLASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implement
         if (visSource === undefined || visSource.type === TrainVarType.ONESHOT) {
             this.errorManager.push(TranslationIssue.semanticErrorToken(format(rs.notFound, [templateSource])));
             // there is no way to generate this statement, yank it.
-            // this is an action - so it should be fine, hopefully
-            return new VEO(new AnyTable(), new Train(ctx, indDef[1], depDef[1], false, ''));
+            // return a bogus empty statement
+            return new VEO(
+                new AnyTable(),
+                new Train(ctx, indDef[1], depDef[1], false, '', new QualifiedIdentifier(''))
+            );
         }
 
         visSource.importList.forEach(e => {
             this.parent.ensureImport(e);
         });
 
-        const stmt = new Train(ctx, indDef[1], depDef[1], visSource.isDiscrete, visSource.makeTemplate);
+        // what does this line do? If there's no imports, it is added in.
+        // if it is not internal, and target is not set, we should try for an import ()
+        // if internal is false (ie it is from another bundle) and it isnt from myself (toImport being false), then set the target by importing it.
+        if (visSource.target === undefined && visSource.toImport !== undefined && visSource.internal === false) {
+            visSource.target = this.parent.addImportWithAlias(visSource.toImport);
+        }
+
+        const stmt = new Train(
+            ctx,
+            indDef[1],
+            depDef[1],
+            visSource.isDiscrete,
+            visSource.makeTemplate,
+            // set the source bundle to either the target which got imported or the toImport
+            visSource.target ?? visSource.toImport
+        );
         return new VEO(visSource.makeResult, stmt); //new VEO(visSource.);
     }
 }
