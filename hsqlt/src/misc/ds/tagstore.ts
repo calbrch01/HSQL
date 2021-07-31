@@ -26,6 +26,15 @@ export class TagStore {
         }
     }
 
+    getString(key: string) {
+        const entry = this.map.get(key);
+        if (typeof entry === 'string') {
+            return entry;
+        } else {
+            return undefined;
+        }
+    }
+
     set(key: string, val: string | number | boolean) {
         this.map.set(key, val);
         return this;

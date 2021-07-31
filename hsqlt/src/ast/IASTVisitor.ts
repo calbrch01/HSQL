@@ -11,6 +11,7 @@ import { Import } from './stmt/Import';
 import { Literal } from './stmt/Literal';
 import { Output } from './stmt/Output';
 import { Plot } from './stmt/Plot';
+import { Predict } from './stmt/Predict';
 import { Select } from './stmt/Select';
 import { SelectData } from './stmt/SelectData';
 import { SelectJoin } from './stmt/SelectJoin';
@@ -78,4 +79,6 @@ export interface IASTVisitor<T> {
     visitFunctionCall?: (x: FunctionCall) => T;
 
     visitTrain?: (x: Train) => T;
+
+    visitPredict?: (x: Predict) => T;
 }

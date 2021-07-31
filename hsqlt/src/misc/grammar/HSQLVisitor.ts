@@ -79,6 +79,7 @@ import { PlotStmtContext } from "./HSQLParser";
 import { MlStmtContext } from "./HSQLParser";
 import { TrainContext } from "./HSQLParser";
 import { TrainAddOrderSegmentContext } from "./HSQLParser";
+import { PredictContext } from "./HSQLParser";
 import { TrainOptionsContext } from "./HSQLParser";
 import { TrainOptionContext } from "./HSQLParser";
 import { TrainValueContext } from "./HSQLParser";
@@ -638,6 +639,13 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitTrainAddOrderSegment?: (ctx: TrainAddOrderSegmentContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.predict`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitPredict?: (ctx: PredictContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `HSQLParser.trainOptions`.

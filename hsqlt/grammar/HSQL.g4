@@ -116,7 +116,8 @@ plotStmt:
 
 // /* ML STATEMENT SAME AS v0 */ 
 mlStmt:
-	{$program::needML=true} train /* | predict | elementaryML */;
+	{$program::needML=true} train
+	| predict /*| elementaryML */;
 
 // train: TRAIN FROM ind = definition COMMA_ dep = definition ( COMMA_ test = definition )? METHOD
 // method = IDENTIFIER trainAddOrderSegment OPTION? trainOptions;
@@ -135,14 +136,14 @@ trainAddOrderSegment
 // PREDICT FROM ind = definition (COMMA_ ind2 = definition)? METHOD method = IDENTIFIER ( OPTION
 // trainOptions )?;
 
+predict:
+	PREDICT model = definition FROM ind = definition METHOD? IDENTIFIER? trainAddOrderSegment;
 trainOptions: trainOption ( COMMA_ trainOption)* |;
 
 trainOption: IDENTIFIER AS trainValue;
 
 // TAG put expr
 trainValue: expr;
-
-// predict: PREDICT model = definition FROM ind = definition ( METHOD method = IDENTIFIER )?;
 
 // SELECT STATEMENT skipping the having for later
 selectStmt:

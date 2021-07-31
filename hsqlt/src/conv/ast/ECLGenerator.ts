@@ -30,6 +30,7 @@ import { FunctionArgumentType } from '../../misc/ast/FunctionArgumentType';
 import { FunctionCall } from '../../ast/stmt/FunctionCall';
 import { Train } from '../../ast/stmt/Train';
 import { AnyTable } from '../../ast/data/Table';
+import { Predict } from '../../ast/stmt/Predict';
 
 /**
  * Semantically, Array is treated as a rest+top fashion -> the array is top to bottom
@@ -77,6 +78,46 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
      */
     reducer(total: ECLCode[], current: ECLCode[]): ECLCode[] {
         return [...total, ...current];
+    }
+
+    visitPredict(x: Predict) {
+        const indepCode = this.visit(x.indepExpr);
+        const [indepCodeTop] = this.getPopped(indepCode, x.node);
+        const modelCode = this.visit(x.modelDef);
+        const [modelCodeTop] = this.getPopped(modelCode, x.node);
+
+        const resultCode: ECLCode[] = [];
+
+        /** the latest result string to be used in the next phase */
+        let finalIndep = indepCodeTop.toString(false);
+
+        // if order clause is specified, push this in
+        if (x.addOrder) {
+            const indepOrder = this.rootContext.variableManager.nextClaimableActionIdentifier();
+            this.rootContext.variableManager.add(
+                indepOrder,
+                DataMetaData(new AnyTable(), VariableVisibility.DEFAULT, true)
+            );
+
+            resultCode.push(new ECLCode(ecl.ml.addCount(finalIndep, indepOrder)));
+            finalIndep = indepOrder;
+        }
+
+        const indepCell = this.rootContext.variableManager.nextClaimableActionIdentifier();
+        this.rootContext.variableManager.add(indepCell, DataMetaData(new AnyTable(), VariableVisibility.DEFAULT, true));
+        // toCell
+        resultCode.push(new ECLCode(ecl.ml.toCell(finalIndep, indepCell)));
+        finalIndep = indepCell;
+
+        const predictStmtTemplated = format(x.predictTemplate, [
+            x.bundleLoc ?? '',
+            // do not put that dot if its already local
+            x.bundleLoc !== undefined ? ecl.commmon.dot : '',
+            finalIndep,
+            modelCodeTop.toString(false),
+        ]);
+        resultCode.push(new ECLCode(predictStmtTemplated));
+        return resultCode;
     }
 
     visitTrain(x: Train) {
@@ -154,7 +195,9 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
             finalDep,
             trainOptions,
         ]);
-        return [...requiredCode, new ECLCode(makeTemplate)];
+
+        requiredCode.push(new ECLCode(makeTemplate));
+        return requiredCode;
     }
 
     visitFunction(x: CreateFunction) {

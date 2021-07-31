@@ -14,7 +14,8 @@ export default {
     colAlreadyExistsError: 'Column {0} does already exists',
     couldNotFindJoinOrderError: 'Join order could not be found. Using standard left to right.',
     noAliasUsingFallbackInfo: 'No {0} alias provided, using {1}',
-
+    mayNotBeModelWarning: '{0} may not be a model',
+    cannotInferModelError: 'Cannot infer model type and none is provided',
     tableSelectionHasAnyWarning: 'Any-ish tables used as sources. Result will be any-ish',
 
     couldNotFindFileError: 'File {0} could not be found/read',
