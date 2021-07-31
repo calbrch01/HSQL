@@ -37,12 +37,14 @@ c = 6;
 p1 = select c1 from a.t1;
 p2 = select c2 from a.t1;
 x = train from p1,p2 method LinearRegression ADD ORDER ;
-y = train from p1,p2 method cf ADD ORDER option maxdepth as 100,numtrees as 1000;
+y = train from p1,p2 method regressionforest ADD ORDER option maxdepth as 100,numtrees as 1000;
 z = predict x from p1 add order;
-output x;
+z2 = predict y from p1 add order;
+-- output x;
 -- output y;
 
 output z;
+output z2;
 
 // step 0 -> code completion -> snippets
 -- write q to file TYPE csv '~ts';
