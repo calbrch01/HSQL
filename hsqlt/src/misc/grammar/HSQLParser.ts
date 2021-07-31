@@ -3688,7 +3688,7 @@ export class HSQLParser extends Parser {
 				{
 				this.state = 712;
 				this.match(HSQLParser.SHARED);
-				_localctx.variableVisibility = VariableVisibility.SHARED,(this.getInvokingContext(3) as DefinitionStmtContext).willWrapModule=true
+				_localctx.variableVisibility = VariableVisibility.DEFAULT,(this.getInvokingContext(3) as DefinitionStmtContext).willWrapModule=true
 							
 				}
 				break;

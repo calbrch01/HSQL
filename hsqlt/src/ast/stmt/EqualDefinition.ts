@@ -5,6 +5,7 @@ import { StmtExpression } from './base/StmtExpression';
 import { ParserRuleContext } from 'antlr4ts';
 import { QualifiedIdentifier } from '../../misc/ast/QualifiedIdentifier';
 import { VariableVisibility } from '../../misc/ast/VariableVisibility';
+import { DataMetaData } from '../symbol/VariableTable';
 
 /**
  * LHS is a data source, RHS is a valued stmt
@@ -15,16 +16,17 @@ export class EqualDefinition<U extends StmtExpression = StmtExpression> implemen
         protected _node: ParserRuleContext,
         protected _lhs: QualifiedIdentifier,
         _rhs: U,
-        private _declType: VariableVisibility
+        private _declInfo: DataMetaData
     ) {
         this.rhs = _rhs;
     }
 
+    // routed set definitions
     public get declType(): VariableVisibility {
-        return this._declType;
+        return this._declInfo.vis;
     }
     public set declType(value: VariableVisibility) {
-        this._declType = value;
+        this._declInfo.vis = value;
     }
     public get node() {
         return this._node;
