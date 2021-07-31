@@ -23,4 +23,13 @@ export default [
             type: FileType.DHSQL,
         },
     ],
-] as const;
+    [
+        'ML_Core.dhsql',
+        {
+            content: `
+            declare linearregression as train '{0}{1}OLS({2},{3}).getModel' REAL WHERE (kak as int) RETURN ANYTABLE WHERE 'p' RETURN TABLE(int wi,int id,int number,real value ) by LinearRegression;
+            `,
+            type: FileType.DHSQL,
+        },
+    ],
+] as [string, { content: string; type: FileType.DHSQL }][];
