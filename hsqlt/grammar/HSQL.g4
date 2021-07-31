@@ -115,7 +115,8 @@ plotStmt:
 // /* MODULE STATEMENT */
 
 // /* ML STATEMENT SAME AS v0 */ 
-mlStmt: train /* | predict | elementaryML */;
+mlStmt:
+	{$program::needML=true} train /* | predict | elementaryML */;
 
 // train: TRAIN FROM ind = definition COMMA_ dep = definition ( COMMA_ test = definition )? METHOD
 // method = IDENTIFIER trainAddOrderSegment OPTION? trainOptions;
@@ -126,7 +127,10 @@ train:
 		trainAddOrderSegment OPTION? trainOptions;
 
 // 
-trainAddOrderSegment: ADD ORDER |;
+trainAddOrderSegment
+	locals[willAddOrder:boolean=false]:
+	ADD ORDER {$willAddOrder=true}
+	|;
 // // This variant of ML is useful in DBScan where a separate model isnt trained elementaryML:
 // PREDICT FROM ind = definition (COMMA_ ind2 = definition)? METHOD method = IDENTIFIER ( OPTION
 // trainOptions )?;
@@ -306,7 +310,7 @@ scope
 	locals[variableVisibility:VariableVisibility = VariableVisibility.DEFAULT]:
 	EXPORT {$variableVisibility = VariableVisibility.EXPORT,$definitionStmt::willWrapModule=true
 			}
-	| SHARED {$variableVisibility = VariableVisibility.SHARED,$definitionStmt::willWrapModule=true
+	| SHARED {$variableVisibility = VariableVisibility.DEFAULT,$definitionStmt::willWrapModule=true
 			}
 	|;
 

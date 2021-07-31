@@ -1,5 +1,4 @@
 import { ParserRuleContext } from 'antlr4ts';
-import { statSync } from 'fs';
 import format from 'string-template';
 import { AST } from '../../ast/AST';
 import { AbstractASTVisitor, IASTVisitor } from '../../ast/IASTVisitor';
@@ -29,6 +28,8 @@ import os from 'os';
 import { CreateFunction } from '../../ast/stmt/CreateFunction';
 import { FunctionArgumentType } from '../../misc/ast/FunctionArgumentType';
 import { FunctionCall } from '../../ast/stmt/FunctionCall';
+import { Train } from '../../ast/stmt/Train';
+import { AnyTable } from '../../ast/data/Table';
 
 /**
  * Semantically, Array is treated as a rest+top fashion -> the array is top to bottom
@@ -76,6 +77,65 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
      */
     reducer(total: ECLCode[], current: ECLCode[]): ECLCode[] {
         return [...total, ...current];
+    }
+
+    visitTrain(x: Train) {
+        const indep = this.visit(x.indep);
+        const [indepTop] = this.getPopped(indep, x.node);
+        const dep = this.visit(x.dep);
+        const [depTop] = this.getPopped(dep, x.node);
+
+        // array for code to go into. Will get destructured for return later.
+        let requiredCode = [...indep, ...dep];
+
+        let finalIndep = indepTop.toString(false),
+            finalDep = depTop.toString(false);
+
+        if (x.addOrder) {
+            const depOrder = this.rootContext.variableManager.nextClaimableActionIdentifier();
+            this.rootContext.variableManager.add(
+                depOrder,
+                DataMetaData(new AnyTable(), VariableVisibility.DEFAULT, true)
+            );
+            const indepOrder = this.rootContext.variableManager.nextClaimableActionIdentifier();
+            this.rootContext.variableManager.add(
+                indepOrder,
+                DataMetaData(new AnyTable(), VariableVisibility.DEFAULT, true)
+            );
+
+            requiredCode.push(new ECLCode(ecl.ml.addCount(finalIndep, indepOrder)));
+            finalIndep = indepOrder;
+            requiredCode.push(new ECLCode(ecl.ml.addCount(finalDep, depOrder)));
+            finalDep = depOrder;
+        }
+        const depCell = this.rootContext.variableManager.nextClaimableActionIdentifier();
+        this.rootContext.variableManager.add(depCell, DataMetaData(new AnyTable(), VariableVisibility.DEFAULT, true));
+        const indepCell = this.rootContext.variableManager.nextClaimableActionIdentifier();
+        this.rootContext.variableManager.add(indepCell, DataMetaData(new AnyTable(), VariableVisibility.DEFAULT, true));
+        // toCell
+        const makeDepCell = new ECLCode(ecl.ml.toCell(finalDep, depCell));
+        const makeinDepCell = new ECLCode(ecl.ml.toCell(finalIndep, indepCell));
+
+        requiredCode.push(makeDepCell, makeinDepCell);
+        finalIndep = indepCell;
+        finalDep = depCell;
+        if (x.requireDiscrete) {
+            const discretizecell = this.rootContext.variableManager.nextClaimableActionIdentifier();
+            this.rootContext.variableManager.add(
+                discretizecell,
+                DataMetaData(new AnyTable(), VariableVisibility.DEFAULT, true)
+            );
+            requiredCode.push(new ECLCode(ecl.ml.toDiscrete(discretizecell, finalDep)));
+            finalDep = discretizecell;
+        }
+        const makeTemplate = format(x.traintemplate, [
+            x.bundleLoc ?? '',
+            // do not put that dot if its already local
+            x.bundleLoc !== undefined ? ecl.commmon.dot : '',
+            finalIndep,
+            finalDep,
+        ]);
+        return [...requiredCode, new ECLCode(makeTemplate)];
     }
 
     visitFunction(x: CreateFunction) {
@@ -404,7 +464,7 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
                 x.node,
                 new QualifiedIdentifier(name),
                 node.stmt,
-                VariableVisibility.DEFAULT
+                DataMetaData(node.datatype, VariableVisibility.DEFAULT)
             );
             const res = eq.accept(this);
             stmtStack.push(...res);

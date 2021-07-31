@@ -15,6 +15,7 @@ export default {
         leftCurlyBracket: '{',
         rightCurlyBracket: '}',
         comma: ',',
+        dot: '.',
         overwrite: 'OVERWRITE',
         end: 'END',
         ds: compile('DATASET({0})'),
@@ -73,4 +74,9 @@ export default {
         [VariableVisibility.EXPORT]: 'EXPORT ',
     },
     exportModule: 'export {0} := MODULE',
+    ml: templateCompiler({
+        toCell: 'ML_core.toField({0},{1})',
+        toDiscrete: '{0} := ML_core.Discretize.byrounding({1})',
+        addCount: 'ML_Core.AppendId({0},__count,{1})',
+    }),
 } as const;

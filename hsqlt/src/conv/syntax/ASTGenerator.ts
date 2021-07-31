@@ -67,7 +67,7 @@ import { MLASTGenerator } from './support/MLASTGenerator';
  */
 export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements HSQLVisitor<VEOMaybe>, ASTGen {
     protected ast: AST;
-
+    private willWrap: boolean;
     public variableManager: VariableTable;
     protected colDefsASTGenerator: ColDefsASTGenerator;
     constructor(
@@ -88,8 +88,8 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
             );
         }
         // if it is a program context, use the property, else false
-        const willWrap = rootContext instanceof ProgramContext ? rootContext.willWrapModule : false;
-        this.ast = new AST(taskManager, rootContext, includeStack[includeStack.length - 1], willWrap);
+        this.willWrap = rootContext instanceof ProgramContext ? rootContext.willWrapModule : false;
+        this.ast = new AST(taskManager, rootContext, includeStack[includeStack.length - 1], this.willWrap);
         this.variableManager = this.ast.variableManager;
     }
     public get errorManager() {
@@ -133,6 +133,7 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
     ensureImport(importFrom: QualifiedIdentifier) {
         if (this.variableManager.resolve(importFrom) !== undefined) {
             this.ast.addImport(this.rootContext, importFrom, undefined, this.includeStack);
+            this.ast.stmts.push(new Import(this.rootContext, importFrom));
         }
     }
 
@@ -145,6 +146,7 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
         const varName = this.variableManager.nextClaimableActionIdentifier();
         const varId = QualifiedIdentifier.fromString(varName);
         this.ast.addImport(this.rootContext, importFrom, varId, this.includeStack);
+        this.ast.stmts.push(new Import(this.rootContext, importFrom, varId));
         return varId;
     }
 
@@ -156,12 +158,12 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
 
         // get variable visibility
         const vis = ctx.scope().variableVisibility;
-
-        const res = this.variableManager.add(lhstext, DataMetaData(x.datatype, vis));
+        const dataEntry = DataMetaData(x.datatype, vis);
+        const res = this.variableManager.add(lhstext, dataEntry);
         if (!res) {
             this.errorManager.push(TranslationIssue.semanticErrorToken(format(rs.existsError, [lhstext]), ctx));
         }
-        const ed = new EqualDefinition(ctx, QualifiedIdentifier.fromString(lhstext), x.stmt, vis);
+        const ed = new EqualDefinition(ctx, QualifiedIdentifier.fromString(lhstext), x.stmt, dataEntry);
         return new VEO(new NoDataType(), ed); //new EqualDefinition(ctx,);
     }
 
@@ -331,9 +333,11 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
 
         if (ctx.needML) {
             const importFrom = new QualifiedIdentifier('ML_Core');
+            const importType = new QualifiedIdentifier('ML_Core', 'Types');
             this.ast.addImport(ctx, importFrom, undefined, this.includeStack);
+            // this.ast.addImport(ctx, importFrom, undefined, this.includeStack);
 
-            this.ast.stmts.push(new Import(ctx, importFrom));
+            this.ast.stmts.push(new Import(ctx, importFrom), new Import(ctx, importType));
         }
 
         const visitedAnswers = visitedChildren.map(e => e.accept(this));
@@ -345,6 +349,11 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
         // console.debug(`importStats`, ctx.needPlots, ctx.needML, ctx.actionCount);
 
         // add the results of the statements
+        if (this.willWrap)
+            this.variableManager.vars[0].forEach(v => {
+                // if default, promote them to shared
+                v.vis === VariableVisibility.DEFAULT && (v.vis = VariableVisibility.SHARED);
+            });
         this.ast.stmts.push(...results.map(e => e.stmt));
         return null;
     }
@@ -392,6 +401,7 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
                 const x = e.accept(this);
                 const y = pullVEO(x, this.errorManager, e);
                 if (y.stmt instanceof EqualDefinition) {
+                    y.stmt.declType === VariableVisibility.DEFAULT && (y.stmt.declType = VariableVisibility.SHARED);
                     return y.stmt;
                 } else {
                     return this.errorManager.halt(TranslationIssue.semanticErrorToken(rs.unexpectedError, e));

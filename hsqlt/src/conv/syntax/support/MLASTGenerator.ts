@@ -62,10 +62,9 @@ export class MLASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implement
             // return a bogus empty statement
             return new VEO(
                 new AnyTable(),
-                new Train(ctx, indDef[1], depDef[1], false, '', new QualifiedIdentifier(''))
+                new Train(ctx, indDef[1], depDef[1], false, '', new QualifiedIdentifier(''), false)
             );
         }
-
         visSource.importList.forEach(e => {
             this.parent.ensureImport(e);
         });
@@ -84,7 +83,8 @@ export class MLASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implement
             visSource.isDiscrete,
             visSource.makeTemplate,
             // set the source bundle to either the target which got imported or the toImport
-            visSource.target ?? visSource.toImport
+            visSource.target ?? visSource.toImport,
+            ctx.trainAddOrderSegment().willAddOrder
         );
         return new VEO(visSource.makeResult, stmt); //new VEO(visSource.);
     }

@@ -43,8 +43,8 @@ export class ECLCode {
      * Bring the code to String
      * @returns The string representation of the code
      */
-    toString() {
-        if (this.insertSemi) return this._code + ';';
+    toString(doSemicolon: boolean = true) {
+        if (this.insertSemi) return this._code + (doSemicolon ? ';' : '');
         else return this._code;
     }
 }
