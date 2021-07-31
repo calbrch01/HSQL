@@ -12,7 +12,7 @@ import {
 import { HSQLVisitor } from '../../../misc/grammar/HSQLVisitor';
 import { ErrorManagerContainer } from '../ASTGenerator';
 import { FunctionArgument, FunctionArgumentType } from '../../../misc/ast/FunctionArgumentType';
-import resultStrings from '../../../misc/strings/resultStrings';
+import rs from '../../../misc/strings/resultStrings';
 import format from 'string-template';
 
 /**
@@ -41,7 +41,7 @@ export class FunctionArgumentCollectorVisitor extends AbstractParseTreeVisitor<v
     visitFunctionDefaultArgument(ctx: FunctionDefaultArgumentContext): void {
         const name = ctx.colDef().IDENTIFIER().text;
         if (this._argSet.has(name)) {
-            this.errorManager.push(TranslationIssue.semanticErrorToken(format(resultStrings.existsError, name), ctx));
+            this.errorManager.push(TranslationIssue.semanticErrorToken(format(rs.existsError, name), ctx));
         } else {
             this._argSet.add(name);
             this._argMap.push([
@@ -58,7 +58,7 @@ export class FunctionArgumentCollectorVisitor extends AbstractParseTreeVisitor<v
         const name = ctx.IDENTIFIER().text;
         const layoutqid = QualifiedIdentifier.fromGrammar(ctx.definition());
         if (this._argSet.has(name)) {
-            this.errorManager.push(TranslationIssue.semanticErrorToken(format(resultStrings.existsError, name), ctx));
+            this.errorManager.push(TranslationIssue.semanticErrorToken(format(rs.existsError, name), ctx));
         } else {
             this._argSet.add(name);
             this._argMap.push([

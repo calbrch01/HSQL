@@ -3,7 +3,7 @@ import { ErrorManager, ErrorSeverity, ErrorType, TranslationIssue } from '../../
 import { execAndGetCode } from '../lib/execAndGetCode';
 import eclcc from '../strings/eclcc';
 import dotenv from 'dotenv';
-import resultStrings from '../strings/resultStrings';
+import rs from '../strings/resultStrings';
 
 export type getMethodsShape = {
     eclLibPath: string[];
@@ -74,11 +74,7 @@ export class ECLClientToolsInterface {
             return stderr + '\n' + stdout;
         } catch (e) {
             this.err.push(
-                TranslationIssue.createIssue(
-                    format(resultStrings.couldNotSubmitError),
-                    ErrorType.SETUP,
-                    ErrorSeverity.WARNING
-                )
+                TranslationIssue.createIssue(format(rs.couldNotSubmitError), ErrorType.SETUP, ErrorSeverity.WARNING)
             );
             return '';
         }

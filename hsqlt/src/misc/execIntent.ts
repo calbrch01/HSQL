@@ -4,7 +4,6 @@ import { EOL } from 'os';
 import rs from './strings/resultStrings';
 import { ErrorSeverity, ErrorType, TranslationIssue } from '../managers/ErrorManager';
 import { ECLClientToolsInterface } from './eclcc/ECLClientToolsInterfacing';
-import resultStrings from './strings/resultStrings';
 import { FileHandler } from './file/FileHandler';
 import { FileType } from './file/FileType';
 
@@ -95,13 +94,13 @@ export class ExecRunIntent implements ExecIntent {
 
                 if (val === undefined) {
                     taskmanager.errorManager.push(
-                        TranslationIssue.generalErrorToken(resultStrings.couldNotMainFileError, ErrorType.IO)
+                        TranslationIssue.generalErrorToken(rs.couldNotMainFileError, ErrorType.IO)
                     );
                 } else {
                     const eclFileName = FileHandler.changeExtension(val, FileType.ECL);
                     const ei = new ECLClientToolsInterface(taskmanager.errorManager);
                     const output = await ei.runOutput(taskmanager.args.t ?? 'thor', eclFileName);
-                    taskmanager.errorManager.push(TranslationIssue.miscInformation(resultStrings.eclccOutput + output));
+                    taskmanager.errorManager.push(TranslationIssue.miscInformation(rs.eclccOutput + output));
                 }
             } catch (e) {}
             // do your work

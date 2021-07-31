@@ -1,13 +1,12 @@
 import path from 'path';
 import format from 'string-template';
-import { AnyModule, Module } from '../ast/data/Module';
 import { QualifiedIdentifier } from '../misc/ast/QualifiedIdentifier';
 import { ECLClientToolsInterface } from '../misc/eclcc/ECLClientToolsInterfacing';
 import { FileHandler } from '../misc/file/FileHandler';
 import { FileProvider, FSFileProvider, MemFileProvider } from '../misc/file/FileProvider';
 import { pathResult } from '../misc/file/pathResult';
 import { FileType, FileTypeLists } from '../misc/file/FileType';
-import resultStrings from '../misc/strings/resultStrings';
+import rs from '../misc/strings/resultStrings';
 import std from '../misc/strings/std';
 import { ErrorManager, ErrorType, TranslationIssue } from './ErrorManager';
 
@@ -131,7 +130,7 @@ export class FSManager {
 
         if (pos === -1) {
             this.errorManager.halt(
-                TranslationIssue.generalErrorToken(format(resultStrings.couldNotFindFileError, strpath), ErrorType.IO)
+                TranslationIssue.generalErrorToken(format(rs.couldNotFindFileError, strpath), ErrorType.IO)
             );
         }
         for (const [type, pathResultVal] of stats) {
@@ -141,10 +140,7 @@ export class FSManager {
                     const readFile = this._fsSets[pos].read(FileHandler.changeExtension(strpath, type));
                     if (readFile === undefined) {
                         return this.errorManager.halt(
-                            TranslationIssue.generalErrorToken(
-                                format(resultStrings.couldNotFindFileError, strpath),
-                                ErrorType.IO
-                            )
+                            TranslationIssue.generalErrorToken(format(rs.couldNotFindFileError, strpath), ErrorType.IO)
                         );
                     }
                     return { content: readFile, realPath: pathResultVal.path, type };
@@ -154,10 +150,7 @@ export class FSManager {
                     const readFile = this._fsSets[pos].read(FileHandler.changeExtension(strpath, type));
                     if (readFile === undefined) {
                         return this.errorManager.halt(
-                            TranslationIssue.generalErrorToken(
-                                format(resultStrings.couldNotFindFileError),
-                                ErrorType.IO
-                            )
+                            TranslationIssue.generalErrorToken(format(rs.couldNotFindFileError), ErrorType.IO)
                         );
                     }
                     return { content: readFile, realPath: pathResultVal.path, type };
@@ -166,7 +159,7 @@ export class FSManager {
         }
         // gone through everything, pls stop
         return this.errorManager.halt(
-            TranslationIssue.generalErrorToken(format(resultStrings.couldNotFindFileError), ErrorType.IO)
+            TranslationIssue.generalErrorToken(format(rs.couldNotFindFileError), ErrorType.IO)
         );
     }
 
