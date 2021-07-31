@@ -10,6 +10,7 @@ import { VariableTable } from '../../../ast/symbol/VariableTable';
 import { ErrorManager, TranslationIssue } from '../../../managers/ErrorManager';
 import { QualifiedIdentifier } from '../../../misc/ast/QualifiedIdentifier';
 import { TrainVarType } from '../../../misc/ast/TrainType';
+import { TagStore } from '../../../misc/ds/tagstore';
 import { TrainContext } from '../../../misc/grammar/HSQLParser';
 import { HSQLVisitor } from '../../../misc/grammar/HSQLVisitor';
 import { pullVEO, VEO, VEOMaybe } from '../../../misc/holders/VEO';
@@ -62,12 +63,38 @@ export class MLASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implement
             // return a bogus empty statement
             return new VEO(
                 new AnyTable(),
-                new Train(ctx, indDef[1], depDef[1], false, '', new QualifiedIdentifier(''), false)
+                new Train(ctx, indDef[1], depDef[1], false, '', new QualifiedIdentifier(''), false, new Map())
             );
         }
         visSource.importList.forEach(e => {
             this.parent.ensureImport(e);
         });
+
+        const args = ctx.trainOptions().trainOption();
+        // first match them and remove dedups
+        const matchedOptions: Map<string, VEO> = new Map();
+        for (const arg of args) {
+            const argName = arg.IDENTIFIER().text.toLowerCase();
+            if (!visSource.declarationOpts.has(argName)) {
+                this.errorManager.push(TranslationIssue.semanticErrorToken(format(rs.notFound, argName), arg));
+            } else if (matchedOptions.has(argName)) {
+                this.errorManager.push(TranslationIssue.semanticErrorToken(format(rs.existsError, argName), arg));
+            } else {
+                // its a valid one and we can go with it
+                const child = this.parent.visit(arg.trainValue());
+                const childVEO = pullVEO(child, this.errorManager, arg);
+
+                const isChildDataTypeCorrect =
+                    visSource.declarationOpts.get(argName)?.isExactType(childVEO.datatype) ?? false;
+                if (!isAny(childVEO.datatype) && !isChildDataTypeCorrect) {
+                    this.errorManager.push(
+                        TranslationIssue.semanticErrorToken(format(rs.functionArgMismatchError, argName), arg)
+                    );
+                }
+                matchedOptions.set(argName, childVEO);
+            }
+            // if(visSource.declarationOpts.has() matchedOptions.has(argName))
+        }
 
         // what does this line do? If there's no imports, it is added in.
         // if it is not internal, and target is not set, we should try for an import ()
@@ -75,6 +102,10 @@ export class MLASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implement
         if (visSource.target === undefined && visSource.toImport !== undefined && visSource.internal === false) {
             visSource.target = this.parent.addImportWithAlias(visSource.toImport);
         }
+
+        //set tags for the table source
+        const modelDataType = visSource.makeResult.cloneType();
+        modelDataType.tags.set(TagStore.trainStore, templateSource);
 
         const stmt = new Train(
             ctx,
@@ -84,8 +115,9 @@ export class MLASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implement
             visSource.makeTemplate,
             // set the source bundle to either the target which got imported or the toImport
             visSource.target ?? visSource.toImport,
-            ctx.trainAddOrderSegment().willAddOrder
+            ctx.trainAddOrderSegment().willAddOrder,
+            matchedOptions
         );
-        return new VEO(visSource.makeResult, stmt); //new VEO(visSource.);
+        return new VEO(modelDataType, stmt); //new VEO(visSource.);
     }
 }

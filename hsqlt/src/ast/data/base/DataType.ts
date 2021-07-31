@@ -21,6 +21,7 @@ export abstract class DataType {
 
     protected _anyized: boolean = false;
     private _tags: TagStore;
+
     public get tags(): TagStore {
         return this._tags;
     }

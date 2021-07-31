@@ -27,7 +27,9 @@ export default [
         'ML_Core.dhsql',
         {
             content: `
-            declare linearregression as train '{0}{1}OLS({2},{3}).getModel' REAL WHERE (kak as int) RETURN ANYTABLE WHERE 'p' RETURN TABLE(int wi,int id,int number,real value ) by LinearRegression;
+            declare linearregression as train '{0}{1}OLS({2},{3}).getModel' REAL RETURN ANYTABLE WHERE 'p' RETURN TABLE(int wi,int id,int number,real value ) by LinearRegression;
+            declare cf as train '{0}{1}Classificationforest({4}).getModel({2},{3})' int WHERE (numtrees as int,featurespernode as int, maxdepth as int) RETURN ANYTABLE WHERE 'p' RETURN TABLE(int wi,int id,int number,real value ) by learningtrees;
+
             `,
             type: FileType.DHSQL,
         },

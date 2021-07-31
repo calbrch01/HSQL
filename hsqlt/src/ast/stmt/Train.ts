@@ -1,5 +1,6 @@
 import { QualifiedIdentifier } from '../../misc/ast/QualifiedIdentifier';
 import { TrainContext } from '../../misc/grammar/HSQLParser';
+import { VEO } from '../../misc/holders/VEO';
 import { IASTVisitor } from '../IASTVisitor';
 import { StmtExpression } from './base/StmtExpression';
 
@@ -11,10 +12,18 @@ export class Train implements StmtExpression {
         private _requireDiscrete: boolean,
         private _traintemplate: string,
         private _bundleLoc: QualifiedIdentifier | undefined,
-        public addOrder: boolean
+        private _addOrder: boolean,
+        private _trainOptions: Map<string, VEO>
     ) {}
     public get node() {
         return this._node;
+    }
+
+    public get addOrder(): boolean {
+        return this._addOrder;
+    }
+    public get trainOptions(): Map<string, VEO> {
+        return this._trainOptions;
     }
 
     public get bundleLoc(): QualifiedIdentifier | undefined {

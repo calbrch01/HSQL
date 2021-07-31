@@ -80,13 +80,31 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
     }
 
     visitTrain(x: Train) {
+        const trainArgs = [...x.trainOptions];
+        let requiredCode: ECLCode[] = [],
+            trainExprMains: [string, ECLCode][] = [];
+        // setup the train options
+        for (const [name, { stmt }] of trainArgs) {
+            const code = this.visit(stmt);
+            const [codeTop] = this.getPopped(code, x.node);
+            requiredCode.push(...code);
+            trainExprMains.push([name, codeTop]);
+        }
+        //make it into a string
+        const trainOptions = trainExprMains
+            .map(([name, expr]) => {
+                const res = expr.coverCode(ecl.equal.eq(name), undefined, false, false);
+                return res.toString(false);
+            })
+            .join(ecl.commmon.comma);
+
         const indep = this.visit(x.indep);
         const [indepTop] = this.getPopped(indep, x.node);
         const dep = this.visit(x.dep);
         const [depTop] = this.getPopped(dep, x.node);
 
         // array for code to go into. Will get destructured for return later.
-        let requiredCode = [...indep, ...dep];
+        requiredCode.push(...indep, ...dep);
 
         let finalIndep = indepTop.toString(false),
             finalDep = depTop.toString(false);
@@ -134,6 +152,7 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
             x.bundleLoc !== undefined ? ecl.commmon.dot : '',
             finalIndep,
             finalDep,
+            trainOptions,
         ]);
         return [...requiredCode, new ECLCode(makeTemplate)];
     }

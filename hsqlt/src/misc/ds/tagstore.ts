@@ -3,7 +3,7 @@
  * // TODO currently only modules, layouts and tables clone their tagstores. add
  */
 export class TagStore {
-    static trainStore = 'trainedBundle' as const;
+    static trainStore = 'trainmethod' as const;
     private map: Map<string, string | number | boolean>;
     constructor() {
         this.map = new Map();
@@ -24,6 +24,11 @@ export class TagStore {
         } else {
             return undefined;
         }
+    }
+
+    set(key: string, val: string | number | boolean) {
+        this.map.set(key, val);
+        return this;
     }
 
     clear() {
