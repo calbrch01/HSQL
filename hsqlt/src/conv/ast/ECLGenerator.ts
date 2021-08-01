@@ -492,9 +492,10 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
     }
 
     selectProcessLimitOffset(x: Select, varStack: string[], stmtStack: ECLCode[]): void {
-        if (x.limitOffset !== undefined) {
+        if (x.limitOffset.limit !== undefined) {
             const tableVar = this.rootContext.variableManager.nextClaimableActionIdentifier();
             this.rootContext.variableManager.add(tableVar, DataMetaData(x.finalDt, VariableVisibility.DEFAULT, true));
+
             const stmt = new ECLCode(varStack[varStack.length - 1], false) // start with the variable
                 .coverCode(undefined, ecl.commmon.comma, false)
                 .coverCode(undefined, x.limitOffset.limit.toString(), false); // put the limitClause
@@ -511,6 +512,17 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
             varStack.push(tableVar);
             stmtStack.push(stmt);
             // .coverCode(format(ecl.equal.eq()));
+        } else if (x.limitOffset.offset !== undefined) {
+            // this means limit was undefined and we came here
+            const tableVar = this.rootContext.variableManager.nextClaimableActionIdentifier();
+            this.rootContext.variableManager.add(tableVar, DataMetaData(x.finalDt, VariableVisibility.DEFAULT, true));
+
+            const stmt = new ECLCode(varStack[varStack.length - 1], false) // start with the variable
+                .coverCode(undefined, ecl.table.offsetOnly(x.limitOffset.offset.toString()), false) // put the offsetClause
+                .coverCode(ecl.equal.eq(tableVar), undefined, false); //add the assignment
+
+            varStack.push(tableVar);
+            stmtStack.push(stmt);
         }
     }
 

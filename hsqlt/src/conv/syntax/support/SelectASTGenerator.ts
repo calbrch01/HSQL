@@ -138,7 +138,7 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
     protected _colSelect: SelectColumn[];
     protected _groupBy: string[];
 
-    protected _limitOffset?: limitOffsetType;
+    protected _limitOffset: limitOffsetType;
 
     protected _distinct: boolean;
 
@@ -164,6 +164,7 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
         this._distinct = false;
         this._sortFields = [];
         this._distributes = [];
+        this._limitOffset = {};
     }
 
     protected defaultResult(): VEOMaybe<DataType, BaseASTNode> {
@@ -278,7 +279,8 @@ export class SelectASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> imple
 
     visitLimitOffsetClause(ctx: LimitOffsetClauseContext) {
         const offsetText = ctx.offsetClause()?.INTEGER_VALUE().text;
-        const limit = parseInt(ctx.INTEGER_VALUE().text);
+        const limitText = ctx.INTEGER_VALUE()?.text;
+        const limit = limitText !== undefined ? parseInt(limitText) : undefined;
         const offset = offsetText !== undefined ? parseInt(offsetText) : undefined;
         this._limitOffset = { limit, offset };
         return null;

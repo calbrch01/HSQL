@@ -49,6 +49,7 @@ export default {
         colList: compile('{ {0} }'),
         dedup: compile('DEDUP({0},ALL)'),
         choosen: 'CHOOSEN(',
+        offsetOnly: compile('[{0}..]'),
         ds: compile('DATASET({0},{1},{2})'),
         sort: 'SORT(',
         negSort: compile('-({0})'),

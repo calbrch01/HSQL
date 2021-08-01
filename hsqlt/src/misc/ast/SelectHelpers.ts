@@ -79,7 +79,7 @@ export enum SortType {
     DESC,
 }
 
-export type limitOffsetType = { limit: number; offset?: number };
+export type limitOffsetType = { limit?: number; offset?: number };
 
 /**
  * Map a string to an aggregation Task

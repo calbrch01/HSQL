@@ -15,7 +15,7 @@ export type SelectASTArguments = {
     sortFields: SortField[];
     groupBy: string[];
     colSelect: SelectColumn[];
-    limitOffset?: limitOffsetType;
+    limitOffset: limitOffsetType;
     distinct: boolean;
     distributes: string[];
     finalDt: Table;
@@ -43,7 +43,7 @@ export function SelectASTArguments(
     sortFields: SortField[],
     groupBy: string[],
     colSelect: SelectColumn[],
-    limitOffset: limitOffsetType | undefined,
+    limitOffset: limitOffsetType,
     distinct: boolean,
     distributes: string[],
     finalDt: Table
@@ -77,7 +77,7 @@ export class Select implements StmtExpression {
     private _sortFields: SortField[];
     private _groupBy: string[];
     private _colSelect: SelectColumn[];
-    private _limitOffset: limitOffsetType | undefined;
+    private _limitOffset: limitOffsetType;
     private _distinct: boolean;
     private _distributes: string[];
 
@@ -122,7 +122,7 @@ export class Select implements StmtExpression {
     public get sortFields(): SortField[] {
         return this._sortFields;
     }
-    public get limitOffset(): limitOffsetType | undefined {
+    public get limitOffset(): limitOffsetType {
         return this._limitOffset;
     }
     public get distict(): boolean {

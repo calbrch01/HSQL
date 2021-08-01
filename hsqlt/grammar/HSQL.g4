@@ -151,7 +151,7 @@ selectStmt:
 		WHERE selectWhereClause
 	)? selectGroupByClause? (ORDER BY orderByClause)? (
 		DISTRIBUTE BY distributeByClause
-	)? /* (HAVING selectHavingClause)? */ limitOffsetClause?;
+	)? /* (HAVING selectHavingClause)? */ limitOffsetClause;
 
 // a set of identifiers -> used to make the hash32 set
 distributeByClause: idSet;
@@ -227,7 +227,7 @@ descSortItem: IDENTIFIER DESC;
 // joinType: INNER? # innerJoin | (specifier = (LEFT | RIGHT | FULL) OUTER?) # outerJoin |
 // (specifier = FULL OUTER) # fullOuterJoin;
 
-limitOffsetClause: LIMIT INTEGER_VALUE offsetClause?;
+limitOffsetClause: (LIMIT INTEGER_VALUE)? offsetClause?;
 offsetClause: OFFSET INTEGER_VALUE;
 
 // operators: comparisonOperator | arithmeticOPERATOR | logicalOperator;
