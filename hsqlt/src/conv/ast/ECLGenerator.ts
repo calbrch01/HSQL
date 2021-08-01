@@ -362,7 +362,8 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
                 x.rightBitName,
                 x.leftCmpName,
                 x.comparisonOperator,
-                x.rightCmpName
+                x.rightCmpName,
+                ''
             )
         );
         return [code];

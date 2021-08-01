@@ -62,11 +62,12 @@ export default {
             [SelectAggregationType.TRIM]: 'TRIM({0})',
         }),
         join: templateCompiler({
-            [SelectJoinType.INNER]: 'JOIN({0},{1},LEFT.{2} {3} RIGHT.{4})',
-            [SelectJoinType.OUTER]: 'JOIN({0},{1},LEFT.{2} {3} RIGHT.{4},FULL OUTER)',
-            [SelectJoinType.LEFT]: 'JOIN({0},{1},LEFT.{2} {3} RIGHT.{4},LEFT OUTER)',
-            [SelectJoinType.RIGHT]: 'JOIN({0},{1},LEFT.{2} {3} RIGHT.{4},RIGHT OUTER)',
+            [SelectJoinType.INNER]: 'JOIN({0},{1},LEFT.{2} {3} RIGHT.{4}{5})',
+            [SelectJoinType.OUTER]: 'JOIN({0},{1},LEFT.{2} {3} RIGHT.{4},FULL OUTER{5})',
+            [SelectJoinType.LEFT]: 'JOIN({0},{1},LEFT.{2} {3} RIGHT.{4},LEFT OUTER{5})',
+            [SelectJoinType.RIGHT]: 'JOIN({0},{1},LEFT.{2} {3} RIGHT.{4},RIGHT OUTER{5})',
         }),
+        joinAll: ',ALL',
     },
     scopes: {
         [VariableVisibility.DEFAULT]: '',
