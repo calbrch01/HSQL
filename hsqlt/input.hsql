@@ -5,7 +5,8 @@ import %.a;
 --     int y
 -- ); */
 -- -- r = select * from '~output::writetofile.csv' TYPE CSV layout q as b;
-
+p = select * from a.t1 join a.t2 on a.t1.c1=a.t2.c3;
+output p;
 -- -- a = 6;
 -- -- -- b = 'Hello';
 
@@ -34,17 +35,17 @@ c = 6;
 
 -- output c;
 -- output d;
-p1 = select c1 from a.t1;
-p2 = select c2 from a.t1;
-x = train from p1,p2 method LinearRegression ADD ORDER ;
-y = train from p1,p2 method regressionforest ADD ORDER option maxdepth as 100,numtrees as 1000;
-z = predict x from p1 add order;
-z2 = predict y from p1 add order;
--- output x;
--- output y;
+-- p1 = select c1 from a.t1;
+-- p2 = select c2 from a.t1;
+-- x = train from p1,p2 method LinearRegression ADD ORDER ;
+-- y = train from p1,p2 method regressionforest ADD ORDER option maxdepth as 100,numtrees as 1000;
+-- z = predict x from p1 add order;
+-- z2 = predict y from p1 add order;
+-- -- output x;
+-- -- output y;
 
-output z;
-output z2;
+-- output z;
+-- output z2;
 
 // step 0 -> code completion -> snippets
 -- write q to file TYPE csv '~ts';

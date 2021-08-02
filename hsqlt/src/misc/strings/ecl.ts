@@ -63,6 +63,7 @@ export default {
             [SelectAggregationType.TRIM]: 'TRIM({0})',
         }),
         join: templateCompiler({
+            //   JOIN( p, q  ,LEFT.x    =  RIGHT.Y)
             [SelectJoinType.INNER]: 'JOIN({0},{1},LEFT.{2} {3} RIGHT.{4}{5})',
             [SelectJoinType.OUTER]: 'JOIN({0},{1},LEFT.{2} {3} RIGHT.{4},FULL OUTER{5})',
             [SelectJoinType.LEFT]: 'JOIN({0},{1},LEFT.{2} {3} RIGHT.{4},LEFT OUTER{5})',

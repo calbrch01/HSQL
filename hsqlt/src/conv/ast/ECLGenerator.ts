@@ -356,6 +356,10 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
     visitSelectJoin(x: SelectJoin) {
         // this is a zombie statement, select will always do this right now, no need to visit
         // const res = x.lhs.stmt.accept(this);
+        let maybeAll: string = '';
+        if (x.comparisonOperator !== '=') {
+            maybeAll = ecl.table.joinAll; //',ALL';
+        }
         const code = new ECLCode(
             ecl.table.join[x.joinType](
                 x.leftBitName,
@@ -363,7 +367,7 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
                 x.leftCmpName,
                 x.comparisonOperator,
                 x.rightCmpName,
-                ''
+                maybeAll
             )
         );
         return [code];
