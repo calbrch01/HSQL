@@ -6,6 +6,7 @@ import { FSFileProvider, MemFileProvider } from '../../misc/file/FileProvider';
 import { FileType } from '../../misc/file/FileType';
 
 // Note that this test uses a.dhsql from the root folder
+// TODO this is too general of a test. It might make sense to remake this, but by using only ECLGenerator.
 describe('ECL Generation', function () {
     it('Simple Generation', async () => {
         const opm = new MapOutput();
