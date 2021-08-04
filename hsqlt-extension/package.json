@@ -2,7 +2,7 @@
     "name": "hsqlt-extension",
     "displayName": "hsqlt-extension",
     "description": "",
-    "version": "0.0.29",
+    "version": "0.0.30",
     "publisher": "Testing",
     "engines": {
         "vscode": "^1.56.0"
