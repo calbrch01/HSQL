@@ -522,7 +522,7 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
             this.rootContext.variableManager.add(tableVar, DataMetaData(x.finalDt, VariableVisibility.DEFAULT, true));
 
             const stmt = new ECLCode(varStack[varStack.length - 1], false) // start with the variable
-                .coverCode(undefined, ecl.table.offsetOnly(x.limitOffset.offset.toString()), false) // put the offsetClause
+                .coverCode(undefined, ecl.table.offsetOnly((x.limitOffset.offset + 1).toString()), false) // put the offsetClause
                 .coverCode(ecl.equal.eq(tableVar), undefined, false); //add the assignment
 
             varStack.push(tableVar);
