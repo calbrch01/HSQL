@@ -32,7 +32,7 @@ export default [
             declare regressionforest as train '{0}{1}regressionforest({4}).getModel({2},{3})' real WHERE (numtrees as int,featurespernode as int, maxdepth as int) RETURN ANYTABLE WHERE '{0}{1}regressionforest().predict({3},{2})' RETURN TABLE(int wi,int id,int number,real value ) by learningtrees;
 
 
-            declare regressionforest as train '{0}{1}BinomialLogisticRegression({4}).GetModel({2},{3})' int WHERE (max_iter as int,epsilon as real, ridge as real) RETURN ANYTABLE WHERE '{0}{1}binomiallogisticregression().classify({3},{2})' RETURN TABLE(int wi,int id,int number,integer value,real conf) by LogisticRegression;
+            declare logisticregression as train '{0}{1}BinomialLogisticRegression({4}).GetModel({2},{3})' int WHERE (max_iter as int,epsilon as real, ridge as real) RETURN ANYTABLE WHERE '{0}{1}binomiallogisticregression().classify({3},{2})' RETURN TABLE(int wi,int id,int number,integer value,real conf) by LogisticRegression;
 
             `,
             type: FileType.DHSQL,
