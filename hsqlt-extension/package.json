@@ -2,7 +2,7 @@
     "name": "hsqlt-extension",
     "displayName": "hsqlt-extension",
     "description": "",
-    "version": "0.0.30",
+    "version": "0.0.31",
     "publisher": "Testing",
     "engines": {
         "vscode": "^1.56.0"
@@ -63,7 +63,10 @@
         ]
     },
     "scripts": {
-        "postinstall": "npm i --prefix client && npm i --prefix server",
+        "postinstall": "npm run installClient",
+        "installClient": "cd client && npm i",
+        "postinstallClient": "npm run installServer",
+        "installServer": "cd server && npm i",
         "prepackage": "npm run compile-prod && npm unlink hsqlt",
         "package": "vsce package",
         "postpackage": "npm link hsqlt",

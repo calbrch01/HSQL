@@ -104,7 +104,7 @@ export const { argv: args } = yargs(process.argv.slice(2))
     })
     // all the commands that the program can run in
     .command(
-        'tree <file',
+        'tree <file>',
         'Print out Lisp S-expr for syntax (Debug)',
         yargs =>
             yargs.option('file', {
