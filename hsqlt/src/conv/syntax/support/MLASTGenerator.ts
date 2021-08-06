@@ -60,7 +60,7 @@ export class MLASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implement
         const visSource = this.variableTable.getTrainDeclaration(templateSource);
 
         if (visSource === undefined || visSource.type === TrainVarType.ONESHOT) {
-            this.errorManager.push(TranslationIssue.semanticErrorToken(format(rs.notFound, [templateSource])));
+            this.errorManager.push(TranslationIssue.semanticErrorToken(format(rs.notFound, [templateSource]), ctx));
             // there is no way to generate this statement, yank it.
             // return a bogus empty statement
             return new VEO(

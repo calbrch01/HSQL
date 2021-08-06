@@ -28,7 +28,9 @@ export default [
         {
             content: `
             declare linearregression as train '{0}{1}OLS({2},{3}).getModel' REAL RETURN TABLE(int wi,int id,int number,real value ) WHERE '{0}{1}OLS().predict({2},{3})' RETURN TABLE(int wi,int id,int number,real value ) by LinearRegression;
-            declare regressionforest as train '{0}{1}Classificationforest({4}).getModel({2},{3})' int WHERE (numtrees as int,featurespernode as int, maxdepth as int) RETURN ANYTABLE WHERE '{0}{1}RegressionForest().predict({3},{2})' RETURN TABLE(int wi,int id,int number,real value ) by learningtrees;
+            declare classificationforest as train '{0}{1}Classificationforest({4}).getModel({2},{3})' int WHERE (numtrees as int,featurespernode as int, maxdepth as int) RETURN ANYTABLE WHERE '{0}{1}classificationforest().predict({3},{2})' RETURN TABLE(int wi,int id,int number,real value ) by learningtrees;
+            declare regressionforest as train '{0}{1}regressionforest({4}).getModel({2},{3})' real WHERE (numtrees as int,featurespernode as int, maxdepth as int) RETURN ANYTABLE WHERE '{0}{1}regressionforest().predict({3},{2})' RETURN TABLE(int wi,int id,int number,real value ) by learningtrees;
+
 
             `,
             type: FileType.DHSQL,
