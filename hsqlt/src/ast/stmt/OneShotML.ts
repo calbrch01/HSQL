@@ -4,11 +4,10 @@ import { VEO } from '../../misc/holders/VEO';
 import { IASTVisitor } from '../IASTVisitor';
 import { StmtExpression } from './base/StmtExpression';
 
-export class Train implements StmtExpression {
+export class OneShotML implements StmtExpression {
     constructor(
-        private _node: TrainContext,
+        private _node: ElementaryMLContext,
         private _indep: StmtExpression,
-        private _dep: StmtExpression,
         private _requireDiscrete: boolean,
         private _traintemplate: string,
         private _bundleLoc: QualifiedIdentifier | undefined,
@@ -35,13 +34,10 @@ export class Train implements StmtExpression {
     public get requireDiscrete(): boolean {
         return this._requireDiscrete;
     }
-    public get dep(): StmtExpression {
-        return this._dep;
-    }
     public get indep(): StmtExpression {
         return this._indep;
     }
     accept<T>(visitor: IASTVisitor<T>): T {
-        return visitor.visitTrain?.(this) ?? visitor.defaultResult();
+        return visitor.visitOneShotML?.(this) ?? visitor.defaultResult();
     }
 }

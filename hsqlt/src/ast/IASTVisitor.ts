@@ -9,6 +9,7 @@ import { EqualDefinition } from './stmt/EqualDefinition';
 import { FunctionCall } from './stmt/FunctionCall';
 import { Import } from './stmt/Import';
 import { Literal } from './stmt/Literal';
+import { OneShotML } from './stmt/OneShotML';
 import { Output } from './stmt/Output';
 import { Plot } from './stmt/Plot';
 import { Predict } from './stmt/Predict';
@@ -81,4 +82,6 @@ export interface IASTVisitor<T> {
     visitTrain?: (x: Train) => T;
 
     visitPredict?: (x: Predict) => T;
+
+    visitOneShotML?: (x: OneShotML) => T;
 }

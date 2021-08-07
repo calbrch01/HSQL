@@ -13,6 +13,7 @@ import {
     FixedTableDeclarationContext,
     LayoutDeclarationContext,
     LayoutStmtContext,
+    OneShotTrainDeclarationContext,
     PlotDeclarationContext,
     TableDeclarationContext,
     TableDeclarationSegmentContext,
@@ -27,6 +28,8 @@ import { Singular } from '../../../ast/data/Singular';
 import { TrainVar, TrainVarType } from '../../../misc/ast/TrainType';
 import { isDataType } from '../../../ast/data/base/typechecks/isDataType';
 import { QualifiedIdentifier } from '../../../misc/ast/QualifiedIdentifier';
+import { Any } from '../../../ast/data/Any';
+import { CollectionType } from '../../../ast/data/base/CollectionType';
 
 /**
  * Generate an AST for declaration definitions
@@ -147,6 +150,80 @@ export class DeclarationGeneration
             makeTemplate: trainStmtFormat,
             makeResult: modelReturnTable,
             predictTemplate: predictStmtFormat,
+            predictResult: predictReturnTable,
+            declarationOpts: trainOptions,
+            internal,
+            toImport: internalNameQid,
+            importList: imports,
+        };
+
+        const trainName = ctx.IDENTIFIER().text;
+        const res = this.parent.variableManager.addTrainDeclaration(trainName, trainVar);
+        if (res === false)
+            this.parent.errorManager.push(TranslationIssue.semanticErrorToken(format(rs.existsError, trainName), ctx));
+        return null;
+    }
+
+    visitOneShotTrainDeclaration(ctx: OneShotTrainDeclarationContext) {
+        const trainStmtFormat = getLiteralStringText(ctx.STRING());
+        const { willDiscrete } = ctx.declarationModelType();
+
+        const tableDeclCtx = ctx.tableDeclarationSegment();
+        const childRes = tableDeclCtx.accept(this);
+
+        let predictReturnTable: Table;
+        // it should never be null, this might be caused by some syntax error.
+        if (childRes === null || !isDataType(childRes.dt, EDataType.TABLE, true)) {
+            return this.parent.errorManager.halt(
+                TranslationIssue.semanticErrorToken(format(rs.unexpectedErrorTagged, rs.emptyAST), tableDeclCtx)
+            );
+        } else {
+            predictReturnTable = childRes.dt;
+        }
+
+        const trainOptions: Map<string, DataType> = new Map();
+        ctx.declarationModelOptions()
+            .declarationModelOption()
+            .forEach(e => {
+                const { dt } = e.dataType();
+                const { text: name } = e.IDENTIFIER();
+                const nameLower = name.toLowerCase();
+                if (trainOptions.has(nameLower)) {
+                    this.parent.errorManager.push(TranslationIssue.semanticErrorToken(format(rs.existsError, name), e));
+                }
+
+                trainOptions.set(nameLower, new Singular(dt));
+            });
+
+        const importList: Set<string> = new Set();
+
+        const imports = ctx
+            .modelImportSegment()
+            .definition()
+            .map(e => {
+                const definition = QualifiedIdentifier.fromGrammar(e);
+                const defString = definition.toString();
+                const defStringLowerCase = defString.toLowerCase();
+                if (importList.has(defStringLowerCase)) {
+                    this.parent.errorManager.push(
+                        TranslationIssue.semanticErrorToken(format(rs.existsError, defString), e)
+                    );
+                } else {
+                    importList.add(defStringLowerCase);
+                }
+
+                return definition;
+            });
+
+        const internal = ctx.modelUseSegment().isInternal;
+        const internalName = ctx.modelUseSegment().definition();
+        const internalNameQid = internalName != undefined ? QualifiedIdentifier.fromGrammar(internalName) : undefined;
+        // wrap into object
+        const trainVar: TrainVar = {
+            type: TrainVarType.ONESHOT,
+            exported: true,
+            isDiscrete: willDiscrete,
+            predictTemplate: trainStmtFormat,
             predictResult: predictReturnTable,
             declarationOpts: trainOptions,
             internal,

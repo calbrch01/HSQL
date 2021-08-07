@@ -117,7 +117,8 @@ plotStmt:
 // /* ML STATEMENT SAME AS v0 */ 
 mlStmt:
 	{$program::needML=true} train
-	| predict /*| elementaryML */;
+	| predict
+	| {$program::needML=true} elementaryML;
 
 // train: TRAIN FROM ind = definition COMMA_ dep = definition ( COMMA_ test = definition )? METHOD
 // method = IDENTIFIER trainAddOrderSegment OPTION? trainOptions;
@@ -132,9 +133,10 @@ trainAddOrderSegment
 	locals[willAddOrder:boolean=false]:
 	ADD ORDER {$willAddOrder=true}
 	|;
-// // This variant of ML is useful in DBScan where a separate model isnt trained elementaryML:
-// PREDICT FROM ind = definition (COMMA_ ind2 = definition)? METHOD method = IDENTIFIER ( OPTION
-// trainOptions )?;
+// // This variant of ML is useful in DBScan where a separate model isnt trained 
+elementaryML:
+	PREDICT FROM ind = definition METHOD method = IDENTIFIER trainAddOrderSegment OPTION?
+		trainOptions;
 
 predict:
 	PREDICT model = definition FROM ind = definition METHOD? IDENTIFIER? trainAddOrderSegment;

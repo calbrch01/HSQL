@@ -8,9 +8,13 @@ export enum TrainVarType {
 }
 
 export type TrainVarDefault = {
+    /** Output of train - the modelling template */
     makeTemplate: string;
+    /** DT of train - the modelling template */
     makeResult: Table;
+    /** Output of predict - the result template */
     predictTemplate: string;
+    /** DT of predict - the result template */
     predictResult: Table;
     /** Whether it is allowed to be used outside or not */
     exported: boolean;
@@ -31,4 +35,4 @@ export type TrainVar =
     | ({ type: TrainVarType.DEFAULT } & TrainVarDefault)
     | ({
           type: TrainVarType.ONESHOT;
-      } & Omit<TrainVarDefault, 'predictTemplate' | 'predictResult'>);
+      } & Omit<TrainVarDefault, 'makeTemplate' | 'makeResult'>);

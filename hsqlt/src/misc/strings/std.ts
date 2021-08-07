@@ -34,6 +34,15 @@ export default [
 
             declare logisticregression as train '{bundleLoc}{ecldot}BinomialLogisticRegression({trainOptions}).GetModel({indep},{dep})' int WHERE (max_iter as int,epsilon as real, ridge as real) RETURN ANYTABLE WHERE '{bundleLoc}{ecldot}binomiallogisticregression().classify({model},{indep})' RETURN TABLE(int wi,int id,int number,integer value,real conf) by LogisticRegression;
 
+            // gaussianglm and glm are the same
+            declare glm as train '{bundleLoc}{ecldot}GLM(X:={indep},Y:={dep}{comma}{trainOptions}).GetModel' real WHERE (max_iter as int,epsilon as real, ridge as real) RETURN ANYTABLE WHERE '{bundleLoc}{ecldot}GLM().Predict({indep},{model})' RETURN TABLE(int wi,int id,int number,integer value) by GLM;
+            declare gaussianglm as train '{bundleLoc}{ecldot}GLM(X:={indep},Y:={dep}{comma}{trainOptions}).GetModel' real WHERE (max_iter as int,epsilon as real, ridge as real) RETURN ANYTABLE WHERE '{bundleLoc}{ecldot}GLM().Predict({indep},{model})' RETURN TABLE(int wi,int id,int number,integer value) by GLM;
+            declare poissonglm as train '{bundleLoc}{ecldot}GLM(X:={indep},Y:={dep},fam:={bundleLoc}{ecldot}Family.Poisson{comma}{trainOptions}).GetModel' real WHERE (max_iter as int,epsilon as real, ridge as real) RETURN ANYTABLE WHERE '{bundleLoc}{ecldot}GLM().Predict({indep},{model})' RETURN TABLE(int wi,int id,int number,integer value) by GLM;
+            declare gammaglm as train '{bundleLoc}{ecldot}GLM(X:={indep},Y:={dep},fam:={bundleLoc}{ecldot}Family.gamma{comma}{trainOptions}).GetModel' real WHERE (max_iter as int,epsilon as real, ridge as real) RETURN ANYTABLE WHERE '{bundleLoc}{ecldot}GLM().Predict({indep},{model})' RETURN TABLE(int wi,int id,int number,integer value) by GLM;
+            declare binomialglm as train '{bundleLoc}{ecldot}GLM(X:={indep},Y:={dep},fam:={bundleLoc}{ecldot}Family.binomial{comma}{trainOptions}).GetModel' real WHERE (max_iter as int,epsilon as real, ridge as real) RETURN ANYTABLE WHERE '{bundleLoc}{ecldot}GLM().Predict({indep},{model})' RETURN TABLE(int wi,int id,int number,integer value) by GLM;
+            
+            declare dbscan as predict '{bundleLoc}{ecldot}DBSCAN({trainOptions}).fit({indep})' real WHERE (eps as real,minpts as int, ridge as real,dist as string) RETURN TABLE(int wi,int id,int number,int label) by DBScan;
+
             `,
             type: FileType.DHSQL,
         },

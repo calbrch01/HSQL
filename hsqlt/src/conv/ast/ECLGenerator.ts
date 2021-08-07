@@ -31,6 +31,7 @@ import { FunctionCall } from '../../ast/stmt/FunctionCall';
 import { Train } from '../../ast/stmt/Train';
 import { AnyTable } from '../../ast/data/Table';
 import { Predict } from '../../ast/stmt/Predict';
+import { OneShotML } from '../../ast/stmt/OneShotML';
 
 /**
  * Semantically, Array is treated as a rest+top fashion -> the array is top to bottom
@@ -194,6 +195,65 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
             indep: finalIndep,
             dep: finalDep,
             trainOptions,
+            comma: trainOptions.length === 0 ? '' : ecl.commmon.comma, // if no trainoptions, skip this comma
+        });
+
+        requiredCode.push(new ECLCode(makeTemplate));
+        return requiredCode;
+    }
+
+    visitOneShotML(x: OneShotML) {
+        const trainArgs = [...x.trainOptions];
+        let requiredCode: ECLCode[] = [],
+            trainExprMains: [string, ECLCode][] = [];
+        // setup the train options
+        for (const [name, { stmt }] of trainArgs) {
+            const code = this.visit(stmt);
+            const [codeTop] = this.getPopped(code, x.node);
+            requiredCode.push(...code);
+            trainExprMains.push([name, codeTop]);
+        }
+        //make it into a string
+        const trainOptions = trainExprMains
+            .map(([name, expr]) => {
+                const res = expr.coverCode(ecl.equal.eq(name), undefined, false, false);
+                return res.toString(false);
+            })
+            .join(ecl.commmon.comma);
+
+        const indep = this.visit(x.indep);
+        const [indepTop] = this.getPopped(indep, x.node);
+
+        // array for code to go into. Will get destructured for return later.
+
+        let finalIndep = indepTop.toString(false);
+
+        if (x.addOrder) {
+            const indepOrder = this.rootContext.variableManager.nextClaimableActionIdentifier();
+            this.rootContext.variableManager.add(
+                indepOrder,
+                DataMetaData(new AnyTable(), VariableVisibility.DEFAULT, true)
+            );
+
+            requiredCode.push(new ECLCode(ecl.ml.addCount(finalIndep, indepOrder)));
+            finalIndep = indepOrder;
+        }
+
+        const indepCell = this.rootContext.variableManager.nextClaimableActionIdentifier();
+        this.rootContext.variableManager.add(indepCell, DataMetaData(new AnyTable(), VariableVisibility.DEFAULT, true));
+        // toCell
+        const makeinDepCell = new ECLCode(ecl.ml.toCell(finalIndep, indepCell));
+
+        requiredCode.push(makeinDepCell);
+        finalIndep = indepCell;
+
+        const makeTemplate = format(x.traintemplate, {
+            bundleLoc: x.bundleLoc ?? '',
+            // do not put that dot if its already local
+            ecldot: x.bundleLoc !== undefined ? ecl.commmon.dot : '',
+            indep: finalIndep,
+            trainOptions,
+            comma: trainOptions.length === 0 ? '' : ecl.commmon.comma, // if no trainoptions, skip this comma
         });
 
         requiredCode.push(new ECLCode(makeTemplate));
