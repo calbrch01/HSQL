@@ -8,7 +8,7 @@ export class OneShotML implements StmtExpression {
     constructor(
         private _node: ElementaryMLContext,
         private _indep: StmtExpression,
-        private _requireDiscrete: boolean,
+        // private _requireDiscrete: boolean,
         private _traintemplate: string,
         private _bundleLoc: QualifiedIdentifier | undefined,
         private _addOrder: boolean,
@@ -31,9 +31,9 @@ export class OneShotML implements StmtExpression {
     public get traintemplate(): string {
         return this._traintemplate;
     }
-    public get requireDiscrete(): boolean {
-        return this._requireDiscrete;
-    }
+    // public get requireDiscrete(): boolean {
+    //     return this._requireDiscrete;
+    // }
     public get indep(): StmtExpression {
         return this._indep;
     }

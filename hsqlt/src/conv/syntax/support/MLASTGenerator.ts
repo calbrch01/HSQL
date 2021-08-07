@@ -242,7 +242,7 @@ export class MLASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implement
             // return a bogus empty statement
             return new VEO(
                 new AnyTable(),
-                new OneShotML(ctx, indDef[1], false, '', new QualifiedIdentifier(''), false, new Map())
+                new OneShotML(ctx, indDef[1], '', new QualifiedIdentifier(''), false, new Map())
             );
         }
         visSource.importList.forEach(e => {
@@ -289,7 +289,6 @@ export class MLASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implement
         const stmt = new OneShotML(
             ctx,
             indDef[1],
-            visSource.isDiscrete,
             visSource.predictTemplate,
             // set the source bundle to either the target which got imported or the toImport
             visSource.target ?? visSource.toImport,

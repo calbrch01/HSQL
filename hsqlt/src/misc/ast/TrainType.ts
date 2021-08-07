@@ -35,4 +35,4 @@ export type TrainVar =
     | ({ type: TrainVarType.DEFAULT } & TrainVarDefault)
     | ({
           type: TrainVarType.ONESHOT;
-      } & Omit<TrainVarDefault, 'makeTemplate' | 'makeResult'>);
+      } & Omit<TrainVarDefault, 'makeTemplate' | 'makeResult' | 'isDiscrete'>);

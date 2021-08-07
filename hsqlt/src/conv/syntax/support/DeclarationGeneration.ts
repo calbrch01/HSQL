@@ -166,7 +166,7 @@ export class DeclarationGeneration
 
     visitOneShotTrainDeclaration(ctx: OneShotTrainDeclarationContext) {
         const trainStmtFormat = getLiteralStringText(ctx.STRING());
-        const { willDiscrete } = ctx.declarationModelType();
+        // const { willDiscrete } = ctx.declarationModelType();
 
         const tableDeclCtx = ctx.tableDeclarationSegment();
         const childRes = tableDeclCtx.accept(this);
@@ -222,7 +222,7 @@ export class DeclarationGeneration
         const trainVar: TrainVar = {
             type: TrainVarType.ONESHOT,
             exported: true,
-            isDiscrete: willDiscrete,
+            // isDiscrete: willDiscrete,
             predictTemplate: trainStmtFormat,
             predictResult: predictReturnTable,
             declarationOpts: trainOptions,

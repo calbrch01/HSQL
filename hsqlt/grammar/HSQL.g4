@@ -327,8 +327,8 @@ declaration:
 		tableDeclarationSegment WHERE STRING RETURN tableDeclarationSegment modelImportSegment
 		modelUseSegment //hi
 	# trainDeclaration
-	| DECLARE IDENTIFIER AS? PREDICT STRING declarationModelType declarationModelOptions RETURN
-		tableDeclarationSegment modelImportSegment modelUseSegment # oneShotTrainDeclaration;
+	| DECLARE IDENTIFIER AS? PREDICT STRING declarationModelOptions RETURN tableDeclarationSegment
+		modelImportSegment modelUseSegment # oneShotTrainDeclaration;
 
 modelUseSegment
 	locals[useName:string|undefined,isInternal:boolean=true]:

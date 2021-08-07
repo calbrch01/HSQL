@@ -6,7 +6,7 @@ import %.a;
 -- ); */
 -- -- r = select * from '~output::writetofile.csv' TYPE CSV layout q as b;
 p = select * from a.t1 join a.t2 on a.t1.c1=a.t2.c3;
-output p;
+-- output p;
 -- -- a = 6;
 -- -- -- b = 'Hello';
 
@@ -37,9 +37,9 @@ c = 6;
 -- output d;
 p1 = select c1 from a.t1;
 p2 = select c2 from a.t1;
-x = train from p1,p2 method LinearRegression ADD ORDER ;
-y = train from p1,p2 method regressionforest ADD ORDER option maxdepth as 100,numtrees as 1000;
-z = train from p1,p2 method poissonglm ADD ORDER ;
+-- x = train from p1,p2 method LinearRegression ADD ORDER ;
+-- y = train from p1,p2 method regressionforest ADD ORDER option maxdepth as 100,numtrees as 1000;
+-- z = train from p1,p2 method poissonglm ADD ORDER ;
 
 
 zz = predict from p1 method dbscan add order option eps as 0.001E1;
