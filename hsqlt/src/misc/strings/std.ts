@@ -41,7 +41,7 @@ export default [
             declare gammaglm as train '{bundleLoc}{ecldot}GLM(X:={indep},Y:={dep},fam:={bundleLoc}{ecldot}Family.gamma{comma}{trainOptions}).GetModel' real WHERE (max_iter as int,epsilon as real, ridge as real) RETURN ANYTABLE WHERE '{bundleLoc}{ecldot}GLM().Predict({indep},{model})' RETURN TABLE(int wi,int id,int number,integer value) by GLM;
             declare binomialglm as train '{bundleLoc}{ecldot}GLM(X:={indep},Y:={dep},fam:={bundleLoc}{ecldot}Family.binomial{comma}{trainOptions}).GetModel' real WHERE (max_iter as int,epsilon as real, ridge as real) RETURN ANYTABLE WHERE '{bundleLoc}{ecldot}GLM().Predict({indep},{model})' RETURN TABLE(int wi,int id,int number,integer value) by GLM;
             
-            declare dbscan as predict '{bundleLoc}{ecldot}DBSCAN({trainOptions}).fit({indep})' real WHERE (eps as real,minpts as int, ridge as real,dist as string) RETURN TABLE(int wi,int id,int number,int label) by DBScan;
+            declare dbscan as predict '{bundleLoc}{ecldot}DBSCAN({trainOptions}).fit({indep})' WHERE (eps as real,minpts as int, ridge as real,dist as string) RETURN TABLE(int wi,int id,int number,int label) by DBScan;
 
             `,
             type: FileType.DHSQL,
