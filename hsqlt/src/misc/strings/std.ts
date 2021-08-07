@@ -27,12 +27,12 @@ export default [
         'ML_Core.dhsql',
         {
             content: `
-            declare linearregression as train '{0}{1}OLS({2},{3}).getModel' REAL RETURN TABLE(int wi,int id,int number,real value ) WHERE '{0}{1}OLS().predict({2},{3})' RETURN TABLE(int wi,int id,int number,real value ) by LinearRegression;
-            declare classificationforest as train '{0}{1}Classificationforest({4}).getModel({2},{3})' int WHERE (numtrees as int,featurespernode as int, maxdepth as int) RETURN ANYTABLE WHERE '{0}{1}classificationforest().predict({3},{2})' RETURN TABLE(int wi,int id,int number,real value ) by learningtrees;
-            declare regressionforest as train '{0}{1}regressionforest({4}).getModel({2},{3})' real WHERE (numtrees as int,featurespernode as int, maxdepth as int) RETURN ANYTABLE WHERE '{0}{1}regressionforest().predict({3},{2})' RETURN TABLE(int wi,int id,int number,real value ) by learningtrees;
+            declare linearregression as train '{bundleLoc}{ecldot}OLS({indep},{dep}).getModel' REAL RETURN TABLE(int wi,int id,int number,real value ) WHERE '{bundleLoc}{ecldot}OLS().predict({indep},{model})' RETURN TABLE(int wi,int id,int number,real value ) by LinearRegression;
+            declare classificationforest as train '{bundleLoc}{ecldot}Classificationforest({trainOptions}).getModel({indep},{dep})' int WHERE (numtrees as int,featurespernode as int, maxdepth as int) RETURN ANYTABLE WHERE '{bundleLoc}{ecldot}classificationforest().predict({model},{indep})' RETURN TABLE(int wi,int id,int number,real value ) by learningtrees;
+            declare regressionforest as train '{bundleLoc}{ecldot}regressionforest({trainOptions}).getModel({indep},{dep})' real WHERE (numtrees as int,featurespernode as int, maxdepth as int) RETURN ANYTABLE WHERE '{bundleLoc}{ecldot}regressionforest().predict({model},{indep})' RETURN TABLE(int wi,int id,int number,real value ) by learningtrees;
 
 
-            declare logisticregression as train '{0}{1}BinomialLogisticRegression({4}).GetModel({2},{3})' int WHERE (max_iter as int,epsilon as real, ridge as real) RETURN ANYTABLE WHERE '{0}{1}binomiallogisticregression().classify({3},{2})' RETURN TABLE(int wi,int id,int number,integer value,real conf) by LogisticRegression;
+            declare logisticregression as train '{bundleLoc}{ecldot}BinomialLogisticRegression({trainOptions}).GetModel({indep},{dep})' int WHERE (max_iter as int,epsilon as real, ridge as real) RETURN ANYTABLE WHERE '{bundleLoc}{ecldot}binomiallogisticregression().classify({model},{indep})' RETURN TABLE(int wi,int id,int number,integer value,real conf) by LogisticRegression;
 
             `,
             type: FileType.DHSQL,

@@ -109,13 +109,13 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
         resultCode.push(new ECLCode(ecl.ml.toCell(finalIndep, indepCell)));
         finalIndep = indepCell;
 
-        const predictStmtTemplated = format(x.predictTemplate, [
-            x.bundleLoc ?? '',
+        const predictStmtTemplated = format(x.predictTemplate, {
+            bundleLoc: x.bundleLoc ?? '',
             // do not put that dot if its already local
-            x.bundleLoc !== undefined ? ecl.commmon.dot : '',
-            finalIndep,
-            modelCodeTop.toString(false),
-        ]);
+            ecldot: x.bundleLoc !== undefined ? ecl.commmon.dot : '',
+            indep: finalIndep,
+            model: modelCodeTop.toString(false),
+        });
         resultCode.push(new ECLCode(predictStmtTemplated));
         return resultCode;
     }
@@ -187,14 +187,14 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
             requiredCode.push(new ECLCode(ecl.ml.toDiscrete(discretizecell, finalDep)));
             finalDep = discretizecell;
         }
-        const makeTemplate = format(x.traintemplate, [
-            x.bundleLoc ?? '',
+        const makeTemplate = format(x.traintemplate, {
+            bundleLoc: x.bundleLoc ?? '',
             // do not put that dot if its already local
-            x.bundleLoc !== undefined ? ecl.commmon.dot : '',
-            finalIndep,
-            finalDep,
+            ecldot: x.bundleLoc !== undefined ? ecl.commmon.dot : '',
+            indep: finalIndep,
+            dep: finalDep,
             trainOptions,
-        ]);
+        });
 
         requiredCode.push(new ECLCode(makeTemplate));
         return requiredCode;
