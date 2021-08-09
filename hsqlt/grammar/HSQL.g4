@@ -285,8 +285,10 @@ valueExpression: primaryExpression # valueExpressionDefault;
 
 // to use later - expression
 /* derivedExpressions: IDENTIFIER BSTART_ fargs BEND_ ; //function args
- * 
- * fargs: expression (COMMA_ expression)* |;
+ 
+ fargs: expression
+ (COMMA_
+ expression)* |;
  */
 
 primaryExpression:

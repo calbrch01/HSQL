@@ -27,9 +27,18 @@ export default [
         'ML_Core.dhsql',
         {
             content: `
-            declare linearregression as train '{bundleLoc}{ecldot}OLS({indep},{dep}).getModel' REAL RETURN TABLE(int wi,int id,int number,real value ) WHERE '{bundleLoc}{ecldot}OLS().predict({indep},{model})' RETURN TABLE(int wi,int id,int number,real value ) by LinearRegression;
-            declare classificationforest as train '{bundleLoc}{ecldot}Classificationforest({trainOptions}).getModel({indep},{dep})' int WHERE (numtrees as int,featurespernode as int, maxdepth as int) RETURN ANYTABLE WHERE '{bundleLoc}{ecldot}classificationforest().predict({model},{indep})' RETURN TABLE(int wi,int id,int number,real value ) by learningtrees;
-            declare regressionforest as train '{bundleLoc}{ecldot}regressionforest({trainOptions}).getModel({indep},{dep})' real WHERE (numtrees as int,featurespernode as int, maxdepth as int) RETURN ANYTABLE WHERE '{bundleLoc}{ecldot}regressionforest().predict({model},{indep})' RETURN TABLE(int wi,int id,int number,real value ) by learningtrees;
+            declare linearregression as train 
+                    '{bundleLoc}{ecldot}OLS({indep},{dep}).getModel' REAL RETURN TABLE(int wi,int id,int number,real value ) // this is what train does
+                    WHERE
+                    '{bundleLoc}{ecldot}OLS().predict({indep},{model})' RETURN TABLE(int wi,int id,int number,real value ) by LinearRegression; // this is what predict does
+                    
+            declare classificationforest as train 
+                    '{bundleLoc}{ecldot}Classificationforest({trainOptions}).getModel({indep},{dep})' int WHERE (numtrees as int,featurespernode as int, maxdepth as int) RETURN ANYTABLE 
+                    WHERE 
+                    '{bundleLoc}{ecldot}classificationforest().predict({model},{indep})' RETURN TABLE(int wi,int id,int number,real value ) by learningtrees;
+            
+            declare regressionforest as train '{bundleLoc}{ecldot}regressionforest({trainOptions}).getModel({indep},{dep})' 
+                    real WHERE (numtrees as int,featurespernode as int, maxdepth as int) RETURN ANYTABLE WHERE '{bundleLoc}{ecldot}regressionforest().predict({model},{indep})' RETURN TABLE(int wi,int id,int number,real value ) by learningtrees;
 
 
             declare logisticregression as train '{bundleLoc}{ecldot}BinomialLogisticRegression({trainOptions}).GetModel({indep},{dep})' int WHERE (max_iter as int,epsilon as real, ridge as real) RETURN ANYTABLE WHERE '{bundleLoc}{ecldot}binomiallogisticregression().classify({model},{indep})' RETURN TABLE(int wi,int id,int number,integer value,real conf) by LogisticRegression;
@@ -43,6 +52,15 @@ export default [
             
             declare dbscan as predict '{bundleLoc}{ecldot}DBSCAN({trainOptions}).fit({indep})' WHERE (eps as real,minpts as int, ridge as real,dist as string) RETURN TABLE(int wi,int id,int number,int label) by DBScan;
 
+            declare kmeans as train 
+                    '{bundleLoc}{ecldot}KMeans({trainOptions}).Fit({ind},{dep})' WHERE (max_iter as int,t as real) RETURN ANYTABLE 
+                    WHERE
+                    '{bundleLoc}{ecldot}KMeans().Predict({model},{ind})' RETURN TABLE(wi as int , id as int,  label as int) BY Kmeans;// this is what predict does
+                    
+            
+            // declare <methodName> as train '<train Template>' [WHERE <options>] RETURN TABLE(...)|ANYTABLE
+            // WHERE
+            // '<predict Template
             `,
             type: FileType.DHSQL,
         },

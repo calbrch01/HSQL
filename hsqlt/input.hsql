@@ -40,6 +40,7 @@ p2 = select c2 from a.t1;
 -- x = train from p1,p2 method LinearRegression ADD ORDER ;
 y = train from p1,p2 method regressionforest ADD ORDER option maxdepth as 100,numtrees as 1000;
 z = train from p1,p2 method poissonglm ADD ORDER ;
+zz = train from p1,p2 method kmeans ADD ORDER ;
 
 
 -- zz = predict from p1 method dbscan add order option eps as 0.001E1;
