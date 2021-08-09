@@ -42,12 +42,12 @@ y = train from p1,p2 method regressionforest ADD ORDER option maxdepth as 100,nu
 z = train from p1,p2 method poissonglm ADD ORDER ;
 zz = train from p1,p2 method kmeans ADD ORDER ;
 
-
+zzz = predict zz from p1 add order;
 -- zz = predict from p1 method dbscan add order option eps as 0.001E1;
 
--- output zz;
-output y;
-output z;
+output zzz;
+-- output y;
+-- output z;
 -- z = predict x from p1 add order;
 -- z2 = predict y from p1 add order;
 -- -- output x;

@@ -53,14 +53,14 @@ export default [
             declare dbscan as predict '{bundleLoc}{ecldot}DBSCAN({trainOptions}).fit({indep})' WHERE (eps as real,minpts as int, ridge as real,dist as string) RETURN TABLE(int wi,int id,int number,int label) by DBScan;
 
             declare kmeans as train 
-                    '{bundleLoc}{ecldot}KMeans({trainOptions}).Fit({ind},{dep})' WHERE (max_iter as int,t as real) RETURN ANYTABLE 
+                    '{bundleLoc}{ecldot}KMeans({trainOptions}).Fit({indep},{dep})' WHERE (max_iter as int,t as real) RETURN ANYTABLE 
                     WHERE
-                    '{bundleLoc}{ecldot}KMeans().Predict({model},{ind})' RETURN TABLE(wi as int , id as int,  label as int) BY Kmeans;// this is what predict does
+                    '{bundleLoc}{ecldot}KMeans().Predict({model},{indep})' RETURN TABLE(int wi ,int  id ,int label) BY Kmeans;// this is what predict does
                     
             
             // declare <methodName> as train '<train Template>' [WHERE <options>] RETURN TABLE(...)|ANYTABLE
             // WHERE
-            // '<predict Template
+            // '<predict Template>' return TABLE(...)|ANYTABLE
             `,
             type: FileType.DHSQL,
         },
