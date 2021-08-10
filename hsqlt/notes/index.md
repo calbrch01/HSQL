@@ -17,6 +17,7 @@
   - [NPM based:](#npm-based)
 - [Dependency notes](#dependency-notes)
   - [ANTLR](#antlr)
+  - [String Template](#string-template)
   - [Typedoc](#typedoc)
   - [Madge](#madge)
   - [Notes with the repository](#notes-with-the-repository)
@@ -109,7 +110,7 @@ Module-specific file are present side-by-side as `*.spec.ts`
 Tests can be called with the `test` script.
 ### Mocha
 
-Mocha provides `npm run test`. Use it if you want to. Additionally, some extensions are recommended to be installed (which will show up in VSCode if this repository is opened as a folder), which allow VSCode to work well with Mocha and provide A UI for testing.
+Mocha provides `npm run test`. Use it if you want to. Additionally, some extensions are recommended to be installed (which will show up in VSCode if this repository is opened as a folder), which allow VSCode to work well with Mocha and provide a UI for testing.
 ### Debugging grammar
 
 The repository has preconfigured extension recommendations for usage.
@@ -119,13 +120,20 @@ This will use `input.hsql` and should show:
 -   Parse/Lexing errors
 -   The parse tree (Note that semantic actions/predicates **are ignored here**)
 
+You can set breakpoints on the grammar to see how the string gets processed.
 ### Debugging the program
 
 The best way to test the program, is with VSCode's `Javascript Debug Terminal`. Here, use `npx ts-node` to work with these features.
 
+Opening a JS Debug Terminal (`input.hsql` is usually a great candidate) and execute one of the following:
+
+```sh
+npx ts-node src check input.hsql
+npx ts-node src make input.hsql
+npx ts-node src run input.hsql
+```
+
 ## Dev notes
-
-
 
 ### Goals
 
@@ -172,6 +180,12 @@ devDependencies(Dependencies that are used during development):
 The grammar is not language independent; actions are used where data can be more easily obtained from the parsing stage. It can be refactored away if required, but it shouldn't be a huge concern. 
 
 Note: The local declarations can be reworked to suit the target language, as most languages have a similar methodology for assignments.
+
+### String Template
+
+`string-template` is an important section of HSQLT, it provides a way of using string-based templating.
+Note that it exposes a formatting function and also a compile function. The compile function should be used for cases of format strings which would be used often in a program.
+
 ### Typedoc
 
 Typedoc is a documentation generator and most types requiring explanation have been documented.
