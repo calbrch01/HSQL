@@ -36,7 +36,7 @@ ML_Core.AppendId(indt,__count,__r_action_14);
 ML_Core.AppendId(dept,__count,__r_action_13);
 ML_core.toField(__r_action_13,__r_action_15);
 ML_core.toField(__r_action_14,__r_action_16);
-model := __r_action_0.regressionforest(numtrees := 10).getModel(__r_action_16,__r_action_15);
+model := __r_action_0.regressionforest(numtrees := 9).getModel(__r_action_16,__r_action_15);
 __r_action_17 := FUNCTION
 __r_action_18 := TABLE(x,{ x });
 __r_action_19 := CHOOSEN(__r_action_18,1,20050);
