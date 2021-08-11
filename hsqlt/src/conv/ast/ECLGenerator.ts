@@ -69,6 +69,12 @@ export class ECLGenerator extends AbstractASTVisitor<ECLCode[]> implements IASTV
             res.unshift(new ECLCode(format(ecl.exportModule, x.fileName), false));
             res.push(new ECLCode(ecl.commmon.end));
         }
+
+        // if i need to distinct, then push the macro into the code as well
+        if (x.insertDedupMacro) {
+            // need to push the macro
+            res.unshift(new ECLCode(ecl.dedupParserMacroContents));
+        }
         return res;
     }
     /**

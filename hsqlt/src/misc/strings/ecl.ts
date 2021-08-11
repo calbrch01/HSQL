@@ -9,6 +9,20 @@ import { SelectAggregationType, SelectJoinType } from '../ast/SelectHelpers';
 import { VariableVisibility } from '../ast/VariableVisibility';
 // this is compiled as there can be multiple outputs
 export default {
+    /**The dedup parser macro name */
+    dedupParser: '__dedupParser',
+    dedupParserMacroContents: `__dedupParser(la):= functionmacro
+    #EXPORTXML(layoutelements,la);
+    #declare(a)
+    #set(a,'')
+    #for(layoutelements)
+        #for(field)
+            #append(a,',');
+            #append(a,%'{@label}'%);
+            #end
+        return %'a'%;
+    #end
+endmacro`,
     commmon: {
         leftBracket: '(',
         rightBracket: ')',
@@ -47,7 +61,8 @@ export default {
         joiner: compile('JOIN({0},{1},true,all)'),
         // the space is required to not accidentally escape the template
         colList: compile('{ {0} }'),
-        dedup: compile('DEDUP({0},ALL)'),
+        // TABLE(x,{x}#expand(__dedupParser(RECORDOF(x))),MERGE)
+        dedup: compile('TABLE({0},{ {0} }#expand(__dedupParser(RECORDOF( {0} ))),MERGE)'),
         choosen: 'CHOOSEN(',
         offsetOnly: compile('[{0}..]'),
         ds: compile('DATASET({0},{1},{2})'),

@@ -14,7 +14,7 @@ import {QualifiedIdentifier} from '../ast/QualifiedIdentifier';
 
 program
 	locals[
-	needML:boolean=false,needPlots:boolean=false,actionCount:number=0,willWrapModule:boolean=false
+	needML:boolean=false,needPlots:boolean=false,actionCount:number=0,willWrapModule:boolean=false,insertDedupMacro:boolean=false
 ]: (completestmt)* EOF;
 
 completestmt: stmt SEMICOLON;
@@ -158,7 +158,7 @@ selectStmt:
 // a set of identifiers -> used to make the hash32 set
 distributeByClause: idSet;
 
-distinctClause: DISTINCT;
+distinctClause: DISTINCT {$program::insertDedupMacro=true};
 // selectHavingClause: booleanExpression;
 selectGroupByClause: GROUP BY groupByClause;
 
@@ -286,9 +286,7 @@ valueExpression: primaryExpression # valueExpressionDefault;
 // to use later - expression
 /* derivedExpressions: IDENTIFIER BSTART_ fargs BEND_ ; //function args
  
- fargs: expression
- (COMMA_
- expression)* |;
+ fargs: expression (COMMA_ expression)* |;
  */
 
 primaryExpression:

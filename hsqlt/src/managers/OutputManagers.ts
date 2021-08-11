@@ -38,6 +38,9 @@ export abstract class OutputManager {
     done?(): void;
 }
 
+/**
+ * Prints to standard output
+ */
 export class StandardOutput extends OutputManager {
     async do(fn: string, contents: string) {
         console.log('File:', fn);

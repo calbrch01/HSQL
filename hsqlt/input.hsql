@@ -5,7 +5,7 @@ import %.a;
 --     int y
 -- ); */
 -- -- r = select * from '~output::writetofile.csv' TYPE CSV layout q as b;
-p = select * from a.t1 join a.t2 on a.t1.c1=a.t2.c3;
+-- p = select * from a.t1 join a.t2 on a.t1.c1=a.t2.c3;
 -- output p;
 -- -- a = 6;
 -- -- -- b = 'Hello';
@@ -13,7 +13,7 @@ p = select * from a.t1 join a.t2 on a.t1.c1=a.t2.c3;
 -- -- -- y = ;
 -- -- -- r = 5;
 -- export b = 5;
-c = 6;
+-- c = 6;
 -- y = create layout(int x,int y);
 
 --z = create module BEGIN
@@ -35,17 +35,18 @@ c = 6;
 
 -- output c;
 -- output d;
-p1 = select c1 from a.t1;
-p2 = select c2 from a.t1;
+p1 = select distinct c1 from a.t1;
+-- p2 = select distinct c2 from a.t1;
+output p1;
 -- x = train from p1,p2 method LinearRegression ADD ORDER ;
-y = train from p1,p2 method regressionforest ADD ORDER option maxdepth as 100,numtrees as 1000;
-z = train from p1,p2 method poissonglm ADD ORDER ;
-zz = train from p1,p2 method kmeans ADD ORDER ;
+-- y = train from p1,p2 method regressionforest ADD ORDER option maxdepth as 100,numtrees as 1000;
+-- z = train from p1,p2 method poissonglm ADD ORDER ;
+-- zz = train from p1,p2 method kmeans ADD ORDER ;
 
-zzz = predict zz from p1 add order;
+-- zzz = predict zz from p1 add order;
 -- zz = predict from p1 method dbscan add order option eps as 0.001E1;
 
-output zzz;
+-- output zzz;
 -- output y;
 -- output z;
 -- z = predict x from p1 add order;

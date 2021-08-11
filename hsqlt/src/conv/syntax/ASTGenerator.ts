@@ -56,6 +56,7 @@ import { Table } from '../../ast/data/Table';
 import { isAny } from '../../ast/data/base/typechecks/isAny';
 import { FunctionCall } from '../../ast/stmt/FunctionCall';
 import { MLASTGenerator } from './support/MLASTGenerator';
+import ecl from '../../misc/strings/ecl';
 
 /**
  * Generate an AST.
@@ -70,6 +71,8 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
     private willWrap: boolean;
     public variableManager: VariableTable;
     protected colDefsASTGenerator: ColDefsASTGenerator;
+    protected insertDedupMacro: boolean;
+
     constructor(
         public taskManager: TaskManager,
         protected _errorManager: ErrorManager,
@@ -87,10 +90,35 @@ export class ASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implements 
                 )
             );
         }
+
+        /* 
+        if (rootContext instanceof ProgramContext) {
+            this.insertDedupMacro = rootContext.insertDedupMacro;
+        } else {
+            this.insertDedupMacro = false;
+        }
+        */
+
         // if it is a program context, use the property, else false
         this.willWrap = rootContext instanceof ProgramContext ? rootContext.willWrapModule : false;
-        this.ast = new AST(taskManager, rootContext, includeStack[includeStack.length - 1], this.willWrap);
+
+        // be true if rootContext is an instance of ProgramContext and its value .insertDedupMacro is true, else false
+        this.insertDedupMacro = rootContext instanceof ProgramContext ? rootContext.insertDedupMacro : false;
+
+        this.ast = new AST(
+            taskManager,
+            rootContext,
+            includeStack[includeStack.length - 1],
+            this.willWrap,
+            this.insertDedupMacro
+        );
+
         this.variableManager = this.ast.variableManager;
+
+        // if that is in the program, add a variable
+        if (this.insertDedupMacro) {
+            this.variableManager.add(ecl.dedupParser, DataMetaData(new Any(), VariableVisibility.DEFAULT, true));
+        }
     }
     public get errorManager() {
         return this._errorManager;

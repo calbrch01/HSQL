@@ -15,9 +15,6 @@ import { TagStore } from '../misc/ds/tagstore';
  * AST root node
  */
 export class AST implements BaseASTNode {
-    public get isModule(): boolean {
-        return this._isModule;
-    }
     /**
      * Holds existing variables
      */
@@ -34,10 +31,12 @@ export class AST implements BaseASTNode {
         protected TaskMgr: TaskManager,
         public node: ParserRuleContext,
         protected _fileLoc: string,
-        protected _isModule: boolean
+        protected _isModule: boolean,
+        private _insertDedupMacro: boolean
     ) {
         this.variableManager = new VariableTable();
         this.stmts = [];
+        // this.insertDedupMacro = insertDedupMacro;
     }
 
     get fileName() {
@@ -46,6 +45,12 @@ export class AST implements BaseASTNode {
             this._fileName = path.parse(this._fileLoc).name;
         }
         return this._fileName;
+    }
+    public get insertDedupMacro(): boolean {
+        return this._insertDedupMacro;
+    }
+    public get isModule(): boolean {
+        return this._isModule;
     }
 
     /**
