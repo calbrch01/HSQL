@@ -38,7 +38,9 @@ export default [
                     '{bundleLoc}{ecldot}classificationforest().predict({model},{indep})' RETURN TABLE(int wi,int id,int number,real value ) by learningtrees;
             
             declare regressionforest as train '{bundleLoc}{ecldot}regressionforest({trainOptions}).getModel({indep},{dep})' 
-                    real WHERE (numtrees as int,featurespernode as int, maxdepth as int) RETURN ANYTABLE WHERE '{bundleLoc}{ecldot}regressionforest().predict({model},{indep})' RETURN TABLE(int wi,int id,int number,real value ) by learningtrees;
+                    real WHERE (numtrees as int,featurespernode as int, maxdepth as int) RETURN ANYTABLE
+                    WHERE
+                    '{bundleLoc}{ecldot}regressionforest().predict({model},{indep})' RETURN TABLE(int wi,int id,int number,real value ) by learningtrees;
 
 
             declare logisticregression as train '{bundleLoc}{ecldot}BinomialLogisticRegression({trainOptions}).GetModel({indep},{dep})' int WHERE (max_iter as int,epsilon as real, ridge as real) RETURN ANYTABLE WHERE '{bundleLoc}{ecldot}binomiallogisticregression().classify({model},{indep})' RETURN TABLE(int wi,int id,int number,integer value,real conf) by LogisticRegression;
