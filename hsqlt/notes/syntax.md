@@ -68,7 +68,7 @@
 Statements in HSQL, can be definitions, or actions to take. They all end with a semicolon.
 Definitions are in the general form of
 ```
-<identifier> = <stmt>;
+[export] <identifier> = <stmt>;
 ```
 Actions are simply:
 ```
@@ -76,7 +76,7 @@ Actions are simply:
 ```
 
 Actions are executed in parallel, but for the sake of the compiler, they should be written such that no variables are referenced before their declaration.
-
+Note: If `export` is used, there can be no explicit actions in the program.
 ### Comments
 
 HSQL supports the usual SQL-like comments which start with `--` statement.
