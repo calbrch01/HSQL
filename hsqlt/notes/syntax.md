@@ -336,8 +336,7 @@ model = train from ind,dep method LinearRegression;
 6. `poissonglm`
 7. `gammaglm`
 8. `binomialglm`
-9. `dbscan`
-10. `kmeans`
+9. `kmeans`
 ## Predict
 
 
@@ -356,6 +355,8 @@ Some models do not need a model (case in point - DBScan). The predict statement 
 ### Examples
 
 ### Supported Methods
+
+Refer to Train methods, and the model-less variant is for DBScan
 
 #### With a model
 
