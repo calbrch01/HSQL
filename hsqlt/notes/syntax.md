@@ -18,6 +18,17 @@
       - [Select with functions and conditions](#select-with-functions-and-conditions)
       - [Order by column](#order-by-column)
       - [Group by column](#group-by-column)
+  - [Output](#output)
+    - [Syntax](#syntax-2)
+    - [Examples](#examples-1)
+  - [Write](#write)
+    - [Syntax](#syntax-3)
+    - [Examples](#examples-2)
+  - [Plot Statement](#plot-statement)
+    - [Syntax](#syntax-4)
+    - [Currently supported PLOT types](#currently-supported-plot-types)
+    - [Examples](#examples-3)
+  - [](#)
 
 
 ## Styling of the syntax
@@ -60,7 +71,6 @@ Multi-line comments are done with `/* */`
  * The * in between helps make the code look prettier
  */
 ```
-
 ## Select
 
 ### Syntax
@@ -159,5 +169,75 @@ g = select * from tableName group by column1;
 
 
 ```hsql
-g = select AVG(wages) from employees group by wages 
+g = select AVG(wages) from employees group by wages;
 ```
+## Output
+
+The output statement can be used to write a table or variable into the workunit. This will be visible on the workunit section `Outputs` and also on the Standard output if using the client tools.
+### Syntax
+
+```
+OUTPUT <identifier> [TITLE <title>] [OVERWRITE];
+```
+
+### Examples
+```
+a = 5;
+OUTPUT a;                  // regular output
+OUTPUT a TITLE my_Var;     // give the output a name
+``` 
+
+## Write
+
+The write statement can be used to write a **table** into as a logical file into the cluster.
+
+### Syntax
+
+```
+WRITE <identifier> [TO FILE] [TYPE] [CSV|THOR|XML|JSON] <file location> [OVERWRITE];
+```
+The default file type being used is `THOR`
+### Examples
+
+
+```
+WRITE someTable TO FILE TYPE CSV '~output::myfile.csv';     // write and make a csv file
+WRITE someTable '~output::myfile.thor';     // write and make a thor file (using defaults)
+WRITE someTable '~output::myfile.csv' OVERWRITE;     // write and overwrite if exists
+```
+
+## Plot Statement 
+
+The plot statement is used to display graphical representations of tables.
+
+### Syntax
+
+```
+PLOT [FROM] <identifier> [TITLE] <titlename> [TYPE <plot-type>];
+```
+
+`<title>`: Name of the plot
+`<identifer>`: Identifier for a table
+
+### Currently supported PLOT types
+
+1. `Bubble`
+2. `Pie`
+3. `Wordcloud`
+4. `Area`
+5. `Bar`
+6. `Column`
+7. `Line`
+8. `Scatter`
+9. `Step`
+
+### Examples
+
+```hsql
+plot from xyz title myplot type bar;
+plot from abc title myotherplot type column;
+```
+
+
+
+## 
