@@ -34,19 +34,22 @@
   - [Modules](#modules)
     - [Syntax](#syntax-6)
     - [Example](#example)
-  - [Train](#train)
+  - [Functions](#functions)
     - [Syntax](#syntax-7)
     - [Examples](#examples-5)
-    - [Supported Methods](#supported-methods)
-  - [Predict](#predict)
+  - [Train](#train)
     - [Syntax](#syntax-8)
     - [Examples](#examples-6)
+    - [Supported Methods](#supported-methods)
+  - [Predict](#predict)
+    - [Syntax](#syntax-9)
+    - [Examples](#examples-7)
     - [Supported Methods](#supported-methods-1)
       - [With a model](#with-a-model)
       - [Without a model](#without-a-model)
   - [Import](#import)
-    - [Syntax](#syntax-9)
-    - [Examples](#examples-7)
+    - [Syntax](#syntax-10)
+    - [Examples](#examples-8)
     - [ECL vs HSQL imports](#ecl-vs-hsql-imports)
       - [ECL imports](#ecl-imports)
 
@@ -303,6 +306,33 @@ z = module {
 -- export z;
 output z.k;
 output z.ab;
+```
+
+## Functions
+Functions are a great way for enabling code reuse.
+
+### Syntax
+```
+function <functionName>(<arguments>){
+  [definitions]
+  return <identifier>;
+};
+```
+
+
+
+Note that like ECL, HSQL functions need a mandatory return type.
+
+Arguments are a comma delimited list of either
+1. Layouts-based tables -> Eg. `layout myrecord x`
+2. Primitive values -> Eg. `float`/`int`
+### Examples
+
+```
+function isInCountry(layout rec x,string y) {
+    z = select * from x where country=y order by customerid desc;
+    return z;
+};
 ```
 
 ## Train 
