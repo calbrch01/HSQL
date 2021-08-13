@@ -28,14 +28,27 @@
     - [Syntax](#syntax-4)
     - [Currently supported PLOT types](#currently-supported-plot-types)
     - [Examples](#examples-3)
-  - [Train](#train)
+  - [Layout](#layout)
     - [Syntax](#syntax-5)
     - [Examples](#examples-4)
+  - [Modules](#modules)
+    - [Syntax](#syntax-6)
+    - [Example](#example)
+  - [Train](#train)
+    - [Syntax](#syntax-7)
+    - [Examples](#examples-5)
     - [Supported Methods](#supported-methods)
   - [Predict](#predict)
-    - [Syntax](#syntax-6)
-    - [Examples](#examples-5)
+    - [Syntax](#syntax-8)
+    - [Examples](#examples-6)
     - [Supported Methods](#supported-methods-1)
+      - [With a model](#with-a-model)
+      - [Without a model](#without-a-model)
+  - [Import](#import)
+    - [Syntax](#syntax-9)
+    - [Examples](#examples-7)
+    - [ECL vs HSQL imports](#ecl-vs-hsql-imports)
+      - [ECL imports](#ecl-imports)
 
 
 ## Styling of the syntax
@@ -245,20 +258,154 @@ plot from xyz title myplot type bar;
 plot from abc title myotherplot type column;
 ```
 
+## Layout
 
+Layout allows to create a layout structure for functions and for loading up datasets as tables.
+
+### Syntax
+
+```
+x = layout (
+  <datatype1> <col1>,
+  <datatype2> <col2>,...
+);
+```
+
+### Examples
+```
+x = layout(
+  int c1,
+  int c2
+);    // two columns, c1 and c2
+```
+
+## Modules
+
+Modules are good to wrap definitions in, to give a better structure to code.
+
+### Syntax
+```
+x = module{
+  [export] <id1>= <stmt>;
+  [export] <id2>= <stmt>; 
+
+};
+```
+### Example
+
+```
+z = module {
+    export k = 5;
+    export ab = 6;
+    shared ac = 6;
+};
+
+-- export z;
+output z.k;
+output z.ab;
+```
 
 ## Train 
 
 ### Syntax
+```
+<modelname> = train from <ind>,<dep>[,<test>] method <methodName> [option < <option1> AS <val>,<option2> AS <val2>,... >] [ADD ORDER];
+```
+
+The `ADD ORDER` term inserts a Sequential ID to the datasets if required.
 
 ### Examples
 
+```hsql
+ind = select PersonID,age from commonsimple.simpleTable where PersonID<5;
+dep = select PersonID,wage from commonsimple.simpleTable where PersonID<5;
+
+test = select PersonID,age from commonsimple.simpleTable where PersonID>4;
+
+model = train from ind,dep method LinearRegression;
+
+```
 
 ### Supported Methods
+
+1. `linearregression`
+2. `classificationforest`
+3. `regressionforest`
+4. `glm` -> alias for `gaussianglm`
+5. `gaussianglm`
+6. `poissonglm`
+7. `gammaglm`
+8. `binomialglm`
+9. `dbscan`
+10. `kmeans`
 ## Predict
+
 
 ### Syntax
 
+
+```
+<modelName> = predict <modelname> from <test> [method <methodName>] [ADD ORDER];
+```
+
+Some models do not need a model (case in point - DBScan). The predict statement is used for these cases, made like this:
+
+```
+<modelName> = predict from <test> method <methodName> [option < <option1> AS <val>,<option2> AS <val2>,... > ] [ADD ORDER];
+```
 ### Examples
 
 ### Supported Methods
+
+#### With a model
+
+```hsql
+ind = select PersonID,age from commonsimple.simpleTable where PersonID<5;
+dep = select PersonID,wage from commonsimple.simpleTable where PersonID<5;
+
+test = select PersonID,age from commonsimple.simpleTable where PersonID>4;
+
+model = train from ind,dep method LinearRegression;
+
+result = predict model from test;
+```
+
+#### Without a model
+
+```hsql
+ind = select PersonID,age from commonsimple.simpleTable where PersonID<5;
+
+output ind;
+
+result = predict from ind method DBScan option minPts=2,eps=0.1;
+```
+## Import
+
+Imports, being the simplest to use feature in this language, surprisingly a lot of background work.
+
+### Syntax
+
+```
+IMPORT <module> [AS <alias>];
+```
+
+Imports a `.hsql`/`.ecl` module for use.
+Only values exported from the imported module are available for use. The `.` operator can be used to access the values exported by the module.
+
+### Examples
+
+```
+import foo; // import a module foo in the CWD
+import %.foo; // import a module foo in the current folder
+import foo as bar; // alias
+import foo.bar; Import the bar module inside foo.
+```
+
+### ECL vs HSQL imports
+
+#### ECL imports
+
+HSQLC cannot parse `.ecl` files, and hence such imports will not have strict variable checks, ie. **the identifier will not be well defined** (Represented internally by an `ANY` type).
+Eg. importing `foo` from `foo.ecl` will allow `foo.someTable` even if its not actually exported.
+
+This can be taken care of by attaching a `.dhsql` file for definitions alongside the `.ecl` file.
