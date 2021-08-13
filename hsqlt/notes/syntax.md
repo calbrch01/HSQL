@@ -28,7 +28,14 @@
     - [Syntax](#syntax-4)
     - [Currently supported PLOT types](#currently-supported-plot-types)
     - [Examples](#examples-3)
-  - [](#)
+  - [Train](#train)
+    - [Syntax](#syntax-5)
+    - [Examples](#examples-4)
+    - [Supported Methods](#supported-methods)
+  - [Predict](#predict)
+    - [Syntax](#syntax-6)
+    - [Examples](#examples-5)
+    - [Supported Methods](#supported-methods-1)
 
 
 ## Styling of the syntax
@@ -240,4 +247,18 @@ plot from abc title myotherplot type column;
 
 
 
-## 
+## Train 
+
+### Syntax
+
+### Examples
+
+
+### Supported Methods
+## Predict
+
+### Syntax
+
+### Examples
+
+### Supported Methods
