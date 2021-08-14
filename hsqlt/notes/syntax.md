@@ -52,6 +52,7 @@
     - [Examples](#examples-8)
     - [ECL vs HSQL imports](#ecl-vs-hsql-imports)
       - [ECL imports](#ecl-imports)
+  - [Type declarations](#type-declarations)
 
 
 ## Styling of the syntax
@@ -440,3 +441,9 @@ HSQLC cannot parse `.ecl` files, and hence such imports will not have strict var
 Eg. importing `foo` from `foo.ecl` will allow `foo.someTable` even if its not actually exported.
 
 This can be taken care of by attaching a `.dhsql` file for definitions alongside the `.ecl` file.
+
+## Type declarations
+
+ECL files are considered as a ANY type, without strict typing, but that can be added in as well. Refer to [dhsql.md](dhsql.md) for more information.
+
+Type declarations can also be used to extend the provided visualization and machine learning methods.
