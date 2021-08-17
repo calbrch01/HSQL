@@ -1,42 +1,49 @@
 {
-    "name": "hsql-remade",
+    "name": "hsqlt",
     "version": "0.1.0",
     "description": "",
-    "main": "build/index.js",
+    "main": "build/lib.js",
     "bin": {
-        "hsqlc": "build/index.js"
+        "hsqlt": "build/index.js"
     },
+    "files": [
+        "build"
+    ],
     "pkg": {
         "scripts": "build/**/*.js",
         "targets": [
-            "node12-linux-x64",
-            "node12-macos-x64",
-            "node12-win-x64"
+            "node14-linux-x64",
+            "node14-macos-x64",
+            "node14-win-x64"
         ],
         "outputPath": "dist"
     },
     "scripts": {
-        "test": "find ./src -name '*.spec.ts' | xargs ts-mocha src/test/*.ts",
-        "testing-help": "ts-node src --help",
         "start": "ts-node src",
         "check": "tsc --watch --noEmit",
-        "doc": "typedoc ",
-        "build-dev": "tsc",
-        "prebuild": "npm run clean-ts",
+        "check-circular": "madge -c build",
         "build": "tsc -p tsconfig.build.json",
-        "prepkg": "npm run clean-ts && npm run build && npm run clean-pkg",
+        "build-dev": "tsc",
+        "test": "find ./src -name '*.spec.ts' | xargs ts-mocha src/test/*.ts",
+        "doc": "typedoc ",
+        "regen": "antlr4ts -visitor -no-listener grammar/HSQL.g4 -o src/misc/",
         "pkg": "pkg .",
+        "prebuild": "npm run clean-ts",
+        "prepkg": "npm run clean-ts && npm run build && npm run clean-pkg",
+        "prepack": "npm run build",
+        "cov": "nyc npm run test",
+        "testing-help": "ts-node src --help",
         "clean-pkg": "rimraf dist",
         "clean-doc": "rimraf docs",
         "clean-ts": "rimraf build",
-        "clean": "rimraf dist docs build",
-        "regen": "antlr4ts -visitor -no-listener grammar/HSQL.g4 -o src/misc/"
+        "clean": "rimraf dist docs build"
     },
     "author": "",
     "license": "ISC",
     "dependencies": {
         "@types/node": "^14.17.0",
         "antlr4ts": "^0.5.0-alpha.4",
+        "dotenv": "^10.0.0",
         "string-template": "^1.0.0",
         "ts-node": "^9.1.1",
         "yargs": "^16.2.0"
@@ -57,13 +64,15 @@
         "@types/yargs": "^16.0.2",
         "antlr4ts-cli": "^0.5.0-alpha.4",
         "chai": "^4.2.0",
+        "madge": "^4.0.2",
         "mocha": "^8.2.1",
-        "nodemon": "^2.0.7",
+        "nyc": "^15.1.0",
         "pkg": "^4.5.1",
         "rimraf": "^3.0.2",
         "ts-mocha": "^8.0.0",
-        "typedoc": "^0.20.19",
-        "typescript": "^4.2.3"
+        "typedoc": "^0.21.0",
+        "typedoc-plugin-pages": "^1.1.0",
+        "typescript": "^4.3.4"
     },
     "prettier": {
         "tabWidth": 4,

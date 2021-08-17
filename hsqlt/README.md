@@ -1,101 +1,13 @@
 # HSQL
 
-## Dependencies
+## Getting started
 
-### Non-NPM dependencies:
+### Using HSQL
 
--   Java(>8)
+HSQL is best used with VSCode, or the CLI tool. Here's some more details on the [CLI tool](./notes/programui.md).
 
-### NPM based:
+The syntax is easy to use, but a reference is available at [syntax.md](./notes/syntax.md).
 
-Dependencies:
+### Development + Notes
 
--   ts-node - TS Runtime wrapping for NodeJS
--   antlr4ts - ANTLR tool
--   @types/node - Types for Node.JS environment
--   yargs - provides optstring parsing for Node.JS application
--   string-template - Provides string templates for usage
-
-devDependencies(Dependencies that are used during development):
-
--   typedoc - Generate project documentation from source comments
--   typescript - Runtime
--   nodemon - Reruns the project if source code is changed (Useful during development)
--   mocha - Testing framework
--   chai - Assertion library
--   antlr4ts-cli - Provides a CLI to work with the ANTLR tool
--   pkg - Compile to bytecode and package into executable
-
-
-## Development + Notes
-
-Please refer to [notes](notes/index.md)
-### Debugging grammar
-
-In VSCode, use the ANTLR extension.
-Open the grammar file and press F5 (/the debug key shortcut/go to the debug menu)
-This will use `input.hsql` and should show:
-
--   Parse/Lexing errors
--   The parse tree
-
-### Running this project during development
-
-1. Install the requirements
-    ```bash
-    npm install
-    ```
-2. Execution can be tested with
-    - Run the typescript project directly
-        ```bash
-        ts-node src
-        ```
-    - Build to JS
-        ```bash
-        npx tsc
-        node build
-        ```
-        _OR_
-        ```bash
-        npm run build
-        node build
-        ```
-    - Compile to bytecode and package to executable (This uses the code built to JS)
-        ```bash
-        npm run pkg
-        ```
-
-### Testing
-
-General tests are stored under `src/test`
-Module-specific file are present side-by-side as `*.spec.ts`
-
-### NPM scripts
-
-Usage: `npm run <script-name>`
-
-| Script Name | Explanation                                   | Default Output location |
-| ----------- | --------------------------------------------- | ----------------------- |
-| check       | Checks source code for errors                 | -                       |
-| dev         | Runs nodemon to run the project in watch mode | -                       |
-| doc         | Generate TypeDoc documentation                | `docs/`                 |
-| build       | Build the project into JS                     | `build/`                |
-| regen       | Regenerate ANTLR grammar                      | `src/misc/grammar/`     |
-| pkg         | Compile and package application               | `dist/`                 |
-| test        | Runs all tests                                | -                       |
-
-### Typedoc
-
-Typedoc is a document generator and most types requiring explanation have been documented.
-To generate the documentation:
-
-```bash
-npm run doc
-```
-
-This will place the documentation under `docs/`.
-Note that the result will be a html project. The easiest way to view it, is to use a document server like `serve` that creates a local webserver for you to use:
-
-```bash
-npx serve docs/
-```
+Please refer to [development notes](notes/index.md) to learn more about HSQL and help in development!

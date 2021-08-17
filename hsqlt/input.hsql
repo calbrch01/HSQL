@@ -1,4 +1,82 @@
-import a;
-p = select * from a.t1;
-output p title abc_bcd;
-q = select * from (select * from ab) as ab,bs;
+-- import xt;
+import %.a;
+-- q = select * from a.t1 join a.t2 on a.t1.c1=a.t2.c3;/* create layout(
+--     int x,
+--     int y
+-- ); */
+-- -- r = select * from '~output::writetofile.csv' TYPE CSV layout q as b;
+-- p = select * from a.t1 join a.t2 on a.t1.c1=a.t2.c3;
+-- output p;
+-- -- a = 6;
+-- -- -- b = 'Hello';
+
+-- -- -- y = ;
+-- -- -- r = 5;
+-- export b = 5;
+-- c = 6;
+-- y = create layout(int x,int y);
+
+--z = create module BEGIN
+--    export k = 5;
+--    export ab = 6;
+--END;
+-- create function yz () begin
+--     return b;
+-- END;
+-- output a.t1;
+
+
+-- b1 =z.k;
+-- b2 = 2;
+
+
+-- c = yz((select * from a.t1),b1);
+-- d = yz((select * from a.t1),b2);
+
+-- output c;
+-- output d;
+p1 = select distinct c1 from a.t1;
+-- p2 = select distinct c2 from a.t1;
+output p1;
+-- x = train from p1,p2 method LinearRegression ADD ORDER ;
+-- y = train from p1,p2 method regressionforest ADD ORDER option maxdepth as 100,numtrees as 1000;
+-- z = train from p1,p2 method poissonglm ADD ORDER ;
+-- zz = train from p1,p2 method kmeans ADD ORDER ;
+
+-- zzz = predict zz from p1 add order;
+-- zz = predict from p1 method dbscan add order option eps as 0.001E1;
+
+-- output zzz;
+-- output y;
+-- output z;
+-- z = predict x from p1 add order;
+-- z2 = predict y from p1 add order;
+-- -- output x;
+-- -- output y;
+
+-- output z;
+-- output z2;
+
+// step 0 -> code completion -> snippets
+-- write q to file TYPE csv '~ts';
+
+-- write q to file '~ts';
+
+-- output (select * from q);
+
+
+-- ab = 75;
+
+-- -- output name;
+-- -- output r title b;
+
+-- output r;
+-- o = 9;
+-- output p;
+-- select * from p;
+-- output p;
+-- plot from p title x type bar;
+-- output p title hello overwrite;
+-- q = select * from a.t1 order by c1 desc;
+-- output q hello overwrite;
+-- 

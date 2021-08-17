@@ -1,8 +1,0 @@
-{
-    "noErrorOutput": "Issues are being suppressed",
-    "notImplemented": "Method or command not implemented",
-    "couldNotWrite": "Could not write file {0}",
-    "unexpectedError": "Unexpected issue",
-    "unexpectedErrorTagged": "Unexpected issue: {0}",
-    "invalidFileExtension": "Invalid File Extension for file {0}"
-}

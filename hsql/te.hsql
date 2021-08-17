@@ -1,0 +1,2 @@
+import weather;
+weatherSnowyTotal = select Sum(SnowDepth) from weather where SnowDepth>0;

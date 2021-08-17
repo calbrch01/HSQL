@@ -1,0 +1,5 @@
+import %.demods;
+customers = demods.ds;
+
+// select order by
+select * from Customers order by customerid desc;

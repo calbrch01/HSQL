@@ -1,10 +1,15 @@
 import { ParserRuleContext } from 'antlr4ts';
+import { QualifiedIdentifier } from '../../misc/ast/QualifiedIdentifier';
 import { IASTVisitor } from '../IASTVisitor';
 import { NonValuedExpression } from './base/NonValuedExpression';
 
 export class Import implements NonValuedExpression {
     public hasAlias: boolean;
-    constructor(public node: ParserRuleContext, public _moduleName: string, public alias?: string) {
+    constructor(
+        public node: ParserRuleContext,
+        public _moduleName: QualifiedIdentifier,
+        public alias?: QualifiedIdentifier
+    ) {
         this.hasAlias = !(alias === undefined);
     }
 
@@ -15,9 +20,9 @@ export class Import implements NonValuedExpression {
         return this._moduleName;
     }
     getImportedName() {
-        return this.alias ?? this._moduleName;
+        return this.alias === undefined ? this._moduleName : this.alias;
     }
-    accept<T>(t: IASTVisitor<T>) {
-        return t.visitImport(this);
+    accept<T>(v: IASTVisitor<T>) {
+        return v.visitImport?.(this) ?? v.defaultResult();
     }
 }

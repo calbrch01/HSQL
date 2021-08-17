@@ -4,8 +4,9 @@
  */
 
 import { promises as fs } from 'fs';
-import { TranslationError } from '../misc/error/Error';
-import { iP } from '../misc/strings/misc';
+import path from 'path';
+import { issueFormatter } from '../misc/lib/formatting';
+import { ContexedTranslationError } from './ErrorManager';
 
 /**
  * Represents an output method.
@@ -21,12 +22,14 @@ export abstract class OutputManager {
     abstract do(fn: string, contents: string): Promise<void>;
 
     /**
-     * Report issues
+     * Report issues.
+     * @returns if successful
      */
-    reportIssues(issues: TranslationError[]): boolean {
+    reportIssues(issues: ContexedTranslationError[]): boolean {
         for (const issue of issues) {
-            console.log(iP(issue.msg, issue.severity, issue.line, issue.charPositionInLine));
+            console.log(issueFormatter(issue.msg, issue.severity, issue.line, issue.charPositionInLine, issue.ctx));
         }
+        // this default implementation will succeed all the time, but an overridden implementation may not;
         return true;
     }
     /**
@@ -35,6 +38,9 @@ export abstract class OutputManager {
     done?(): void;
 }
 
+/**
+ * Prints to standard output
+ */
 export class StandardOutput extends OutputManager {
     async do(fn: string, contents: string) {
         console.log('File:', fn);
@@ -51,11 +57,14 @@ export class StandardOutput extends OutputManager {
  */
 export class MapOutput extends OutputManager {
     public fileMap: Map<string, string>;
-    constructor() {
+    constructor(protected offset?: string) {
         super();
         this.fileMap = new Map();
     }
     async do(fn: string, contents: string) {
+        if (this.offset !== undefined) {
+            fn = path.join(this.offset, fn);
+        }
         // could not write if already exists
         if (this.fileMap.has(fn)) throw Error('File already exists');
         this.fileMap.set(fn, contents);
@@ -63,13 +72,19 @@ export class MapOutput extends OutputManager {
 }
 
 export class NoOutput extends OutputManager {
-    async do(fn: string, contents: string) {
+    async do() {
         // no need to do anything, our output is wrapped in a Promise automatically :)
     }
 }
 
 export class FileOutput extends OutputManager {
+    constructor(protected offset?: string) {
+        super();
+    }
     async do(fn: string, contents: string) {
-        await fs.writeFile(fn, contents);
+        // if (this.offset !== undefined) {
+        //     fn = path.join(this.offset, fn);
+        // }
+        return fs.writeFile(fn, contents);
     }
 }

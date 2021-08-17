@@ -1,20 +1,29 @@
+#!/usr/bin/env node
 /**
  * CLI Interface to HSQL.
  * Note that this module is called `main` and not `index` as otherwise it wipes the index
  * @module main
  */
 
+import format from 'string-template';
 import yargs from 'yargs';
+import { ErrorType, HaltError, TranslationIssue } from './managers/ErrorManager';
+import { FSManager } from './managers/FSManager';
 import { FileOutput, OutputManager, StandardOutput } from './managers/OutputManagers';
 import { TaskManager } from './managers/TaskManager';
-import { ErrorType, HaltError, TranslationError } from './misc/error/Error';
-import { ExecIntent, ExecCheckMode, ExecUnimplemented, ExecTreeMode, ExecMakeMode } from './misc/execModes';
-import format from 'string-template';
-import rs from './misc/strings/resultStrings.json';
+import {
+    ExecCheckIntent,
+    ExecIntent,
+    ExecMakeIntent,
+    ExecRunIntent,
+    ExecTreeIntent,
+    ExecUnimplemented,
+} from './misc/execIntent';
+import { FSFileProvider } from './misc/file/FileProvider';
+import rs from './misc/strings/resultStrings';
 // 2 ignores the node call and the script name
-// TODO add -t and -c
 // This syntax is shorthand to writing `const args = yargs(...).argv`
-const { argv: args } = yargs(process.argv.slice(2))
+export const { argv: args } = yargs(process.argv.slice(2))
     // add the help option
     .help()
     // only commands/options defined will work
@@ -58,23 +67,28 @@ const { argv: args } = yargs(process.argv.slice(2))
         alias: ['target'],
         type: 'string',
     })
-    .option('c', {
-        desc: 'Cluster location',
-        alias: ['cluster'],
-        type: 'string',
-        default: process.env.ECL_WATCH_IP ?? 'localhost',
-    })
-    .option('r', {
-        desc: 'Cluster poRt',
-        alias: ['port'],
-        type: 'number',
-        default: process.env.ECL_WATCH_PORT ?? 8010,
-    })
+    // .option('c', {
+    //     desc: 'Cluster location',
+    //     alias: ['cluster'],
+    //     type: 'string',
+    //     default: process.env.ECL_WATCH_IP ?? 'localhost',
+    // })
+    // .option('r', {
+    //     desc: 'Cluster poRt',
+    //     alias: ['port'],
+    //     type: 'number',
+    //     default: isNaN(parseInt(process.env.ECL_WATCH_PORT ?? '')) ? 8010 : parseInt(process.env.ECL_WATCH_PORT ?? ''),
+    // })
     .option('a', {
         desc: 'Show args',
         alias: ['show-args'],
         type: 'boolean',
         default: false,
+    })
+    .option('b', {
+        desc: 'Offset the base from the CWD',
+        alias: ['offset-base'],
+        type: 'string',
     })
     .option('k', {
         desc: 'Suppress issues',
@@ -82,9 +96,15 @@ const { argv: args } = yargs(process.argv.slice(2))
         type: 'boolean',
         default: false,
     })
+    .option('g', {
+        desc: 'Debug mode(Prints more output)',
+        alias: ['debug-output'],
+        type: 'boolean',
+        default: false,
+    })
     // all the commands that the program can run in
     .command(
-        'tree <file',
+        'tree <file>',
         'Print out Lisp S-expr for syntax (Debug)',
         yargs =>
             yargs.option('file', {
@@ -93,7 +113,7 @@ const { argv: args } = yargs(process.argv.slice(2))
                 demandOption: true,
             }),
         args => {
-            main(args, new ExecTreeMode());
+            main(args, new ExecTreeIntent());
         }
     )
     .command(
@@ -106,7 +126,7 @@ const { argv: args } = yargs(process.argv.slice(2))
                 demandOption: true,
             }),
         args => {
-            main(args, /* ExecMode.CHECK */ new ExecCheckMode());
+            main(args, /* ExecMode.CHECK */ new ExecCheckIntent());
         }
     )
     .command(
@@ -119,12 +139,12 @@ const { argv: args } = yargs(process.argv.slice(2))
                 demandOption: true,
             }),
         args => {
-            main(args, /* ExecMode.MAKE */ new ExecMakeMode());
+            main(args, /* ExecMode.MAKE */ new ExecMakeIntent());
         }
     )
     .command(
         'run <file>',
-        'Compile and submit to cluster',
+        'Compile and submit to cluster using ECL Client Tools',
         yargs =>
             yargs.option('file', {
                 desc: 'filename',
@@ -132,13 +152,12 @@ const { argv: args } = yargs(process.argv.slice(2))
                 demandOption: true,
             }),
         args => {
-            main(args, new ExecUnimplemented());
+            main(args, new ExecRunIntent());
         }
     )
     .demandCommand(2);
 
 export type argType = typeof args;
-
 /**
  * Entrypoint
  * @param argv arguments
@@ -146,20 +165,26 @@ export type argType = typeof args;
  */
 export async function main(argv: argType, /*execMode: ExecMode*/ execMode: ExecIntent): Promise<void> {
     argv.a && console.log('<args>:', argv);
-    // initialize managers
-    const writer: OutputManager = argv.o ? new StandardOutput() : new FileOutput();
-    //taskmap must have no map, and no baseloc for now
-    const taskmanager = new TaskManager(argv.file, argv.p, undefined, writer, undefined, argv.k);
+    // initialize managers -> fs manager must be offset correctly
+    const writer: OutputManager = argv.o ? new StandardOutput() : new FileOutput(argv.b);
 
+    //taskmap must have no map, and no baseloc for now
+    const taskmanager = new TaskManager(argv.file, argv.p, writer, argv.k, argv);
+    //add the standard libraries and the main files
+    taskmanager.addFileProviders(
+        ...(await FSManager.DefaultsProvidersFactory(taskmanager.errorManager)),
+        new FSFileProvider(args.b)
+    );
+    // taskmanager.addFileProviders(new FSFileProvider());
     try {
-        execMode.do(taskmanager, writer);
+        await execMode.do(taskmanager, writer);
     } catch (e) {
         // if e is an instance, that means we have already added it, and it is a error that was used to halt the process.
         // if it is not, we should report.
         if (!(e instanceof HaltError)) {
             // throw this error into the error manager
             taskmanager.errorManager.push(
-                TranslationError.generalErrorToken(
+                TranslationIssue.generalErrorToken(
                     format(rs.unexpectedErrorTagged, [e.msg ?? e.message ?? 'Unexpected Error']),
                     ErrorType.OTHER
                 )

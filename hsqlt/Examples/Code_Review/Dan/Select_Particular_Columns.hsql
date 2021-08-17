@@ -1,0 +1,6 @@
+import %.demods;
+customers = demods.ds;
+
+// select particular columns
+SELECT CustomerName, City 
+FROM Customers;

@@ -1,10 +1,11 @@
-import { dtype, Singular } from './Singular';
+import { Singular } from './Singular';
+import { SingularDataType } from '../../misc/ast/SingularDataType';
 
 /**
  * Column (for a table/layout)
  */
 export class Col extends Singular {
-    constructor(dtype: dtype) {
+    constructor(dtype: SingularDataType) {
         super(dtype);
     }
     cloneType() {

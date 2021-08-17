@@ -1,0 +1,108 @@
+{
+    "OUTPUT (Simple)": {
+        "prefix": "OUTPUT",
+        "body": [
+            "OUTPUT $1;",
+            "$2"
+        ],
+        "description": "OUTPUT to workunit"
+    },
+    "OUTPUT (Named)": {
+        "prefix": "OUTPUT",
+        "body": [
+            "OUTPUT $1 TITLE $2;",
+            "$3"
+        ],
+        "description": "OUTPUT to a workunit with a title"
+    },
+    "Write to File": {
+        "prefix": "WRITE",
+        "body": [
+            "WRITE $1 TO FILE '$2';",
+            "$3"
+        ],
+        "description": "WRITE to a file"
+    },
+    "WRITE to File with FileType": {
+        "prefix": "WRITE",
+        "body": [
+            "WRITE $1 TO FILE TYPE $2 '$3';",
+            "$4"
+        ],
+        "description": "WRITE to a file, with given type"
+    },
+    "Plot": {
+        "prefix": "plot",
+        "body": [
+            "PLOT FROM $1 TITLE $2 TYPE $3;",
+            "$4"
+        ],
+        "description": "Plot a given table"
+    },
+    "Select (Simple)": {
+        "prefix": "SELECT",
+        "body": [
+            "SELECT $1 FROM $2",
+            "$3"
+        ],
+        "description": "select from a dataset"
+    },
+    "Select (DATASET)": {
+        "prefix": "select",
+        "body": [
+            "SELECT $1 FROM '$2' LAYOUT $3",
+            "$4"
+        ],
+        "description": "select from a dataset"
+    },
+    "Function": {
+        "prefix": "FUNCTION",
+        "body": [
+            "FUNCTION $1 ($2) {",
+            "$3",
+            "return $4",
+            "}",
+            "$5"
+        ],
+        "description": "Create a function"
+    },
+    "Module": {
+        "prefix": "MODULE",
+        "body": [
+            "MODULE {",
+            "$2",
+            "}",
+            "$3"
+        ],
+        "description": "Creating a module"
+    },
+    "Train": {
+        "prefix": "TRAIN",
+        "body": [
+            "TRAIN FROM $1,$2 METHOD $3;"
+        ],
+        "description": "Create a Machine Learning Model"
+    },
+    "Train (Passing options and Add Order": {
+        "prefix": "TRAIN",
+        "body": [
+            "TRAIN FROM $1,$2 METHOD $3 ADD ORDER OPTION $4;",
+            "$5"
+        ],
+        "description": "Create a Machine Learning Model"
+    },
+    "Predict": {
+        "prefix": "PREDICT",
+        "body": [
+            "PREDICT $1 from $2;"
+        ],
+        "description": "Infer from a machine learning model"
+    },
+    "Predict (Add Order)": {
+        "prefix": "PREDICT",
+        "body": [
+            "PREDICT $1 from $2 ADD ORDER;"
+        ],
+        "description": "Infer from a machine learning model, adding a sequential id"
+    }
+}

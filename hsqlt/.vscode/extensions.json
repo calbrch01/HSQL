@@ -1,0 +1,9 @@
+{
+    "recommendations": [
+        "hbenl.vscode-mocha-test-adapter",
+        "eamodio.tsl-problem-matcher",
+        "mike-lischke.vscode-antlr4",
+        "esbenp.prettier-vscode",
+        "alexshen.classdiagram-ts"
+    ]
+}

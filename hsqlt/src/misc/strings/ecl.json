@@ -1,6 +1,0 @@
-{
-    "import":{
-        "regular":"IMPORT {0}",
-        "aliased":"IMPORT {0} as {1}"
-    }
-}

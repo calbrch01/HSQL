@@ -51,4 +51,10 @@ describe('Qualified Identifier tests', function () {
         const qid = new QualifiedIdentifier(...identifierSet);
         assert.strictEqual(identifierString, qid.toString());
     });
+    it('first should not mutate', async () => {
+        const qid = new QualifiedIdentifier('a', 'b', 'c');
+        const qidh = qid.first;
+        assert.deepEqual(qid.qidentifier, ['a', 'b', 'c']);
+        assert.deepEqual(qidh, ['a', 'b']);
+    });
 });

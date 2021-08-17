@@ -1,0 +1,14 @@
+export housinglayout = layout(
+    int     id,         int date,
+    real    price,      int bedrooms,
+    decimal bathrooms,  real sqft_living,
+    real    sqft_lot,   decimal floors,
+    int     waterfront, int view,
+    int     condition,  int grade,
+    int     sqft_above, int sqft_basement,
+    int     yr_built,   int yr_renovated,
+    int     zipcode,    real lat,
+    real    long,       int sqft_living15,
+    int     sqft_lot15
+);
+export hdata = select * from '~ds::kc_house_data.csv' type csv layout housinglayout;

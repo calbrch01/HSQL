@@ -1,0 +1,19 @@
+-- hsqlt make differences/hsqlt.hsql
+-- ecl run thor differences/hsqlt.ecl
+import %.source;
+
+-- lets see the marks for each column
+markslist = select marks from source.marks distribute by marks;
+-- or even better
+output markslist title marksList;
+
+-- lets get all the average marks of each subject
+counting = select subid,AVG(marks) as avgmarks from source.marks group by subid order by subid ;
+// join this to get the subject names
+marksJoined = select * from counting join source.subs on counting.subid=source.subs.subid as somesource;
+
+
+output marksJoined title avgmarks;
+-- marksSimplified = select subname, avgmarks from marksJoined;
+
+

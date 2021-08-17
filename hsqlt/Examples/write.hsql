@@ -1,0 +1,8 @@
+import %.a;
+
+P = select * from a.t1 order by c1;
+
+-- THOR/JSON/XML/CSV
+-- syntax:
+-- WRITE <id> [TO [FILE]] [TYPE] [JSON|THOR|CSV|XML] <STRING> [OVERWRITE];
+write p to file type CSV '~output::writetofile';

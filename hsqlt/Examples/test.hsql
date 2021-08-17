@@ -1,0 +1,4 @@
+-- Sample code to act as a test that everything is working good
+
+import a;
+output a.t1;
