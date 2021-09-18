@@ -23,7 +23,6 @@
         "check": "tsc --watch --noEmit",
         "check-circular": "madge -c build",
         "build": "tsc -p tsconfig.build.json",
-        "build-dev": "tsc",
         "test": "find ./src -name '*.spec.ts' | xargs ts-mocha src/test/*.ts",
         "doc": "typedoc ",
         "regen": "antlr4ts -visitor -no-listener grammar/HSQL.g4 -o src/misc/",
