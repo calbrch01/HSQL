@@ -150,7 +150,7 @@ export class MLASTGenerator extends AbstractParseTreeVisitor<VEOMaybe> implement
             // for the first one, which is the model just make sure we check
             if (i === 0 && dataType.tags.getString(TagStore.trainStore) === undefined) {
                 this.errorManager.push(
-                    TranslationIssue.semanticErrorToken(format(resultStrings.mayNotBeModelWarning, e.text))
+                    TranslationIssue.semanticWarningToken(format(resultStrings.mayNotBeModelWarning, e.text))
                 );
             }
             return [dataType, stmt] as [Table, BaseASTNode];
