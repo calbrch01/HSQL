@@ -178,14 +178,15 @@ export async function main(argv: argType, /*execMode: ExecMode*/ execMode: ExecI
     // taskmanager.addFileProviders(new FSFileProvider());
     try {
         await execMode.do(taskmanager, writer);
-    } catch (e) {
+    } catch (e: any) {
         // if e is an instance, that means we have already added it, and it is a error that was used to halt the process.
         // if it is not, we should report.
         if (!(e instanceof HaltError)) {
             // throw this error into the error manager
+
             taskmanager.errorManager.push(
                 TranslationIssue.generalErrorToken(
-                    format(rs.unexpectedErrorTagged, [e.msg ?? e.message ?? 'Unexpected Error']),
+                    format(rs.unexpectedErrorTagged, [e.msg ?? e?.message ?? 'Unexpected Error']),
                     ErrorType.OTHER
                 )
             );

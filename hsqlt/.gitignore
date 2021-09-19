@@ -1,4 +1,6 @@
 # input.ecl
+src/test/testScripts/*.ecl
+!src/test/testScripts/common.ecl
 
 # No Commit
 .nc.*
