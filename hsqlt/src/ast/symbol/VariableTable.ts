@@ -181,15 +181,19 @@ export class VariableTable {
     /**
      * Get a new variable name for a action.
      * Note that this does not claim it
-     * This function merely indicates which is the next action variable that can be claimed
+     * This function will not increment on call if dontclaim is true
+     * @param dontclaim whether to claim the var or not (false)
      */
-    nextClaimableActionIdentifier(): string {
+    nextClaimableActionIdentifier(dontclaim: boolean = false): string {
         let usableStr = VariableTable.actionPrependString + this.actionCounter;
         while (this.exists(usableStr)) {
             // console.log(`Claimed ${this.actionCounter}`);
             this.actionCounter++;
             usableStr = VariableTable.actionPrependString + this.actionCounter;
         }
+
+        // skip incrementing if asked to not claim
+        !dontclaim && this.actionCounter++;
 
         return usableStr;
     }

@@ -35,7 +35,7 @@ export default [
             declare classificationforest as train 
                     '{bundleLoc}{ecldot}Classificationforest({trainOptions}).getModel({indep},{dep})' int WHERE (numtrees as int,featurespernode as int, maxdepth as int) RETURN ANYTABLE 
                     WHERE 
-                    '{bundleLoc}{ecldot}classificationforest().predict({model},{indep})' RETURN TABLE(int wi,int id,int number,real value ) by learningtrees;
+                    '{bundleLoc}{ecldot}classificationforest().classify({model},{indep})' RETURN TABLE(int wi,int id,int number,real value ) by learningtrees;
             
             declare regressionforest as train '{bundleLoc}{ecldot}regressionforest({trainOptions}).getModel({indep},{dep})' 
                     real WHERE (numtrees as int,featurespernode as int, maxdepth as int) RETURN ANYTABLE
