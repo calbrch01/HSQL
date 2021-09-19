@@ -5,11 +5,14 @@
     },
     "files.exclude": {
         "**/node_modules": true,
-        "**/.nyc_output":true
+        "**/.nyc_output": true
     },
     // only the spec files are put here, complete tests are not here for simplicity
-    "mochaExplorer.files": ["src/test/*.ts","src/**/*.spec.ts"],
+    "mochaExplorer.files": [
+        "src/test/*.ts",
+        "src/**/*.spec.ts"
+    ],
     "mochaExplorer.require": "ts-node/register",
-    "ecl.launchConfiguration": "localhost (hsqlt)",
+    "ecl.launchConfiguration": "playground",
     "ecl.targetCluster": {}
 }

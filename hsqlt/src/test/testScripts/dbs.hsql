@@ -1,0 +1,9 @@
+import %.commonsimple;
+
+ind = select age from commonsimple.simpleTable where PersonID<5;
+
+output ind;
+
+result = predict from ind method DBScan add order option minPts as 2,eps as 0.1e1;
+
+output result;

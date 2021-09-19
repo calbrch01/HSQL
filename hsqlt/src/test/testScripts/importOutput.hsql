@@ -1,0 +1,16 @@
+import %.common AS comms;
+// A comment
+-- A comment
+/*
+ * A big comment.
+ * A lot of words
+ */
+
+p = select * from comms.WeatherDataSet where avgg>87;
+
+OUTPUT p;
+
+WRITE p TO FILE TYPE csv '~hsql::outputtests::Hello.csv' overwrite;
+WRITE p TO FILE TYPE thor '~hsql::outputtests::Hello.csv' overwrite;
+WRITE p TO FILE TYPE json '~hsql::outputtests::Hello.csv' overwrite;
+
