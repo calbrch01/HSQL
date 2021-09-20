@@ -22,6 +22,13 @@ export class Any extends CollectionType {
     isExactType(type: DataType): boolean {
         return true;
     }
+    /**
+     * For layouts, it should be able to create anytables
+     * @returns
+     */
+    toTable() {
+        return new Any();
+    }
     cloneType(): Any {
         return new Any();
     }

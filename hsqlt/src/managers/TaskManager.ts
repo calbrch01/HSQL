@@ -208,7 +208,7 @@ export class TaskManager {
                     this.errorManager.popFile();
                 }
             });
-        } catch (e) {
+        } catch (e: any) {
             // this should ideally never happen - Promise.allSettled never rejects
             this.errorManager.push(
                 TranslationIssue.generalErrorToken(
