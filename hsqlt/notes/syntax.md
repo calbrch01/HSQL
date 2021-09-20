@@ -2,58 +2,57 @@
 
 ## Table of Contents
 
-- [Syntax](#syntax)
-  - [Table of Contents](#table-of-contents)
-  - [Styling of the syntax](#styling-of-the-syntax)
-  - [Basics](#basics)
-    - [Statements](#statements)
-    - [Comments](#comments)
-  - [Select](#select)
-    - [Syntax](#syntax-1)
-    - [Examples](#examples)
-      - [Select all columns from table](#select-all-columns-from-table)
-      - [Simple select columns](#simple-select-columns)
-      - [Select with conditions](#select-with-conditions)
-      - [Selecting from multiple tables](#selecting-from-multiple-tables)
-      - [Select with functions and conditions](#select-with-functions-and-conditions)
-      - [Order by column](#order-by-column)
-      - [Group by column](#group-by-column)
-  - [Output](#output)
-    - [Syntax](#syntax-2)
-    - [Examples](#examples-1)
-  - [Write](#write)
-    - [Syntax](#syntax-3)
-    - [Examples](#examples-2)
-  - [Plot Statement](#plot-statement)
-    - [Syntax](#syntax-4)
-    - [Currently supported PLOT types](#currently-supported-plot-types)
-    - [Examples](#examples-3)
-  - [Layout](#layout)
-    - [Syntax](#syntax-5)
-    - [Examples](#examples-4)
-  - [Modules](#modules)
-    - [Syntax](#syntax-6)
-    - [Example](#example)
-  - [Functions](#functions)
-    - [Syntax](#syntax-7)
-    - [Examples](#examples-5)
-  - [Train](#train)
-    - [Syntax](#syntax-8)
-    - [Examples](#examples-6)
-    - [Supported Methods](#supported-methods)
-  - [Predict](#predict)
-    - [Syntax](#syntax-9)
-    - [Examples](#examples-7)
-    - [Supported Methods](#supported-methods-1)
-      - [With a model](#with-a-model)
-      - [Without a model](#without-a-model)
-  - [Import](#import)
-    - [Syntax](#syntax-10)
-    - [Examples](#examples-8)
-    - [ECL vs HSQL imports](#ecl-vs-hsql-imports)
-      - [ECL imports](#ecl-imports)
-  - [Type declarations](#type-declarations)
-
+-   [Syntax](#syntax)
+    -   [Table of Contents](#table-of-contents)
+    -   [Styling of the syntax](#styling-of-the-syntax)
+    -   [Basics](#basics)
+        -   [Statements](#statements)
+        -   [Comments](#comments)
+    -   [Select](#select)
+        -   [Syntax](#syntax-1)
+        -   [Examples](#examples)
+            -   [Select all columns from table](#select-all-columns-from-table)
+            -   [Simple select columns](#simple-select-columns)
+            -   [Select with conditions](#select-with-conditions)
+            -   [Selecting from multiple tables](#selecting-from-multiple-tables)
+            -   [Select with functions and conditions](#select-with-functions-and-conditions)
+            -   [Order by column](#order-by-column)
+            -   [Group by column](#group-by-column)
+    -   [Output](#output)
+        -   [Syntax](#syntax-2)
+        -   [Examples](#examples-1)
+    -   [Write](#write)
+        -   [Syntax](#syntax-3)
+        -   [Examples](#examples-2)
+    -   [Plot Statement](#plot-statement)
+        -   [Syntax](#syntax-4)
+        -   [Currently supported PLOT types](#currently-supported-plot-types)
+        -   [Examples](#examples-3)
+    -   [Layout](#layout)
+        -   [Syntax](#syntax-5)
+        -   [Examples](#examples-4)
+    -   [Modules](#modules)
+        -   [Syntax](#syntax-6)
+        -   [Example](#example)
+    -   [Functions](#functions)
+        -   [Syntax](#syntax-7)
+        -   [Examples](#examples-5)
+    -   [Train](#train)
+        -   [Syntax](#syntax-8)
+        -   [Examples](#examples-6)
+        -   [Supported Methods](#supported-methods)
+    -   [Predict](#predict)
+        -   [Syntax](#syntax-9)
+        -   [Examples](#examples-7)
+        -   [Supported Methods](#supported-methods-1)
+            -   [With a model](#with-a-model)
+            -   [Without a model](#without-a-model)
+    -   [Import](#import)
+        -   [Syntax](#syntax-10)
+        -   [Examples](#examples-8)
+        -   [ECL vs HSQL imports](#ecl-vs-hsql-imports)
+            -   [ECL imports](#ecl-imports)
+    -   [Type declarations](#type-declarations)
 
 ## Styling of the syntax
 
@@ -61,27 +60,30 @@
 `[xyz]` -> is optional
 `...` -> a pattern which continues
 
-
 ## Basics
 
 ### Statements
 
 Statements in HSQL, can be definitions, or actions to take. They all end with a semicolon.
 Definitions are in the general form of
+
 ```
 [export] <identifier> = <stmt>;
 ```
+
 Actions are simply:
+
 ```
 <action> [options];
 ```
 
 Actions are executed in parallel, but for the sake of the compiler, they should be written such that no variables are referenced before their declaration.
 Note: If `export` is used, there can be no explicit actions in the program.
+
 ### Comments
 
 HSQL supports the usual SQL-like comments which start with `--` statement.
-Additionally, the standard C-like comments are also supported. ie. `//` 
+Additionally, the standard C-like comments are also supported. ie. `//`
 Multi-line comments are done with `/* */`
 
 ```
@@ -95,34 +97,38 @@ Multi-line comments are done with `/* */`
  * The * in between helps make the code look prettier
  */
 ```
+
 ## Select
 
 ### Syntax
 
 ```
-<var> = SELECT *|<col1>[,<col2>,[aggregate(<col3>)]] FROM <table-src>[,<table-src>[,...]] [WHERE <condition>] [GROUP BY <column>] [ORDER BY <column>] ; 
+<var> = SELECT *|<col1>[,<col2>,[aggregate(<col3>)]] FROM <table-src>[,<table-src>[,...]] [WHERE <condition>] [GROUP BY <column>] [ORDER BY <column>] ;
 ```
 
 Here, a table source (`table-src`) can be:
-1. A table - 
-   
-   Syntax : `[module.]<tableName>`
+
+1. A table -
+
+    Syntax : `[module.]<tableName>`
+
 2. A nested query
 
-   Syntax: [Select statement](#select)
+    Syntax: [Select statement](#select)
+
 3. The join of two tables
 
-   Syntax: `[module.]<lhstableName> join [module.]<rhstableName> on [module.]<lhstableName> <comparisonOperator> [module.]<rhstableName>`
+    Syntax: `[module.]<lhstableName> join [module.]<rhstableName> on [module.]<lhstableName> <comparisonOperator> [module.]<rhstableName>`
 
 The aggregates are:
+
 1. Sum - sum of the column
 2. Count - RowCount of the table.
-   1. NOTE: IN ECL There is no NULL value, so `COUNT(*)` and `COUNT(x)` have the same meaning and will return the same value.
+    1. NOTE: IN ECL There is no NULL value, so `COUNT(*)` and `COUNT(x)` have the same meaning and will return the same value.
 3. Avg - average of the column
 4. Min - Minimum value of a column
 5. Max - Maximum value of a column
 6. TRIM - Trim the ends of a string-based column
-
 
 ### Examples
 
@@ -134,7 +140,7 @@ a = select * from tableName;
 
 #### Simple select columns
 
-Columns can be used *and reordered* by using mentioning the columns to be used for the SELECT query. This is useful for filtering out unnecessary columns and setting 
+Columns can be used _and reordered_ by using mentioning the columns to be used for the SELECT query. This is useful for filtering out unnecessary columns and setting
 
 ```hsql
 b = select column1,column2, column4 as X from tableName;
@@ -148,13 +154,11 @@ c = select column3 from tableName where column3>0;
 
 #### Selecting from multiple tables
 
-An important thing to note that 
-
+An important thing to note that
 
 ```hsql
 c = select * from table1,table2, table3 join table4 on table3.x = table4.y;
 ```
-
 
 #### Select with functions and conditions
 
@@ -166,23 +170,20 @@ Note that using more than one aggregate may not yield correct results, especiall
 This is due to the nature of the count function in ECL.
 A workaround is to perform these individually before joining them.
 
-#### Order by column 
+#### Order by column
 
-The Order by Clause can be used to sort elements. 
+The Order by Clause can be used to sort elements.
 Note that multiple columns may be used and in such a case it will be done in that order.
 
 ```hsql
 f = select * from tableName order by column1;
 ```
 
-
 ```hsql
 f = select * from tableName order by column1 ASC,column2 DESC;
 ```
 
-
 #### Group by column
-
 
 `Group by` groups table values according to the column provided, but its most useful when combined with an aggregation function.
 
@@ -190,14 +191,14 @@ f = select * from tableName order by column1 ASC,column2 DESC;
 g = select * from tableName group by column1;
 ```
 
-
-
 ```hsql
 g = select AVG(wages) from employees group by wages;
 ```
+
 ## Output
 
 The output statement can be used to write a table or variable into the workunit. This will be visible on the workunit section `Outputs` and also on the Standard output if using the client tools.
+
 ### Syntax
 
 ```
@@ -205,11 +206,12 @@ OUTPUT <identifier> [TITLE <title>] [OVERWRITE];
 ```
 
 ### Examples
+
 ```
 a = 5;
 OUTPUT a;                  // regular output
 OUTPUT a TITLE my_Var;     // give the output a name
-``` 
+```
 
 ## Write
 
@@ -220,9 +222,10 @@ The write statement can be used to write a **table** into as a logical file into
 ```
 WRITE <identifier> [TO FILE] [TYPE] [CSV|THOR|XML|JSON] <file location> [OVERWRITE];
 ```
-The default file type being used is `THOR`
-### Examples
 
+The default file type being used is `THOR`
+
+### Examples
 
 ```
 WRITE someTable TO FILE TYPE CSV '~output::myfile.csv';     // write and make a csv file
@@ -230,7 +233,7 @@ WRITE someTable '~output::myfile.thor';     // write and make a thor file (using
 WRITE someTable '~output::myfile.csv' OVERWRITE;     // write and overwrite if exists
 ```
 
-## Plot Statement 
+## Plot Statement
 
 The plot statement is used to display graphical representations of tables.
 
@@ -276,6 +279,7 @@ x = layout (
 ```
 
 ### Examples
+
 ```
 x = layout(
   int c1,
@@ -288,13 +292,15 @@ x = layout(
 Modules are good to wrap definitions in, to give a better structure to code.
 
 ### Syntax
+
 ```
 x = module{
   [export] <id1>= <stmt>;
-  [export] <id2>= <stmt>; 
+  [export] <id2>= <stmt>;
 
 };
 ```
+
 ### Example
 
 ```
@@ -310,9 +316,11 @@ output z.ab;
 ```
 
 ## Functions
+
 Functions are a great way for enabling code reuse.
 
 ### Syntax
+
 ```
 function <functionName>(<arguments>){
   [definitions]
@@ -320,13 +328,13 @@ function <functionName>(<arguments>){
 };
 ```
 
-
-
 Note that like ECL, HSQL functions need a mandatory return type.
 
 Arguments are a comma delimited list of either
+
 1. Layouts-based tables -> Eg. `layout myrecord x`
 2. Primitive values -> Eg. `float`/`int`
+
 ### Examples
 
 ```
@@ -336,9 +344,10 @@ function isInCountry(layout rec x,string y) {
 };
 ```
 
-## Train 
+## Train
 
 ### Syntax
+
 ```
 <modelname> = train from <ind>,<dep>[,<test>] method <methodName> [option < <option1> AS <val>,<option2> AS <val2>,... >] [ADD ORDER];
 ```
@@ -368,11 +377,10 @@ model = train from ind,dep method LinearRegression;
 7. `gammaglm`
 8. `binomialglm`
 9. `kmeans`
+
 ## Predict
 
-
 ### Syntax
-
 
 ```
 <modelName> = predict <modelname> from <test> [method <methodName>] [ADD ORDER];
@@ -383,6 +391,7 @@ Some models do not need a model (case in point - DBScan). The predict statement 
 ```
 <modelName> = predict from <test> method <methodName> [option < <option1> AS <val>,<option2> AS <val2>,... > ] [ADD ORDER];
 ```
+
 ### Examples
 
 ### Supported Methods
@@ -411,6 +420,7 @@ output ind;
 
 result = predict from ind method DBScan option minPts=2,eps=0.1;
 ```
+
 ## Import
 
 Imports, being the simplest to use feature in this language, surprisingly a lot of background work.

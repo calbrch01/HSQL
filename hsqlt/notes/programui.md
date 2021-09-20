@@ -25,20 +25,19 @@ hsqlt check|make|run -weopd <file>
 | ~~--cluster~~     | ~~-c~~ | ~~Cluster IP to submit~~ Set ECL Client tools environment variables instead   |
 | ~~--port~~        | ~~-r~~ | ~~Cluster PORT to submit~~ Set ECL Client tools environment variables instead |
 
-
-
 ## Examples
 
 1. Syntax check a hsql file
-   
-   `hsqlt check input.hsql`
+
+    `hsqlt check input.hsql`
+
 2. Get output of a hsql file onto stdout
-   
-   `hsqlt make input.hsql -o`
+
+    `hsqlt make input.hsql -o`
+
 3. Make output of a hsql file
 
-   `hsqlt make input.hsql`
-
+    `hsqlt make input.hsql`
 
 <!-- # ECL Cloud IDE
 
@@ -46,10 +45,8 @@ hsqlt check|make|run -weopd <file>
 
 # VSCode
 
-- Autocomplete
-  - Every time `.` is inserted
-  - Pressing Ctl+` `
-- Syntax error highlighting
-  <!-- - Work with RAM objects -->
-
-
+-   Autocomplete
+    -   Every time `.` is inserted
+    -   Pressing Ctl+` `
+-   Syntax error highlighting
+    <!-- - Work with RAM objects -->

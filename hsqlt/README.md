@@ -1,6 +1,4 @@
-# HSQL
-
-## Getting started
+# Getting started with HSQLt
 
 ### Using HSQL
 
