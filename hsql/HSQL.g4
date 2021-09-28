@@ -6,11 +6,9 @@ grammar HSQL;
   this.flags = {ML:0,plot:0};
 }
 
-
 program
    : (stmt)* exportStmt? EOF
    ;
-
 
 stmt
    : actionStmt SEMICOLON
@@ -49,13 +47,11 @@ typeDefExport
   : EXPORT
   ;
 
-
 mapExportable
   : tableExport
   | layoutExport
   | identifierExport
   ;
-
 
 tableExport
    : ( IDENTIFIER TABLE '(' identifierExport (',' identifierExport)* ) ')'
@@ -68,7 +64,6 @@ layoutExport
 identifierExport
    : IDENTIFIER dataType
    ;
-
 
 importStmt
   : IMPORT IDENTIFIER (AS alias=IDENTIFIER)?
@@ -112,7 +107,6 @@ outputExpireOption
   : EXPIRE number
   ;
 
-
 // this.importRequired.push({mainLib:'Visualizer',alias:null})
 plotStmt
   : {this.flags.plot=1;} PLOT FROM labelIdentifier=qualifiedIdentifier TITLE titleIdentifier=STRING (TYPE plottype=plotType)?
@@ -155,8 +149,6 @@ predict
    : PREDICT model=qualifiedIdentifier FROM ind=qualifiedIdentifier (METHOD method=IDENTIFIER)?
    ;
 
-
-
 selectStmt
   : SELECT columns=selectColumns
    FROM fromclause=selectFromClause 
@@ -175,7 +167,6 @@ joinType
    | ((LEFT| RIGHT| FULL) (OUTER | ONLY))
    ;
 
-
 selectColumns
   : ( (aggregatedSelectColumn | selectColumn) (',' (aggregatedSelectColumn| selectColumn) ) *)
   ;
@@ -188,7 +179,6 @@ aggregatedSelectColumn
   : aggregate=aggregateIdentifier '(' selectedCol=selectColumn ')'
   ;
 
-
 //Allow for optional data types
 selectColumn
   : wild='*'
@@ -200,7 +190,6 @@ aggregateIdentifier
   | sum=SUM
   | avg=AVG
   ;
-
 
 selectFromClause
   : nestedSelectStmt
@@ -259,7 +248,6 @@ inlineStmt
   : NCOMPILE STRING 
   ;
 
-
 qualifiedIdentifier
   : IDENTIFIER ('.' IDENTIFIER)*
   ;
@@ -316,11 +304,9 @@ booleanValue
     : TRUE | FALSE
     ;
 
-
 //For joins
 OUTER: O U T E R;
 ONLY: O N L Y;
-
 
 ///Data Types
 REAL_TYPE: R E A L;
@@ -328,7 +314,6 @@ INTEGER_TYPE: I N T E G E R;
 DECIMAL_TYPE: D E C I M A L;
 VARSTRING_TYPE: V A R STRING;
 STRING_TYPE: S T R I N G;
-
 
 //Merge types
 UNSTABLE: U N STABLE;
@@ -388,8 +373,6 @@ WHERE: W H E R E;
 TYPE: T Y P E;
 NCOMPILE: '__' E C L ;
 
-
-
 //Greek question mark proof
 SEMICOLON: ';'| ';';
 
@@ -432,7 +415,6 @@ DOUBLE_VALUE
     : DIGIT+ ('.' DIGIT*)? EXPONENT
     | '.' DIGIT+ EXPONENT
     ;
-
 
 IDENTIFIER
    : (LETTER | '_') (LETTER | DIGIT | '_' | '@' | ':')*
@@ -492,4 +474,3 @@ fragment W : [wW];
 fragment X : [xX];
 fragment Y : [yY];
 fragment Z : [zZ];
-

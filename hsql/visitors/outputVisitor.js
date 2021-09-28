@@ -25,7 +25,6 @@ class OutputVisitor extends HSQLVisitor {
         super()
         this.errorListener = errorListener
         this.identifierInformation = identifierInformation
-
     }
 
     /**
@@ -37,7 +36,6 @@ class OutputVisitor extends HSQLVisitor {
         if(!this.identifierInformation.search(baseReturn).found){
             this.errorListener.syntaxWarningShort(ctx.IDENTIFIER(0),"Could not find identifier")
         }
-
 
         const outputVariant = ctx.outputVariant(0) ? [this.visit(ctx.outputVariant(0))] : []
         //get an array of changes
@@ -85,8 +83,6 @@ class OutputVisitor extends HSQLVisitor {
             this.errorListener.syntaxErrorAbort('Invalid File Type',ctx.fileType);
         }
     }
-
-
 
     /**
      * Just map the answers to an array
@@ -136,7 +132,6 @@ class OutputVisitor extends HSQLVisitor {
         }
     }
 }
-
 
 // module.exports = OutputVisitor;
 exports.OutputVisitor = OutputVisitor;

@@ -1,4 +1,3 @@
-
 const antlr4 = require('antlr4')
 const fs = require('fs')
 const path = require('path')
@@ -39,9 +38,7 @@ class generalVisitor extends HSQLVisitor {
 
         //there are some more things to configure, itll be setup in visitProgram
 
-
         this.identifierInformation = new IdentifierStore(this.errorListener, this.parser);
-
     }
 
     /**
@@ -72,7 +69,6 @@ class generalVisitor extends HSQLVisitor {
             this.errorListener.syntaxErrorAbort("Empty context");
         }
         if (ctx.children) {
-
 
             //Initialize a lot of the members
 
@@ -137,7 +133,6 @@ class generalVisitor extends HSQLVisitor {
                 statements.push(`EXPORT main := FUNCTION return PARALLEL(${exportActions}); END`);
             }
 
-
             let moduleName = this.fileInfo && this.fileInfo.name
             if (!moduleName) {
                 this.errorListener.syntaxWarningShort(ctx, "Cannot find module name, using \'foo\' D:");
@@ -148,14 +143,11 @@ class generalVisitor extends HSQLVisitor {
             //push the end so there's atleast 1 line, as MODULE cant have a ;
             statements[0] = (`export ${moduleName}:= MODULE\n` + statements[0]);
 
-
-
             //DEBUG
             //this.identifierInformation.searchIdentifier("dummy.someTable","table")
             return this.processImports(statements);
         }
     }
-
 
     /**
      * 
@@ -209,7 +201,6 @@ class generalVisitor extends HSQLVisitor {
             this.identifierInformation.add(newAssignment.type, ctx.exprLabel(0))
         }
 
-
         ///For now, make do with the assurity that it is root
         return [...newAssignment.preTerms, newAssignment.inTerm, ...newAssignment.postTerms];
     }
@@ -228,7 +219,6 @@ class generalVisitor extends HSQLVisitor {
             return [];
         }
     }
-
 
     /**
      * Allow for typing out inline ecl
@@ -284,7 +274,6 @@ class generalVisitor extends HSQLVisitor {
         let isForeign = true;
         const libraryName = ctx.IDENTIFIER(0).getText()
 
-
         const searchResults = this.identifierInformation.searchIdentifier(libraryName, "module")
         if (!searchResults.found) {
             //not already imported
@@ -317,7 +306,6 @@ class generalVisitor extends HSQLVisitor {
                     let isFileECLAvailable = fs.existsSync(fileNameBase + ".ecl");
                     let isFileDHSQLAvilable = fs.existsSync(fileNameBase + ".d.hsql");
 
-
                     if (!(isFileECLAvailable || isFileHSQLAvailable)) {
                         // Could not find any file that can give us type info.
 
@@ -330,7 +318,6 @@ class generalVisitor extends HSQLVisitor {
 
                         isForeign = false;
 
-
                         const filePath = path.parse(fileNameBase + ".d.hsql")
 
                         //parse the dependency accordingly
@@ -342,7 +329,6 @@ class generalVisitor extends HSQLVisitor {
                             this.identifierInformation.add(new ImportableIdentifier((ctx.alias && ctx.alias.text) || libraryName, [], false, libraryName, false));
                         } else {
 
-
                             //get all the types out
                             const exported = results.identifierInformation.globalIdentifierStore.filter(e => e.exportType === "export");
                             const newImport = new ImportableIdentifier((ctx.alias && ctx.alias.text) || libraryName, exported, false, libraryName, true);
@@ -351,7 +337,6 @@ class generalVisitor extends HSQLVisitor {
                         }
 
                         // if(results)
-
 
                     } else if (isFileHSQLAvailable) {
 
@@ -374,9 +359,7 @@ class generalVisitor extends HSQLVisitor {
                                 const resultDependency = results.translated.join(`;${EOL}`);
                                 fs.writeFileSync(path.normalize(fileNameBase + ".ecl"), resultDependency);
                             }
-
                         }
-
 
                     } else {
                         //we are blind to the modules
@@ -417,7 +400,6 @@ class generalVisitor extends HSQLVisitor {
         return oStmt;
     }
 
-
     /**
      * Wrap the plot statement visitor call for action statement
      * @param {antlr4.ParserRuleContext} ctx 
@@ -439,7 +421,6 @@ class generalVisitor extends HSQLVisitor {
         return ctx.accept(sVisitor)
     }
 
-
     /**
      * Wrap the Layout visitor
      * @param {antlr4.ParserRuleContext} ctx 
@@ -448,7 +429,6 @@ class generalVisitor extends HSQLVisitor {
         const lVisitor = new CreateLayoutVisitor(this.identifierInformation);
         return ctx.accept(lVisitor)
     }
-
 
     /**
      * Wrap the ML statements
@@ -478,7 +458,6 @@ class generalVisitor extends HSQLVisitor {
         }
     }
 }
-
 
 // module.exports = generalVisitor;
 exports.generalVisitor = generalVisitor;

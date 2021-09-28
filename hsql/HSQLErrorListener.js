@@ -1,6 +1,5 @@
 const { ErrorListener } = require('antlr4/error/ErrorListener');
 
-
 /**
  * Error Listener for Lexer/Parser Errors.
  */
@@ -97,7 +96,6 @@ class HSQLVisitorErrorListener extends HSQLErrorListener {
             msg
         })
     }
-
 }
 
 /**
@@ -120,7 +118,6 @@ class HSQLCancellationError extends Error {
         }
     }
 }
-
 
 exports.HSQLCancellationError = HSQLCancellationError;
 exports.HSQLErrorListener = HSQLErrorListener;
