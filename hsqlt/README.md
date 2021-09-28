@@ -39,6 +39,6 @@ Now, you can try writing your first `input.hsql` program and compile it into the
 To do so, you can click on the input.hsql located inside the ./hsqlt directory and then open the Command window in your VS-Code Explorer by pressing the (`Ctrl + Shift +P`) and then in the drop-down menu select: <b>HSQL: COMPILE A HSQL PROGRAM to generate your first</b> `input.ecl` !
 
 <!-- ![Giffy_To_Test](.\Animations_Gif\hsql-extention-install.gif) -->
-![hsql-extention-install-gif](https://github.com/hpcc-systems/HSQL/blob/dev/hsqlt/Animations_Gif/hsql-extention-install.gif)
+![hsql-extention-install-gif](https://github.com/hpcc-systems/HSQL/blob/dev/hsqlt/Animations_Gif/hsql-extention-install.gif "Logo Title Text 1")
 
 If you could generate the input.ecl, congrats! 🙌
