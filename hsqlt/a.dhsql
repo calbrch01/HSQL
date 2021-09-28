@@ -2,5 +2,3 @@ declare t1 as TABLE (integer c1,integer c2);
 declare l1 as LAYOUT (integer c1,integer c2);
 declare t2 as TABLE (integer c3,integer c4);
 declare l2 as LAYOUT (integer c3,integer c4);
-
-
