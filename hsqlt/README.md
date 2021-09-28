@@ -1,10 +1,6 @@
 # 💻 Getting started with H-SQLt
 
-<!-- BUG TODO -->
-<!-- ### Working with the CLI tool -->
-<!-- [Working with the CLI tool](#working-with-the-cli-tool) -->
-
-The best way to learn HSQL is to try our sample codes <b>(TODO: link2Example Folder)</b>, but before that, you might want to install it on your machine first.
+The best way to learn HSQL is to try our <b>sample codes</b>, but before that, you might want to install it on your machine first.
 
 There are two ways available to install and use H-SQL: 
 
@@ -42,6 +38,7 @@ Now, you can try writing your first `input.hsql` program and compile it into the
 
 To do so, you can click on the input.hsql located inside the ./hsqlt directory and then open the Command window in your VS-Code Explorer by pressing the (`Ctrl + Shift +P`) and then in the drop-down menu select: <b>HSQL: COMPILE A HSQL PROGRAM to generate your first</b> `input.ecl` !
 
-![Giffy_To_Test](.\Animations_Gif\hsql-extention-install.gif)
+<!-- ![Giffy_To_Test](.\Animations_Gif\hsql-extention-install.gif) -->
+![hsql-extention-install-gif](https://github.com/hpcc-systems/HSQL/tree/dev/hsqlt/Animations_Gif)
 
 If you could generate the input.ecl, congrats! 🙌
