@@ -1,46 +1,21 @@
-# HSQL
+# HPCC Systems Structured Query Language ( H-SQL )
 
-## What is HSQL?
+## ⭐ What is H-SQL?
 
-HSQL enables developers that are already familiar with SQL to work seamlessly with HPCC.
+<b>H-SQL is the new big data query language of the HPCC systems ! </b>
 
-Designed to work in conjunction with ECL, the primary programming language for HPCC, it should prove itself easy to work with and robust for general purpose analysis.
+It leverages a declarative SQL like syntax and translates to [Enterprise Control Language (`ECL`)](<https://en.wikipedia.org/wiki/ECL_(data-centric_programming_language)>). It can also work in conjunction with ECL to allow a team of data science developers to explore and analyze big data across a high performance computing cluster without the programmer being involved in many of the lower level, imperative decisions.
 
-Its important to remember that HSQL does not aim to emulate _SQL_ to the point of being a drop in replacement, it provides a SQL like syntax while introducing developers to ECL concepts; being a helping hand while they are getting used to the ecosystem of HPCC Systems, or helping write quick and simple queries and make visualizations/Machine Learning models as required. A big point of difference is that it aims to remain very close to ECL, where ECL modules can be imported and used in HSQL, and vice versa.
+<b><i>It is designed mostly for SQL developers that are interested in developing on the HPCC systems platform.</i> </b>Using H-SQL, developers should easily adapt to the HPCC systems platform and start working with big-data right away.
 
-## Getting started with HSQL
+## 📙 About this repository:
 
-HSQL is but a language, and the main way of using it is to use a compiler for it.
-Refer to [HSQLT](hsqlt/README.md) for how to getting started with HSQL.
+<!-- The Complete Source Code -->
 
-## Syntax
+This repository contains the latest and greatest implementation of HSQL language [`hsqlt`](hsqlt/) written in TypeScript, and its Visual Studio Code Extension [`hsqlt-extension`](hsqlt-extension/).
 
-HSQL has a mostly SQL-like syntax, and the syntax is laid out in the [HSQLT Syntax page](hsqlt/notes/syntax.md).
+[`hsql`](hsql/) is our older implementation that is written in JavaScript.
 
-<hr>
+## 🚀 Getting Started with H-SQL:
 
-# Notes for the developers:
-
-## About this repository
-
-This repository contains the latest and greates implementation of HSQL language (`hsqlt`) that is written in TypeScript and its extention (`hsqlt-extention`). It is much more organized and includes an intermediate stage in compare to the older implementation (`hsql`) that was written in JavaScript.
-
-## Folders structure of this repository
-
-HSQLT is the currently indev compiler which can translate HSQL into ECL. Its corresponding language server is also present, as a truly split client and server implementation.
-
-| Folder                                | What it is                                |
-| ------------------------------------- | ----------------------------------------- |
-| [`hsql`](hsql/)                       | HSQLC (JavaScript implementation of HSQL) |
-| [`hsqlt`](hsqlt/)                     | HSQLT (TypeScript implementation of HSQL) |
-| [`hsqlt-extension`](hsqlt-extension/) | HSQL Language implementation using HSQLT  |
-
-<!--                                  | [`hsql-extension`](hsql-server/)         | HSQL Language Server implementation using HSQLC | -->
-
-## Old links
-
-These provided links point to the original syntax and usage of HSQL's compiler and syntax.
-
-- [HSQLC docs](hsql/README.md)
-- [HSQL Syntax](hsql/docs/syntax.md)
-<!-- - [HSQL Extension README](hsql-server/README.md) -->
+Please refer to the <b> [HSQLT](hsqlt/README.md) </b> directory to setup and get started with HSQL.
