@@ -1,4 +1,0 @@
-import %.demods;
-
-
-select distinct country from demods.ds;

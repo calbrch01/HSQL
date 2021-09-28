@@ -1,2 +1,0 @@
-declare subs as table( integer subid,string subname);
-declare marks as table( integer subid,real marks,integer testNumber);

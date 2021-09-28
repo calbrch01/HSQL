@@ -1,6 +1,0 @@
-rec = CREATE LAYOUT(
-        integer customerid,string customername,string contactName,
-        string address,string city ,string postalcode,string country
-);
-
-select * from '~hsql::W3SQL.csv' type CSV LAYOUT rec limit 3 offset 1;
