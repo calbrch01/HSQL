@@ -1,3 +1,0 @@
-__ecl 'a:=DATASET([{1},{2}],{integer col})';
-map a table (col integer);
-OUTPUT  a;

@@ -1,9 +1,0 @@
-import commonsimple;
-
-ind = select PersonID,age from commonsimple.simpleTable where PersonID<5;
-
-output ind;
-
-result = predict from ind method DBScan option minPts=2,eps=0.1;
-
-output result;

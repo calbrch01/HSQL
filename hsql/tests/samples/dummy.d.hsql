@@ -1,3 +1,0 @@
-map export a INTEGER;
-map export someTable TABLE ( col INTEGER,col2 STRING);
-map export someTable2 TABLE (col3 INTEGER,col4 STRING);
