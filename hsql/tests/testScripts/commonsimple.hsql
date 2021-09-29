@@ -1,9 +1,0 @@
-
-simpleLayout = create layout (PersonID integer,name string, age integer, wage real, hasHouse integer);
-simpleTable = select * from '~hsql::testfiles::simpledata.csv' layout simpleLayout;
-
-
-output simpleTable;
-
-
-export simpleLayout,simpleTable;

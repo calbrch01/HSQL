@@ -1,6 +1,0 @@
-import dummy;
-p = select col,col3 from dummy.someTable inner join dummy.someTable2 on dummy.someTable.col1 = dummy.someTable2.col2;
-t = select col2 from dummy.someTable;
-s = select * from p;
-//q = train from dummy.someTable,dummy.someTable2 method LinearRegression;
-//r = predict q from p;

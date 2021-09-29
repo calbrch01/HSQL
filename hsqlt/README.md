@@ -26,7 +26,7 @@ cd ./hsqlt/
 
 ### To install the Visual Studio Code Extension:
 
-In your VS-Code Explorer, right-click on the latest version of the extension `hsqlt-extension-0.0.34.vsix` and look for 'Install from VSIX', navigate to it. Once you click on it you should see the following message on the bottom-right side of your VS-Code.
+In your VS-Code Explorer, right-click on the latest version of the extension `hsqlt-extension-0.0.35.vsix` and look for 'Install from VSIX', navigate to it. Once you click on it you should see the following message on the bottom-right side of your VS-Code.
 
 ```
 Completed installing hsqlt-extension extension from VSIX. Please reload Visual Studio Code to enable it.

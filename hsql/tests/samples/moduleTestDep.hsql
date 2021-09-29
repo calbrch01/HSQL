@@ -1,3 +1,0 @@
-import moduleTestInit;
-lay = create layout (col1 integer,col2 integer);
-export lay;
