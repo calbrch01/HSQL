@@ -1,0 +1,99 @@
+{
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "scopeName": "source.hsql",
+    "patterns": [
+        {
+            "include": "#commentDoubleDash"
+        },
+        {
+            "include": "#commentStandard"
+        },
+        {
+            "include": "#commentBlock"
+        },
+        {
+            "include": "#aggregates"
+        },
+        {
+            "match": "(?i)(method|file)\\b",
+            "name": "support.function"
+        },
+        {
+            "include": "#fileTypes"
+        },
+        {
+            "include": "#numbers"
+        },
+        {
+            "include": "#strings"
+        },
+        {
+            "include": "#singleQuotedString"
+        },
+        {
+            "include": "#scope"
+        },
+        {
+            "include": "#keywords"
+        },
+        {
+            "include": "#variable"
+        },
+        {
+            "include": "#operators"
+        }
+    ],
+    "repository": {
+        "scope": {
+            "match": "(?i)(export|shared)",
+            "name": "keyword.control.export"
+        },
+        "aggregates": {
+            "match": "(?i)(MAX|MIN|COUNT|AVG|TRIM)(?=\\()",
+            "name": "support.function"
+        },
+        "numbers": {
+            "match": "[0-9]+(\\.[0-9]*)?",
+            "name": "constant.numeric"
+        },
+        "operators": {
+            "match": "[<][>]?|[>][=]?|[<][=]|[!][=]|[!=+-/*]",
+            "name": "keyword.operator"
+        },
+        "variable": {
+            "match": "[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*",
+            "name": "variable"
+        },
+        "fileTypes": {
+            "match": "(?i)(csv|thor|xml|json)",
+            "name": "constant.language"
+        },
+        "commentDoubleDash": {
+            "comment": "Use this to explain the function of the rule, if necessary",
+            "name": "comment.line.double-dash",
+            "match": "--.*$"
+        },
+        "commentStandard": {
+            "comment": "Standard comment",
+            "name": "comment.line.double-slash",
+            "match": "//.*$"
+        },
+        "commentBlock": {
+            "begin": "/[*]",
+            "end": "[*]/",
+            "name": "comment.block"
+        },
+        "keywords": {
+            "match": "(?i)(select|from|on|as|plot|import|output|title|train|predict|group|by|order|join|declare|title|type|where|distribute|write|to|create|module|layout|function|begin|end)\\b",
+            "name": "keyword.other"
+        },
+        "strings": {
+            "match": "\"([^\\\"]|\\.)*\"",
+            "name": "string"
+        },
+        "singleQuotedString": {
+            "match": "'([^\\']|(\\'))*'",
+            "name": "string"
+        }
+    }
+}

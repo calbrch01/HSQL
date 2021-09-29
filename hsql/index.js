@@ -82,8 +82,6 @@ if (require.main === module) {
     }
 }
 
-
-
 /**
  * Conversion file, and write/print
  * @param {path.ParsedPath} inputFilePath Input file name

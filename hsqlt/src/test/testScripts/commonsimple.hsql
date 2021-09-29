@@ -1,0 +1,15 @@
+
+export simpleLayout = layout (
+    integer PersonID ,
+    string name ,
+    integer age ,
+    real wage ,
+    integer hasHouse 
+       );
+export simpleTable = select * from '~hsql::testfiles::simpledata.csv'  type csv layout simpleLayout offset 1;
+
+
+-- output simpleTable;
+
+
+-- export simpleLayout,simpleTable;

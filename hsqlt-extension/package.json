@@ -1,0 +1,102 @@
+{
+    "name": "hsqlt-extension",
+    "displayName": "hsqlt-extension",
+    "description": "",
+    "version": "0.0.35",
+    "publisher": "Testing",
+    "engines": {
+        "vscode": "^1.56.0"
+    },
+    "repository": {
+        "url": "git@github.com:hpcc-systems/HSQL.git",
+        "type": "git"
+    },
+    "prettier": {
+        "tabWidth": 4,
+        "semi": true,
+        "singleQuote": true,
+        "arrowParens": "avoid",
+        "printWidth": 100
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "activationEvents": [
+        "onCommand:hsqlt.compile",
+        "onLanguage:hsql"
+    ],
+    "main": "./dist/client.js",
+    "contributes": {
+        "commands": [
+            {
+                "command": "hsqlt.compile",
+                "title": "Compile a HSQL Program",
+                "category": "HSQL",
+                "when": "editorLangId == hsql"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "hsql",
+                "scopeName": "source.hsql",
+                "path": "./syntaxes/hsql.tmLanguage.json",
+                "embeddedLanguages": {
+                    "source.sql": "sql"
+                }
+            }
+        ],
+        "snippets": [
+            {
+                "language": "hsql",
+                "path": "./snippets/snippets.json"
+            }
+        ],
+        "languages": [
+            {
+                "id": "hsql",
+                "aliases": [
+                    "HSQL"
+                ],
+                "extensions": [
+                    ".hsql",
+                    ".dhsql"
+                ],
+                "configuration": "./hsql-language-configuration.json"
+            }
+        ]
+    },
+    "scripts": {
+        "postinstall": "npm run installClient",
+        "installClient": "cd client && npm i",
+        "postinstallClient": "npm run installServer",
+        "installServer": "cd server && npm i",
+        "prepackage": "npm run compile-prod && npm unlink hsqlt",
+        "package": "vsce package --baseContentUrl https://github.com/hpcc-systems/HSQL/tree/dev/hsqlt-extension",
+        "postpackage": "npm link hsqlt",
+        "compile-prod": "webpack --mode production --devtool hidden-source-map",
+        "compile": "webpack",
+        "watch": "webpack --watch",
+        "pretest": "npm run compile && npm run lint",
+        "lint": "eslint client/src server/src --ext ts",
+        "test": "node ./out/test/runTest.js"
+    },
+    "devDependencies": {
+        "@types/glob": "^7.1.3",
+        "@types/mocha": "^8.2.2",
+        "@types/node": "14.x",
+        "@types/vscode": "^1.56.0",
+        "@typescript-eslint/eslint-plugin": "^4.26.0",
+        "@typescript-eslint/parser": "^4.26.0",
+        "eslint": "^7.27.0",
+        "glob": "^7.1.7",
+        "mocha": "^8.4.0",
+        "shebang-loader": "^0.0.1",
+        "ts-loader": "^9.2.3",
+        "tsconfig-paths-webpack-plugin": "^3.5.1",
+        "typescript": "^4.3.2",
+        "vsce": "^1.96.1",
+        "vscode-test": "^1.5.2",
+        "webpack": "^5.38.1",
+        "webpack-cli": "^4.7.0"
+    }
+}

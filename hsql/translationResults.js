@@ -1,4 +1,3 @@
-
 /**
  * Returns the state of translation
  */
@@ -61,8 +60,6 @@ class translationResults {
             return { line, column, msg }
         })
     }
-
-
 }
 
 module.exports.translationResults = translationResults

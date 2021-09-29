@@ -5,14 +5,60 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "playground",
+            "type": "ecl",
+            "request": "launch",
+            "protocol": "http",
+            "serverAddress": "play.hpccsystems.com",
+            "port": 8010,
+            "targetCluster": "hthor",
+            "rejectUnauthorized": true,
+            "resultLimit": 100,
+            "timeoutSecs": 60,
+            "user": "hsql_team",
+            "password": ""
+        },
+        {
+            "name": "localhost",
+            "type": "ecl",
+            "request": "launch",
+            "protocol": "http",
+            "serverAddress": "localhost",
+            "port": 8010,
+            "targetCluster": "hthor",
+            "rejectUnauthorized": true,
+            "resultLimit": 100,
+            "timeoutSecs": 60,
+            "user": "hsql_team",
+            "password": ""
+        },
+        {
             "type": "antlr-debug",
             "request": "launch",
             "name": "Debug Grammar with Test Input",
-            "grammar":"${file}",
+            "grammar": "grammar/HSQL.g4",
             "input": "input.hsql",
             "startRule": "program",
+            "visualParseTree": true
+        },
+        {
+            "type": "antlr-debug",
+            "request": "launch",
+            "name": "Debug Declarations Grammar with Test Input",
+            "grammar": "grammar/HSQL.g4",
+            "input": "a.dhsql",
+            "startRule": "declarations",
+            "visualParseTree": true
+        },
+        {
+            "type": "antlr-debug",
+            "request": "launch",
+            "name": "Test Rules",
+            "grammar": "grammar/HSQL.g4",
+            // this file does not exist by default - create it as required
+            "input": "input.fragment",
+            "startRule": "numericExpression",
             "visualParseTree": true,
-            // "printParseTree": true
         }
     ]
 }

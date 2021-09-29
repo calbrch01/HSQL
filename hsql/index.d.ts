@@ -7,51 +7,62 @@
  *~ file should be 'super-greeter/index.d.ts'
  */
 
-import {ParsedPath} from 'path';
+import { ParsedPath } from "path";
 
-
-
-export interface IdentifierNode{
-    name:string;
-    type:string;
-    children?:Array<IdentifierNode>;
+export interface IdentifierNode {
+  name: string;
+  type: string;
+  children?: Array<IdentifierNode>;
 }
 
-export interface IdentifierStoreResult{
-    found:boolean;
-    canGetTypes:boolean;
-    result?:IdentifierNode;
+export interface IdentifierStoreResult {
+  found: boolean;
+  canGetTypes: boolean;
+  result?: IdentifierNode;
 }
 
-
-export interface IdentifierStore{
-    globalIdentifierStore:Array<IdentifierNode>;
-    search(name:string):IdentifierStoreResult;
-    searchIdentifier(name:string,typeName:string):IdentifierStoreResult;
+export interface IdentifierStore {
+  globalIdentifierStore: Array<IdentifierNode>;
+  search(name: string): IdentifierStoreResult;
+  searchIdentifier(name: string, typeName: string): IdentifierStoreResult;
 }
 
-export interface translationResults{
-    translated:string[];
-    identifierInformation?:IdentifierStore;
-    hasErrors():boolean;
-    hasWarnings():boolean;
-    getIssues():string[];
-    getIssuesNumber():number;
-    getWarningsList():translationResultsIssue[];
-    getErrorsList():translationResultsIssue[];
+export interface translationResults {
+  translated: string[];
+  identifierInformation?: IdentifierStore;
+  hasErrors(): boolean;
+  hasWarnings(): boolean;
+  getIssues(): string[];
+  getIssuesNumber(): number;
+  getWarningsList(): translationResultsIssue[];
+  getErrorsList(): translationResultsIssue[];
 }
 
-export interface translationResultsIssue{
-    line:number;
-    column:number;
-    msg:string;
+export interface translationResultsIssue {
+  line: number;
+  column: number;
+  msg: string;
 }
-export interface parseOptions{
-    //write dependencies
-    d:boolean;
-    //skip warnings
-    w:boolean;
+export interface parseOptions {
+  //write dependencies
+  d: boolean;
+  //skip warnings
+  w: boolean;
 }
-export function toECL(inputFilePath:ParsedPath, outputFilePath?:ParsedPath,importStack?:string[],options?:parseOptions):void;
-export function fileToECL(inputFilePath:ParsedPath,importStack?:string[],options?:parseOptions):Promise<translationResults>;
-export function stringToECL(data:string,pathInfo?:ParsedPath,importStack?:string[],options?:parseOptions):Promise<translationResults>;
+export function toECL(
+  inputFilePath: ParsedPath,
+  outputFilePath?: ParsedPath,
+  importStack?: string[],
+  options?: parseOptions
+): void;
+export function fileToECL(
+  inputFilePath: ParsedPath,
+  importStack?: string[],
+  options?: parseOptions
+): Promise<translationResults>;
+export function stringToECL(
+  data: string,
+  pathInfo?: ParsedPath,
+  importStack?: string[],
+  options?: parseOptions
+): Promise<translationResults>;

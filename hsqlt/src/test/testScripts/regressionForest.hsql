@@ -1,0 +1,15 @@
+import %.commonsimple;
+
+ind = select age from commonsimple.simpleTable where PersonID<5;
+dep = select wage from commonsimple.simpleTable where PersonID<5;
+
+output ind;
+output dep;
+
+test = select age from commonsimple.simpleTable where PersonID>4;
+
+model = train from ind,dep  method RegressionForest add order;
+
+result = predict model from test add order;
+
+output result;

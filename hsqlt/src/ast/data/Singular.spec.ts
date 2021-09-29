@@ -1,12 +1,13 @@
 import { assert } from 'chai';
-import { dtype, dtypes, Singular } from './Singular';
+import { SingularDataTypes, Singular } from './Singular';
+import { SingularDataType } from '../../misc/ast/SingularDataType';
 
 describe('Singular values', function () {
-    const types: dtypes[] = ['BOOLEAN', 'INTEGER', 'REAL', 'DECIMAL', 'STRING', 'QSTRING'];
+    const types: SingularDataTypes[] = ['BOOLEAN', 'INTEGER', 'REAL', 'DECIMAL', 'STRING', 'QSTRING'];
 
     for (const x of types) {
-        it(`for ${x}`, async () => {
-            const y = new Singular(dtype[x]);
+        it(`For ${x}`, async () => {
+            const y = new Singular(SingularDataType[x]);
             assert.strictEqual(y.getDataType(), x);
         });
     }

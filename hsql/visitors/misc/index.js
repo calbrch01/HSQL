@@ -36,7 +36,6 @@ class GeneralIdentifier {
         this.name = newName;
     }
 
-
     /**
      * Generic terminal search function
      * @param {String} identifierName 
@@ -77,8 +76,6 @@ class StandardIdentifier extends GeneralIdentifier {
     addChildren(child) {
         this.children.push(child);
     }
-
-
 
     /**
      * Get the child segments
@@ -183,8 +180,6 @@ class TableIdentifier extends LayoutIdentifier {
     }
 }
 
-
-
 /**
  * Table column names, or constant, or field elements
  */
@@ -210,7 +205,6 @@ class ModelIdentifier extends ColumnNameIdentifier {
     }
 }
 
-
 /**
  * Represents actions
  * Is not exported as its not very useful
@@ -224,9 +218,7 @@ class ActionIdentifier extends GeneralIdentifier {
         super(name);
         this.type = "action";
     }
-
 }
-
 
 /**
  * Type store class
@@ -282,7 +274,6 @@ class IdentifierStore {
          }, true);
     }
 
-
     /**
      * 
      * @param {String} name qualified identifier being search
@@ -316,10 +307,7 @@ class IdentifierStore {
             }
         }
         return new IdentifierStoreResult();
-
     }
-
-
 
     /**
      * Search by alias
@@ -351,7 +339,6 @@ class IdentifierStore {
         return new IdentifierStoreResult();
     }
 
-
     /**
      * Add a reserved ML/else model variable
      * @param {String} data 
@@ -374,7 +361,6 @@ class IdentifierStore {
 
         this.errorListener.syntaxErrorAbort(`Could not reserve variable for \'${temp}\'`,ctx);
     }
-
 
     /**
      * Create new action identifier
@@ -417,7 +403,6 @@ class IdentifierStore {
         return searchResult;
     }
 
-
     get vars() {
         return this.globalIdentifierStore;
     }
@@ -437,7 +422,6 @@ class IdentifierStore {
 
         // return []
     }
-
 
     /**
      * Add identifier info for a single identifier
@@ -463,7 +447,6 @@ class IdentifierStore {
         return this;
     }
 
-
     /**
      * Assert that it exists, else throw an error
      * @param {String} qualifiedIdentifier 
@@ -476,8 +459,6 @@ class IdentifierStore {
         }
         return true;
     }
-
-
 }
 
 /**
@@ -519,10 +500,7 @@ class VisitorExchangeObject {
         this.postTerms = post;
         this.type = type;
     }
-
 }
-
-
 
 //Should not be used, only as templates for the classes
 exports.GeneralIdentifier = GeneralIdentifier;

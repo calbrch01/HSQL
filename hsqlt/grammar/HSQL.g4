@@ -1,177 +1,271 @@
 grammar HSQL;
 
-//Array of identifiers, and imports
-@parser::members {
-  //Nothing here anymore
+@header {
+// for the join clause type
+import {SelectJoinType} from '../ast/SelectHelpers';
+import {SingularDataType} from '../ast/SingularDataType';
+import {FileOutputType} from '../ast/FileOutputType';
+import {VariableVisibility} from '../ast/VariableVisibility';
+// import {FunctionArgument,FunctionArgumentType} from '../ast/FunctionArgumentType';
+import {QualifiedIdentifier} from '../ast/QualifiedIdentifier';
+
+
 }
 
-program: (completestmt)* EOF;
+program
+	locals[
+	needML:boolean=false,needPlots:boolean=false,actionCount:number=0,willWrapModule:boolean=false,insertDedupMacro:boolean=false
+]: (completestmt)* EOF;
 
 completestmt: stmt SEMICOLON;
 
+// the definition statement's willWrapModule set the willWrap for the program accordingly it is done
+// this indirect way so that modules within the program do not interfere with program's
+// willWrapModule
 stmt:
-	actionStmt // actions like output and plot
-	| implicitActionStmt // a definition that is an action
-	| assignStmt // assignment
-	| importStmt // importing
-	| typeDefStmt // type definition
-	| inlineStmt; // inline ECL statement
-assignStmt:
-	EXPORT? label = IDENTIFIER '=' expr; //assign and optionally statement
+	definitionStmt {$definitionStmt.ctx.willWrapModule && ($program::willWrapModule = true) 
+		}
+	| actionStmt {$program::actionCount++;}
+	| importStmt
+	| functionStmt;
 
-actionStmt: outputStmt | plotStmt;
-
-typeDefStmt: MAP typeDefExport? mapExportable;
-
-typeDefExport: EXPORT;
-
-mapExportable: tableExport | layoutExport | identifierExport;
-
-tableExport: (
-		IDENTIFIER TABLE '(' identifierExport (
-			',' identifierExport
-		)*
-	) ')';
-
-layoutExport: (
-		IDENTIFIER LAYOUT '(' identifierExport (
-			',' identifierExport
-		)*
-	) ')';
-
-identifierExport: IDENTIFIER dataType;
-
-importStmt: IMPORT IDENTIFIER (AS alias = IDENTIFIER)?;
-
-// TODO Add insert and updates
-implicitActionStmt: selectStmt;
+// the `scope` sets the local
+definitionStmt
+	locals[willWrapModule:boolean=false]:
+	scope label = IDENTIFIER EQ expr;
 
 expr:
-	simpleIdentifier // another variable
-	| selectStmt
-	| mlStmt
+	functionCall
+	| definition
+	| actionStmt
 	| layoutStmt
-	| inlineStmt;
+	| moduleStmt
+	| mlStmt;
+// | transformStmt | mlStmt | moduleStmt; createStmt: layoutStmt | moduleStmt;
 
-simpleIdentifier: qualifiedIdentifier;
+functionCall: definition BSTART_ functionCallArgs BEND_;
+functionCallArgs: attribute (COMMA_ attribute)* |;
 
-//All the varieties of output in ECl need different rules
-outputStmt:
-	OUTPUT label = IDENTIFIER outputVariant? outputUpdateOption? outputExpireOption?;
+functionStmt:
+	FUNCTION fname = IDENTIFIER BSTART_ functionArgs BEND_ CURLY_BSTART_ (
+		definitionStmt SEMICOLON
+	)* returnStmt SEMICOLON CURLY_BEND_;
 
-//Note for future: Can add record formats to the rules below
-outputVariant: namedOutputStatement | fileOutputStatement;
+returnStmt: RETURN definition;
 
-namedOutputStatement: TITLE string;
+functionArgs: functionArg (COMMA_ functionArg)* |;
 
-fileOutputStatement:
-	FILE fileName = string fileType = IDENTIFIER;
+functionArg:
+	colDef							# functionDefaultArgument
+	| LAYOUT definition IDENTIFIER	# functionLayoutArgument;
 
-outputUpdateOption: UPDATE | OVERWRITE;
+// todo 21/07 moduleStmt: MODULE /* CURLY_BSTART_ CURLY_BEND_ */;
 
-outputExpireOption: EXPIRE number;
+moduleStmt:
+	MODULE CURLY_BSTART_ (definitionStmt SEMICOLON)* CURLY_BEND_;
 
+layoutStmt: LAYOUT BSTART_ layoutContent BEND_;
+
+layoutContent: colDefs;
+
+actionStmt:
+	selectStmt
+	| outputStmt
+	| plotStmt
+	| literal
+	| fileOutputStmt;
+
+/* IMPORT STATEMENT
+ */
+
+importStmt: IMPORT overDefinition (AS IDENTIFIER)?;
+
+// $.^ AS upperDir
+
+/* OUTPUT STATEMENT
+ */
+
+outputStmt: OUTPUT attribute namedOutput? OVERWRITE?;
+
+fileOutputStmt:
+	WRITE definition (TO FILE?)? TYPE? fileType STRING OVERWRITE?;
+
+// note that THOR output is default
+fileType
+	locals[fileOutputType:FileOutputType=FileOutputType.THOR]:
+	CSV {$fileOutputType=FileOutputType.CSV}
+	| JSON {$fileOutputType=FileOutputType.JSON}
+	| THOR?
+	| XML {$fileOutputType=FileOutputType.XML};
+attribute:
+	definition
+	| BSTART_ selectStmt BEND_
+	| literal
+	| functionCall;
+namedOutput: (TITLE)? IDENTIFIER;
+// toFile: (FILE)? STRING (OVERWRITE)?;
+
+/* PLOT STATEMENT
+ */
 plotStmt:
-	PLOT FROM labelIdentifier = qualifiedIdentifier TITLE titleIdentifier = STRING (
-		TYPE plottype = IDENTIFIER
-	)?;
+	{$program::needPlots=true} PLOT FROM? fromdef = definition (
+		TITLE
+	)? title = IDENTIFIER (TYPE)? typePlot = IDENTIFIER;
 
-mlStmt: train | predict | elementaryML;
+// /* MODULE STATEMENT */
 
-// This is a standard get model operation
+// /* ML STATEMENT SAME AS v0 */ 
+mlStmt:
+	{$program::needML=true} train
+	| predict
+	| {$program::needML=true} elementaryML;
+
+// train: TRAIN FROM ind = definition COMMA_ dep = definition ( COMMA_ test = definition )? METHOD
+// method = IDENTIFIER trainAddOrderSegment OPTION? trainOptions;
+
+// This is a standard get model operation 
 train:
-	TRAIN FROM ind = qualifiedIdentifier ',' dep = qualifiedIdentifier (
-		',' test = qualifiedIdentifier
-	)? METHOD method = IDENTIFIER (OPTION trainOptions)?;
+	TRAIN FROM ind = definition COMMA_ dep = definition METHOD method = IDENTIFIER
+		trainAddOrderSegment OPTION? trainOptions;
 
-// This variant of ML is useful in DBScan where a separate model isnt trained
+// 
+trainAddOrderSegment
+	locals[willAddOrder:boolean=false]:
+	ADD ORDER {$willAddOrder=true}
+	|;
+// // This variant of ML is useful in DBScan where a separate model isnt trained 
 elementaryML:
-	PREDICT FROM ind = qualifiedIdentifier (
-		',' ind2 = qualifiedIdentifier
-	)? METHOD method = IDENTIFIER (OPTION trainOptions)?;
-
-trainOptions: (trainOption) ( ',' trainOption)*;
-
-trainOption: IDENTIFIER '=' trainValue;
-
-trainValue: number | string | qualifiedIdentifier;
+	PREDICT FROM ind = definition METHOD method = IDENTIFIER trainAddOrderSegment OPTION?
+		trainOptions;
 
 predict:
-	PREDICT model = qualifiedIdentifier FROM ind = qualifiedIdentifier (
-		METHOD method = IDENTIFIER
-	)?;
+	PREDICT model = definition FROM ind = definition METHOD? IDENTIFIER? trainAddOrderSegment;
+trainOptions: trainOption ( COMMA_ trainOption)* |;
 
+trainOption: IDENTIFIER AS trainValue;
+
+// TAG put expr
+trainValue: expr;
+
+// SELECT STATEMENT skipping the having for later
 selectStmt:
-	SELECT columns = selectColumns FROM fromclause = selectFromClause (
-		WHERE whereclause = selectWhereClause
-	)? (GROUP BY groupbyclause = groupByClause)? (
-		ORDER BY orderbyclause = orderByClause
-	)? (joinClause)?;
+	SELECT distinctClause? selectColumns selectFromClause (
+		WHERE selectWhereClause
+	)? selectGroupByClause? (ORDER BY orderByClause)? (
+		DISTRIBUTE BY distributeByClause
+	)? /* (HAVING selectHavingClause)? */ limitOffsetClause;
 
-joinClause: (joinType)? JOIN joinidentifier = qualifiedIdentifier ON (
-		leftrecset = qualifiedIdentifier joincondition = comparisonOperator rightrecset =
-			qualifiedIdentifier
-	);
+// a set of identifiers -> used to make the hash32 set
+distributeByClause: idSet;
 
-joinType: (INNER) | ((LEFT | RIGHT | FULL) (OUTER | ONLY));
+distinctClause: DISTINCT {$program::insertDedupMacro=true};
+// selectHavingClause: booleanExpression;
+selectGroupByClause: GROUP BY groupByClause;
 
-selectColumns: (
-		(aggregatedSelectColumn | selectColumn) (
-			',' (aggregatedSelectColumn | selectColumn)
-		)*
-	);
+idSet: IDENTIFIER ( COMMA_ IDENTIFIER)*;
+selectColumns: selectCol ( COMMA_ selectCol)*;
 
-// Allow for aggregates
-aggregatedSelectColumn:
-	aggregate = IDENTIFIER '(' selectColumn ')';
+selectCol: col;
 
-//Allow for optional data types
-selectColumn:
-	wild = '*'
-	| column = IDENTIFIER (
-		AS (type = dataType)? alias = IDENTIFIER
-	)?;
+// columns `can` be definitions. This is very helpful in resolving cases of multi-table selects
+col:
+	IDENTIFIER BSTART_ MULTIPLY BEND_ aliasingCol?				# selectAggregatedEverythingCol
+	| IDENTIFIER BSTART_ column = IDENTIFIER BEND_ aliasingCol?	# selectAggregatedOneCol
+	| IDENTIFIER aliasingCol?									# selectOneCol
+	| MULTIPLY													# wildAll;
+/*
+ * Allow access to the column it was applied to. this should be helpful while generating the
+ * AST/code
+ */
+aliasingCol: AS alias = IDENTIFIER;
 
-selectFromClause:
-	nestedSelectStmt
-	| selectTableName
-	| selectDataset;
+/* note that from can actually have multiple sources. However, while dealing with codegen, we may
+ need to split the cases for 1 table and 1+ tables
+ */
+selectFromClause: FROM (selectFromRef (COMMA_ selectFromRef)*);
 
-nestedSelectStmt: '(' selectStmt ')';
-selectDataset:
-	str = STRING LAYOUT qualifiedIdentifier (
-		TYPE selectDatasetFile
-	)?;
-selectDatasetFile: IDENTIFIER;
+// here's a big issue -> antlr does not like mutually left recursive grammar. However, direct left
+// recursion works.
 
-selectTableName: qualifiedIdentifier;
+// the selectfromtablereference needs a big change due to this
+selectFromRef:
+	BSTART_ selectStmt BEND_ selectAlias									# selectFromDerivedTable
+	| definition selectAlias?												# selectFromDefinition
+	| STRING TYPE? fileType LAYOUT definition selectAlias?					# selectFromDataset
+	| BSTART_ selectFromRef (COMMA_ selectFromRef)* BEND_					# selectBracketedFromTable
+	| selectFromRef joinOperator selectFromRef joinConstraint selectAlias?	# selectJoinedTable;
+// joinconstraint is mandatory or else the selectAlias will never come up, the selectFromRef will consume it
+selectAlias: AS? IDENTIFIER;
 
+// join_operator: COMMA_ | (LEFT OUTER? | RIGHT OUTER? | FULL OUTER? | INNER | CROSS)? JOIN;
+joinOperator
+	locals[ joinType:SelectJoinType=SelectJoinType.INNER]:
+	(
+		LEFT OUTER? {$joinType=SelectJoinType.LEFT;}
+		| RIGHT OUTER? {$joinType=SelectJoinType.RIGHT;}
+		| FULL OUTER? {$joinType=SelectJoinType.OUTER;}
+		| INNER
+		/* | CROSS {$joinType=SelectJoinType.CROSS;} */
+	)? JOIN;
+// nestedSelectStmt: BSTART_ selectStmt BEND_;
 selectWhereClause: booleanExpression;
 
-orderByClause: sortItem (',' sortItem)*;
+joinConstraint: ON joinSpecification;
+//we limit it to qualifiedidentifiers only
 
+//the clause is allowed to be an entire join condition *but*
+joinSpecification:
+	leftrecset = definition comparisonOperator rightrecset = definition;
+//joinSpecification: ON booleanExpression;
+
+groupByClause: idSet;
+orderByClause: sortItem (COMMA_ sortItem)*;
 sortItem: ascSortItem | descSortItem;
+ascSortItem: IDENTIFIER (ASC)?;
+descSortItem: IDENTIFIER DESC;
+// joinClause: joinType JOIN joinidentifier = definition ON ( leftrecset = definition joincondition
+// = logicalOperator rightrecset = definition );
 
-ascSortItem: expression (ASC)?;
-descSortItem: expression (DESC);
-// sortItem: expression ordering = (ASC | DESC)?;
+// joinType: INNER? # innerJoin | (specifier = (LEFT | RIGHT | FULL) OUTER?) # outerJoin |
+// (specifier = FULL OUTER) # fullOuterJoin;
 
-groupByClause: qualifiedIdentifier;
+limitOffsetClause: (LIMIT INTEGER_VALUE)? offsetClause?;
+offsetClause: OFFSET INTEGER_VALUE;
 
-layoutStmt: CREATE LAYOUT '(' layoutContent ')';
+// operators: comparisonOperator | arithmeticOPERATOR | logicalOperator;
 
-layoutContent: identifierExport (',' identifierExport)*;
-
-inlineStmt: NCOMPILE STRING | ECL_SNIPPETS;
-
-qualifiedIdentifier: IDENTIFIER ('.' IDENTIFIER)*;
-
-dataType:
-	DECIMAL_TYPE
-	| REAL_TYPE
+comparisonOperator: EQ | NEQ | LT | LTE | GT | GTE;
+// arithmeticOPERATOR: PLUS | SUBSTRACT | MULTIPLY | DIVIDE | MODULO;
+logicalOperator: AND | OR | NOT | IN | BETWEEN | EXISTS;
+literal
+	locals[dt:SingularDataType=SingularDataType.INTEGER]:
+	number {$dt = $number.ctx.dt}
+	| string {$dt = SingularDataType.STRING}
+	| booleanValue {$dt = SingularDataType.BOOLEAN};
+// todo: More precise defination
+dataType
+	locals[ dt:SingularDataType=SingularDataType.INTEGER]:
+	REAL_TYPE {$dt=SingularDataType.REAL}
 	| INTEGER_TYPE
-	| VARSTRING_TYPE
-	| STRING_TYPE;
+	| DECIMAL_TYPE {$dt=SingularDataType.REAL}
+	| VARSTRING_TYPE {$dt=SingularDataType.STRING}
+	| STRING_TYPE {$dt=SingularDataType.STRING}
+	| BOOLEAN {$dt=SingularDataType.BOOLEAN};
+alterOperator: ADD | DROP | MODIFY;
+
+// use % instead of $ -> that operator is used in ECL SNIPPETS for now
+overDefinition: overDefinitionRoot ('.' overDefinitionTail)*;
+
+overDefinitionRoot:
+	IDENTIFIER	# normalIdentifier
+	| MODULO	# rootIdentifier
+	| XOR		# parentIdentifier;
+
+overDefinitionTail:
+	IDENTIFIER	# normalTailIdentifier
+	| XOR		# parentTailIdentifier;
+
+definition: IDENTIFIER ('.' IDENTIFIER)*;
 
 expression: booleanExpression;
 
@@ -181,106 +275,204 @@ booleanExpression:
 	| left = booleanExpression operator = AND right = booleanExpression	# logicalBinary
 	| left = booleanExpression operator = OR right = booleanExpression	# logicalBinary;
 
-predicate[ParserRuleContext value]:
+predicate[ParserRuleContext ctx]:
 	comparisonOperator right = valueExpression							# comparison
 	| NOT? BETWEEN lower = valueExpression AND upper = valueExpression	# between
-	| NOT? IN '(' valueExpression (',' valueExpression)* ')'			# inList;
+	| NOT? IN BSTART_ valueExpressionList BEND_							# inList;
 
+valueExpressionList: valueExpression (COMMA_ valueExpression)*;
 valueExpression: primaryExpression # valueExpressionDefault;
 
+// to use later - expression
+/* derivedExpressions: IDENTIFIER BSTART_ fargs BEND_ ; //function args
+ 
+ fargs: expression (COMMA_ expression)* |;
+ */
+
 primaryExpression:
-	IDENTIFIER				# identifier
-	| number				# numericLiteral
-	| booleanValue			# booleanLiteral
-	| string				# stringLiteral
-	| '(' expression ')'	# parenthesizedExpression;
-
-number:
-	DECIMAL_VALUE	# decimalLiteral
-	| DOUBLE_VALUE	# doubleLiteral
-	| INTEGER_VALUE	# integerLiteral;
-
-string:
-	STRING								# basicStringLiteral
-	| UNICODE_STRING (UESCAPE STRING)?	# unicodeStringLiteral;
+	IDENTIFIER					# identifierLiteral
+	| number					# numericLiteral
+	| booleanValue				# booleanLiteral
+	| string					# stringLiteral
+	| BSTART_ expression BEND_	# parenthesizedExpression;
 
 booleanValue: TRUE | FALSE;
 
-//For joins
-OUTER: O U T E R;
-ONLY: O N L Y;
+number
+	locals[dt:SingularDataType=SingularDataType.INTEGER]:
+	DECIMAL_VALUE {$dt = SingularDataType.DECIMAL}	# decimalLiteral
+	| DOUBLE_VALUE {$dt=SingularDataType.REAL}		# doubleLiteral
+	| INTEGER_VALUE									# integerLiteral;
 
-///Data Types
+string:
+	STRING # basicStringLiteral
+	// not sure what to do with unicode yet
+	| UNICODE_STRING (UESCAPE STRING)? # unicodeStringLiteral;
+
+scope
+	locals[variableVisibility:VariableVisibility = VariableVisibility.DEFAULT]:
+	EXPORT {$variableVisibility = VariableVisibility.EXPORT,$definitionStmt::willWrapModule=true
+			}
+	| SHARED {$variableVisibility = VariableVisibility.DEFAULT,$definitionStmt::willWrapModule=true
+			}
+	|;
+
+//****************************************Parser Rules for definitions******************************************/
+declarations: (declaration SEMICOLON)* EOF;
+declaration:
+	DECLARE IDENTIFIER AS? TABLE BSTART_ colDefs BEND_		# tableDeclaration
+	| DECLARE IDENTIFIER AS? LAYOUT BSTART_ colDefs BEND_	# layoutDeclaration
+	| DECLARE IDENTIFIER AS? PLOT ON STRING					# plotDeclaration
+	| DECLARE IDENTIFIER AS? TRAIN STRING declarationModelType declarationModelOptions RETURN
+		tableDeclarationSegment WHERE STRING RETURN tableDeclarationSegment modelImportSegment
+		modelUseSegment //hi
+	# trainDeclaration
+	| DECLARE IDENTIFIER AS? PREDICT STRING declarationModelOptions RETURN tableDeclarationSegment
+		modelImportSegment modelUseSegment # oneShotTrainDeclaration;
+
+modelUseSegment
+	locals[useName:string|undefined,isInternal:boolean=true]:
+	BY definition {$useName=$definition.text;$isInternal=false}
+	|;
+declarationModelOptions:
+	WHERE BSTART_ declarationModelOption (
+		COMMA_ declarationModelOption
+	)* BEND_
+	|;
+
+modelImportSegment: IMPORT definition ( COMMA_ definition)* |;
+
+declarationModelOption: IDENTIFIER AS dataType;
+declarationModelType
+	locals[willDiscrete:boolean=false]:
+	INTEGER_TYPE {$willDiscrete=true}
+	| REAL_TYPE
+	|;
+
+tableDeclarationSegment:
+	TABLE BSTART_ colDefs BEND_	# fixedTableDeclaration
+	| ANYTABLE					# anyTableDeclaration;
+
+colDefs: colDef (COMMA_ colDef)*;
+colDef: dataType IDENTIFIER;
+
+//****************************************Lexer Rules******************************************/
+
+// comments -> channel 2, ws -> channel 1, main -> channel 0
+
+///Data Types  ******* Further 
+
 REAL_TYPE: R E A L;
-INTEGER_TYPE: I N T E G E R;
+INTEGER_TYPE: I N T (E G E R)?;
 DECIMAL_TYPE: D E C I M A L;
-VARSTRING_TYPE: V A R STRING;
+VARSTRING_TYPE: V A R STRING_TYPE;
 STRING_TYPE: S T R I N G;
+BOOLEAN: B O O L E A N;
+//DATE to be added
+
+// file types
+CSV: C S V;
+THOR: T H O R;
+XML: X M L;
+JSON: J S O N;
+
+WRITE: W R I T E;
 
 //Merge types
 UNSTABLE: U N STABLE;
 STABLE: S T A B L E;
+
+// Alter
+ANYTABLE: A N Y TABLE;
 TABLE: T A B L E;
+ALTER: A L T E R;
+TO: T O;
+ADD: A D D;
+DROP: D R O P;
+MODIFY: M O D I F Y;
 
+// Scope 
 EXPORT: E X P O R T;
+SHARED: S H A R E D;
 
-AND: A N D;
-AS: A S;
+// SORT
 ASC: A S C;
-// AVG: A V G;
-BETWEEN: B E T W E E N;
-BY: B Y;
-// COUNT: C O U N T;
 DESC: D E S C;
-DEPENDENT: D E P E N D E N T;
-FROM: F R O M;
+ORDER: O R D E R;
+DISTRIBUTE: D I S T R I B U T E;
+
+// Aggregation
 GROUP: G R O U P;
-IMPORT: I M P O R T;
+BY: B Y;
+// COUNT: C O U N T; AVG: A V G; SUM: S U M; MIN: M I N; MAX: M A X; TRIM: T R I M;
+
+TRAIN: T R A I N;
+PREDICT: P R E D I C T;
+PLOT: P L O T;
+OUTPUT: O U T P U T;
 OPTION: O P T I O N;
 OPTIONS: OPTION S;
 OVERWRITE: O V E R W R I T E;
 UPDATE: U P D A T E;
-IN: I N;
 ON: O N;
 INDEPENDENT: I N D E P E N D E N T;
 IDCOLUMN: I D C O L U M N;
-CREATE: C R E A T E;
-LAYOUT: L A Y O U T;
-TRAIN: T R A I N;
-FILE: F I L E;
-MAP: M A P;
-METHOD: M E T H O D;
-NOT: N O T;
-OR: O R;
-ORDER: O R D E R;
-OUTPUT: O U T P U T;
-PLOT: P L O T;
-PREDICT: P R E D I C T;
+
+// Transformations
 PROJECT: P R O J E C T;
 SELECT: S E L E C T;
+DECLARE: D E C L A R E;
+
+FROM: F R O M;
+TOP: T O P;
+// added
+WHERE: W H E R E;
+HAVING: H A V I N G;
+DISTINCT: D I S T I N C T;
+
+//For joins
+NATURAL: N A T U R A L;
+CROSS: C R O S S;
 JOIN: J O I N;
 INNER: I N N E R;
 LEFT: L E F T;
 RIGHT: R I G H T;
 FULL: F U L L;
-SUM: S U M;
+OUTER: O U T E R;
+ONLY: O N L Y;
+
+// Condition
+CASE: C A S E;
+
+// booleans
+TRUE: T R U E;
+FALSE: F A L S E;
+
+// Import
+IMPORT: I M P O R T;
+AS: A S;
+
+CREATE: C R E A T E;
+LAYOUT: L A Y O U T;
+FILE: F I L E;
+MAP: M A P;
+METHOD: M E T H O D;
+DEPENDENT: D E P E N D E N T;
 TITLE: T I T L E;
 EXPIRE: E X P I R E;
-
-//Writing tRue is not very pleasant to code
-TRUE: 'TRUE' | 'true' | 'True';
-FALSE: 'FALSE' | 'false' | 'False';
+LIMIT: L I M I T;
+OFFSET: O F F S E T;
+MODULE: M O D U L E;
+FUNCTION: F U N C T I O N;
+RETURN: R E T U R N;
 
 UESCAPE: U E S C A P E;
-WHERE: W H E R E;
 TYPE: T Y P E;
-NCOMPILE: '__' E C L;
+//PLOT
 
-//Greek question mark proof
-SEMICOLON: ';' | ';';
+SEMICOLON: [;;];
 
-comparisonOperator: EQ | NEQ | LT | LTE | GT | GTE;
-
+//operators
 EQ: '=';
 NEQ: '<>' | '!=';
 LT: '<';
@@ -288,7 +480,23 @@ LTE: '<=';
 GT: '>';
 GTE: '>=';
 
-STRING: '\'' ( '\\\'' | ~'\'' | '\'\'')* '\'';
+PLUS: '+';
+SUBSTRACT: '-';
+MULTIPLY: '*';
+DIVIDE: '/';
+MODULO: '%';
+
+XOR: '^';
+
+AND: A N D;
+OR: O R;
+NOT: N O T;
+IN: I N;
+BETWEEN: B E T W E E N;
+EXISTS: E X I S T S;
+
+// data literals
+STRING: '\'' ( '\\\'' | ~'\'' /* | '\'\'' */)* '\'';
 
 UNICODE_STRING: 'U&\'' ( ~'\'' | '\'\'')* '\'';
 
@@ -305,12 +513,19 @@ DOUBLE_VALUE:
 	DIGIT+ ('.' DIGIT*)? EXPONENT
 	| '.' DIGIT+ EXPONENT;
 
-IDENTIFIER: (LETTER | '_') (LETTER | DIGIT | '_' | '@' | ':')*;
+IDENTIFIER: LETTER (LETTER | DIGIT | '_')*;
+COMMA_: ',';
+BSTART_: '(';
+BEND_: ')';
 
-ECL_SNIPPETS: '$' ~[$]* '$';
-SIMPLE_COMMENT: '--' ~[\r\n]* '\r'? '\n'? -> channel(HIDDEN);
+CURLY_BSTART_: '{';
+CURLY_BEND_: '}';
 
-SIMPLE_C_COMMENT: '//' ~[\r\n]* '\r'? '\n'? -> channel(HIDDEN);
+ECL_SNIPPETS: '_$' ~[$]* '$';
+SIMPLE_COMMENT: '--' ~[\r\n]* '\r'? '\n'? -> channel(2);
+//?
+
+SIMPLE_C_COMMENT: '//' ~[\r\n]* '\r'? '\n'? -> channel(2);
 
 BRACKETED_COMMENT: '/*' .*? '*/' -> channel(HIDDEN);
 
@@ -320,9 +535,10 @@ fragment DIGIT: [0-9];
 
 fragment LETTER: [a-zA-Z];
 
-fragment EXPONENT: 'E' [+-]? DIGIT+;
+fragment EXPONENT: E [+-]? DIGIT+;
 
-fragment A: [aA]; // match either an 'a' or 'A'
+// match either an 'a' or 'A'
+fragment A: [aA];
 fragment B: [bB];
 fragment C: [cC];
 fragment D: [dD];
@@ -348,4 +564,3 @@ fragment W: [wW];
 fragment X: [xX];
 fragment Y: [yY];
 fragment Z: [zZ];
-

@@ -1,21 +1,14 @@
 const antlr4 = require('antlr4');
-
 const path = require('path');
-
 
 // Sync functions
 const fs = require('fs');
+
 // Async easier
 const fsp = fs.promises;
-
 const { HSQLVisitorErrorListener, HSQLErrorListener, HSQLCancellationError } = require("./HSQLErrorListener");
-
 const {translationResults} = require('./translationResults')
-
 const { parseString } = require('./HSQLParseString')
-
-
-
 const {IdentifierStore} = require('./visitors/misc')
 
 /**
@@ -28,7 +21,6 @@ async function fileToECL(inputFilePath, importStack = [],options={'d':false,'w':
     const val = await fsp.readFile(path.format(inputFilePath));
     return stringToECL(val.toString(), inputFilePath, importStack,options);
 }
-
 
 /**
  * Process and return ECL statements
@@ -48,7 +40,6 @@ function stringToECL(data, pathInfo = null, importStack = [],options={'d':false,
             resolve(new translationResults(antlrErrorListener.errors))
         } else {
             let visitorErrorListener = new HSQLVisitorErrorListener();
-
 
             /**@type {generalVisitor} */
             let visitor;
@@ -82,8 +73,6 @@ function stringToECL(data, pathInfo = null, importStack = [],options={'d':false,
 
 };
 
-
-
 /**
  * Convert file synchronously
  * @param {path.ParsedPath} inputFilePath file path to convert
@@ -94,7 +83,6 @@ function fileToECLSync(inputFilePath, importStack = [],options={'d':false,'w':fa
     const val = fs.readFileSync(path.format(inputFilePath));
     return stringToECLSync(val.toString(), inputFilePath, importStack,options);
 }
-
 
 /**
  * Synchronously parse string to ECL
@@ -112,7 +100,6 @@ function stringToECLSync(data, pathInfo = null, importStack = [],options={'d':fa
         return new translationResults(antlrErrorListener.errors);
     } else {
         let visitorErrorListener = new HSQLVisitorErrorListener();
-
 
         /**@type {generalVisitor} */
         let visitor;
@@ -143,12 +130,10 @@ function stringToECLSync(data, pathInfo = null, importStack = [],options={'d':fa
     }
 };
 
-
 exports.stringToECLSync = stringToECLSync;
 exports.fileToECLSync = fileToECLSync;
 exports.fileToECL = fileToECL;
 exports.stringToECL = stringToECL;
-
 
 /* This is weird - but needed to make sure everything doesnt crash.
  * 

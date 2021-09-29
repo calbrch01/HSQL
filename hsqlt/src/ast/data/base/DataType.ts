@@ -1,31 +1,41 @@
-import { AnyTable } from '../AnyTable';
-import { Table } from '../Table';
+import { TagStore } from '../../../misc/ds/tagstore';
 
 export enum EDataType {
     ANY,
     MODULE,
     LAYOUT,
     TABLE,
+    /** not used yet */
     SET,
+    FUNCTION,
     SINGULAR,
     ACTION,
+    NOTHING,
 }
-
-type dataMap = {
-    [EDataType.TABLE]: Table | AnyTable;
-};
-
-type dataConv<T extends keyof dataMap> = (arg: T) => dataMap[T];
 
 /**
  * Data type
  */
 export abstract class DataType {
-    protected _type: EDataType | null = null;
+    // protected abstract _type: EDataType;
+
+    protected _anyized: boolean = false;
+    private _tags: TagStore;
+
+    public get tags(): TagStore {
+        return this._tags;
+    }
+    // public
+    public get anyized() {
+        return this._anyized;
+    }
+
     get type() {
         return this._type;
     }
-    constructor(type: EDataType) {}
+    constructor(protected _type: EDataType, map?: TagStore) {
+        this._tags = map ?? new TagStore();
+    }
     /**
      * Is of similar type (Does not use nesting)
      * @param type

@@ -16,7 +16,6 @@ class ExportTypeVisitor extends HSQLVisitor {
         this.errorListener = errorListener || identifierInformation.errorListener;
     }
 
-
     /**
      * Process the type from child and add it to the IdentifierStore
      * @param {antlr4.ParserRuleContext} ctx 
@@ -27,7 +26,6 @@ class ExportTypeVisitor extends HSQLVisitor {
         if(ctx.typeDefExport()){
             typeMap.setExportType("export");
         }
-
         this.identifierInformation.add(typeMap,ctx);
         return null;
     }
@@ -64,8 +62,6 @@ class ExportTypeVisitor extends HSQLVisitor {
         return newLayout;
     }
 
-
-
     /**
      * Return a column identifier
      * @param {antlr4.ParserRuleContext} ctx 
@@ -73,8 +69,7 @@ class ExportTypeVisitor extends HSQLVisitor {
     visitIdentifierExport(ctx){
         return new ColumnNameIdentifier(ctx.IDENTIFIER(0).getText(),ctx.dataType().getText());
     }
-    
-    
+
     /**
      * Generic child visitor: Optional, but kept here for future use
      * @param {antlr4.ParserRuleContext} ctx 
@@ -91,11 +86,6 @@ class ExportTypeVisitor extends HSQLVisitor {
         }
         return null;
     }
-
 }
 
 exports.ExportTypeVisitor = ExportTypeVisitor;
-
-
-
-

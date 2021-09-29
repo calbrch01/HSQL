@@ -1,3 +1,7 @@
+# input.ecl
+src/test/testScripts/*.ecl
+!src/test/testScripts/common.ecl
+
 # No Commit
 .nc.*
 
@@ -6,7 +10,9 @@ grammar/.antlr
 grammar/.antlr/*
 build/
 docs/
-*.rest
+
+# Outputs
+*.fragment
 
 # Logs
 logs
@@ -124,3 +130,6 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# 
+notes/~$HSQL Translation.pptx

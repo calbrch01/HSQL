@@ -1,0 +1,32 @@
+--Select out snowy days
+import %.common;
+
+--weather = select * from common.WeatherDataSet;
+weather = select * from '~hsql::testfiles::weatherdata.csv' type csv layout common.WeatherDataLayout ;
+
+
+weatherGrp = select Date,SnowDepth from weather group by SnowDepth;
+
+weatherSnowy = select Date,SnowDepth,NewSnow from weather where SnowDepth>0 and NewSnow>0;
+
+weatherSnowyTotal = select Sum(SnowDepth) from weather where SnowDepth>0;
+weatherSnowyNum = Select COUNT(SnowDepth) from weather where SnowDepth>0;
+
+ran = select sum(SnowDepth) from (select SnowDepth from weather) as c;
+
+
+
+weatherSnowDepth = select Date,SnowDepth from weather;
+weatherNewSnow = select Date,NewSnow from weather;
+
+weatherjoin = select * from weatherSnowDepth join weatherNewSnow on weatherSnowDepth.Date = weatherNewSnow.Date where newSnow>0;
+
+output weatherGrp title group_output ;
+
+OUTPUT weatherSnowy ;
+OUTPUT weatherSnowyTotal;
+OUTPUT weatherSnowyNum;
+
+plot from weatherSnowyTotal title SnowyDays type bar;
+
+output weatherjoin;

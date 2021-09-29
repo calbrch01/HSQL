@@ -21,10 +21,7 @@ class MLVisitor extends HSQLVisitor {
         this.identifierInformation = identifierInformation;
         this.errorListener = errorListener;
         this.bundleData = bundleData;
-        
     }
-
-
 
     /**
      * Gets information about an ML method
@@ -55,8 +52,6 @@ class MLVisitor extends HSQLVisitor {
         return bundleConfig;
     }
 
-
-
     /**
      * Check if a library exists, if it does, return its alias, else add it
      * @param {String} libraryName 
@@ -67,7 +62,6 @@ class MLVisitor extends HSQLVisitor {
         if(!searchRes.found){
             this.errorListener.syntaxErrorAbort("Assertion Error - Could not find ML library and import");
         }
-        
         return searchRes.result.name;
     }
 
@@ -77,7 +71,6 @@ class MLVisitor extends HSQLVisitor {
      */
     visitTrain(ctx) {
         const getLibraryName = this.findImport("ML_Core");
-        
         
         //get a copy of the method that matches this
         let methodInfo = this.getMethodInfo(ctx.method.text, ctx)
@@ -112,7 +105,6 @@ class MLVisitor extends HSQLVisitor {
             `SHARED ${depToFieldShared.name} := ${depToField.name}`
         );
 
-        
         //make numeric fields sequential
         const indCountRegular = this.identifierInformation.addReservedModelVariable(
             indToFieldShared.name,
@@ -134,8 +126,6 @@ class MLVisitor extends HSQLVisitor {
                 field:depToFieldShared.name
             })
         );
-        
-        
         
         let finalInd = indCountRegular.name;
         let finalDep = depCountRegular.name;
@@ -192,7 +182,6 @@ class MLVisitor extends HSQLVisitor {
         const optionsList = options.map(e=>e.join(" "));
         const optionsJoined = optionsList.join(",");
 
-        
         let formattedGetModel = format(methodInfo.getModelSuffix, {
             "options": optionsJoined,
             "bundleName": methodInfo.bundle,
@@ -205,7 +194,6 @@ class MLVisitor extends HSQLVisitor {
         return new VisitorExchangeObject(formattedGetModel, preStatements, [], modelType);
     }
 
-
     /**
      * This is for ml methods which yield results instantly
      * @param {antlr4.ParserRuleContext} ctx 
@@ -213,12 +201,10 @@ class MLVisitor extends HSQLVisitor {
     visitElementaryML(ctx){
         const getLibraryName = this.findImport("ML_Core");
         
-        
         //get a copy of the method that matches this
         let methodInfo = this.getMethodInfo(ctx.method.text, ctx,true);
         let ind = ctx.ind.getText();
         this.identifierInformation.assertExists(ind,"table",ctx.ind);
-
 
         let preStatements = [];
 
@@ -264,7 +250,6 @@ class MLVisitor extends HSQLVisitor {
             finalInd = newDiscreteInd.name;
         }
 
-
         //TODOF ind2 is present if one needs extra arguments.
         //Currently only DBScan is there, and its not needed, so not implementing it
 
@@ -293,7 +278,6 @@ class MLVisitor extends HSQLVisitor {
         const optionsList = options.map(e=>e.join(" "));
         const optionsJoined = optionsList.join(",");
 
-
         //the final ML statement that produces the answer
         let formattedGetModel = format(methodInfo.predictSuffix, {
             "options": optionsJoined,
@@ -306,11 +290,8 @@ class MLVisitor extends HSQLVisitor {
         let resultType = new TableIdentifier("",[],undefined,false);
         return new VisitorExchangeObject(formattedGetModel, preStatements, [], resultType);
 
-
-
     }
     
-
     /**
      * Fetch the Trainoptions, and return them as an array
      * @param {antlr4.ParserRuleContext} ctx 
@@ -347,16 +328,12 @@ class MLVisitor extends HSQLVisitor {
 
         //get a copy of the method that matches this
         let methodInfo = this.getMethodInfo(methodName, ctx)
-
-        
+       
         const preStatements = [];
-
 
         let ind = ctx.ind.getText();
 
-        this.identifierInformation.assertExists(ind,"table",ctx.ind);
-        
-        
+        this.identifierInformation.assertExists(ind,"table",ctx.ind);        
 
         // let ind_new = this.addModelIdentifier(ctx.ind,ind);
         // let ind_new_new = this.addModelIdentifier(ctx.ind,ind)
@@ -367,7 +344,6 @@ class MLVisitor extends HSQLVisitor {
 
         const indCountRegular = this.identifierInformation.addReservedModelVariable(indToField.name,"numericField",ctx.ind);
         
-
         preStatements.push(
             this.bundleData.templates.toNumericField.compiled({
                 libraryName:getLibraryName,
@@ -381,9 +357,7 @@ class MLVisitor extends HSQLVisitor {
             })
         );
 
-
         let indFinal = indCountRegular.name;
-
 
         let returnableStatement = format(methodInfo.predictSuffix, {
             "bundleName": methodInfo.bundle,
