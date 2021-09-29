@@ -2,12 +2,15 @@
     "name": "hsqlt-extension",
     "displayName": "hsqlt-extension",
     "description": "",
-    "version": "0.0.34",
+    "version": "0.0.35",
     "publisher": "Testing",
     "engines": {
         "vscode": "^1.56.0"
     },
-    "repository": {},
+    "repository": {
+        "url": "git@github.com:hpcc-systems/HSQL.git",
+        "type": "git"
+    },
     "prettier": {
         "tabWidth": 4,
         "semi": true,
@@ -68,7 +71,7 @@
         "postinstallClient": "npm run installServer",
         "installServer": "cd server && npm i",
         "prepackage": "npm run compile-prod && npm unlink hsqlt",
-        "package": "vsce package",
+        "package": "vsce package --baseContentUrl https://github.com/hpcc-systems/HSQL/tree/dev/hsqlt-extension",
         "postpackage": "npm link hsqlt",
         "compile-prod": "webpack --mode production --devtool hidden-source-map",
         "compile": "webpack",
