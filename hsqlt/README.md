@@ -21,7 +21,7 @@ git clone https://github.com/hpcc-systems/HSQL.git
 Go inside the HSQL project and change your directory to [HSQT](.\hsqlt).
 
 ```
-cd .\hsqlt\
+cd ./hsqlt/
 ```
 
 ### To install the Visual Studio Code Extension:
