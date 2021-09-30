@@ -14,8 +14,6 @@ It leverages a declarative SQL like syntax and translates to [Enterprise Control
 
 This repository contains the latest and greatest implementation of HSQL language [`hsqlt`](hsqlt/) written in TypeScript, and its Visual Studio Code Extension [`hsqlt-extension`](hsqlt-extension/).
 
-[`hsql`](hsql/) is our older implementation that is written in JavaScript.
-
 ## 🚀 Getting Started with H-SQL:
 
 Please refer to the <b> [HSQLT](hsqlt/README.md) </b> directory to setup and get started with HSQL.
