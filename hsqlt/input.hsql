@@ -1,3 +1,21 @@
-import %.a;
-p1 = select distinct c1 from a.t1;
-output p1;
+// Out Current HSQL Syntax
+table_name = layout(
+   INTEGER column1, 
+   INTEGER column2 
+);
+OUTPUT table_name TITLE table_title ;
+
+// TODO:
+// Convert to the following Syntax:
+
+/*
+CREATE TABLE table_name (
+    column1 datatype,
+    column2 datatype,
+);
+
+result should be :
+
+table_name := {INTEGER col1,INTEGER col2};
+OUTPUT(table_name,NAMED('table_title'));
+*/
