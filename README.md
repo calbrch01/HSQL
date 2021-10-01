@@ -47,7 +47,7 @@ Once HPCC Platform is installed, you need to setup ECL Language extension in you
 - Click  "Install"
 
 
-![ECL Extension](.\Documentation\Images\ECL_Extension.png)
+![ECL Extension](./Documentation/Images/ECL_Extension.png)
 
 
 
@@ -57,11 +57,11 @@ Once the ECL Language extension is completed, we need to connect to a HPCC clust
 - On the left side menu, open "Run and Debug" or use (Ctrl + Shift + D)
 - Click "Create a launch.json file" 
 
-![Run And Debug](.\Documentation\Images\RunAndDebug.png)
+![Run And Debug](./Documentation/Images/RunAndDebug.png)
 
 - From dropdown menu select "ECL"
 
-![Run And Debug](.\Documentation\Images\ECLOption.png)
+![Run And Debug](./Documentation/Images/ECLOption.png)
 
 - A default lunch.json file is created and loaded on the main pane. 
 - Update values with following 
