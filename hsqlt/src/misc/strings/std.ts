@@ -16,8 +16,6 @@ export default [
             declare Line as plot on 'MultiD.Line(\\'{0}\\',,\\'{0}\\')';
             declare Scatter as plot on 'MultiD.Scatter(\\'{0}\\',,\\'{0}\\')';
             declare Step as plot on 'MultiD.Step(\\'{0}\\',,\\'{0}\\')';
-
-
             `,
 
             type: FileType.DHSQL,
@@ -42,7 +40,6 @@ export default [
                     WHERE
                     '{bundleLoc}{ecldot}regressionforest().predict({model},{indep})' RETURN TABLE(int wi,int id,int number,real value ) by learningtrees;
 
-
             declare logisticregression as train '{bundleLoc}{ecldot}BinomialLogisticRegression({trainOptions}).GetModel({indep},{dep})' int WHERE (max_iter as int,epsilon as real, ridge as real) RETURN ANYTABLE WHERE '{bundleLoc}{ecldot}binomiallogisticregression().classify({model},{indep})' RETURN TABLE(int wi,int id,int number,integer value,real conf) by LogisticRegression;
 
             // gaussianglm and glm are the same
@@ -57,10 +54,9 @@ export default [
             declare kmeans as train 
                     '{bundleLoc}{ecldot}KMeans({trainOptions}).Fit({indep},{dep})' WHERE (max_iter as int,t as real) RETURN ANYTABLE 
                     WHERE
-                    '{bundleLoc}{ecldot}KMeans().Predict({model},{indep})' RETURN TABLE(int wi ,int  id ,int label) BY Kmeans;// this is what predict does
-                    
+                    '{bundleLoc}{ecldot}KMeans().Predict({model},{indep})' RETURN TABLE(int wi ,int  id ,int label) BY Kmeans;// this is what predict does                    
             
-            // declare <methodName> as train '<train Template>' [WHERE <options>] RETURN TABLE(...)|ANYTABLE
+                    // declare <methodName> as train '<train Template>' [WHERE <options>] RETURN TABLE(...)|ANYTABLE
             // WHERE
             // '<predict Template>' return TABLE(...)|ANYTABLE
             `,

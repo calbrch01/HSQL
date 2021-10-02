@@ -10,8 +10,6 @@ import {VariableVisibility} from '../ast/VariableVisibility';
 import {QualifiedIdentifier} from '../ast/QualifiedIdentifier';
 
 
-
-
 import { ParseTreeVisitor } from "antlr4ts/tree/ParseTreeVisitor";
 
 import { SelectAggregatedEverythingColContext } from "./HSQLParser";
@@ -67,6 +65,7 @@ import { FunctionArgsContext } from "./HSQLParser";
 import { FunctionArgContext } from "./HSQLParser";
 import { ModuleStmtContext } from "./HSQLParser";
 import { LayoutStmtContext } from "./HSQLParser";
+import { CreateTableStmtContext } from "./HSQLParser";
 import { LayoutContentContext } from "./HSQLParser";
 import { ActionStmtContext } from "./HSQLParser";
 import { ImportStmtContext } from "./HSQLParser";
@@ -556,6 +555,13 @@ export interface HSQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitLayoutStmt?: (ctx: LayoutStmtContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `HSQLParser.createTableStmt`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitCreateTableStmt?: (ctx: CreateTableStmtContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `HSQLParser.layoutContent`.

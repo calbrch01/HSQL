@@ -8,13 +8,11 @@ import {FileOutputType} from '../ast/FileOutputType';
 import {VariableVisibility} from '../ast/VariableVisibility';
 // import {FunctionArgument,FunctionArgumentType} from '../ast/FunctionArgumentType';
 import {QualifiedIdentifier} from '../ast/QualifiedIdentifier';
-
-
 }
 
 program
 	locals[
-	needML:boolean=false,needPlots:boolean=false,actionCount:number=0,willWrapModule:boolean=false,insertDedupMacro:boolean=false
+	needML:boolean=false, needPlots:boolean=false, actionCount:number=0, willWrapModule:boolean=false, insertDedupMacro:boolean=false
 ]: (completestmt)* EOF;
 
 completestmt: stmt SEMICOLON;
@@ -27,7 +25,8 @@ stmt:
 		}
 	| actionStmt {$program::actionCount++;}
 	| importStmt
-	| functionStmt;
+	| functionStmt
+	| createTableStmt;
 
 // the `scope` sets the local
 definitionStmt
@@ -65,6 +64,7 @@ moduleStmt:
 	MODULE CURLY_BSTART_ (definitionStmt SEMICOLON)* CURLY_BEND_;
 
 layoutStmt: LAYOUT BSTART_ layoutContent BEND_;
+createTableStmt: CREATE TABLE IDENTIFIER BSTART_ layoutContent BEND_;
 
 layoutContent: colDefs;
 
@@ -285,8 +285,7 @@ valueExpression: primaryExpression # valueExpressionDefault;
 
 // to use later - expression
 /* derivedExpressions: IDENTIFIER BSTART_ fargs BEND_ ; //function args
- 
- fargs: expression (COMMA_ expression)* |;
+fargs: expression (COMMA_ expression)* |;
  */
 
 primaryExpression:
@@ -354,7 +353,7 @@ tableDeclarationSegment:
 	| ANYTABLE					# anyTableDeclaration;
 
 colDefs: colDef (COMMA_ colDef)*;
-colDef: dataType IDENTIFIER;
+colDef: IDENTIFIER dataType;
 
 //****************************************Lexer Rules******************************************/
 

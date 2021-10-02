@@ -10,8 +10,6 @@ import {VariableVisibility} from '../ast/VariableVisibility';
 import {QualifiedIdentifier} from '../ast/QualifiedIdentifier';
 
 
-
-
 import { ATN } from "antlr4ts/atn/ATN";
 import { ATNDeserializer } from "antlr4ts/atn/ATNDeserializer";
 import { CharStream } from "antlr4ts/CharStream";
