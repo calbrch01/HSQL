@@ -6,19 +6,19 @@ HSQL is the new big data query language of the HPCC Systems.
 
 It leverages a declarative SQL like syntax and translates to [Enterprise Control Language (`ECL`)](<https://en.wikipedia.org/wiki/ECL_(data-centric_programming_language)>). It can also work in conjunction with ECL to allow a team of data science developers to explore and analyze big data across a high performance computing cluster without the programmer being involved in many of the lower level, imperative decisions.
 
-<b><i>It is designed mostly for SQL developers that are interested in developing on the HPCC systems platform.</i> </b>Using H-SQL, developers should easily adapt to the HPCC systems platform and start working with big-data right away.
+<b><i>It is designed mostly for SQL developers that are interested in developing on the HPCC systems platform.</i> </b>Using HSQL, developers should easily adapt to the HPCC systems platform and start working with big-data right away.
 
 # Installation 
 
 ## HSQL Installation
 
-Our recommendation is to install the Microsoft Visual Studio Code Extension, which helps with syntax highlighting, and auto-completion features.
+Our recommendation is to install the Microsoft Visual Studio Code Extension, which helps with syntax highlighting and auto-completion features.
 
-- Fork the repository
+- Download or Clone the repository
 - Open this repository in Visual Studio Code
-- Look for the latest version of `hsqlt-extension-0.0.*.vsix` under HSQL folder. At the time of writing this instruction `hsqlt-extension-0.0.35.vsix` is the latest version. 
+- Look for the latest version of `hsqlt-extension-0.0.*.vsix` under HSQL folder. At the time of writing the file `hsqlt-extension-0.0.35.vsix` is the latest version. 
 - Right click on the file name and selet "Install Extension VSIX"
-- On the right lower corner you will receive a message stating 
+- In the right lower corner you will receive a message stating 
 ```
 Completed installing hsqlt-extension extension from VSIX. Please reload Visual Studio Code to enable it.
 ```
@@ -34,12 +34,12 @@ By installing HSQL you are able to write SQL code and convert it to ECL (Enterpr
 
 ## HPCC Platform Installation
 
-To execute the generated ECL code, you need to install HPCC platform on your machine.
+To execute the generated ECL code, you need to install HPCC client tool on your local machine/computer.
 From [Platform Download](https://HPCC Systems.com/download#HPCC-Platform) select your Operating System for "Gold" version and follow the provided instruction. 
 
 ## Setup VS Code
 
-Once HPCC Platform is installed, you need to setup ECL Language extension in your VS Code. 
+Once HPCC client tool is installed, you need to setup ECL Language extension in your VS Code. 
 
 - Open VS Code
 - On the left side menu, open "Extension" or use (Ctrl + Shit + X). 
@@ -64,7 +64,7 @@ Once the ECL Language extension is completed, we need to connect to a HPCC clust
 ![Run And Debug](./Documentation/Images/ECLOption.png)
 
 - A default launch.json file is created and loaded on the main pane. 
-- Update values with following 
+- Edit values with following 
 ```
 {
   "version": "0.2.0",
@@ -99,7 +99,7 @@ Once the ECL Language extension is completed, we need to connect to a HPCC clust
 Once the installations are complete
 - Open "HSQL\Documentation\SampleCode\SimpleTest.hsql"
 - Pres (Ctrl + Shit + P) and search for "HSQL: Compile a HSQL Program"
-- When conversion is completed a window will popup in lower right corner stating "Done Writing"
+- When compile is completed a window will popup in lower right corner stating "Done Writing"
 - You should see a SimpleTest.ecl in the same folder
 - Open SimpleTest.ecl and press F5 (Start Debugging)
 - Results are ready to view in VS Code and on [ECL WatchPage](http://13.77.97.16:8010/#/stub/ECL)
