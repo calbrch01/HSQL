@@ -1,16 +1,16 @@
-# 💻 Getting started with H-SQLt
+# Getting started with HSQL
 
 The best way to learn HSQL is to try our <b>sample codes</b>, but before that, you might want to install it on your machine first.
 
-There are two ways available to install and use H-SQL: 
+There are two ways available to install and use HSQL: 
 
-1- If you are a beginner and you want to try HSQLt right away, we recommend you to install the [Microsoft Visual Studio Code Extension](#To-install-the-Visual-Studio-Code-Extension) since it is super easy to setup and work with. It can also help you with syntax highlighting, and auto-completion features if you are new to this programming language. 
+1- If you are a beginner and you want to try HSQL right away, we recommend you to install the [Microsoft Visual Studio Code Extension](#To-install-the-Visual-Studio-Code-Extension) since it is super easy to setup and work with. It can also help you with syntax highlighting, and auto-completion features if you are new to this programming language. Please note that the extension has not yet been published to the VS Code extensions marketplace. 
 
-2- If you don't want to use VS-Code Editor you can check, build, make your code using [our HSQLt Command-line interface (CLI) tool](#Command-Line-Interface-tool-installation) depend on your operating system.
+2- If you don't want to use VS-Code Editor you can check, build, make your code using [our HSQL Command-line interface (CLI) tool](#Command-Line-Interface-tool-installation) depending on your operating system.
 
 <hr>
 
-## ⚙️Installation Instructions
+## Installation Instructions
 
 First thing first, you have to clone the repo or download the zip file and unzip it on your machine.
 
@@ -18,7 +18,7 @@ First thing first, you have to clone the repo or download the zip file and unzip
 git clone https://github.com/hpcc-systems/HSQL.git
 ```
 
-Go inside the HSQL project and change your directory to [HSQT](.\hsqlt).
+Go inside the HSQL project and change your directory to [hsqlt](.\hsqlt).
 
 ```
 cd ./hsqlt/
@@ -34,7 +34,7 @@ Completed installing hsqlt-extension extension from VSIX. Please reload Visual S
 
 <!-- ![Giffy_To_Test](.\Animations_Gif\hsql-extention-install.gif) -->
 
-![hsql-extention-install-gif](https://github.com/hpcc-systems/HSQL/blob/dev/hsqlt/Animations_Gif/hsql-extention-install.gif "Logo Title Text 1")
+<!-- ![hsql-extention-install-gif](https://github.com/hpcc-systems/HSQL/blob/dev/hsqlt/Animations_Gif/hsql-extention-install.gif "Logo Title Text 1") -->
 
 <!-- https://raw.githubusercontent.com/hpcc-systems/HSQL/dev/hsqlt/Animations_Gif/hsql-extention-install.gif?token=AA6IUHCJLEOMQZHB4YF2EV3BLR4PY -->
 
