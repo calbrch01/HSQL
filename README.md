@@ -2,7 +2,7 @@
 
 # Introduction
 
-HSQL is the new big data query language of the HPCCSystems.
+HSQL is the new big data query language of the HPCC Systems.
 
 It leverages a declarative SQL like syntax and translates to [Enterprise Control Language (`ECL`)](<https://en.wikipedia.org/wiki/ECL_(data-centric_programming_language)>). It can also work in conjunction with ECL to allow a team of data science developers to explore and analyze big data across a high performance computing cluster without the programmer being involved in many of the lower level, imperative decisions.
 
@@ -35,7 +35,7 @@ By installing HSQL you are able to write SQL code and convert it to ECL (Enterpr
 ## HPCC Platform Installation
 
 To execute the generated ECL code, you need to install HPCC platform on your machine.
-From [Platform Download](https://hpccsystems.com/download#HPCC-Platform) select your Operating System for "Gold" version and follow the provided instruction. 
+From [Platform Download](https://HPCC Systems.com/download#HPCC-Platform) select your Operating System for "Gold" version and follow the provided instruction. 
 
 ## Setup VS Code
 
@@ -51,7 +51,7 @@ Once HPCC Platform is installed, you need to setup ECL Language extension in you
 
 
 
-## Create lunch.json
+## Create launch.json
 Once the ECL Language extension is completed, we need to connect to a HPCC cluster for executing ECL file. 
 
 - On the left side menu, open "Run and Debug" or use (Ctrl + Shift + D)
@@ -63,7 +63,7 @@ Once the ECL Language extension is completed, we need to connect to a HPCC clust
 
 ![Run And Debug](./Documentation/Images/ECLOption.png)
 
-- A default lunch.json file is created and loaded on the main pane. 
+- A default launch.json file is created and loaded on the main pane. 
 - Update values with following 
 ```
 {
@@ -107,3 +107,69 @@ Once the installations are complete
 # HSQL Reference 
 
 Please refer to [HSQL Commands](https://github.com/hpcc-systems/HSQL/blob/master/hsqlt/notes/syntax.md#select-all-columns-from-table) to see what commands are available. 
+
+## Examples and Syntax:
+
+#### Select all columns from table
+
+```hsql
+a = select * from tableName;
+```
+
+
+```hsql
+b = select column1,column2, column4 as X from tableName;
+```
+
+#### Group by
+
+```hsql
+g = select * from tableName group by column1;
+```
+
+```hsql
+g = select AVG(wages) from employees group by wages;
+```
+
+#### JOIN
+
+```hsql
+c = select * from table1,table2, table3 join table4 on table3.x = table4.y;
+```
+#### Plot 
+
+```hsql
+plot from xyz title myplot type bar;
+plot from abc title myotherplot type column;
+```
+
+#### Output
+
+```
+a = 5;
+OUTPUT a;                  // regular output
+OUTPUT a TITLE my_Var;     // give the output a name
+```
+
+#### Functions
+
+
+```
+function isInCountry(layout rec x,string y) {
+    z = select * from x where country=y order by customerid desc;
+    return z;
+};
+```
+
+#### Machine Learning
+
+```hsql
+ind = select PersonID,age from commonsimple.simpleTable where PersonID<5;
+dep = select PersonID,wage from commonsimple.simpleTable where PersonID<5;
+
+test = select PersonID,age from commonsimple.simpleTable where PersonID>4;
+
+model = train from ind,dep method LinearRegression;
+
+result = predict model from test;
+```
