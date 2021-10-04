@@ -1,6 +1,8 @@
 # HSQL (HPCC Systems Structured Query Language)
 
+
 # Introduction
+
 
 HSQL is the new big data query language of the HPCC Systems.
 
@@ -10,9 +12,11 @@ It leverages a declarative SQL like syntax and translates to [Enterprise Control
 
 # Installation 
 
+
 ## HSQL Installation
 
 Our recommendation is to install the Microsoft Visual Studio Code Extension, which helps with syntax highlighting, and auto-completion features.
+
 
 - Fork the repository
 - Open this repository in Visual Studio Code
