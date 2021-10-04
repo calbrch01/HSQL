@@ -1,0 +1,8 @@
+OUTPUT 'Welcome to HSQL';
+
+// Creating a simple layout
+SimpleLayout = LAYOUT(INTEGER Year ,INTEGER YearCount );
+
+
+
+
